@@ -26,6 +26,59 @@ ensures its functions are available for use.  Line 4 asks CPP to find a
 dependency Line 5 declares the library using
 CPP's convenience macro and line  
 
+
+Public API
+----------
+
+### find_package
+
+Attempts to find a package with the requested specifications.  Any fields that
+are not set are considered flexible (*i.e.* )
+
+Syntax:
+
+```
+cpp_find_package(
+    <package>
+    [OPTIONAL]
+    [VERSION <version>]
+    [CMAKE_ARGS <arg1> [<arg2> ...]]
+)    
+```
+
+Arguments:
+- `package` the name of the package to locate.
+- `OPTIONAL` if specified failure to find the package will not raise an error
+- `nameX` used to request that a virtual package be satisfied by one of the 
+  named implementations.  Names earlier in the list have higher precedence. 
+  If `package` is non-virtual this will be ignored.
+- `VERSION`       
+
+
+Global variables used:
+- `BUILD_SHARED_LIBS` if true will ensure dependencies are built with `-fPIC`
+
+### find_virt_package
+
+Attempts to find a virtual package with the requested specifications.  With the
+exception of the `IMPLS` field works identical to `cpp_find_package`
+
+Syntax:
+
+```
+cpp_find_virt_package(
+    <package>
+    [OPTIONAL]
+    [IMPLS <name1> [<name2>...]]
+    [VERSION <version>]
+    [CMAKE_ARGS <arg1> [<arg2> ...]]
+    
+```
+
+Arguments:
+- `nameX` used to request that only the named implementations be used.  Names 
+  earlier in the list have higher precedence.   
+
 Developer Functions
 -------------------
 
