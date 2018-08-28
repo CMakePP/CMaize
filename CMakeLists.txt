@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.6)
+project(CMakePack VERSION 0.0.0)
+include(CPPMain.cmake)
+CPPMain()
+enable_testing()
+add_subdirectory(tests)
