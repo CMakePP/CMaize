@@ -1,15 +1,16 @@
 function(assert_true _at_variable)
-    if(NOT ${${_at_variable}})
+    if("${${_at_variable}}" STREQUAL "TRUE")
+    elseif(NOT ${${_at_variable}})
         message(FATAL_ERROR "${_at_variable} is FALSE")
     endif()
 endfunction()
 
 function(assert_false _at_variable)
-    if(${_at_variable})
+    if("${${_at_variable}}" STREQUAL "FALSE")
+    elseif(${_at_variable})
         message(FATAL_ERROR "${_at_variable} is TRUE")
     endif()
 endfunction()
-
 
 function(assert_str_equal _lhs _rhs)
     if(NOT "${_lhs}" STREQUAL "${_rhs}")
@@ -45,20 +46,27 @@ function(run_cmake_command)
     set(${_rcc_OUTPUT} "${_rcc_out}" PARENT_SCOPE)
 endfunction()
 
-function(assert_prints _incs _cmd _value)
-    string(RANDOM _ap_prefix)
-    set(_ap_file ${CMAKE_BINARY_DIR}/${ap_prefix}.cmake)
-    set(_ap_contents "
-    ${_incs}
-    ${_cmd}
-    "
+function(write_top_list _wtl_file _wtl_contents)
+    file(
+        WRITE ${_wtl_file}
+
+"cmake_minimum_required(VERSION 3.6)
+project(ATest VERSION 0.0.0)
+set(CMAKE_MODULE_PATH \"${CMAKE_MODULE_PATH}\")
+${_wtl_contents}
+"
+
     )
-    file(WRITE ${_ap_file} "${_ap_contents}")
+endfunction()
+
+function(run_sub_build _rsb_dir)
     execute_process(
-        COMMAND ${CMAKE_COMMAND}
-                -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
-                -P ${_ap_file}
-        OUTPUT_VARIABLE _ap_output
+        COMMAND ${CMAKE_COMMAND} -H${_rsb_dir} -Bbuild
+        WORKING_DIRECTORY ${_rsb_dir}
+
     )
-    message("Output: ${_ap_output}")
+    execute_process(
+        COMMAND make
+        WORKING_DIRECTORY ${_rsb_dir}/build
+    )
 endfunction()

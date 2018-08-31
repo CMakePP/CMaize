@@ -120,6 +120,41 @@ Arguments:
   to 1 if `var` is empty and 0 otherwise
 - `var` the variable to check for a value  
 
+
+### valid
+
+Checks if a variable is defined and set to a value aside from the empty string.
+
+Syntax:
+
+```
+_cpp_valid(<return> <var>
+``` 
+
+Arguments:
+- `return` the variable that will contain the result of the check; set to 1 if
+   `var` is defined and non-empty and 0 otherwise.
+- `var` the variable to check   
+
+
+### option
+
+Used to define an option governing the build.  If the user set the option's
+value this function does nothing besides reporting that the user set the 
+option.  Otherwise it sets the option to the provided default and logs the 
+value.  This function has two advantages over the CMake `option` function: it
+logs the value, and it allows non-boolean values.
+
+Syntax:
+
+```
+_cpp_option(<option> <default>)
+```
+
+Arguments:
+- `option` the name of the variable to hold the option's value
+- `default` the default value of the option, can be non-boolean.
+
 ### debug_print
 
 A function for printing a message, but only if `CPP_DEBUG_PRINT` is set to 

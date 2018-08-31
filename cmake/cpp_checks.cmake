@@ -19,3 +19,18 @@ function(_cpp_is_empty _cie_return _cie_input)
         set(${_cie_return} 0 PARENT_SCOPE)
     endif()
 endfunction()
+
+function(_cpp_valid _cv_return _cv_input)
+    _cpp_is_defined(_cv_def ${_cv_input})
+    if(_cv_def)
+        _cpp_is_empty(_cv_empty ${_cv_input})
+        #Setting it to (NOT _cv_empty) doesn't seem to work
+        if(_cv_empty)
+            set(${_cv_return} 0 PARENT_SCOPE)
+        else()
+            set(${_cv_return} 1 PARENT_SCOPE)
+        endif()
+    else() #Not defined
+        set(${_cv_return} 0 PARENT_SCOPE)
+    endif()
+endfunction()

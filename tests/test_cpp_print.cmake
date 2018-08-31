@@ -18,3 +18,5 @@ run_cmake_command(
 )
 #CMake inserts a newline character
 assert_str_equal("${TEST2}" "Hello\n")
+
+

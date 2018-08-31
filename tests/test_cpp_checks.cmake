@@ -17,3 +17,12 @@ assert_true(TEST4)
 set(NON_EMPTY "Hello")
 _cpp_is_empty(TEST5 NON_EMPTY)
 assert_false(TEST5)
+
+_cpp_valid(TEST6 NOT_DEFINED_VARIABLE)
+assert_false(TEST6)
+
+_cpp_valid(TEST7 DEFINED_VARIABLE)
+assert_false(TEST7)
+
+_cpp_valid(TEST8 NON_EMPTY)
+assert_true(TEST8)
