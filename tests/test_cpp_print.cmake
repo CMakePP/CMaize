@@ -1,22 +1,24 @@
-include(UnitTestHelpers)
+include(${CMAKE_TOOLCHAIN_FILE})
+include(cpp_cmake_helpers)
+include(cpp_checks)
 
 set(CPP_DEBUG_MODE FALSE)
-run_cmake_command(
+_cpp_run_cmake_command(
         INCLUDES cpp_print
-        CMAKE_ARGS CMAKE_MODULE_PATH CPP_DEBUG_MODE
+        CMAKE_ARGS CPP_DEBUG_MODE
         COMMAND "_cpp_debug_print(Hello)"
         OUTPUT TEST1
 )
-assert_str_equal("${TEST1}" "")
+_cpp_assert_str_equal("${TEST1}" "")
 
 set(CPP_DEBUG_MODE TRUE)
-run_cmake_command(
+_cpp_run_cmake_command(
         INCLUDES cpp_print
-        CMAKE_ARGS CMAKE_MODULE_PATH CPP_DEBUG_MODE
+        CMAKE_ARGS CPP_DEBUG_MODE
         COMMAND "_cpp_debug_print(Hello)"
         OUTPUT TEST2
 )
 #CMake inserts a newline character
-assert_str_equal("${TEST2}" "Hello\n")
+_cpp_assert_str_equal("${TEST2}" "CPP DEBUG: Hello\n")
 
 

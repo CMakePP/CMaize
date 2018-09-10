@@ -1,9 +1,8 @@
 Packaging
 =========
 
-This page describes the process by which CPP locates dependencies.  Given that
-this process needs to be capable of occurring recursively, packages created
-using CPP will adhere to the "ideal" standards outlined below.
+This page summarizes the state of packaging a C++ project with CPP as well as
+using packages.
 
 Ideal
 -----
@@ -16,6 +15,7 @@ correctly.  As best as I can tell "correctly" means (assuming an install root
    - *i.e.* the install should be relocatable
 2. There should exist a file `<package>-config.cmake`
    - May also be named `<package>Config.cmake`
+   - Lowercase variant preferred for case-insensitive operating systems
    - On Unix-like OS's typically installed in `<prefix>/share/cmake/<name>` or
      `<install_root>/lib/cmake/<name>`
      - `name` is typically `package`, but for virtual dependencies will be the 
@@ -70,46 +70,48 @@ recipe for turning the install into a usable dependency.  Such files are also
 easier to maintain than forks/mirrors, typically requiring no additional 
 modifications unless the package undergoes a major rewrite.
 
+
+
 Finding Dependencies
 --------------------
 
-This is where things get tricky.  Even the ideal CMake packages do not keep
-track of enough information for us to be able to infer every detail of their
-build.  From an ideal build we can gather the following:
+This is where things get tricky.  Conceivably a user/developer may want to be 
+able to specify with arbitrary precision many details pertaining to a dependency
+including: compile features, version, and components.  Furthermore, these 
+details may need to be specified recursively for each sub-dependency.  Managing
+all of this information is a job for a package manager.  CPP is not a package
+manager and therefore does not attempt to do this.  Instead CPP ensures that a 
+particular instance of a dependency is used throughout the build.  This instance
+can be specified by the user or it can be built by CPP.  
 
-- version
-- build type (release, debug, *etc.*)
-- components
-- compile-time definitions specified by `target_compile_definitions`
-- compiler flags specified by `target_compile_options`
-- locations of dependencies (and thereby via recursion the above information)
+Find Dependency Procedure
+-------------------------
 
-That's about it.  Generally speaking it is possible to back out a few additional
-properties using  
+### Non-virtual dependency
 
-If we want to screen a dependency for anything else we need to
-keep track of it ourselves.  Making matters worse, for non-ideal dependencies we
-may not even be able to discern the above information.  This leaves us in a 
-situation where 
+For this section we assume the user is attempting to locate a dependency named
+`Depend` (case-sensitive).  Although we used camel case for our dependency names 
+we stress that all lowercase is the preferred convention.
 
+Ultimately we want the user to have full control so the first thing we do is
+look for a variable `Depend_ROOT`.  If the variable is set:
 
-Assume that the current CMake project depends on `my_depend`, which in turn 
-depends on `my_depend2`.  In the current CMake project the user writes:
+1. We look for a Config file under the `Depend_ROOT` directory
+   - `find_package` is used so the config file can be in any of the usual places
+2. If the config file is not found we let the `FindDepend.cmake` file try to 
+   find it.  Writers for `FindDepend.cmake` are responsible for honoring 
+   `Depend_ROOT`.
+3. If `FindDepend.cmake` can't find it an error is returned.
 
-```
-cpp_find_dependency(my_depend REQUIRED)    
-```
+If the user did not specify `Depend_ROOT` we follow a similar trajectory.
 
-(assuming it is a required dependency, otherwise the)
-
-Given an ideal dependency `my_depend` (CPP convention is all dependencies are 
-specified using snake_case) CPP will look for the variable `my_depend_PREFIX`, 
-which if set, is assumed to point to the root of the install tree for 
-`my_depend`.  `find_package` will then be used to find the config file for us 
-throwing an error if it is not found (it is assumed that if a user sets that
-variable they expect it to be used)
-and the appropriate targets will be created. If 
-`my_depend_PREFIX` is not specified, `find_package` is still called, but now it
-will search places specified in `CMAKE_PREFIX_PATH` as well as in typical 
-system locations (*e.g.*, `/usr/lib`, `/usr/local/lib` on Unix-like systems).
-
+1. We attempt to find a config file honoring `CMAKE_PREFIX_PATH`
+2. If no config file is found we let `FindDepend.cmake` try
+3. If we still can't find it, we build it.
+   - Build recipes must be in a file `BuildDepend.cmake` or `build-depend.cmake`
+   - `CPP_BUILD_RECIPES` can be set to a list of folders containing build
+      recipes
+   - Dependencies built this way will be installed into the directory given by
+     `CPP_LOCAL_CACHE`
+          
+               

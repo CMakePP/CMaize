@@ -1,8 +1,17 @@
 CMakePackagingProject
 =====================
 
-Welcome to the CMakePackagingProject (CPP) repository.  CPP is a dependency 
-manager for C++ projects written entirely within CMake.  This project is a work
-in progress.  At the moment CPP can:
+Welcome to the CMakePackagingProject (CPP) repository.
 
-- Find dependencies
+CMake represents a powerful scripting language for automating the configuring, 
+building, testing, and installation of a C++ project.
+
+What CPP does:
+- Simplifies building and installing your project's libraries
+- Simplifies dependency management
+  - Support for virtual dependencies
+   
+
+What CPP may eventually do:
+- Build external dependencies   
+

@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+foreach(_@CPP_project_name@_depend @_cal_DEPENDS@)
+    find_package(${_@CPP_project_name@_depend} REQUIRED)
+endforeach()
+
+include("${CMAKE_CURRENT_LIST_DIR}/@_cal_targets_file@.cmake")
+check_required_components("@CPP_project_name@")
