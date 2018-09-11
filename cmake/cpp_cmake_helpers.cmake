@@ -1,5 +1,6 @@
 include(cpp_checks) #For _cpp_assert_false
 include(cpp_print) #For _cpp_debug_print
+include(cpp_options) #For _cpp_option
 
 function(_cpp_run_cmake_command)
     set(_rcc_O_kwargs COMMAND OUTPUT)
@@ -54,8 +55,17 @@ function(_cpp_run_sub_build _crsb_dir)
         "${_crsb_M_kwargs}"
         ${ARGN}
     )
-    _cpp_valid(_crsb_install_set _crsb_INSTALL_PREFIX)
-    _cpp_assert_true(_crsb_install_set)
+
+    if("${_crsb_NO_INSTALL}" STREQUAL "TRUE")
+        set(_crsb_install_prefix "")
+    else()
+        _cpp_valid(_crsb_install_set _crsb_INSTALL_PREFIX)
+        _cpp_assert_true(_crsb_install_set)
+        set(
+            _crsb_install_prefix
+            "-DCMAKE_INSTALL_PREFIX=${_crsb_INSTALL_PREFIX}"
+        )
+    endif()
     set(_crsb_add_args)
     foreach(_crsb_arg ${_crsb_CMAKE_ARGS})
         list(APPEND _crsb_add_args "-D${_crsb_arg}")
@@ -75,7 +85,7 @@ function(_cpp_run_sub_build _crsb_dir)
                 -H${_crsb_dir}
                 -Bbuild
                 -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-                -DCMAKE_INSTALL_PREFIX=${_crsb_INSTALL_PREFIX}
+                ${_crsb_install_prefix}
                 ${_crsb_add_args}
         WORKING_DIRECTORY ${_crsb_dir}
         RESULT_VARIABLE _crsb_cmake

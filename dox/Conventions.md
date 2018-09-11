@@ -29,7 +29,8 @@ as possible.
   - Depending on the value of `my_var` the second syntax can lead to issues
 - Avoid the `NOT` keyword
   - The `NOT` syntax is touchy and error-prone owing to the implicit conversions
-    between strings and booleans      
+    between strings and booleans (a lot of times your boolean will become a 
+    string)      
 
 Modules
 -------

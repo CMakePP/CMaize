@@ -43,7 +43,6 @@ function(_cpp_build_dependency _cbd_name)
     _cpp_run_sub_build(
         ${_cbd_${_cbd_name}_root}
         INSTALL_PREFIX ${_cbd_${_cbd_name}_install}
-        NO_INSTALL
     )
 endfunction()
 
@@ -54,10 +53,10 @@ function(cpp_find_dependency _cfd_found _cfd_name)
     #variables require an additional level of namespace protection related to
     #the dependency
 
-    #Did the user set XXX_ROOT?
-    _cpp_valid(_cfd_${_cfd_name}_root_set ${_cfd_name}_ROOT)
+    #Did the user set CPP_XXX_ROOT?
+    _cpp_valid(_cfd_${_cfd_name}_root_set CPP_${_cfd_name}_ROOT)
     if(_cfd_${_cfd_name}_root_set)
-        #Try using ${${PackageName}_ROOT}} to find a config file
+        #Try using ${${PackageName}_DIR}} to find a config file
         find_package(
             ${_cfd_name}
             CONFIG
@@ -65,10 +64,12 @@ function(cpp_find_dependency _cfd_found _cfd_name)
             PATHS ${_cfd_name}
             NO_DEFAULT_PATH
         )
-        _cpp_valid(_cfd_${_cfd_name}_config_found ${_cfd_name}_FOUND)
-        if(_cfd_${_cfd_name}_config_found)
-            _cpp_debug_print("Found config file: ${${_cfd_name}_CONFIG}")
-            return()
+        _cpp_valid(_cfd_${_cfd_name}_config_valid ${_cfd_name}_FOUND)
+        if(_cfd_${_cfd_name}_config_valid)
+            if(${_cfd_name}_FOUND)
+                _cpp_debug_print("Found config file: ${${_cfd_name}_CONFIG}")
+                return()
+            endif()
         endif()
         find_package(${_cfd_name} REQUIRED MODULE)
         return()

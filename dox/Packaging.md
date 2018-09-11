@@ -94,16 +94,18 @@ For this section we assume the user is attempting to locate a dependency named
 we stress that all lowercase is the preferred convention.
 
 Ultimately we want the user to have full control so the first thing we do is
-look for a variable `Depend_ROOT`.  If the variable is set:
+look for a variable `CPP_Depend_ROOT` (CMake uses a variable `Depend_ROOT` 
+for this purpose and will produce nasty warnings if we don't have the CPP 
+prefix).  If the variable is set:
 
-1. We look for a Config file under the `Depend_ROOT` directory
+1. We look for a Config file under the `CPP_Depend_ROOT` directory
    - `find_package` is used so the config file can be in any of the usual places
 2. If the config file is not found we let the `FindDepend.cmake` file try to 
    find it.  Writers for `FindDepend.cmake` are responsible for honoring 
-   `Depend_ROOT`.
+   `CPP_Depend_ROOT`.
 3. If `FindDepend.cmake` can't find it an error is returned.
 
-If the user did not specify `Depend_ROOT` we follow a similar trajectory.
+If the user did not specify `CPP_Depend_ROOT` we follow a similar trajectory.
 
 1. We attempt to find a config file honoring `CMAKE_PREFIX_PATH`
 2. If no config file is found we let `FindDepend.cmake` try

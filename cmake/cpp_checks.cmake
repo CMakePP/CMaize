@@ -65,7 +65,7 @@ endfunction()
 
 
 function(_cpp_assert_cpp_main_called)
-    foreach(_cacmc_var CPP_ROOT CPP_project_name CPP_LIBDIR CPP_BINDIR
+    foreach(_cacmc_var CPP_SRC_DIR CPP_project_name CPP_LIBDIR CPP_BINDIR
                        CPP_INCDIR CPP_SHAREDIR)
         _cpp_valid(_cacmc_valid ${_cacmc_var})
         if(NOT ${_cacmc_valid})

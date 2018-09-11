@@ -65,14 +65,9 @@ function(cpp_add_library _cal_name)
             ${_cal_version_file} COMPATIBILITY SameMajorVersion
     )
 
-
-
-    # Configure '<PROJECT-NAME>Config.cmake'
-    # Use variables:
-    #   * TARGETS_EXPORT_NAME
     #   * PROJECT_NAME
     configure_package_config_file(
-        "${CPP_ROOT}/Config.cmake.in"
+        "${CPP_SRC_DIR}/Config.cmake.in"
         "${_cal_config_file}"
         INSTALL_DESTINATION "${CPP_SHAREDIR}"
     )

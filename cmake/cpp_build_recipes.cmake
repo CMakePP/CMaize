@@ -7,6 +7,7 @@ function(cpp_local_cmake _clc_name _clc_dir)
     ExternalProject_Add(
         ${_clc_name}_External
         SOURCE_DIR ${_clc_dir}
+        INSTALL_DIR ${CMAKE_BINARY_DIR}/install
         CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
 
@@ -24,7 +25,14 @@ endfunction()
 function(cpp_github_cmake _cgc_name _cgc_url)
     _cpp_parse_gh_url(_cgc_repo ${_cgc_url})
     set(_cgc_O_kwargs TOKEN BRANCH)
-    cmake_parse_arguments(_cgc "" "${_cgc_O_kwargs}" "" ${ARGN})
+    set(_cgc_M_kwargs CMAKE_ARGS)
+    cmake_parse_arguments(
+        _cgc
+        ""
+        "${_cgc_O_kwargs}"
+        "${_cgc_M_kwargs}"
+        ${ARGN}
+    )
 
     set(_cgc_gh_api "https://api.github.com/repos")
 
@@ -39,11 +47,17 @@ function(cpp_github_cmake _cgc_name _cgc_url)
         "${_cgc_gh_api}/${_cgc_repo}/tarball/${_cgc_BRANCH}${_cgc_token}"
     )
 
+    set(_crsb_add_args)
+    foreach(_cgc_arg ${_cgc_CMAKE_ARGS})
+        list(APPEND _cgc_add_args "-D${_crgc_arg}")
+    endforeach()
     _cpp_debug_print("Building CMake project at URL: ${_cgc_url}")
     ExternalProject_Add(
         ${_cgc_name}_External
         URL ${_cgc_url}
+        INSTALL_DIR ${CMAKE_BINARY_DIR}/install
         CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+                   ${_cgc_add_args}
     )
 endfunction()

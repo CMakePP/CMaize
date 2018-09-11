@@ -1,10 +1,10 @@
 include(GNUInstallDirs) #Creates variables for a typical GNU install
 include(cpp_options) #For _cpp_option
 include(cpp_toolchain) #For writing the toolchain file
-set(CPP_ROOT ${CMAKE_CURRENT_LIST_DIR})
+set(CPP_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 macro(CPPMain)
-    _cpp_debug_print("CPP Root is: ${CPP_ROOT}")
+    _cpp_debug_print("Using CPP: ${CPP_SRC_DIR}")
 
     #Options user may actually want to control
     cpp_option(CPP_DEBUG_MODE ON)
@@ -48,7 +48,7 @@ macro(CPPMain)
 
     #Write a toolchain file to forward if the user did not provide one
     if("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
-        cpp_write_toolchain_file()
+        _cpp_write_toolchain_file()
     endif()
 
 
