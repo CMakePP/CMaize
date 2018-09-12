@@ -1,8 +1,8 @@
-include(cpp_checks) #For _cpp_valid
+include(cpp_checks) #For _cpp_non_empty
 include(cpp_print) #For _cpp_debug_print
 
 function(cpp_option _cpo_opt _cpo_default)
-    _cpp_valid(_cpo_valid ${_cpo_opt})
+    _cpp_non_empty(_cpo_valid ${_cpo_opt})
     if(_cpo_valid)
         _cpp_debug_print("${_cpo_opt} set by user to: ${${_cpo_opt}}")
     else()

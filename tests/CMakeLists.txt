@@ -3,7 +3,10 @@ include(cpp_tests)
 
 file(COPY cpp_unit_test_helpers.cmake DESTINATION ${CMAKE_BINARY_DIR}/tests)
 
+cpp_cmake_unit_test(cpp_assert)
 cpp_cmake_unit_test(cpp_checks)
+cpp_cmake_unit_test(cpp_cmake_helpers)
+cpp_cmake_unit_test(cpp_main)
 cpp_cmake_unit_test(cpp_dependency)
 cpp_cmake_unit_test(cpp_options)
 cpp_cmake_unit_test(cpp_print)

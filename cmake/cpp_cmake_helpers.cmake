@@ -1,9 +1,28 @@
-include(cpp_checks) #For _cpp_assert_false
+include(cpp_assert) #For _cpp_assert_false
 include(cpp_print) #For _cpp_debug_print
 include(cpp_options) #For _cpp_option
 
+function(_cpp_write_top_list)
+    set(_cwtl_O_kwargs PATH NAME CONTENTS)
+    cmake_parse_arguments(_cwtl "" "${_cwtl_O_kwargs}" "" ${ARGN})
+    _cpp_assert_not_equal(_cwtl_PATH "")
+    _cpp_assert_not_equal(_cwtl_NAME "")
+    # I guess we don't rigrorously need contents
+
+    file(
+        WRITE ${_cwtl_PATH}/CMakeLists.txt
+"cmake_minimum_required(VERSION ${CMAKE_VERSION})
+project(${_cwtl_NAME} VERSION 0.0.0)
+include(CPPMain)
+CPPMain()
+${_cwtl_CONTENTS}
+"
+    )
+endfunction()
+
+
 function(_cpp_run_cmake_command)
-    set(_rcc_O_kwargs COMMAND OUTPUT)
+    set(_rcc_O_kwargs COMMAND OUTPUT BINARY_DIR RESULT)
     set(_rcc_M_kwargs INCLUDES CMAKE_ARGS)
     cmake_parse_arguments(_rcc "" "${_rcc_O_kwargs}" "${_rcc_M_kwargs}" ${ARGN})
 
@@ -20,7 +39,8 @@ function(_cpp_run_cmake_command)
 
     #Write to a random file
     string(RANDOM _rcc_prefix)
-    set(_rcc_file ${CMAKE_BINARY_DIR}/${_rcc_prefix}.cmake)
+    cpp_option(_rcc_BINARY_DIR ${CMAKE_BINARY_DIR})
+    set(_rcc_file ${_rcc_BINARY_DIR}/${_rcc_prefix}.cmake)
     file(WRITE ${_rcc_file} "${_rcc_contents}")
     execute_process(
         COMMAND ${CMAKE_COMMAND}
@@ -28,20 +48,10 @@ function(_cpp_run_cmake_command)
         -P ${_rcc_file}
         OUTPUT_VARIABLE _rcc_out
         ERROR_VARIABLE _rcc_out
+        RESULT_VARIABLE _rcc_var
     )
+    set(${_rcc_RESULT} ${_rcc_var} PARENT_SCOPE)
     set(${_rcc_OUTPUT} "${_rcc_out}" PARENT_SCOPE)
-endfunction()
-
-function(_cpp_write_top_list _wtl_file _wtl_name _wtl_contents)
-    file(
-        WRITE ${_wtl_file}
-"cmake_minimum_required(VERSION 3.6)
-project(${_wtl_name} VERSION 0.0.0)
-include(CPPMain)
-CPPMain()
-${_wtl_contents}
-"
-    )
 endfunction()
 
 function(_cpp_run_sub_build _crsb_dir)

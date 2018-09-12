@@ -1,37 +1,29 @@
 include(GNUInstallDirs) #Creates variables for a typical GNU install
-include(cpp_options) #For _cpp_option
+include(cpp_checks) #For _cpp_is_empty
+include(cpp_options) #For cpp_option
 include(cpp_toolchain) #For writing the toolchain file
 set(CPP_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 macro(CPPMain)
     _cpp_debug_print("Using CPP: ${CPP_SRC_DIR}")
 
-    #Options user may actually want to control
+    #Options for CPP
     cpp_option(CPP_DEBUG_MODE ON)
-    cpp_option(CPP_LOCAL_CACHE $ENV{HOME}/.cpp_cache)
+    cpp_option(CPP_INSTALL_CACHE $ENV{HOME}/.cpp_cache)
     cpp_option(CPP_FIND_RECIPES ${PROJECT_SOURCE_DIR}/cmake/find_external)
     cpp_option(CPP_BUILD_RECIPES ${PROJECT_SOURCE_DIR}/cmake/build_external)
+
+    #CMake options that should be considered in some regard
     cpp_option(CMAKE_BUILD_TYPE Debug)
     cpp_option(BUILD_SHARED_LIBS ON)
 
     #These are options that you shouldn't need to touch
     string(TOLOWER ${PROJECT_NAME} CPP_project_name)
     cpp_option(CPP_NAMESPACE ${CPP_project_name})
-    cpp_option(
-        CPP_LIBDIR
-        ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${CPP_NAMESPACE}
-    )
-    cpp_option(
-        CPP_BINDIR
-        ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/${CPP_NAMESPACE}
-    )
-    cpp_option(
-        CPP_INCDIR
-        ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/${CPP_NAMESPACE}
-    )
-    cpp_option(
-        CPP_SHAREDIR ${CMAKE_INSTALL_PREFIX}/share/cmake/${CPP_NAMESPACE}
-    )
+    cpp_option(CPP_LIBDIR ${CMAKE_INSTALL_LIBDIR}/${CPP_NAMESPACE})
+    cpp_option(CPP_BINDIR ${CMAKE_INSTALL_BINDIR}/${CPP_NAMESPACE})
+    cpp_option(CPP_INCDIR ${CMAKE_INSTALL_INCLUDEDIR}/${CPP_NAMESPACE})
+    cpp_option(CPP_SHAREDIR share/cmake/${CPP_NAMESPACE})
 
     #We require all targets to use RPATHs (but only if they aren't system libs)
     set(CMAKE_SKIP_BUILD_RPATH  FALSE)
@@ -47,7 +39,8 @@ macro(CPPMain)
     endif()
 
     #Write a toolchain file to forward if the user did not provide one
-    if("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
+    _cpp_is_empty(_cm_tool CMAKE_TOOLCHAIN_FILE)
+    if(_cm_tool)
         _cpp_write_toolchain_file()
     endif()
 

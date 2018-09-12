@@ -1,5 +1,7 @@
-APIs for Functions in cpp_toolchain Module
-==========================================
+.. _cpp_toolchain-label:
+
+cpp_toolchain Module
+====================
 
 The ``cpp_toolchain`` module contains functions related to writing and
 manipulating the toolchain file
@@ -7,8 +9,7 @@ manipulating the toolchain file
 
 .. function:: _cpp_write_toolchain_file([DESTINATION <destination>])
 
-    This function will create a file *toolchain.cmake* that is suitable for
-     use
+    This function will create a file *toolchain.cmake* that is suitable for use
     as a CMake toolchain file.  The contents of the file are populated by
     reading standard CMake variables.
 
@@ -19,11 +20,8 @@ manipulating the toolchain file
 
     * CMAKE_BINARY_DIR (Only used if destination is not specified)
     * CMAKE_C_COMPILER
-    * CMAKE_C_COMPILER_ID
     * CMAKE_CXX_COMPILER
-    * CMAKE_CXX_COMPILER_ID
     * CMAKE_Fortran_COMPILER
-    * CMAKE_Fortran_COMPILER_ID
     * CMAKE_SYSTEM_NAME
     * CMAKE_MODULE_PATH
     * BUILD_SHARED_LIBS
