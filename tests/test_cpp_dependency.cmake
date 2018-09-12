@@ -53,7 +53,6 @@ file(WRITE ${build_recipe}
 cpp_github_cmake(
     CPP
     https://github.com/ryanmrichard/CMakePackagingProject
-    TOKEN 1d2e949031a2d3a61b0f288051eed64980c5590c
 )
 ")
 
