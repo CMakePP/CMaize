@@ -3,7 +3,8 @@ include(cpp_toolchain)
 include(cpp_unit_test_helpers.cmake)
 
 #We're testing our ability to generate it so unset the variable now that we
-#loaded it (need CMAKE_MODULE_PATH from it)
+#loaded it (we need CMAKE_MODULE_PATH from it otherwise we'd just not include
+#it)
 set(CMAKE_TOOLCHAIN_FILE)
 
 _cpp_setup_build_env("cpp_toolchain")
@@ -14,7 +15,8 @@ set(CMAKE_MODULE_PATH "")
 set(BUILD_SHARED_LIBS FALSE)
 set(CPP_LOCAL_CACHE /a/path)
 set(common_contents
-"set(CMAKE_SYSTEM_NAME \"System\")
+"include(CMakeForceCompiler)
+set(CMAKE_SYSTEM_NAME \"System\")
 set(BUILD_SHARED_LIBS \"FALSE\")
 set(CPP_LOCAL_CACHE \"/a/path\")
 "
@@ -50,3 +52,26 @@ _cpp_assert_str_equal("${common_contents}" "${test2_file}")
 ################################################################################
 # Test3: Detects compilers
 ################################################################################
+
+#We trust CMake to be able to handle other compilers than GNU
+set(CMAKE_C_COMPILER "/path/to/gcc")
+set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER "/path/to/g++")
+set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_Fortran_COMPILER "/path/to/gfortran")
+set(CMAKE_Fortran_COMPILER_ID "GNU")
+
+_cpp_make_random_dir(test3_prefix ${test_prefix})
+_cpp_write_toolchain_file(DESTINATION ${test3_prefix})
+set(test3_corr
+"include(CMakeForceCompiler)
+CMAKE_FORCE_C_COMPILER(\"/path/to/gcc\" \"GNU\")
+CMAKE_FORCE_CXX_COMPILER(\"/path/to/g++\" \"GNU\")
+CMAKE_FORCE_Fortran_COMPILER(\"/path/to/gfortran\" \"GNU\")
+set(CMAKE_SYSTEM_NAME \"System\")
+set(BUILD_SHARED_LIBS \"FALSE\")
+set(CPP_LOCAL_CACHE \"/a/path\")
+"
+)
+file(READ ${test3_prefix}/toolchain.cmake test3_file)
+_cpp_assert_str_equal("${test3_file}" "${test3_corr}")

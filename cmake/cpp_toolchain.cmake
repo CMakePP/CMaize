@@ -7,15 +7,15 @@ function(_cpp_write_toolchain_file)
     cpp_option(_cwtf_DESTINATION "${CMAKE_BINARY_DIR}")
 
     set(_cwtf_file ${_cwtf_DESTINATION}/toolchain.cmake)
-    set(_cwtf_contents "include(CMakeForceCompiler)")
+    set(_cwtf_contents "include(CMakeForceCompiler)\n")
 
-    #Use the Force compiler to avoid CMake checking the compiler a billion times
+    #Use force compiler variant to avoid CMake checking it a billion times
     foreach(_cwtf_l C CXX Fortran)
         #In order to get under 80 characters we define a couple variables
         #Will be <Lang>_COMPILER
         set(_cwtf_comp ${_cwtf_l}_COMPILER)
         #Will be CMAKE_<Lang>_COMPILER
-        set(_cwtf_cmake CMAKE_${__cwtf_comp})
+        set(_cwtf_cmake CMAKE_${_cwtf_comp})
         #Will be CMAKE_FORCE_<Lang>_COMPILER
         set(_cwtf_cmd CMAKE_FORCE_${_cwtf_comp})
         #Will be CMAKE_<Lang>_COMPILER_ID
@@ -25,12 +25,11 @@ function(_cpp_write_toolchain_file)
         _cpp_valid(_cwtf_is_set ${_cwtf_cmake})
         if(${_cwtf_is_set})
             list(
-                APPEND ${_cwtf_contents}
-               "${_cwtf_cmd}(${${_cwtf_cmake}} ${${_cwtf_ID}}"
+                APPEND _cwtf_contents
+               "${_cwtf_cmd}(\"${${_cwtf_cmake}}\" \"${${_cwtf_id}}\")\n"
             )
         endif()
     endforeach()
-
 
     set(_cwtf_vars
         CMAKE_SYSTEM_NAME #Linux, Darwin, etc.
@@ -39,7 +38,6 @@ function(_cpp_write_toolchain_file)
         CPP_LOCAL_CACHE #Where dependencies will be installed
     )
 
-    set(_cwtf_contents "")
     foreach(_cwtf_var ${_cwtf_vars})
         if("${${_cwtf_var}}" STREQUAL "")
             #Intentionally empty
