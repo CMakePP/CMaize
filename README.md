@@ -1,6 +1,8 @@
 CMakePackagingProject
 =====================
 
+[![Documentation Status](https://readthedocs.org/projects/cmakepackagingproject/badge/?version=latest)](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest)
+
 Welcome to the CMakePackagingProject (CPP) repository.
 
 CMake represents a powerful scripting language for automating the configuring, 
