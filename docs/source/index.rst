@@ -12,4 +12,9 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   APIs/index.rst
+   about/index.rst
+   quick_start/index.rst
+   end_user/index.rst
+   user/index.rst
+   developer/index.rst
+   apis/index.rst

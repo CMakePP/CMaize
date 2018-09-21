@@ -18,3 +18,20 @@ The ``cpp_print`` module provides functions for printing/logging messages.
    CMake variables used:
 
    * CPP_DEBUG_MODE
+
+.. function:: _cpp_print_target(<name>)
+
+   This function prints out the properties associated with a target.  Note that
+   this target must be non-interface.  For printing interface targets see
+   `_cpp_print_target`.
+
+   :param name: The name of the target we want to print.
+
+.. function:: _cpp_print_interface(<name>)
+
+   This function is the same as `_cpp_print_target` except it knows to only try
+   to print properties that are whitelisted for an interface target.
+   Unfortunately, I can not figure out any way to know *a priori* if a target is
+   an interface target so we have to have separate functions.
+
+   :param name: The name of the interface target to print the properties of.

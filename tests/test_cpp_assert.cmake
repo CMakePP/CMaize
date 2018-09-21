@@ -9,6 +9,10 @@ _cpp_setup_build_env(cpp_assert)
 # Tests of _cpp_assert_true/_cpp_assert_false
 ################################################################################
 
+#Both do nothing if passed no arguments
+_cpp_assert_true()
+_cpp_assert_false()
+
 foreach(truthy_var TRUE ON 1 YES Y)
     _cpp_assert_true(truthy_var)
 
@@ -31,6 +35,37 @@ foreach(falsy_var FALSE 0 OFF NO N IGNORE NOTFOUND ALIBRARY-NOTFOUND)
         COMMAND "set(falsy_var ${falsy_var})\n_cpp_assert_true(falsy_var)"
         RESULT the_result
         BINARY_DIR ${test_prefix}/false_${falsy_var}
+        INCLUDES cpp_assert
+    )
+    _cpp_assert_true(the_result)
+endforeach()
+
+#Testing multiple truths
+set(is_true TRUE)
+set(is_false FALSE)
+
+_cpp_assert_true(is_true is_true)
+_cpp_assert_false(is_false is_false)
+
+foreach(bool_val true false)
+    _cpp_run_cmake_command(
+        COMMAND
+        "set(is_true TRUE)
+        set(is_false FALSE)
+        _cpp_assert_${bool_val}(is_false is_true)"
+         RESULT the_result
+        BINARY_DIR ${test_prefix}/${bool_val}_false_true
+        INCLUDES cpp_assert
+    )
+    _cpp_assert_true(the_result)
+
+    _cpp_run_cmake_command(
+        COMMAND
+        "set(is_true TRUE)
+        set(is_false FALSE)
+        _cpp_assert_${bool_var}(is_true is_false)"
+        RESULT the_result
+        BINARY_DIR ${test_prefix}/${bool_val}_true_false
         INCLUDES cpp_assert
     )
     _cpp_assert_true(the_result)
@@ -124,5 +159,31 @@ _cpp_run_cmake_command(
     RESULT the_result
     BINARY_DIR ${test_prefix}/dne
     INCLUDES cpp_assert
+)
+_cpp_assert_true(the_result)
+
+################################################################################
+# Test _cpp_assert_contains/_cpp_assert_does_not_contain
+################################################################################
+
+_cpp_assert_contains("substring" "the substring is here")
+
+_cpp_run_cmake_command(
+        COMMAND
+        "_cpp_assert_contains(\"not present\" \"the substring is not here\")"
+        RESULT the_result
+        BINARY_DIR ${test_prefix}/contains
+        INCLUDES cpp_assert
+)
+_cpp_assert_true(the_result)
+
+
+_cpp_assert_does_not_contain("not present" "the substring is not here")
+_cpp_run_cmake_command(
+        COMMAND
+        "_cpp_assert_does_not_contain(\"substring\" \"the substring is here\")"
+        RESULT the_result
+        BINARY_DIR ${test_prefix}/does_not_contain
+        INCLUDES cpp_assert
 )
 _cpp_assert_true(the_result)

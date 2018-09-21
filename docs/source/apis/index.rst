@@ -1,6 +1,10 @@
-####
+.. _apis-label:
+
 APIs
 ####
+
+Contents:
+---------
 
 .. toctree::
    :maxdepth: 2
@@ -11,6 +15,7 @@ APIs
    cpp_print
    cpp_options
    cpp_main
+   cpp_targets
    cpp_toolchain
 
 While reading through the APIs note that we use a few terms with very precise

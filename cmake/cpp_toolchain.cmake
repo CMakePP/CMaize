@@ -13,10 +13,14 @@ function(_cpp_write_toolchain_file)
         CMAKE_C_COMPILER
         CMAKE_CXX_COMPILER
         CMAKE_Fortran_COMPILER
-        CMAKE_SYSTEM_NAME #Linux, Darwin, etc.
-        CMAKE_MODULE_PATH #Where to look for modules
-        BUILD_SHARED_LIBS #Should we build shared libraries?
-        CPP_LOCAL_CACHE #Where dependencies will be installed
+        CMAKE_SYSTEM_NAME
+        CMAKE_MODULE_PATH
+        BUILD_SHARED_LIBS
+        CMAKE_SHARED_LIBRARY_PREFIX
+        CMAKE_SHARED_LIBRARY_SUFFIX
+        CMAKE_STATIC_LIBRARY_PREFIX
+        CMAKE_STATIC_LIBRARY_SUFFIX
+        CPP_LOCAL_CACHE
     )
 
     foreach(_cwtf_var ${_cwtf_vars})

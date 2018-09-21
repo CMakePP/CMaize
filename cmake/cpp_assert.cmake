@@ -1,20 +1,24 @@
-function(_cpp_assert_true _cat_variable)
-    if(${_cat_variable})
-    else()
-        message(
-            FATAL_ERROR
-            "${_cat_variable} is set to false value: ${${_cat_variable}}"
-        )
-    endif()
+function(_cpp_assert_true)
+    foreach(_cat_variable ${ARGN})
+        if(${_cat_variable})
+        else()
+            message(
+                FATAL_ERROR
+                "${_cat_variable} is set to false value: ${${_cat_variable}}"
+            )
+        endif()
+    endforeach()
 endfunction()
 
-function(_cpp_assert_false _caf_variable)
-    if(${_caf_variable})
-        message(
-            FATAL_ERROR
-            "${_caf_variable} is set true value: ${${_caf_variable}}"
-        )
-    endif()
+function(_cpp_assert_false)
+    foreach(_caf_variable ${ARGN})
+        if(${_caf_variable})
+            message(
+                FATAL_ERROR
+                "${_caf_variable} is set true value: ${${_caf_variable}}"
+            )
+        endif()
+    endforeach()
 endfunction()
 
 function(_cpp_assert_equal _cae_lhs _cae_rhs)
@@ -54,4 +58,14 @@ function(_cpp_assert_does_not_exist _cadne_path)
             "File or directory exists: ${_cadne_path}"
         )
     endif()
+endfunction()
+
+function(_cpp_assert_contains _cac_substring _cac_string)
+    string(FIND "${_cac_string}" "${_cac_substring}" _cac_result)
+    _cpp_assert_not_equal("${_cac_result}" "-1")
+endfunction()
+
+function(_cpp_assert_does_not_contain _cadnc_substring _cadnc_string)
+    string(FIND "${_cadnc_string}" "${_cadnc_substring}" _cadnc_result)
+    _cpp_assert_equal("${_cadnc_result}" "-1")
 endfunction()

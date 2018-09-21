@@ -5,77 +5,133 @@ include(cpp_print) #For debug printing
 include(cpp_checks)
 
 function(cpp_add_library _cal_name)
-    _cpp_assert_cpp_main_called()
-
-    #Setup the target
-    set(_cal_T_KWARGS NO_INSTALL)
+    set(_cal_T_KWARGS STATIC)
+    set(_cal_O_KWARGS CXX_STANDARD INCLUDE_DIR)
     set(_cal_M_KWARGS SOURCES INCLUDES DEPENDS)
     cmake_parse_arguments(
-            _cal
-            "${_cal_T_KWARGS}"
-            "${_cal_O_KWARGS}"
-            "${_cal_M_KWARGS}"
-            ${ARGN}
+        _cal
+        "${_cal_T_KWARGS}"
+        "${_cal_O_KWARGS}"
+        "${_cal_M_KWARGS}"
+        ${ARGN}
     )
-    add_library(${_cal_name} ${_cal_SOURCES})
-    target_include_directories(
-            ${_cal_name} PUBLIC
-            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-            $<INSTALL_INTERFACE:include>
+
+    _cpp_non_empty(_cal_has_src _cal_SOURCES)
+    _cpp_non_empty(_cal_has_incs _cal_INCLUDES)
+    _cpp_non_empty(_cal_has_deps _cal_DEPENDS)
+    cpp_option(_cal_CXX_STANDARD 17)
+    cpp_option(_cal_INCLUDE_DIR ${PROJECT_SOURCE_DIR})
+    if(_cal_STATIC)
+        if(_cal_has_src)
+            #Static library has to have sources
+            add_library(${_cal_name} STATIC ${_cal_SOURCES})
+        else()
+            message(FATAL_ERROR "Static libraries need source files...")
+        endif()
+    else()
+        if(_cal_has_src) #Non-interface library
+            add_library(${_cal_name} ${_cal_SOURCES})
+            if(_cal_has_incs)
+                set_target_properties(
+                        ${_cal_name}
+                        PROPERTIES PUBLIC_HEADER
+                        "${_cal_INCLUDES}"
+                )
+                target_include_directories(
+                        ${_cal_name}
+                        PUBLIC
+                        $<BUILD_INTERFACE:${_cal_INCLUDE_DIR}>
+                        $<INSTALL_INTERFACE:include>
+                )
+            endif()
+            target_compile_features(
+                ${_cal_name} PUBLIC "cxx_std_${_cal_CXX_STANDARD}"
+            )
+            if(_cal_has_deps)
+                target_link_libraries(${_cal_name} ${_cal_DEPENDS})
+            endif()
+        else() #interface library
+            add_library(${_cal_name} INTERFACE)
+            target_include_directories(
+                    ${_cal_name}
+                    INTERFACE
+                    $<BUILD_INTERFACE:${_cal_INCLUDE_DIR}>
+                    $<INSTALL_INTERFACE:include>
+            )
+            target_compile_features(
+                    ${_cal_name} INTERFACE "cxx_std_${_cal_CXX_STANDARD}"
+            )
+            if(_cal_has_deps)
+                target_link_libraries(${_cal_name} INTERFACE ${_cal_DEPENDS})
+            endif()
+        endif()
+    endif()
+endfunction()
+
+
+function(cpp_install)
+    set(_ci_T_KWARGS)
+    set(_ci_O_KWARGS)
+    set(_ci_M_KWARGS TARGETS)
+    cmake_parse_arguments(
+            _ci "${_ci_T_KWARGS}" "${_ci_O_KWARGS}" "${_ci_M_KWARGS}" ${ARGN}
     )
-    target_compile_features(${_cal_name} PUBLIC cxx_std_17)
-    if(NOT "${_cal_INCLUDES}" STREQUAL "")
-        set_target_properties(
-                ${_cal_name}
-                PROPERTIES PUBLIC_HEADER
-                "${_cal_INCLUDES}"
+
+    #Skim the dependencies off each target
+    foreach(_ci_target ${_ci_TARGETS})
+        get_property(
+                _ci_depends
+                TARGET ${_ci_target}
+                PROPERTY INTERFACE_LINK_LIBRARIES
         )
-    endif()
-
-    if(NOT "${_cal_DEPENDS}" STREQUAL "")
-        target_link_libraries(${_cal_name} ${_cal_DEPENDS})
-    endif()
-
-    if(_cal_NO_INSTALL)
-        return()
-    endif()
-
-    #Now set up the installation for the target
+        foreach(_ci_dependi ${_ci_depends})
+            if(TARGET ${_ci_dependi})
+                set(_ci_is_good TRUE)
+                #Make sure it's not one of the targets
+                foreach(_ci_dependj ${_ci_TARGETS})
+                    if("${_ci_dependi}" STREQUAL "${_ci_dependj}")
+                        set(_ci_is_good FALSE)
+                        break()
+                    endif()
+                endforeach()
+                if(_ci_is_good)
+                    list(APPEND _ci_DEPENDS ${_ci_dependi})
+                endif()
+            else()
+                message(FATAL_ERROR "${_ci_dependi} is not a target")
+            endif()
+        endforeach()
+    endforeach()
 
     # Directory where the generated files will be stored.
-    set(_cal_generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+    set(_ci_generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+    # Path to the version file
     set(
-        _cal_version_file
-        "${_cal_generated_dir}/${CPP_project_name}-config-version.cmake"
+        _ci_version_file
+        "${_ci_generated_dir}/${CPP_project_name}-config-version.cmake"
     )
+        # Path to the config file
     set(
-        _cal_config_file
-        "${_cal_generated_dir}/${CPP_project_name}-config.cmake"
+        _ci_config_file "${_ci_generated_dir}/${CPP_project_name}-config.cmake"
     )
-    set(_cal_targets_file "${CPP_project_name}-targets")
-    set(_cal_namespace "${CPP_project_name}::")
+    set(_ci_exports ${CPP_project_name}-targets)
+    set(_ci_namespace "${CPP_project_name}::")
 
-    # Allows us to call the next two functions
-    include(CMakePackageConfigHelpers)
+    include(CMakePackageConfigHelpers)# For the next two functions
 
-    # Configure '<PROJECT-NAME>ConfigVersion.cmake'
-    # Use:
-    #   * PROJECT_VERSION
     write_basic_package_version_file(
-            ${_cal_version_file} COMPATIBILITY SameMajorVersion
+            ${_ci_version_file} COMPATIBILITY SameMajorVersion
     )
 
-    #   * PROJECT_NAME
     configure_package_config_file(
         "${CPP_SRC_DIR}/Config.cmake.in"
-        "${_cal_config_file}"
+        "${_ci_config_file}"
         INSTALL_DESTINATION "${CPP_SHAREDIR}"
     )
 
-    # Install targets
     install(
-            TARGETS ${_cal_name}
-            EXPORT "${_cal_targets_file}"
+            TARGETS ${_ci_TARGETS}
+            EXPORT ${_ci_exports}
             LIBRARY DESTINATION "${CPP_LIBDIR}"
             ARCHIVE DESTINATION "${CPP_LIBDIR}"
             RUNTIME DESTINATION "${CPP_BINDIR}"
@@ -84,12 +140,12 @@ function(cpp_add_library _cal_name)
 
     # Signal the need to install the config files we just made
     install(
-            FILES "${_cal_config_file}" "${_cal_version_file}"
+            FILES "${_ci_config_file}" "${_ci_version_file}"
             DESTINATION "${CPP_SHAREDIR}"
     )
     install(
-            EXPORT "${_cal_targets_file}"
-            NAMESPACE "${_cal_namespace}"
+            EXPORT ${_ci_exports}
+            NAMESPACE "${_ci_namespace}"
             DESTINATION "${CPP_SHAREDIR}"
     )
 endfunction()
