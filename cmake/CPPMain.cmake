@@ -35,7 +35,7 @@ macro(CPPMain)
         _cm_is_system
     )
     if(${_cm_is_system} EQUAL -1)
-        SET(CMAKE_INSTALL_RPATH "${CPP_LIBDIR}/${PROJECT_NAME}")
+        SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CPP_LIBDIR}")
     endif()
 
     #Write a toolchain file to forward if the user did not provide one

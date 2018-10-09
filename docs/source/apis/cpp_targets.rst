@@ -67,22 +67,27 @@ targets.  This includes setting them up and installing them.
    other CMake projects (regardless of whether they use CPP or not).  To that
    end this function does the following:
 
-   1. Writes the ``config-version.cmake`` file
+   1. Determine the dependencies of each target
+
+      * These will be passed to ``find_package`` in the config file
+      * Need to ensure they weren't targets built by this project.
+
+   2. Writes the ``config-version.cmake`` file
 
       * Used by ``find_package`` to make sure the located version is suitable
       * Assumes that requested X.Y is compatible with W.Z if X == W.
 
-   2. Writes the ``config.cmake`` file.
+   3. Writes the ``config.cmake`` file.
 
       * Used by ``find_package`` to initiate the location of your project
 
-   3. Writes the ``targets.cmake`` file
+   4. Writes the ``targets.cmake`` file
 
       * Used by to inform ``find_package`` of the various components of your
         project.
 
-   4. Inform CMake that it needs to install your components.
-   5. Inform CMake that it needs to install the config files
+   5. Inform CMake that it needs to install your components.
+   6. Inform CMake that it needs to install the config files
 
    :param tar: A list of targets to install.
 

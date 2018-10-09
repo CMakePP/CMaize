@@ -29,9 +29,8 @@ write_basic_package_version_file(
         ${cpp_version_file} COMPATIBILITY SameMajorVersion
 )
 
-
 #Install the submodules
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/cmake/"
         DESTINATION ${CPP_SHAREDIR})
 
 #Install the config files

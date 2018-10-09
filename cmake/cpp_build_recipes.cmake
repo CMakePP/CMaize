@@ -2,6 +2,7 @@ include(ExternalProject)
 include(cpp_options)
 include(cpp_checks)
 include(cpp_print)
+include(cpp_assert)
 
 function(cpp_local_cmake _clc_name _clc_dir)
     ExternalProject_Add(
@@ -15,7 +16,10 @@ function(cpp_local_cmake _clc_name _clc_dir)
 endfunction()
 
 function(_cpp_parse_gh_url _cpgu_return _cpgu_url)
+    #Strategy: find github.com, move cursor to organization, get rest
+
     string(FIND ${_cpgu_url} "github.com/" _cpgu_gh_location)
+    _cpp_assert_not_equal("${_cpgu_gh_location}" "-1")
     math(EXPR _cpgu_start "${_cpgu_gh_location} + 11")
     string(SUBSTRING ${_cpgu_url} ${_cpgu_start} -1 _cpgu_short_url)
     set(${_cpgu_return} ${_cpgu_short_url} PARENT_SCOPE)
@@ -37,7 +41,7 @@ function(cpp_github_cmake _cgc_name _cgc_url)
     set(_cgc_gh_api "https://api.github.com/repos")
 
     _cpp_option(_cgc_BRANCH master)
-    _cpp_valid(_cgc_token_set _cgc_TOKEN)
+    _cpp_non_empty(_cgc_token_set _cgc_TOKEN)
     set(_cgc_token)
     if(_cgc_token_set)
         set(_cgc_token "?access_token=${_cgc_TOKEN}")

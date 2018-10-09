@@ -208,7 +208,6 @@ _cpp_write_top_list(
 )
 
 set(test2_install ${test2_root}/install)
-set(CPP_DEBUG_MODE ON)
 _cpp_run_sub_build(
         ${test2_root}
         OUTPUT test2_output
@@ -247,3 +246,34 @@ _cpp_run_cmake_command(
 )
 _cpp_assert_true(test3_result)
 _cpp_assert_contains("liblibrary.a is not a target" "${test3_output}")
+
+# Two components
+set(test4_root ${test_root}/test4)
+_cpp_dummy_cxx_library(${test4_root}/lib1)
+_cpp_dummy_cxx_library(${test4_root}/lib2)
+_cpp_write_top_list(
+        PATH ${test4_root}
+        NAME dummy
+        CONTENTS
+        "include(cpp_targets)
+         cpp_add_library(
+            dummy1
+            INCLUDES ${test4_root}/lib1/a.hpp
+            SOURCES ${test4_root}/lib1/a.cpp
+         )
+         cpp_add_library(
+            dummy2
+            INCLUDES ${test4_root}/lib2/a.hpp
+            SOURCES  ${test4_root}/lib2/a.cpp
+         )
+         cpp_install(TARGETS dummy1 dummy2)"
+)
+set(test4_install ${test4_root}/install)
+_cpp_run_sub_build(
+        ${test4_root}
+        INSTALL_PREFIX ${test4_install}
+        OUTPUT test4_output
+        RESULT test4_result
+)
+file(READ ${test4_install}/share/cmake/dummy/dummy-targets.cmake test4_targets)
+_cpp_assert_contains("dummy::dummy1 dummy::dummy2" "${test4_targets}")
