@@ -1,110 +1,165 @@
 include(${CMAKE_TOOLCHAIN_FILE})
-include(cpp_dependency)
 include(cpp_cmake_helpers)
 include(cpp_unit_test_helpers.cmake)
+include(cpp_dependency)
+include(cpp_assert)
 
 _cpp_setup_build_env("cpp_dependency")
-
-#For constructing Cache paths we'll need the hash of the toolchain
 file(SHA1 ${CMAKE_TOOLCHAIN_FILE} toolchain_hash)
 
 ################################################################################
-#                Test1: Use a recipe to build a trivial dependency             #
+# Test _cpp_depend_install_path
 ################################################################################
-set(test1_prefix ${test_prefix}/test1)
 
-set(a_root ${test1_prefix}/external/a)
-_cpp_dummy_cmake_library(${a_root})
+_cpp_depend_install_path(test1_return dummy)
+_cpp_assert_equal(
+    "${test_prefix}/cpp_cache/dummy/${toolchain_hash}"
+    "${test1_return}"
+)
 
-#Make the build recipe
-file(MAKE_DIRECTORY ${test1_prefix}/cmake/build_external)
-set(build_recipe ${test1_prefix}/cmake/build_external/BuildA.cmake)
-file(WRITE ${build_recipe}
-"include(cpp_build_recipes)
-cpp_local_cmake(A ${a_root})
-")
+################################################################################
+# Test _cpp_build_dependency
+################################################################################
 
-#Make the list for the project that will build the external project
+set(test_root ${test_prefix}/build_depend)
+set(test1_root ${test_root}/test1)
+_cpp_dummy_cxx_package(${test1_root})
+_cpp_make_build_recipe(${test1_root} dummy)
 _cpp_write_top_list(
-    ${test1_prefix}/CMakeLists.txt
-    TEST1
-"include(cpp_dependency)
-_cpp_build_dependency(A)
-"
-)
-set(CPP_DEBUG_MODE ON)
-_cpp_run_sub_build(
-    ${test1_prefix}
-    NO_INSTALL
-)
-
-################################################################################
-#          TEST2: Use a recipe to build a GitHub repo                          #
-################################################################################
-#Note we pick the URL for this repo to test our installation procedure
-
-set(test2_prefix ${test_prefix}/test2)
-
-#Make the build recipe
-file(MAKE_DIRECTORY ${test2_prefix}/cmake/build_external)
-set(build_recipe ${test2_prefix}/cmake/build_external/BuildCPP.cmake)
-file(WRITE ${build_recipe}
-     "include(cpp_build_recipes)
-cpp_github_cmake(
-    CPP
-    https://github.com/ryanmrichard/CMakePackagingProject
-)
-")
-
-#Make the list for the project that will build the external project
-_cpp_write_top_list(
-    ${test2_prefix}/CMakeLists.txt
-    TEST2
-"include(cpp_dependency)
-_cpp_build_dependency(CPP)
-"
-)
-
-_cpp_run_sub_build(
-    ${test2_prefix}
-    NO_INSTALL
-)
-
-################################################################################
-#                     TEST3: Find the library from TEST1                       #
-################################################################################
-
-set(test3_prefix ${test_prefix}/test3)
-_cpp_write_top_list(
-    ${test3_prefix}/CMakeLists.txt
-    TEST1 #Dependencies are tied to the project that built them
-"include(cpp_dependency)
-include(cpp_checks)
-cpp_find_dependency(A_was_found A)
-_cpp_assert_true(A_was_found)
-"
-)
-
-_cpp_run_sub_build(
-        ${test3_prefix}
-        NO_INSTALL
-)
-
-################################################################################
-#                   TEST4: Find the library from TEST2                         #
-################################################################################
-set(test4_prefix ${test_prefix}/test4)
-_cpp_write_top_list(
-        ${test4_prefix}/CMakeLists.txt
-        TEST4
+        PATH ${test1_root}
+        NAME build_depend_test
+        CONTENTS
         "include(cpp_dependency)
-include(cpp_checks)
-cpp_find_dependency(CPP_was_found CPP)
-_cpp_assert_true(CPP_was_found)
-"
+        _cpp_build_dependency(dummy)"
+)
+_cpp_run_sub_build(
+        ${test1_root}
+        NO_INSTALL
+        OUTPUT test1_output
+)
+
+set(cache_root ${test_prefix}/cpp_cache/dummy/${toolchain_hash})
+_cpp_assert_exists(${cache_root}/include/dummy/a.hpp)
+foreach(cmake_file dummy-config dummy-config-version dummy-targets)
+        _cpp_assert_exists(${cache_root}/share/cmake/dummy/${cmake_file}.cmake)
+endforeach()
+
+#Fails when recipe is not found
+set(test2_root ${test_root}/test2)
+_cpp_write_top_list(
+        PATH ${test2_root}
+        NAME build_depend_test
+        CONTENTS
+        "include(cpp_dependency)
+        _cpp_build_dependency(dummy)"
+)
+_cpp_run_cmake_command(
+    COMMAND
+    "_cpp_run_sub_build(
+        ${test2_root}
+        NO_INSTALL
+        OUTPUT test2_output
+    )
+    "
+    INCLUDES cpp_cmake_helpers
+    OUTPUT test2_output
+    RESULT test2_result
+    CMAKE_ARGS CPP_DEBUG_MODE=ON
+)
+_cpp_assert_true(test2_result)
+_cpp_assert_contains("_cbd_dummy_recipe-NOTFOUND" "${test2_output}")
+
+################################################################################
+# cpp_find_dependency
+################################################################################
+
+#Build and install dummy to a specific spot
+set(test_root ${test_prefix}/find_depend)
+set(test1_root ${test_root}/test1)
+_cpp_install_dummy_cxx_package(${test1_root})
+
+#Test we can find the user-specified version
+_cpp_write_top_list(
+        PATH ${test1_root}
+        NAME find_dummy
+        CONTENTS "include(cpp_dependency)
+        set(CPP_dummy_ROOT ${test1_root}/install)
+        cpp_find_dependency(test1_found dummy)
+        "
 )
 
 _cpp_run_sub_build(
-        ${test4_prefix}
+        ${test1_root}
         NO_INSTALL
+        OUTPUT test1_output
+        CMAKE_ARGS CPP_DEBUG_MODE=ON
 )
+set(test1_path ${test1_root}/install/share/cmake/dummy/dummy-config.cmake)
+_cpp_assert_contains("Found config file: ${test1_path}" "${test1_output}")
+
+#Test we can find cached version from the building test
+set(test2_root ${test_root}/test2)
+_cpp_write_top_list(
+        PATH ${test2_root}
+        NAME find_dummy
+        CONTENTS "include(cpp_dependency)
+        cpp_find_dependency(test2_found dummy)
+        "
+)
+
+_cpp_run_sub_build(
+        ${test2_root}
+        NO_INSTALL
+        OUTPUT test2_output
+        CMAKE_ARGS CPP_DEBUG_MODE=ON
+)
+
+set(
+    test2_path
+    ${test_prefix}/cpp_cache/dummy/${toolchain_hash}/share/cmake/dummy
+)
+_cpp_assert_contains(
+        "Found config file: ${test2_path}/dummy-config.cmake"
+        "${test2_output}"
+)
+
+#Test library DNE
+set(test3_root ${test_root}/test3)
+_cpp_write_top_list(
+        PATH ${test3_root}
+        NAME find_dne_depend
+        CONTENTS "include(cpp_dependency)
+        cpp_find_dependency(test3_found dummy2)
+        message(\"Dummy2 status: \${test3_found}\")
+        "
+)
+
+_cpp_run_sub_build(
+    ${test3_root}
+    NO_INSTALL
+    OUTPUT test3_output
+)
+
+_cpp_assert_contains("Dummy2 status: FALSE" "${test3_output}")
+
+################################################################################
+# Test cpp_find_or_build_dependency
+################################################################################
+set(test_root ${test_prefix}/find_build_depend)
+set(test1_root ${test_root}/test1)
+_cpp_dummy_cxx_package(${test1_root} NAME dummy2)
+_cpp_make_build_recipe(${test1_root} dummy2)
+
+_cpp_write_top_list(
+    PATH ${test1_root}
+    NAME find_or_build_dummy
+    CONTENTS "include(cpp_dependency)
+    cpp_find_or_build_dependency(dummy2)"
+)
+
+_cpp_run_sub_build(
+    ${test1_root}
+    NO_INSTALL
+    OUTPUT test1_output
+)
+message("${test1_output}")

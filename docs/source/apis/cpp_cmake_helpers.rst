@@ -45,7 +45,9 @@ command in a nested capacity.
    script mode.  Unlike ``_cpp_run_sub_build`` the caller of the function is not
    required to have created a CMake script ahead of time, nor will this call
    make things like a CMake cache.  On the other hand, CMake functions are
-   restricted to those available in scripting mode.
+   restricted to those available in scripting mode.  The other big difference
+   between this and ``_cpp_run_sub_build`` is that the CMake command run is
+   allowed to fail.
 
   :param cmd: The actual command to be run.
   :param out: Specifies the identifier that should hold all printing output.

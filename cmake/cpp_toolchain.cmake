@@ -20,7 +20,7 @@ function(_cpp_write_toolchain_file)
         CMAKE_SHARED_LIBRARY_SUFFIX
         CMAKE_STATIC_LIBRARY_PREFIX
         CMAKE_STATIC_LIBRARY_SUFFIX
-        CPP_LOCAL_CACHE
+        CPP_INSTALL_CACHE
     )
 
     foreach(_cwtf_var ${_cwtf_vars})

@@ -7,7 +7,7 @@ foreach(_@CPP_project_name@_depend @_ci_DEPENDS@ )
 endforeach()
 
 
-include("${CMAKE_CURRENT_LIST_DIR}/@_ci_targets_file@.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/@_ci_exports@.cmake")
 
 #The following line conveys to find_package which components have been found
 check_required_components("@CPP_project_name@")

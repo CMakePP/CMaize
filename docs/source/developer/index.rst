@@ -12,5 +12,6 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   conventions
    unit_testing
    additional_resources

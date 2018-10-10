@@ -10,11 +10,12 @@ Contents:
    :maxdepth: 2
 
    cpp_assert
+   cpp_build_recipes
    cpp_checks
    cpp_cmake_helpers
-   cpp_print
-   cpp_options
    cpp_main
+   cpp_options
+   cpp_print
    cpp_targets
    cpp_toolchain
 

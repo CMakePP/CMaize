@@ -12,20 +12,8 @@ _cpp_setup_build_env("cpp_build_recipes")
 #Set-up a little dummy library
 set(test_root ${test_prefix}/local_cmake)
 set(test1_root ${test_root}/test1)
-_cpp_dummy_cxx_library(${test1_root}/external)
-_cpp_write_top_list(
-    PATH ${test1_root}/external
-    NAME test1_external
-    CONTENTS
-    "include(cpp_targets)
-     cpp_add_library(
-         dummy
-         SOURCES ${test1_root}/external/a.cpp
-         INCLUDES ${test1_root}/external/a.hpp
-     )
-     cpp_install(TARGETS dummy)
-    "
-)
+_cpp_dummy_cxx_package(${test1_root}/external)
+
 _cpp_write_top_list(
     PATH ${test1_root}
     NAME test1
@@ -40,11 +28,11 @@ _cpp_run_sub_build(
         INSTALL_PREFIX ${test1_root}/install
         OUTPUT test1_output
 )
-set(TEST1_SHARE ${test1_root}/install/share/cmake/test1_external)
-_cpp_assert_exists(${TEST1_SHARE}/test1_external-config.cmake)
-_cpp_assert_exists(${TEST1_SHARE}/test1_external-config-version.cmake)
-_cpp_assert_exists(${TEST1_SHARE}/test1_external-targets.cmake)
-_cpp_assert_exists(${test1_root}/install/include/test1_external/a.hpp)
+set(TEST1_SHARE ${test1_root}/install/share/cmake/dummy)
+_cpp_assert_exists(${TEST1_SHARE}/dummy-config.cmake)
+_cpp_assert_exists(${TEST1_SHARE}/dummy-config-version.cmake)
+_cpp_assert_exists(${TEST1_SHARE}/dummy-targets.cmake)
+_cpp_assert_exists(${test1_root}/install/include/dummy/a.hpp)
 
 ################################################################################
 # Test _cpp_parse_gh_url
@@ -121,5 +109,10 @@ _cpp_run_sub_build(
         CMAKE_ARGS -DBUILD_TESTS=off
 )
 set(test1_share ${test_root}/test1/install/share/cmake/cpp)
-_cpp_assert_exists(${test1_share}/cpp-config.cmake)
-_cpp_assert_exists(${test1_share}/cpp-config-version.cmake)
+foreach(mod cpp-config cpp-config-version CPPMain cpp_assert cpp_build_recipes
+    cpp_checks  cpp_cmake_helpers cpp_dependency cpp_options cpp_print
+    cpp_targets cpp_tests cpp_toolchain
+)
+    _cpp_assert_exists(${test1_share}/${mod}.cmake)
+endforeach()
+_cpp_assert_exists(${test1_share}/Config.cmake.in)
