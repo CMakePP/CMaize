@@ -34,26 +34,7 @@ endfunction()
 
 function(_cpp_build_dependency _cbd_name)
 
-    cpp_option(_cbd_${_cbd_name}_BUILD_RECIPE_PREFIX ${CPP_BUILD_RECIPES})
 
-    _cpp_debug_print(
-       "Searching for ${_cbd_name} build recipe in
-       ${_cbd_${_cbd_name}_BUILD_RECIPE_PREFIX}"
-    )
-    find_file(
-        _cbd_${_cbd_name}_recipe
-        NAMES Build${_cbd_name}.cmake build-${_cbd_name}.cmake
-        PATHS ${_cbd_${_cbd_name}_BUILD_RECIPE_PREFIX}
-        NO_DEFAULT_PATH
-    )
-    _cpp_assert_not_equal(
-       "${_cbd_${_cbd_name}_recipe}"
-       "_cbd_${_cbd_name}_recipe-NOTFOUND"
-
-    )
-    _cpp_debug_print(
-        "Building ${_cbd_name} with recipe: ${_cbd_${_cbd_name}_recipe}"
-    )
     set(
         _cbd_${_cbd_name}_root
         ${CMAKE_BINARY_DIR}/external/${_cbd_name}
@@ -75,18 +56,27 @@ endfunction()
 
 
 
-function(cpp_find_dependency _cfd_found _cfd_name)
+function(_cpp_find_dependency _cfd_found _cfd_name)
     set(${_cfd_found} TRUE PARENT_SCOPE)
 
+    set(_cfd_O_KWARGS VERSION)
+    set(_cfd_M_KWARGS COMPONENTS CMAKE_ARGS)
+    cmake_parse_arguments(
+       _cfd
+       ""
+       "${_cfd_O_KWARGS}"
+       "${_cfd_M_KWARGS}"
+    )
+
     #Did the user set CPP_XXX_ROOT?  If so try to find package
-    _cpp_non_empty(_cfd_${_cfd_name}_root_set CPP_${_cfd_name}_ROOT)
+    _cpp_non_empty(_cfd_${_cfd_name}_root_set ${_cfd_name}_ROOT)
     if(_cfd_${_cfd_name}_root_set)
         #Try using ${${PackageName}_DIR}} to find a config file
         find_package(
             ${_cfd_name}
             CONFIG
             QUIET
-            PATHS "${CPP_${_cfd_name}_ROOT}"
+            PATHS "${${_cfd_name}_ROOT}"
             NO_DEFAULT_PATH
         )
         if(${_cfd_name}_FOUND)
@@ -125,6 +115,17 @@ function(cpp_find_dependency _cfd_found _cfd_name)
 
     set(${_cfd_found} FALSE PARENT_SCOPE)
 endfunction()
+
+function(cpp_find_dependency _cfd_name)
+    _cpp_find_dependency(_cfd_found ${_cfd_name} ${ARGN})
+    if(NOT _cfd_found)
+        message(
+            FATAL_ERROR
+            "Unable to locate suitable version of dependency: ${_cfd_name}"
+        )
+    endif()
+endfunction()
+
 
 function(cpp_find_or_build_dependency _cfobd_name)
     cpp_find_dependency(_cfobd_${_cfobd_name}_found ${_cfobd_name})

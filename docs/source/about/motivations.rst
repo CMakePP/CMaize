@@ -81,6 +81,11 @@ considerations that were part of its design.
    as well as allowing various communities and organizations to maintain their
    own set of recipes.  It also turns maintaining the recipes into a community
    endeavor instead of coupling it to CPP's development/maintenance.
+* Use find recipes for non-conforming packages
+   If you're going to try to find a dependency that doesn't use config files or
+   uses them wrong, you should use a find recipe.  While far inferior to config
+   files, they're the only solution that will work without changing the
+   non-conforming package's source code.
 
 
 Other Relevant Projects
@@ -130,3 +135,16 @@ influenced the above additional considerations section):
    recipes that are stored in the centralized Hunter repo.  This makes it hard
    (again git submodules) to rely on private dependencies and hard to use Hunter
    until new dependencies are added to the repo.
+* Requires patching repos
+   Hunter requires projects to make config files and for those files to work
+   correctly.  The problem is what do you do if a repo doesn't do that?
+   Hunter's solution is that you should fork the offending repo, and then patch
+   it.  While this seems good at first, the problem is you introduce an
+   additional coupling.  Let's say the official repo adds a new feature and you
+   want to use it.  You're stuck waiting for the fork to patch the new version
+   (and like the recipes, forks are maintained by the Hunter organization so
+   you can't just use your fork).  The other problem is what happens when a
+   user is trying to get your project to use their pre-built version of the
+   dependency?  Odds are they got that version from the official repo so it
+   won't work anyways.
+

@@ -70,7 +70,7 @@ _cpp_assert_true(test2_result)
 _cpp_assert_contains("_cbd_dummy_recipe-NOTFOUND" "${test2_output}")
 
 ################################################################################
-# cpp_find_dependency
+# _cpp_find_dependency and cpp_find_dependency
 ################################################################################
 
 #Build and install dummy to a specific spot
@@ -83,8 +83,9 @@ _cpp_write_top_list(
         PATH ${test1_root}
         NAME find_dummy
         CONTENTS "include(cpp_dependency)
-        set(CPP_dummy_ROOT ${test1_root}/install)
-        cpp_find_dependency(test1_found dummy)
+        set(dummy_ROOT ${test1_root}/install)
+        _cpp_find_dependency(test1_found dummy)
+        cpp_find_dependency(dummy)
         "
 )
 
@@ -103,7 +104,8 @@ _cpp_write_top_list(
         PATH ${test2_root}
         NAME find_dummy
         CONTENTS "include(cpp_dependency)
-        cpp_find_dependency(test2_found dummy)
+        _cpp_find_dependency(test2_found dummy)
+        cpp_find_dependency(dummy)
         "
 )
 
@@ -129,18 +131,27 @@ _cpp_write_top_list(
         PATH ${test3_root}
         NAME find_dne_depend
         CONTENTS "include(cpp_dependency)
-        cpp_find_dependency(test3_found dummy2)
+        cpp_find_dependency(dummy2)
         message(\"Dummy2 status: \${test3_found}\")
         "
 )
-
-_cpp_run_sub_build(
-    ${test3_root}
-    NO_INSTALL
+_cpp_run_cmake_command(
+    COMMAND
+    "_cpp_run_sub_build(
+       ${test3_root}
+       NO_INSTALL
+       OUTPUT test3_output
+     )"
     OUTPUT test3_output
+    RESULT test3_result
+)
+_cpp_assert_true(test3_result)
+message("${test3_result}")
+_cpp_assert_contains(
+    "Unable to locate suitable version of dependency: dummy2"
+    "${test3_output}"
 )
 
-_cpp_assert_contains("Dummy2 status: FALSE" "${test3_output}")
 
 ################################################################################
 # Test cpp_find_or_build_dependency
