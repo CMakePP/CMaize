@@ -1,8 +1,10 @@
-.. _about-label:
-
+*********
 About CPP
-=========
+*********
 
-.. todo::
+.. toctree::
+   :maxdepth: 2
 
-   assumptions
+   description
+   motivations
+   faqs

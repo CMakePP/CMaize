@@ -1,11 +1,16 @@
-.. _cpp_dependency:label:
+.. _cpp_dependency-label:
 
-cpp_dependency
-==============
+cpp_dependency Module
+=====================
 
 These are functions related to finding and building a dependency.
 
-.. function:: cpp_find_dependency(<found> <name>)
+.. _cpp_find_dependency-label:
+
+cpp_find_dependency
+-------------------
+
+.. function:: cpp_find_dependency(<name> [OUTPUT <found>])
 
    This function is a wrapper over CMake's ``find_package`` that sanitizes the
    process and simplifies it from the user's perspective.  We assume there's
@@ -29,7 +34,7 @@ These are functions related to finding and building a dependency.
    :param name: The name of the dependency to locate.
 
 
-.. function:: _cpp_build_dependency(<name>)
+.. function:: _cpp_build_dependency(<name> [RECIPE_PATH <path1> [<path2> ...]])
 
    This function does much of the heavy-lifting for building dependencies. It
    starts by attempting to locate the build recipe (acceptable names are:
@@ -39,6 +44,9 @@ These are functions related to finding and building a dependency.
    the build recipe uses the functions found in cpp_build_recipes.
 
    :param name: The name of the dependency to build.
+   :param path: List of paths to be searched.  The paths will be searched in
+     order.
+
 
    CMake variables used:
 

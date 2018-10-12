@@ -1,11 +1,15 @@
 .. _cpp_targets-label:
-.. highlight:: cmake
 
-Targets module
-==============
+cpp_targets module
+==================
 
 The ``cpp_targets`` module contains functions related to the lifetime of
 targets.  This includes setting them up and installing them.
+
+.. _cpp_add_library-label:
+
+cpp_add_library
+---------------
 
 .. function:: cpp_add_library(<name> \
                               [STATIC] \
@@ -24,16 +28,20 @@ targets.  This includes setting them up and installing them.
    the value of ``BUILD_SHARED_LIBRARIES``.
 
    .. warning:: At the moment the header files of header-only targets will not
-      be visible to `cpp_install_library` when this function is used.  This is
+      be visible to ``cpp_install`` when this function is used.  This is
       because CMake does not have an ``INTERFACE_PUBLIC_HEADERS`` property.  The
       workaround is to manually install your header files.  Assuming they are
       all in a directory ``my_dir`` include the following in your
       ``CMakeLists.txt``::
 
+      .. code-block:: cmake
+
          install(DIRECTORY /path/to/my_dir DESTINATION ${CPP_INCDIR})
 
       If you have multiple directories simply repeat the above command for each
-      directory.
+      directory.  If there's contents in those directories other than just your
+      header files you can include ``FILES_MATCHING PATTERN "*.hpp"`` in the
+      install command to only install the files with extension ``.hpp``.
 
 
    :param stan: Can be used to specify that the target depends on a particular
@@ -59,6 +67,11 @@ targets.  This includes setting them up and installing them.
 
    * PROJECT_SOURCE_DIR
        Used to determine the default build-time include directory
+
+.. _cpp_install-label:
+
+cpp_install
+-----------
 
 .. function:: cpp_install(TARGETS <tar1> [, <tar2> [, ...]])
 

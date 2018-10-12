@@ -14,4 +14,5 @@ Contents
 
    conventions
    unit_testing
+   unit_test_helpers
    additional_resources

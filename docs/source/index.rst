@@ -12,9 +12,8 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   about/index.rst
-   quick_start/index.rst
-   end_user/index.rst
-   user/index.rst
-   developer/index.rst
-   apis/index.rst
+   About: Learn more about the CMake Packaging Project <about/index.rst>
+   End User: Learn how to build a project that uses CPP <end_user/index.rst>
+   User: Learn how to use CPP as your project's build system <user/index.rst>
+   Developer: Learn how CPP works <developer/index.rst>
+   APIS: API references for CPP functions <apis/index.rst>

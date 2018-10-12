@@ -24,9 +24,9 @@ copyright = u'2018, Ryan M. Richard'
 author = u'Ryan M. Richard'
 
 # The short X.Y version
-version = u''
+version = u'1.0.0'
 # The full version, including alpha/beta/rc tags
-release = u''
+release = u'1.0.0alpha'
 
 
 # -- General configuration ---------------------------------------------------

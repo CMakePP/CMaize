@@ -3,6 +3,9 @@
 User Documentation
 ==================
 
-.. todo::
+.. toctree::
+   :maxdepth: 2
 
    assumptions
+   definitions
+   targets

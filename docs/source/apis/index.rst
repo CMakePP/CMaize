@@ -13,6 +13,7 @@ Contents:
    cpp_build_recipes
    cpp_checks
    cpp_cmake_helpers
+   cpp_dependency
    cpp_main
    cpp_options
    cpp_print
