@@ -28,11 +28,10 @@ function(_cpp_dummy_cxx_package _cdcp_prefix)
     set(_cdcp_root ${_cdcp_prefix}/external/${_cdcp_NAME})
     _cpp_dummy_cxx_library(${_cdcp_root})
     _cpp_write_top_list(
-        PATH ${_cdcp_root}
-        NAME ${_cdcp_NAME}
-        CONTENTS
+        ${_cdcp_root}
+        ${_cdcp_NAME}
         "include(cpp_targets)
-        cpp_add_library(
+         cpp_add_library(
             ${_cdcp_NAME}
             SOURCES ${_cdcp_root}/a.cpp
             INCLUDES ${_cdcp_root}/a.hpp
@@ -42,30 +41,17 @@ function(_cpp_dummy_cxx_package _cdcp_prefix)
     )
 endfunction()
 
-function(_cpp_make_build_recipe _cmbr_prefix _cmbr_name)
-    file(
-        WRITE ${_cmbr_prefix}/cmake/build_external/build-${_cmbr_name}.cmake
-        "include(cpp_build_recipes)
-         cpp_local_cmake(${_cmbr_name} ${_cmbr_prefix}/external/${_cmbr_name})"
-    )
-endfunction()
-
-
 function(_cpp_install_dummy_cxx_package _cidcp_prefix)
     cmake_parse_arguments(_cidcp "" "NAME" "" ${ARGN})
     cpp_option(_cidcp_NAME dummy)
     set(_cidcp_root ${_cidcp_prefix}/external/${_cidcp_NAME})
     _cpp_dummy_cxx_package(${_cidcp_prefix} ${ARGN})
-    _cpp_write_top_list(
-            PATH ${_cidcp_prefix}
-            NAME build_${_cidcp_NAME}
-            CONTENTS "include(cpp_build_recipes)
-            cpp_local_cmake(${_cidcp_NAME} ${_cidcp_root})"
-    )
-
     _cpp_run_sub_build(
-            ${_cidcp_prefix}
-            INSTALL_PREFIX ${_cidcp_prefix}/install
+        ${_cidcp_prefix}
+        INSTALL_PREFIX ${_cidcp_prefix}/install
+        NAME build_${_cidcp_NAME}
+        CONTENTS "include(cpp_build_recipes)
+                  cpp_local_cmake(${_cidcp_NAME} ${_cidcp_root})"
     )
 
     #Sanity check
@@ -111,3 +97,25 @@ macro(_cpp_setup_build_env _csbe_name)
     _cpp_make_test_toolchain(${test_prefix})
     include(${CMAKE_TOOLCHAIN_FILE})
 endmacro()
+
+
+function(_cpp_test_build_fails)
+    set(_ctbf_O_KWARGS PATH NAME CONTENTS REASON)
+    cmake_parse_arguments(_ctbf "" "${_ctbf_O_KWARGS}" "" ${ARGN})
+    _cpp_run_cmake_command(
+        COMMAND "set(CPP_DEBUG_MODE ON)
+                 _cpp_run_sub_build(
+                     ${_ctbf_PATH}
+                     NO_INSTALL
+                     NAME ${_ctbf_NAME}
+                     CONTENTS \"${_ctbf_CONTENTS}\"
+                 )"
+        INCLUDES cpp_cmake_helpers
+        RESULT _ctbf_result
+        OUTPUT _ctbf_output
+
+    )
+    _cpp_debug_print("${_ctbf_output}")
+    _cpp_assert_true(_ctbf_result)
+    _cpp_assert_contains("${_ctbf_REASON}" "${_ctbf_output}")
+endfunction()

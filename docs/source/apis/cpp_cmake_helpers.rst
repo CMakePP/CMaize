@@ -1,12 +1,18 @@
 .. _cpp_cmake_helpers-label:
 
 cpp_cmake_helpers module
-########################
+========================
 
 The ``cpp_cmake_helpers`` module is designed to facilitate running the ``cmake``
 command in a nested capacity.
 
-.. function:: _cpp_write_top_list(PATH <dir> NAME <name> CONTENTS <contents>)
+
+.. __cpp_write_top_list-label:
+
+_cpp_write_top_list
+-------------------
+
+.. function:: _cpp_write_top_list(<dir> <name> <contents>)
 
    In order to run ``cmake`` in a nested capacity there needs to be a
    ``CMakeLists.txt`` file containing the commands we want to run.  Such a file
@@ -31,13 +37,18 @@ command in a nested capacity.
      * Used to populate the minimum version
      * Lists are intended for use with the same ``cmake`` executable only
 
+.. __cpp_run_cmake_command-label:
+
+_cpp_run_cmake_command
+----------------------
+
 .. function:: _cpp_run_cmake_command(COMMAND <cmd>\
                                      [OUTPUT <out>]\
                                      [BINARY_DIR <bin>]\
                                      [RESULT <var>]\
-                                     [INCLUDES <inc1> [, <inc2> [, ...]]]\
+                                     [INCLUDES <inc1> [<inc2> [...]]]\
                                      [CMAKE_ARGS <arg1>=<value1>\
-                                                 [, <arg2>=<value2> [, ...]]]\
+                                                 [<arg2>=<value2> [...]]]\
                                      )
 
    This function actually calls ``cmake`` in a nested facility.  This is done by
@@ -74,7 +85,12 @@ command in a nested capacity.
   * CMAKE_COMMAND
         To call the ``cmake`` executable.
 
-.. function:: _cpp_run_sub_build(<dir>\
+.. __cpp_run_sub_build-label:
+
+_cpp_run_sub_build
+------------------
+
+.. function:: _cpp_run_sub_build(<dir> NAME <name> CONTENTS <contents> \
                                  (NO_INSTALL || INSTALL_PREFIX <pfx>)\
                                  [OUTPUT <var>]\
                                  [CMAKE_ARGS <arg1>=<value1> \
@@ -88,9 +104,12 @@ command in a nested capacity.
    *i.e.*, it is not run in scripting mode.  This means scripts run with this
    command have access to the full arsenal of CMake functions.  It also means
    that there will be files associated with a build (CMake cache as well as the
-   usual ``CMakeFiles`` directories) that need to be accounted for.
+   usual ``CMakeFiles`` directories) that need to be accounted for.  This
+   command will automatically generate the ``CMakeLists.txt`` to run be run.
 
    :param dir: The root directory of the CMake project to build.
+   :param name: The name of the sub-project.
+   :param contents: The contents of the top-level ``CMakeLists.txt`` file.
    :param pfx: The path to be used for ``CMAKE_INSTALL_PREFIX``.  Unless
         ``NO_INSTALL`` is specified this is a required keyword argument.  Note
         specifying an install prefix when ``NO_INSTALL`` is also present will

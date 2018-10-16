@@ -33,40 +33,86 @@ cpp_find_dependency
 
    :param name: The name of the dependency to locate.
 
+.. _cpp_find_or_build_dependency-label:
 
-.. function:: _cpp_build_dependency(<name> [RECIPE_PATH <path1> [<path2> ...]])
+cpp_find_or_build_dependency
+----------------------------
 
-   This function does much of the heavy-lifting for building dependencies. It
-   starts by attempting to locate the build recipe (acceptable names are:
-   ``Build<name>.cmake`` and ``build-<name>.cmake``).  If the recipe is not
-   found an error is raised.  After finding the recipe a sub-build is created
-   and executed that runs the content of the build recipe.  It is assumed that
-   the build recipe uses the functions found in cpp_build_recipes.
+.. function:: cpp_find_or_build_dependency(<name> (RECIPE <recipe> || \
+                                                   PATH <path>     || \
+                                                   URL <url> [BRANCH <branch>]\
+                                                   VIRTUAL <imp1> [<imp2> ...])
+
+   This function attempts to make it easy for a user of CPP to add a dependency
+   that can optionally be built by CPP if it is not found.  It requires two
+   pieces of information: the name of the dependency and a mechanism for
+   building the dependency.  At the moment three mechanisms are recognized:
+   downloading the source, using source that is locally available on the
+   machine, or using a build recipe.  The latter is a catch-all that can be used
+   when the build process is not "ideal".  These mechanisms are mutually
+   exclusive and an error will be raised if you try to mix them in the same
+   call.
+
+   :param name: The name of the dependency.
+   :param recipe: The path to the build recipe to use.
+   :param path: The path to the root of the source tree.
+   :param url: The URL to use to download the source.
+   :param branch: The branch of the repository to use.
+   :param imp: A list of implementations for a particular virtual dependency.
+
+   CMake variables used:
+
+   * CMAKE_BINARY_DIR - For storing build recipes we generate on the fly.
+
+.. __cpp_build_dependency-label:
+
+_cpp_build_dependency
+---------------------
+
+.. function:: _cpp_build_dependency(<name> <path>)
+
+   This function wraps the building of a dependency given a recipe.  It is code
+   factorization to make ``cpp_find_or_build_dependency`` easier to debug.
 
    :param name: The name of the dependency to build.
-   :param path: List of paths to be searched.  The paths will be searched in
-     order.
+   :param path: Path to the recipe to use.
 
 
    CMake variables used:
 
-   * CPP_BUILD_RECIPES
-     Used to get default paths for build recipes
-   * CMAKE_BINARY_DIR
+        * CMAKE_BINARY_DIR
      Used to make the default directory for the sub-build
 
+.. __cpp_depend_install_path-label:
 
-.. function:: _cpp_depend_install_path(<return> <name>)
+_cpp_depend_install_path
+------------------------
 
-   Throughout the various functions in this file we will need to know the
-   install path of a dependency.  This path is
+.. function:: _cpp_depend_install_path(<return> <name> [CPP_CACHE <cache>]\
+                                       [PROJECT_NAME <pname>]\
+                                       [TOOLCHAIN_FILE <file>])
+
+    For a given dependency this function will generate the path for installing
+    it.  The resulting path is a function of the dependency's name, the
+    project's name, and a hash of the toolchain.
 
    :param return: An identifier to use for the returned path.
 
    :param name: The name of the dependency.
 
+   :param cache: The path to the CPP cache where we will install the dependency.
+   Defaults to the value of the ``${CPP_INSTALL_CACHE}``.
+
+   :param pname: The name of the project we are building the dependency for.
+   Defaults to the value of ``${PROJECT_NAME}``.
+
+   :param file: The path to the toolchain file.  Defaults to the value of
+   ``${CMAKE_TOOLCHAIN_FILE}``.
+
+
    CMake variables used:
 
    * CPP_INSTALL_CACHE
    * CMAKE_TOOLCHAIN_FILE
+   * PROJECT_NAME
 

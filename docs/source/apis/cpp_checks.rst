@@ -1,11 +1,18 @@
-=======================================
-APIs for Functions in cpp_checks Module
-=======================================
+.. _cpp_checks-label:
+
+cpp_checks Module
+=================
 
 The ``cpp_checks`` module provides functions that facilitate determining if
 various conditions have been met.  Developers of CPP are strongly encouraged to
 use the checks within this module so as to avoid many of the plethora of
 gotchas associated with CMake's if statements.
+
+
+.. __cpp_is_defined-label:
+
+_cpp_is_defined
+---------------
 
 .. function:: _cpp_is_defined(<return> <var>)
 
@@ -16,6 +23,23 @@ gotchas associated with CMake's if statements.
    :param return: The identifier to which the return should be assigned.
    :param var: The identifier to check.
 
+.. __cpp_is_not_defined-label:
+
+_cpp_is_not_defined
+-------------------
+
+.. function:: _cpp_is_not_defined(<return> <var>)
+
+   Opposite of the ``_cpp_is_defined`` function.  Sets the identifier to true if
+   the variable is not defined and false otherwise.
+
+   :param return: The identifier to assign the return value to.
+   :param var: The identifier to check.
+
+.. __cpp_is_empty-label:
+
+_cpp_is_empty
+-------------
 
 .. function:: _cpp_is_empty(<return> <var>)
 
@@ -25,6 +49,10 @@ gotchas associated with CMake's if statements.
    :param return: The identifier to which the return should be assigned.
    :param var: The identifier to check.
 
+.. __cpp_non_empty-label:
+
+_cpp_non_empty
+--------------
 
 .. function:: _cpp_non_empty(<return> <var>)
 
@@ -35,3 +63,32 @@ gotchas associated with CMake's if statements.
 
    :param return: The identifier to which the return should be assigned.
    :param var: The identifier to check for its empty-ness.
+
+.. __cpp_contains-label:
+
+_cpp_contains
+-------------
+
+.. function:: _cpp_contains(<return> <substring> <str>)
+
+   A more convenient means of determining if a string contains a substring than
+   CMake's default implementation.  Returns true if the substring is within the
+   string and false otherwise.
+
+   :param return: The identifier to save the return value to.
+   :param substring: The value of the substring to look for.
+   :param str: The value of the string to search
+
+.. __cpp_does_not_contain-label:
+
+_cpp_does_not_contain
+---------------------
+
+.. function:: _cpp_does_not_contain(<return> <substring> <str>)
+
+   The opposite of the ``_cpp_contains`` function.  Returns true if the
+   substring is not contained within the string.
+
+   :param return: The identifier to save the return value to.
+   :param substring: The value of the substring to look for.
+   :param str: The value of the string to search.

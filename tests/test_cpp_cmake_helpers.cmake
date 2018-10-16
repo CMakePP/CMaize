@@ -11,9 +11,9 @@ _cpp_setup_build_env(cpp_cmake_helpers)
 
 #Basic usage
 _cpp_write_top_list(
-    PATH ${test_prefix}/top_list
-    NAME top_list_test
-    CONTENTS "Hi"
+    ${test_prefix}/top_list
+    top_list_test
+    "Hi"
 )
 _cpp_assert_exists(${test_prefix}/top_list/CMakeLists.txt)
 file(READ ${test_prefix}/top_list/CMakeLists.txt test1_contents)
@@ -22,34 +22,9 @@ set(test1_corr
 project(top_list_test VERSION 0.0.0)
 include(CPPMain)
 CPPMain()
-Hi
-"
+Hi"
 )
 _cpp_assert_equal("${test1_contents}" "${test1_corr}")
-
-#No PATH == no run
-_cpp_run_cmake_command(
-        COMMAND "_cpp_write_top_list(NAME top_list_test CONTENTS \"Hi\")"
-        BINARY_DIR ${test_prefix}/no_path
-        INCLUDES cpp_cmake_helpers
-        OUTPUT test2_output
-        RESULT test2_result
-)
-#Failed runs return error code 1, which is true-y
-_cpp_assert_true(test2_result)
-_cpp_assert_contains("_cwtl_path is set to false value: 0" "${test2_output}")
-
-#No NAME == no run
-_cpp_run_cmake_command(
-        COMMAND
-            "_cpp_write_top_list(PATH ${test_prefix}/top_list CONTENTS \"Hi\")"
-        BINARY_DIR ${test_prefix}/no_name
-        INCLUDES cpp_cmake_helpers
-        OUTPUT test3_output
-        RESULT test3_result
-)
-_cpp_assert_true(test3_result)
-_cpp_assert_contains("_cwtl_name is set to false value: 0" "${test3_output}")
 
 ################################################################################
 # Test _cpp_run_cmake_command
@@ -80,7 +55,6 @@ _cpp_assert_exists(${test_prefix}/test5_corr)
 _cpp_assert_does_not_exist(${test_prefix}/test5)
 _cpp_assert_contains("Hi" "${test5_output}")
 
-#Crashes if no command is given
 _cpp_run_cmake_command(
         COMMAND "_cpp_run_cmake_command()"
         RESULT test6_result
@@ -106,12 +80,9 @@ _cpp_assert_contains("Hi + Bye" "${test7_output}")
 ################################################################################
 
 #Set-up a little dummy library
-set(dummy_root ${test_prefix}/sub_build/dummy)
-_cpp_dummy_cxx_library(${dummy_root})
-_cpp_write_top_list(
-    PATH ${dummy_root}
-    NAME dummy
-    CONTENTS "add_library(dummy a.cpp)
+set(
+    dummy_contents
+    "add_library(dummy a.cpp)
     set_target_properties(dummy PROPERTIES PUBLIC_HEADER a.hpp)
     install(TARGETS dummy
             LIBRARY DESTINATION lib
@@ -121,22 +92,18 @@ _cpp_write_top_list(
     )"
 )
 
-#Make sure we set that up right
-_cpp_assert_exists(${dummy_root})
-_cpp_assert_exists(${dummy_root}/a.hpp)
-_cpp_assert_exists(${dummy_root}/a.cpp)
-_cpp_assert_exists(${dummy_root}/CMakeLists.txt)
-
 #Basic run
 set(
     lib_name
     ${CMAKE_SHARED_LIBRARY_PREFIX}dummy${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
-set(basic_root ${test_prefix}/sub_build/basic)
-file(COPY ${dummy_root} DESTINATION ${basic_root})
-set(CPP_DEBUG_MODE OFF)
+set(basic_root ${test_prefix}/sub_build/basic/dummy)
+_cpp_dummy_cxx_library(${basic_root})
+
 _cpp_run_sub_build(
-    ${basic_root}/dummy
+    ${basic_root}
+    CONTENTS "${dummy_contents}"
+    NAME dummy
     INSTALL_PREFIX ${basic_root}/install
 )
 _cpp_assert_exists(${basic_root}/install)
@@ -144,23 +111,25 @@ _cpp_assert_exists(${basic_root}/install/lib/${lib_name})
 _cpp_assert_exists(${basic_root}/install/include/a.hpp)
 
 #No install doesn't install
-set(no_install_root ${test_prefix}/sub_build/no_install)
-file(COPY ${dummy_root} DESTINATION ${no_install_root})
-set(CPP_DEBUG_MODE OFF)
+set(no_install_root ${test_prefix}/sub_build/no_install/dummy)
+_cpp_dummy_cxx_library(${no_install_root})
 _cpp_run_sub_build(
-        ${no_install_root}/dummy
+        ${no_install_root}
+        CONTENTS "${dummy_contents}"
+        NAME dummy
         NO_INSTALL
         INSTALL_PREFIX ${no_install_root}/install
 )
 _cpp_assert_does_not_exist(${no_install_root}/install)
 
 #Can grab the output
-set(output_root ${test_prefix}/sub_build/output)
-file(COPY ${dummy_root} DESTINATION ${output_root})
-set(CPP_DEBUG_MODE OFF)
+set(output_root ${test_prefix}/sub_build/output/dummy)
+_cpp_dummy_cxx_library(${output_root})
 _cpp_run_sub_build(
-        ${output_root}/dummy
+        ${output_root}
         NO_INSTALL
+        CONTENTS "${dummy_contents}"
+        NAME dummy
         OUTPUT output_result
 )
 #Just look for a few generic lines
@@ -168,16 +137,16 @@ _cpp_assert_contains("-- Configuring done" "${output_result}")
 _cpp_assert_contains("[100%] Built target dummy" "${output_result}")
 
 #Not providing an install path (and not specifying NO_INSTALL) fails
-set(install_fail_root ${test_prefix}/sub_build/install_fail)
-file(COPY ${dummy_root} DESTINATION ${install_fail_root})
-_cpp_run_cmake_command(
-    COMMAND "_cpp_run_sub_build(${install_fail_root}/dummy)"
-    RESULT install_fail_result
-    OUTPUT install_fail_output
-    INCLUDES cpp_cmake_helpers
-)
-_cpp_assert_true(install_fail_result)
-_cpp_assert_contains(
-    "_crsb_install_set is set to false value: 0"
-    "${install_fail_output}"
+set(install_fail_root ${test_prefix}/sub_build/install_fail/dummy)
+_cpp_dummy_cxx_library(${install_fail_root})
+_cpp_test_build_fails(
+    PATH ${install_fail_root}
+    NAME dummy
+    CONTENTS "include(cpp_cmake_helpers)
+              _cpp_run_sub_build(
+                  ${install_fail_root}
+                  NAME dummy
+                  CONTENTS ${dummy_contents}
+             )"
+    REASON "_crsb_install_set is set to false value: 0"
 )

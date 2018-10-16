@@ -16,26 +16,6 @@
 include(cpp_assert) #For _cpp_assert_false
 include(cpp_print) #For _cpp_debug_print
 include(cpp_options) #For _cpp_option
-
-function(_cpp_write_top_list)
-    set(_cwtl_O_kwargs PATH NAME CONTENTS)
-    cmake_parse_arguments(_cwtl "" "${_cwtl_O_kwargs}" "" ${ARGN})
-    _cpp_non_empty(_cwtl_name _cwtl_NAME)
-    _cpp_non_empty(_cwtl_path _cwtl_PATH)
-    _cpp_assert_true(_cwtl_path _cwtl_name)
-    # I guess we don't rigrorously need contents
-
-    file(
-        WRITE ${_cwtl_PATH}/CMakeLists.txt
-"cmake_minimum_required(VERSION ${CMAKE_VERSION})
-project(${_cwtl_NAME} VERSION 0.0.0)
-include(CPPMain)
-CPPMain()
-${_cwtl_CONTENTS}
-"
-    )
-endfunction()
-
 function(_cpp_run_cmake_command)
     set(_crcc_O_kwargs COMMAND OUTPUT BINARY_DIR RESULT)
     set(_crcc_M_kwargs INCLUDES CMAKE_ARGS)
@@ -83,9 +63,20 @@ function(_cpp_run_cmake_command)
     set(${_crcc_OUTPUT} "${_crcc_out}" PARENT_SCOPE)
 endfunction()
 
+function(_cpp_write_top_list _cwtl_dir _cwtl_name _cwtl_contents)
+    file(
+        WRITE ${_cwtl_dir}/CMakeLists.txt
+"cmake_minimum_required(VERSION ${CMAKE_VERSION})
+project(${_cwtl_name} VERSION 0.0.0)
+include(CPPMain)
+CPPMain()
+${_cwtl_contents}"
+    )
+endfunction()
+
 function(_cpp_run_sub_build _crsb_dir)
     set(_crsb_T_kwargs NO_BUILD NO_INSTALL)
-    set(_crsb_O_kwargs INSTALL_PREFIX OUTPUT)
+    set(_crsb_O_kwargs INSTALL_PREFIX OUTPUT CONTENTS NAME)
     set(_crsb_M_kwargs CMAKE_ARGS)
     cmake_parse_arguments(
         _crsb
@@ -94,8 +85,11 @@ function(_cpp_run_sub_build _crsb_dir)
         "${_crsb_M_kwargs}"
         ${ARGN}
     )
-
     _cpp_non_empty(_crsb_output_set _crsb_OUTPUT)
+    _cpp_write_top_list("${_crsb_dir}" "${_crsb_NAME}" "${_crsb_CONTENTS}")
+
+
+
     if(_crsb_NO_INSTALL)
         set(_crsb_install_prefix "")
     else()

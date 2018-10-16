@@ -16,7 +16,7 @@ set(CMAKE_Fortran_COMPILER "/a/path/to/gfortran")
 set(CMAKE_SYSTEM_NAME System)
 set(CMAKE_MODULE_PATH "")
 set(BUILD_SHARED_LIBS FALSE)
-set(CPP_LOCAL_CACHE /a/path)
+set(CPP_INSTALL_CACHE /a/path)
 set(common_contents
 "set(CMAKE_C_COMPILER \"/a/path/to/gcc\")
 set(CMAKE_CXX_COMPILER \"/a/path/to/g++\")
@@ -27,7 +27,7 @@ set(CMAKE_SHARED_LIBRARY_PREFIX \"lib\")
 set(CMAKE_SHARED_LIBRARY_SUFFIX \".so\")
 set(CMAKE_STATIC_LIBRARY_PREFIX \"lib\")
 set(CMAKE_STATIC_LIBRARY_SUFFIX \".a\")
-set(CPP_LOCAL_CACHE \"/a/path\")
+set(CPP_INSTALL_CACHE \"/a/path\")
 "
 )
 

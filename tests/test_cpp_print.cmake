@@ -45,26 +45,25 @@ _cpp_dummy_cxx_library(${dummy_root}/dummy)
 #Print a simple target
 set(dummy1_root ${test_prefix}/print_target/test1)
 file(COPY ${dummy_root}/dummy DESTINATION ${dummy1_root})
-_cpp_write_top_list(
-        PATH ${dummy1_root}/dummy
-        NAME dummy
-        CONTENTS "include(cpp_targets)
-include(cpp_print)
-cpp_add_library(
-    dummy
-    SOURCES ${dummy1_root}/dummy/a.cpp
-    INCLUDES ${dummy1_root}/dummy/a.hpp
-)
-_cpp_print_target(dummy)
-"
-)
 
 set(
     include_corr
     "INCLUDE_DIRECTORIES : $<BUILD_INTERFACE:${dummy1_root}/dummy>"
 )
 list(APPEND include_corr "$<INSTALL_INTERFACE:include>")
-_cpp_run_sub_build(${dummy1_root}/dummy NO_BUILD NO_INSTALL OUTPUT test1_output)
+_cpp_run_sub_build(
+        ${dummy1_root}/dummy
+        NO_BUILD NO_INSTALL
+        NAME dummy
+        CONTENTS "include(cpp_targets)
+                  include(cpp_print)
+                  cpp_add_library(
+                      dummy
+                      SOURCES ${dummy1_root}/dummy/a.cpp
+                      INCLUDES ${dummy1_root}/dummy/a.hpp
+                  )
+                  _cpp_print_target(dummy)"
+        OUTPUT test1_output)
 _cpp_assert_contains("Target : dummy" "${test1_output}")
 _cpp_assert_contains("SOURCES : ${dummy1_root}/dummy/a.cpp" "${test1_output}")
 _cpp_assert_contains("COMPILE_FEATURES : cxx_std_17" "${test1_output}")

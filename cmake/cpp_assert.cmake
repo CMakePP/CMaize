@@ -84,3 +84,13 @@ function(_cpp_assert_does_not_contain _cadnc_substring _cadnc_string)
     string(FIND "${_cadnc_string}" "${_cadnc_substring}" _cadnc_result)
     _cpp_assert_equal("${_cadnc_result}" "-1")
 endfunction()
+
+function(_cpp_assert_file_contains _cafc_substring _cafc_file)
+    file(READ ${_cafc_file} _cafc_contents)
+    _cpp_assert_contains("${_cafc_substring}" "${_cafc_contents}")
+endfunction()
+
+function(_cpp_assert_file_does_not_contain _cafdnc_substring _cafdnc_file)
+    file(READ ${_cafdnc_file} _cafdnc_contents)
+    _cpp_assert_does_not_contain("${_cafdnc_substring}" "${_cafdnc_contents}")
+endfunction()
