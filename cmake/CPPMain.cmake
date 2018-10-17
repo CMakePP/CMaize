@@ -14,9 +14,15 @@
 ################################################################################
 
 include(GNUInstallDirs) #Creates variables for a typical GNU install
+
+#Internal modules needed for CPPMain
 include(cpp_checks) #For _cpp_is_empty
 include(cpp_options) #For cpp_option
 include(cpp_toolchain) #For writing the toolchain file
+
+#These are included for the user's convenience
+include(cpp_targets)
+include(cpp_dependency)
 set(CPP_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 macro(CPPMain)

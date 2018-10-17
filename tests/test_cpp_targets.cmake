@@ -139,6 +139,50 @@ _cpp_run_sub_build(
 _cpp_assert_contains("${include_corr}" "${test6_output}")
 
 ################################################################################
+# Test cpp_add_executable
+################################################################################
+
+set(test_root ${test_prefix}/add_executable)
+set(test1_root ${test_root}/test1)
+_cpp_dummy_cxx_executable(${test1_root})
+_cpp_run_sub_build(
+    ${test1_root}
+    NAME test1
+    NO_INSTALL
+    OUTPUT test1_output
+    CMAKE_ARGS CPP_DEBUG_MODE=ON
+    CONTENTS "include(cpp_targets)
+              cpp_add_executable(
+                  dummy
+                  SOURCES ${test1_root}/main.cpp
+              )"
+)
+_cpp_assert_contains("[100%] Built target dummy" "${test1_output}")
+
+set(test2_root ${test_root}/test2)
+_cpp_dummy_cxx_library(${test2_root})
+file(WRITE ${test2_root}/main.cpp "#include a.hpp\nint main(){return a_Fxn;}")
+_cpp_run_sub_build(
+    ${test2_root}
+    NAME test2
+    NO_INSTALL
+    OUTPUT test2_output
+    CMAKE_ARGS CPP_DEBUG_MODE=ON
+    CONTENTS "include(cpp_targets)
+             cpp_add_library(
+                 dummy
+                 INCLUDES ${test2_root}/a.hpp
+                 SOURCES ${test2_root}/a.cpp
+             )
+             cpp_add_executable(
+                test2
+                SOURCES ${test2_root}/main.cpp
+                DEPENDS dummy
+             )"
+)
+_cpp_assert_contains("[100%] Built target dummy" "${test1_output}")
+
+################################################################################
 # Test cpp_install
 ################################################################################
 

@@ -15,6 +15,10 @@ function(_cpp_dummy_cxx_library _cdcl_prefix)
     )
 endfunction()
 
+function(_cpp_dummy_cxx_executable _cdce_prefix)
+    file(WRITE ${_cdce_prefix}/main.cpp "int main(){return 2;}")
+endfunction()
+
 function(_cpp_dummy_cxx_package _cdcp_prefix)
     set(_cdcp_O_kwargs NAME)
     cmake_parse_arguments(
