@@ -26,19 +26,22 @@ project is as easy as:
 
 .. code-block:: cmake
 
+   cmake_minimum_required(VERSION <minimum_version>)
+   project(<project_name> VERSION <project_version>)
    find_package(cpp REQUIRED)
-   project(${PROJECT_NAME} VERSION ${PROJECT_VERSION})
-   cpp_find_or_build_dependencies(${LIST_OF_PROJECTS_DEPENDENCIES})
+   foreach(depend <depend1> <depend2> ...)
+       cpp_find_dependency(${depend})
+   endforeach()
    cpp_add_library(
-       ${PROJECT_NAME}
-       SOURCES ${LIST_OF_PROJECTS_SOURCES}
-       INCLUDES ${LIST_OF_PROJECTS_INCLUDES}
-       DEPENDS ${LIST_OF_PROJECTS_DEPENDENCIES}
+       <library_name>
+       SOURCES <list_of_sources>
+       INCLUDES <list_of_headers>
+       DEPENDS <list_of_dependencies>
    )
-   cpp_install(TARGETS ${PROJECT_NAME})
+   cpp_install(TARGETS <library_name>)
 
-In this example the various ``${VARIABLE_NAME}`` are meant to be placeholders
-for your project's values.
+This example is the base boilerplate for a typical project.  The project is
+responsible for filling in the quantities in angle brackets.
 
 Features
 --------

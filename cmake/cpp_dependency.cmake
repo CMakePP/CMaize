@@ -82,7 +82,7 @@ function(_cpp_find_dependency _cfd_found _cfd_name)
           return()
         endif()
 
-        find_package(${_cfd_name} REQUIRED MODULE)
+        find_package(${_cfd_name} REQUIRED MODULE QUIET)
         return()
     endif()
 
@@ -107,7 +107,7 @@ function(_cpp_find_dependency _cfd_found _cfd_name)
         return()
     endif()
 
-    find_package(${_cfd_name} MODULE)
+    find_package(${_cfd_name} MODULE QUIET)
     if(${_cfd_name}_FOUND)
           return()
     endif()
