@@ -64,6 +64,7 @@ set(test_root ${test_prefix}/build_depend)
 set(test1_root ${test_root}/test1)
 _cpp_dummy_cxx_package(${test1_root})
 _cpp_make_build_recipe(${test1_root} dummy)
+set(CPP_DEBUG_MODE ON)
 _cpp_run_sub_build(
         ${test1_root}
         NO_INSTALL

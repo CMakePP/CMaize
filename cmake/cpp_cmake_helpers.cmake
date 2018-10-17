@@ -119,13 +119,14 @@ function(_cpp_run_sub_build _crsb_dir)
                 -H${_crsb_dir}
                 -Bbuild
                 -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+                -DCPP_DEBUG_MODE=ON
                 ${_crsb_add_args}
         WORKING_DIRECTORY ${_crsb_dir}
         OUTPUT_VARIABLE _crsb_cmake_out
         ERROR_VARIABLE _crsb_cmake_out
         RESULT_VARIABLE _crsb_cmake
     )
-    _cpp_debug_print("Result of running cmake:\n${_crsb_cmake_out}")
+    _cpp_debug_print("Result of configuring ${_crsb_NAME}:\n${_crsb_cmake_out}")
     if(_crsb_output_set)
         set(${_crsb_OUTPUT} "${_crsb_cmake_out}")
     endif()
@@ -145,7 +146,7 @@ function(_cpp_run_sub_build _crsb_dir)
         ERROR_VARIABLE _crsb_build_out
     )
 
-    _cpp_debug_print("Result of building:\n${_crsb_build_out}")
+    _cpp_debug_print("Result of building ${_crsb_NAME}:\n${_crsb_build_out}")
     if(_crsb_output_set)
         list(APPEND ${_crsb_OUTPUT} "${_crsb_build_out}")
     endif()
@@ -166,7 +167,9 @@ function(_cpp_run_sub_build _crsb_dir)
         OUTPUT_VARIABLE _crsb_install_out
         ERROR_VARIABLE _crsb_install_out
     )
-    _cpp_debug_print("Result of installing:\n${_crsb_install_out}")
+    _cpp_debug_print(
+        "Result of installing ${_crsb_NAME}:\n${_crsb_install_out}"
+    )
     if(_crsb_output_set)
         list(APPEND ${_crsb_OUTPUT} "${_crsb_install_out}")
         set(${_crsb_OUTPUT} "${${_crsb_OUTPUT}}" PARENT_SCOPE)

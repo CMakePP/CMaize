@@ -88,7 +88,7 @@ _cpp_run_sub_build(
 set(test1_share ${test_root}/test1/install/share/cmake/cpp)
 foreach(mod cpp-config cpp-config-version CPPMain cpp_assert cpp_build_recipes
     cpp_checks  cpp_cmake_helpers cpp_dependency cpp_options cpp_print
-    cpp_targets cpp_tests cpp_toolchain
+    cpp_targets cpp_toolchain
 )
     _cpp_assert_exists(${test1_share}/${mod}.cmake)
 endforeach()
