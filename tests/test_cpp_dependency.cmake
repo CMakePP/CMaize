@@ -64,15 +64,13 @@ set(test_root ${test_prefix}/build_depend)
 set(test1_root ${test_root}/test1)
 _cpp_dummy_cxx_package(${test1_root})
 _cpp_make_build_recipe(${test1_root} dummy)
-set(CPP_DEBUG_MODE ON)
+
 _cpp_run_sub_build(
         ${test1_root}
         NO_INSTALL
         OUTPUT test1_output
         NAME build_depend_test
-        CONTENTS "include(cpp_dependency)
-                  _cpp_build_dependency(dummy ${test1_root}/build-dummy.cmake)
-                  set(CPP_DEBUG_MODE ON)
+        CONTENTS "_cpp_build_dependency(dummy ${test1_root}/build-dummy.cmake)
                   _cpp_find_dependency(test1_found dummy)"
 )
 set(
@@ -103,8 +101,7 @@ _cpp_run_sub_build(
         NO_INSTALL
         OUTPUT test1_output
         NAME find_dummy
-        CONTENTS "include(cpp_dependency)
-                  set(dummy_ROOT ${test1_root}/install)
+        CONTENTS "set(dummy_ROOT ${test1_root}/install)
                   _cpp_find_dependency(test1_found dummy)
                   cpp_find_dependency(dummy)"
 )
@@ -116,8 +113,7 @@ set(test2_root ${test_root}/test2)
 _cpp_test_build_fails(
     PATH ${test2_root}
     NAME find_dne_depend
-    CONTENTS "include(cpp_dependency)
-              cpp_find_dependency(dummy2)"
+    CONTENTS "cpp_find_dependency(dummy2)"
     REASON "Unable to locate suitable version of dependency: dummy2"
 
 )
@@ -155,8 +151,7 @@ _cpp_run_sub_build(
     NO_INSTALL
     OUTPUT test1_output
     NAME find_or_build_dummy
-    CONTENTS "include(cpp_dependency)
-              cpp_find_or_build_dependency(
+    CONTENTS "cpp_find_or_build_dependency(
                   dummy2
                   PATH ${test1_root}/external/dummy2
               )"
@@ -173,8 +168,7 @@ _cpp_run_sub_build(
         NO_INSTALL
         OUTPUT test2_output
         NAME find_or_build_dummy
-        CONTENTS "include(cpp_dependency)
-                  cpp_find_or_build_dependency(
+        CONTENTS "cpp_find_or_build_dependency(
                       cpp
                       URL github.com/CMakePackagingProject/CMakePackagingProject
                   )"
@@ -196,8 +190,7 @@ _cpp_run_sub_build(
         NO_INSTALL
         OUTPUT test3_output
         NAME find_or_build_dummy
-        CONTENTS "include(cpp_dependency)
-                  set(CPP_DEBUG_MODE ON)
+        CONTENTS "set(CPP_DEBUG_MODE ON)
                   cpp_find_or_build_dependency(
                       dummy
                       RECIPE ${test3_root}/build-dummy.cmake

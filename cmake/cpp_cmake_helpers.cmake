@@ -51,6 +51,7 @@ function(_cpp_run_cmake_command)
     execute_process(
         COMMAND ${CMAKE_COMMAND}
                 -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+                -DCPP_DEBUG_MODE=ON
                 ${_crcc_args}
                 -P ${_crcc_file}
 
@@ -111,6 +112,7 @@ function(_cpp_run_sub_build _crsb_dir)
         -H${_crsb_dir}
         -Bbuild
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+        -DCMAKE_CPP_DEBUG_MODE=ON
         ${_crsb_add_args}"
     )
 
@@ -158,7 +160,6 @@ function(_cpp_run_sub_build _crsb_dir)
         endif()
         return()
     endif()
-
     execute_process(
         COMMAND ${CMAKE_COMMAND}
                 --build ${_crsb_dir}/build
