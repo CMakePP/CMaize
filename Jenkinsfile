@@ -28,7 +28,7 @@ node{
         }
 
         stage("${buildType}: Build Repo"){
-            nwxJenkins.compileRepo("CMakePackagingProject")
+            nwxJenkins.compileRepo("gcc", "g++")
         }
 
         stage("${buildType}: Test Repo"){
