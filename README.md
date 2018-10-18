@@ -9,7 +9,7 @@ CMake represents a powerful scripting language for automating your project's
 build system.  Unfortunately, using CMake to write a reliable, reproducible, and
 reusable build system is a non-trivial task.  CPP aims to dramatically simplify
 this task by making use of an internal dependency manager.  With CPP managing
-dependencies writing a build system for a project can be as easy as filling in
+dependencies, writing a build system for a project can be as easy as filling in
 the following boilerplate:
 
 ```.cmake
