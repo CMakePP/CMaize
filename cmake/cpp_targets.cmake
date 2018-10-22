@@ -115,12 +115,12 @@ endfunction()
 
 function(cpp_install)
     set(_ci_T_KWARGS)
-    set(_ci_O_KWARGS)
+    set(_ci_O_KWARGS PREFIX_TO_STRIP)
     set(_ci_M_KWARGS TARGETS)
     cmake_parse_arguments(
             _ci "${_ci_T_KWARGS}" "${_ci_O_KWARGS}" "${_ci_M_KWARGS}" ${ARGN}
     )
-
+    _cpp_option(_ci_PREFIX_TO_STRIP ${PROJECT_SOURCE_DIR}/${CPP_NAMESPACE})
     #Skim the dependencies off each target
     foreach(_ci_target ${_ci_TARGETS})
         get_property(
@@ -172,6 +172,34 @@ function(cpp_install)
         "${_ci_config_file}"
         INSTALL_DESTINATION "${CPP_SHAREDIR}"
     )
+
+    #CMake doesn't preserve the header hierarchy of PUBLIC_HEADER so we get to
+    #do it manually
+    foreach(_ci_target ${_ci_TARGETS})
+        get_property(
+            _ci_includes
+            TARGET ${_ci_target}
+            PROPERTY PUBLIC_HEADER
+        )
+        foreach(_ci_include_file ${_ci_includes})
+            get_filename_component(
+                _ci_relative_dir
+                ${_ci_include_file}
+                DIRECTORY
+            )
+            install(
+                FILES ${_ci_include_file}
+                DESTINATION ${CPP_INCDIR}/${_ci_relative_dir}
+           )
+        endforeach()
+        set_target_properties(
+            ${_ci_target}
+            PROPERTIES PUBLIC_HEADER ""
+        )
+    endforeach()
+
+
+
 
     install(
             TARGETS ${_ci_TARGETS}

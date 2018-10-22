@@ -29,7 +29,7 @@ function(_cpp_dummy_cxx_package _cdcp_prefix)
             ${ARGN}
     )
     cpp_option(_cdcp_NAME dummy)
-    set(_cdcp_root ${_cdcp_prefix}/external/${_cdcp_NAME})
+    set(_cdcp_root ${_cdcp_prefix}/${_cdcp_NAME})
     _cpp_dummy_cxx_library(${_cdcp_root})
     _cpp_write_top_list(
         ${_cdcp_root}
@@ -37,10 +37,10 @@ function(_cpp_dummy_cxx_package _cdcp_prefix)
         "include(cpp_targets)
          cpp_add_library(
             ${_cdcp_NAME}
-            SOURCES ${_cdcp_root}/a.cpp
-            INCLUDES ${_cdcp_root}/a.hpp
-     )
-     cpp_install(TARGETS ${_cdcp_NAME})
+            SOURCES  a.cpp
+            INCLUDES a.hpp
+         )
+         cpp_install(TARGETS ${_cdcp_NAME})
     "
     )
 endfunction()
@@ -48,7 +48,7 @@ endfunction()
 function(_cpp_install_dummy_cxx_package _cidcp_prefix)
     cmake_parse_arguments(_cidcp "" "NAME" "" ${ARGN})
     cpp_option(_cidcp_NAME dummy)
-    set(_cidcp_root ${_cidcp_prefix}/external/${_cidcp_NAME})
+    set(_cidcp_root ${_cidcp_prefix}/${_cidcp_NAME})
     _cpp_dummy_cxx_package(${_cidcp_prefix} ${ARGN})
     _cpp_run_sub_build(
         ${_cidcp_prefix}

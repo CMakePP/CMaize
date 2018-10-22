@@ -5,7 +5,7 @@ include(cpp_targets)
 include(cpp_print)
 
 _cpp_setup_build_env("cpp_targets")
-
+set(CPP_DEBUG_MODE ON)
 ################################################################################
 # Test cpp_add_library
 ################################################################################
@@ -201,8 +201,8 @@ _cpp_run_sub_build(
     CONTENTS "include(cpp_targets)
               cpp_add_library(
                   dummy
-                  INCLUDES ${test1_root}/a.hpp
-                  SOURCES ${test1_root}/a.cpp
+                  INCLUDES a.hpp
+                  SOURCES a.cpp
               )
               cpp_install(TARGETS dummy)"
 )
@@ -290,3 +290,29 @@ _cpp_run_sub_build(
 )
 file(READ ${test4_install}/share/cmake/dummy/dummy-targets.cmake test4_targets)
 _cpp_assert_contains("dummy::dummy1 dummy::dummy2" "${test4_targets}")
+
+# Headerfile directory structure
+set(test5_root ${test_root}/test5)
+_cpp_dummy_cxx_library(${test5_root})
+_cpp_dummy_cxx_library(${test5_root}/nested)
+_cpp_dummy_cxx_library(${test5_root}/nested/nested)
+set(test5_install ${test5_root}/install)
+set(CPP_DEBUG_MODE ON)
+_cpp_run_sub_build(
+        ${test5_root}
+        INSTALL_PREFIX ${test5_install}
+        OUTPUT test5_output
+        RESULT test5_result
+        NAME dummy
+        CONTENTS "include(cpp_targets)
+              cpp_add_library(
+                  dummy
+                  INCLUDES nested/a.hpp
+                           nested/nested/a.hpp
+                  SOURCES  a.cpp
+              )
+              cpp_install(TARGETS dummy)"
+)
+_cpp_assert_does_not_exist(${test5_install}/include/dummy/a.hpp)
+_cpp_assert_exists(${test5_install}/include/dummy/nested/a.hpp)
+_cpp_assert_exists(${test5_install}/include/dummy/nested/nested/a.hpp)

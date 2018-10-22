@@ -30,6 +30,7 @@ function(_cpp_write_toolchain_file)
         CMAKE_Fortran_COMPILER
         CMAKE_SYSTEM_NAME
         CMAKE_MODULE_PATH
+        CMAKE_PREFIX_PATH
         BUILD_SHARED_LIBS
         CMAKE_SHARED_LIBRARY_PREFIX
         CMAKE_SHARED_LIBRARY_SUFFIX

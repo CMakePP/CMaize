@@ -20,7 +20,7 @@ _cpp_run_sub_build(
         OUTPUT test1_output
         NAME test1
         CONTENTS "include(cpp_build_recipes)
-                  cpp_local_cmake(test1 ${test1_root}/external/dummy)"
+                  cpp_local_cmake(test1 ${test1_root}/dummy)"
 )
 set(TEST1_SHARE ${test1_root}/install/share/cmake/dummy)
 _cpp_assert_exists(${TEST1_SHARE}/dummy-config.cmake)

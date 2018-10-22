@@ -158,21 +158,16 @@ function(_cpp_write_recipe _cwr_recipe_path _cwr_name)
         )
     elseif(_cwr_URL_set)
         _cpp_contains(_cwr_is_github "github" "${_cwr_URL}")
-        if(_cwr_is_github AND _cwr_BRANCH_set)
+        if(_cwr_is_github)
             file(
                 WRITE ${_cwr_recipe_path}
                 "include(cpp_build_recipes)
                 cpp_github_cmake(
                     ${_cwr_name}
                     ${_cwr_URL}
-                    BRANCH ${_cwr_BRANCH}
+                    \"${ARGN}\"
+                    TOKEN \"${CPP_GITHUB_TOKEN}\"
                 )"
-            )
-        elseif(_cwr_is_github)
-            file(
-                WRITE ${_cwr_recipe_path}
-                "include(cpp_build_recipes)
-                cpp_github_cmake(${_cwr_name} ${_cwr_URL})"
             )
         else()
             message(

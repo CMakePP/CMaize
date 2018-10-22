@@ -3,14 +3,14 @@ include(cpp_cmake_helpers)
 include(cpp_unit_test_helpers.cmake)
 include(cpp_dependency)
 include(cpp_assert)
-
+set(CPP_DEBUG_MODE ON)
 _cpp_setup_build_env("cpp_dependency")
 
 function(_cpp_make_build_recipe _cmbr_prefix _cmbr_name)
     file(
             WRITE ${_cmbr_prefix}/build-${_cmbr_name}.cmake
             "include(cpp_build_recipes)
-         cpp_local_cmake(${_cmbr_name} ${_cmbr_prefix}/external/${_cmbr_name})"
+         cpp_local_cmake(${_cmbr_name} ${_cmbr_prefix}/${_cmbr_name})"
     )
 endfunction()
 
@@ -135,10 +135,8 @@ set(test2_recipe ${test2_path}/build-dummy.cmake)
 _cpp_write_recipe(${test2_recipe} dummy URL https://github.com/a_repo)
 _cpp_assert_exists(${test2_recipe})
 _cpp_assert_file_contains("include(cpp_build_recipes)" "${test2_recipe}")
-_cpp_assert_file_contains(
-    "cpp_github_cmake(dummy https://github.com/a_repo"
-    "${test2_recipe}"
-)
+_cpp_assert_file_contains("cpp_github_cmake(" "${test2_recipe}")
+_cpp_assert_file_contains("https://github.com/a_repo" "${test2_recipe}")
 
 ################################################################################
 # Test cpp_find_or_build_dependency
@@ -153,7 +151,7 @@ _cpp_run_sub_build(
     NAME find_or_build_dummy
     CONTENTS "cpp_find_or_build_dependency(
                   dummy2
-                  PATH ${test1_root}/external/dummy2
+                  PATH ${test1_root}/dummy2
               )"
 )
 set(
@@ -183,7 +181,7 @@ set(test3_root ${test_root}/test3)
 _cpp_dummy_cxx_package(${test3_root})
 _cpp_write_recipe(
     ${test3_root}/build-dummy.cmake dummy
-    PATH ${test3_root}/external/dummy
+    PATH ${test3_root}/dummy
 )
 _cpp_run_sub_build(
         ${test3_root}

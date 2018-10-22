@@ -43,23 +43,31 @@ endfunction()
 
 function(cpp_github_cmake _cgc_name _cgc_url)
     _cpp_parse_gh_url(_cgc_repo ${_cgc_url})
+    set(_cgc_T_kwargs PRIVATE)
     set(_cgc_O_kwargs TOKEN BRANCH)
     set(_cgc_M_kwargs CMAKE_ARGS)
     cmake_parse_arguments(
         _cgc
-        ""
+        "${_cgc_T_kwargs}"
         "${_cgc_O_kwargs}"
         "${_cgc_M_kwargs}"
         ${ARGN}
     )
-
     set(_cgc_gh_api "https://api.github.com/repos")
 
     _cpp_option(_cgc_BRANCH master)
     _cpp_non_empty(_cgc_token_set _cgc_TOKEN)
-    set(_cgc_token)
-    if(_cgc_token_set)
+    if(_cgc_token_set AND _cgc_PRIVATE)
         set(_cgc_token "?access_token=${_cgc_TOKEN}")
+    elseif(_cgc_PRIVATE)
+        set(
+            _cgc_msg1
+            "Private repo encountered, but no token set.  Did you forget to"
+        )
+        message(
+           FATAL_ERROR
+           "${_cgc_msg1} set CPP_GITHUB_TOKEN?"
+        )
     endif()
     set(
         _cgc_url
@@ -68,7 +76,7 @@ function(cpp_github_cmake _cgc_name _cgc_url)
 
     set(_crsb_add_args)
     foreach(_cgc_arg ${_cgc_CMAKE_ARGS})
-        list(APPEND _cgc_add_args "-D${_crgc_arg}")
+        list(APPEND _cgc_add_args "-D${_cgc_arg}")
     endforeach()
     _cpp_debug_print("Building CMake project at URL: ${_cgc_url}")
     ExternalProject_Add(

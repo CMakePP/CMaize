@@ -38,10 +38,11 @@ cpp_find_dependency
 cpp_find_or_build_dependency
 ----------------------------
 
-.. function:: cpp_find_or_build_dependency(<name> (RECIPE <recipe> || \
-                                                   PATH <path>     || \
-                                                   URL <url> [BRANCH <branch>]\
-                                                   VIRTUAL <imp1> [<imp2> ...])
+.. function:: cpp_find_or_build_dependency(\
+                  <name> (RECIPE <recipe> || \
+                          PATH <path>     || \
+                          URL <url> [PRIVATE] [BRANCH <branch>]\
+                          VIRTUAL <imp1> [<imp2> ...])
 
    This function attempts to make it easy for a user of CPP to add a dependency
    that can optionally be built by CPP if it is not found.  It requires two
@@ -52,6 +53,9 @@ cpp_find_or_build_dependency
    when the build process is not "ideal".  These mechanisms are mutually
    exclusive and an error will be raised if you try to mix them in the same
    call.
+
+   Specifying the keyword ``URL`` triggers the download mechanism.  This is the
+   preferred mechanism for obtaining a dependency.
 
    :param name: The name of the dependency.
    :param recipe: The path to the build recipe to use.
