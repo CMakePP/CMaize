@@ -1,56 +1,66 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers.cmake)
-include(cpp_dependency)
-include(cpp_assert)
-set(CPP_DEBUG_MODE ON)
 _cpp_setup_build_env("get_gh_url")
 
-#All of the returns start the same
-set(common_prefix "https://api.github.com/repos/organization/repo/tarball")
+#All of the returns start the same prefix
+set(
+    prefix
+    "https://api.github.com/repos/organization/repo/tarball")
 
-################################################################################
-# Test basic usage
-################################################################################
+_cpp_add_test(
+TITLE "Fails if URL is not set"
+SHOULD_FAIL REASON "_cggu_URL is set to false value:"
+CONTENTS
+    "_cpp_get_gh_url(output)"
+)
 
-_cpp_get_gh_url(test1 URL "github.com/organization/repo")
-_cpp_assert_equal("${common_prefix}/master" "${test1}")
+_cpp_add_test(
+TITLE "Basic usage"
+CONTENTS
+    "_cpp_get_gh_url(output URL github.com/organization/repo)"
+    "_cpp_assert_equal(\"${prefix}/master\" \"\${output}\")"
+)
 
-################################################################################
-# Works with "https://"
-################################################################################
+_cpp_add_test(
+TITLE "Works if https:// is in URL"
+CONTENTS
+    "_cpp_get_gh_url(output URL https://github.com/organization/repo)"
+    "_cpp_assert_equal(\"${prefix}/master\" \"\${output}\")"
+)
 
-_cpp_get_gh_url(test2 URL "https://github.com/organization/repo")
-_cpp_assert_equal("${common_prefix}/master" "${test2}")
+_cpp_add_test(
+TITLE "Works if www. is in URL"
+CONTENTS
+    "_cpp_get_gh_url(output URL www.github.com/organization/repo)"
+    "_cpp_assert_equal(\"${prefix}/master\" \"\${output}\")"
+)
 
-################################################################################
-# Works with "www."
-################################################################################
+_cpp_add_test(
+TITLE "Honors BRANCH keyword"
+CONTENTS
+    "_cpp_get_gh_url(output URL github.com/organization/repo BRANCH toy)"
+    "_cpp_assert_equal(\"${prefix}/toy\" \"\${output}\")"
+)
 
-_cpp_get_gh_url(test3 URL "www.github.com/organization/repo")
-_cpp_assert_equal("${common_prefix}/master" "${test3}")
+_cpp_add_test(
+TITLE "Honors PRIVATE keyword"
+CONTENTS
+    "set(CPP_GITHUB_TOKEN 312)"
+    "_cpp_get_gh_url(output URL github.com/organization/repo PRIVATE)"
+    "_cpp_assert_equal(\"${prefix}/master?access_token=312\" \"\${output}\")"
+)
 
-################################################################################
-# Honors BRANCH keyword
-################################################################################
+_cpp_add_test(
+TITLE "Fails if PRIVATE keyword is present, but CPP_GITHUB_TOKEN is not set"
+SHOULD_FAIL REASON  "For private repos CPP_GITHUB_TOKEN must be a valid token."
+CONTENTS
+    "_cpp_get_gh_url(output URL github.com/organization/repo PRIVATE)"
+)
 
-_cpp_get_gh_url(test4 URL "github.com/organization/repo" BRANCH "toy")
-_cpp_assert_equal("${common_prefix}/toy" "${test4}")
-
-################################################################################
-# Honors TOKEN keyword
-################################################################################
-
-_cpp_get_gh_url(test5 URL "github.com/organization/repo" TOKEN "312")
-_cpp_assert_equal("${common_prefix}/master?access_token=312" "${test5}")
-
-################################################################################
-# Fails if URL is not specified
-################################################################################
-
-_cpp_test_build_fails(
-    NAME test6
-    PATH ${test_prefix}/test6
-    CONTENTS "include(cpp_dependency)
-             _cpp_get_gh_url(test6)"
-        REASON "_cggu_URL is set to false value:"
+_cpp_add_test(
+TITLE "Crashes if github.com is not in URL"
+SHOULD_FAIL
+REASON  "Substring \"github.com\" not contained in string \"organization/repo\""
+CONTENTS
+    "_cpp_get_gh_url(output URL organization/repo)"
 )

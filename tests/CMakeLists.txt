@@ -21,7 +21,8 @@ function(cpp_cmake_unit_test _ccut_name)
 endfunction()
 
 set(
-    CPP_UNIT_TESTS find_dependency get_source_tarball record_find
+    CPP_UNIT_TESTS checks find_dependency get_gh_url get_source_tarball
+                   record_find xor untar_directory
 )
 foreach(cpp_unit_test_i ${CPP_UNIT_TESTS})
     cpp_cmake_unit_test(${cpp_unit_test_i})
