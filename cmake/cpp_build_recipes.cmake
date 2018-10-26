@@ -30,16 +30,6 @@ function(cpp_local_cmake _clc_name _clc_dir)
     )
 endfunction()
 
-function(_cpp_parse_gh_url _cpgu_return _cpgu_url)
-    #Strategy: find github.com, move cursor to organization, get rest
-
-    string(FIND ${_cpgu_url} "github.com/" _cpgu_gh_location)
-    _cpp_assert_not_equal("${_cpgu_gh_location}" "-1")
-    math(EXPR _cpgu_start "${_cpgu_gh_location} + 11")
-    string(SUBSTRING ${_cpgu_url} ${_cpgu_start} -1 _cpgu_short_url)
-    set(${_cpgu_return} ${_cpgu_short_url} PARENT_SCOPE)
-endfunction()
-
 
 function(cpp_github_cmake _cgc_name _cgc_url)
     _cpp_parse_gh_url(_cgc_repo ${_cgc_url})

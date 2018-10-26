@@ -13,8 +13,6 @@
 #                        limitations under the License.                        #
 ################################################################################
 
-# Functions for testing the state of a variable
-
 #Note: Use False=0 and True=1 not FALSE/OFF/TRUE/ON otherwise if statements
 #won't recognize the return's contents as boolean without a CMake policy being
 #set.
@@ -61,18 +59,4 @@ function(_cpp_does_not_contain _cdnc_return _cdnc_substring _cdnc_string)
     else()
         set(${_cdnc_return} 0 PARENT_SCOPE)
     endif()
-endfunction()
-
-
-function(_cpp_assert_cpp_main_called)
-    foreach(_cacmc_var CPP_SRC_DIR CPP_project_name CPP_LIBDIR CPP_BINDIR
-                       CPP_INCDIR CPP_SHAREDIR)
-        _cpp_valid(_cacmc_valid ${_cacmc_var})
-        if(NOT ${_cacmc_valid})
-            message(
-                FATAL_ERROR
-                "${_cacmc_var} is not set.  Did you call CPPMain()?"
-            )
-        endif()
-    endforeach()
 endfunction()

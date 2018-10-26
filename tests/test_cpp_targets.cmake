@@ -6,6 +6,20 @@ include(cpp_print)
 
 _cpp_setup_build_env("cpp_targets")
 set(CPP_DEBUG_MODE ON)
+
+################################################################################
+# Test _cpp_parse_target
+################################################################################
+
+_cpp_parse_target(test1_proj test1_comp "cpp::component")
+_cpp_assert_equal("${test1_proj}" "cpp")
+_cpp_assert_equal("${test1_comp}" "component")
+
+_cpp_parse_target(test2_proj test2_comp "cpp")
+_cpp_assert_equal("${test2_proj}" "cpp")
+_cpp_assert_equal("${test2_comp}" "")
+
+
 ################################################################################
 # Test cpp_add_library
 ################################################################################

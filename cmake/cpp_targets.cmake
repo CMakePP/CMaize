@@ -13,11 +13,30 @@
 #                        limitations under the License.                        #
 ################################################################################
 
-################################################################################
-# Functions for creating various types of targets #
-################################################################################
 include(cpp_print) #For debug printing
 include(cpp_checks)
+
+function(_cpp_parse_target _cpt_project _cpt_component _cpt_target)
+    string(FIND "${_cpt_target}" "::" _cpt_colon_start)
+    string(
+        SUBSTRING "${_cpt_target}"
+        0 "${_cpt_colon_start}"
+        _cpt_p_name
+    )
+    set(${_cpt_project} "${_cpt_p_name}" PARENT_SCOPE)
+    if("${_cpt_colon_start}" STREQUAL "-1")
+        set(${_cpt_component} "" PARENT_SCOPE)
+    else()
+        math(EXPR _cpt_colon_stop "${_cpt_colon_start} + 2")
+        string(
+            SUBSTRING "${_cpt_target}"
+            "${_cpt_colon_stop}" "-1"
+            _cpt_c_name
+        )
+        set(${_cpt_component} "${_cpt_c_name}" PARENT_SCOPE)
+    endif()
+endfunction()
+
 
 function(cpp_add_library _cal_name)
     set(_cal_T_KWARGS STATIC)
@@ -139,7 +158,8 @@ function(cpp_install)
                     endif()
                 endforeach()
                 if(_ci_is_good)
-                    list(APPEND _ci_DEPENDS ${_ci_dependi})
+                    _cpp_parse_target(_ci_project _ci_comp "${_ci_dependi}")
+                    list(APPEND _ci_DEPENDS "${_ci_project}")
                 endif()
             else()
                 message(FATAL_ERROR "${_ci_dependi} is not a target")
@@ -197,9 +217,6 @@ function(cpp_install)
             PROPERTIES PUBLIC_HEADER ""
         )
     endforeach()
-
-
-
 
     install(
             TARGETS ${_ci_TARGETS}

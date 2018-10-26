@@ -1,6 +1,86 @@
 include(cpp_cmake_helpers)
 include(cpp_checks)
 
+set(test_number 0)
+function(_cpp_print_banner _cpb_msg)
+    string(RANDOM LENGTH 80 ALPHABET "*" _cpb_banner)
+    message("${_cpb_banner}")
+    message("${_cpb_msg}")
+    message("${_cpb_banner}")
+endfunction()
+
+function(_cpp_add_test)
+    set(_cat_T_kwargs SHOULD_FAIL)
+    set(_cat_O_kwargs REASON TITLE)
+    set(_cat_M_kwargs CONTENTS)
+    cmake_parse_arguments(
+        _cat
+        "${_cat_T_kwargs}"
+        "${_cat_O_kwargs}"
+        "${_cat_M_kwargs}"
+        "${ARGN}"
+    )
+
+    #We use should fail b/c it's more descriptive and less common, but
+    #internally should pass is more convenient
+    if(_cat_SHOULD_FAIL)
+        set(_cat_should_pass FALSE)
+    else()
+        set(_cat_should_pass TRUE)
+    endif()
+
+    math(EXPR test_number "${test_number} + 1")
+    set(test_number "${test_number}" PARENT_SCOPE)
+    set(_cat_result_msg "${_cat_TITLE} ..................")
+
+    #Write testing files and run test
+    foreach(_cat_line ${_cat_CONTENTS})
+        #Need to re-escape quotes and $'s
+        string(REPLACE "\"" "\\\"" _cat_line "${_cat_line}")
+        string(REPLACE "\$" "\\\$" _cat_line "${_cat_line}")
+        set(_cat_commands "${_cat_commands}${_cat_line}\n")
+    endforeach()
+    _cpp_run_cmake_command(
+        COMMAND "set(CPP_DEBUG_MODE ON)
+                _cpp_run_sub_build(
+                   ${test_prefix}/${test_number}
+                   NO_INSTALL
+                   NAME ${test_number}
+                   CONTENTS \"${_cat_commands}\"
+                )"
+        INCLUDES cpp_cmake_helpers
+        RESULT _cat_result
+        OUTPUT _cat_output
+    )
+
+    #Report status to the user
+    #We get back 0 if there's no errors so result=true means we had an error
+    #We get a failure unless XOR passes, but not a great way to do XOR in CMake
+    set(_cat_passed TRUE)
+    if(NOT _cat_should_pass)
+        if(_cat_result AND _cat_REASON) #Did it crashed for the right reason?
+            _cpp_contains(_cat_reason_met "${_cat_REASON}" "${_cat_output}")
+            if(NOT _cat_reason_met)
+                set(_cat_passed FALSE)
+            endif()
+        elseif(_cat_result)
+            #Okay crashed like it was supposed to, but no reason to check
+        else() #Passed, but it wasn't supposed to
+            set(_cat_passed FALSE)
+        endif()
+    elseif(_cat_result) #crashed, but not supposed to
+        set(_cat_passed FALSE)
+    endif()
+
+    if(_cat_passed)
+        message("${_cat_result_msg}passed")
+    else()
+        message("${_cat_result_msg}***failed")
+        message(FATAL_ERROR "Output:\n\n${_cat_output}")
+    endif()
+endfunction()
+
+
 function(_cpp_make_random_dir _cmrd_result _cmrd_prefix)
     string(RANDOM _cmrd_random_prefix)
     set(${_cmrd_result} ${_cmrd_prefix}/${_cmrd_random_prefix} PARENT_SCOPE)
@@ -97,29 +177,24 @@ macro(_cpp_setup_build_env _csbe_name)
        "Tests from this run of ${_cbse_name} are located in ${test_prefix}"
     )
 
-    #Make sure we don't contaminate the real cache
+    #Make sure we don't contaminate the real cache or build directory
     _cpp_make_test_toolchain(${test_prefix})
+    set(CMAKE_BINARY_DIR ${test_prefix})
     include(${CMAKE_TOOLCHAIN_FILE})
 endmacro()
 
+#Factor out the testing of the installed library
+function(verify_dummy_install test_root)
+    _cpp_assert_exists(${test_root}/include/dummy/a.hpp)
+    _cpp_assert_exists(${test_root}/lib)
+    foreach(share_file dummy-config.cmake dummy-config-version.cmake
+            dummy-targets.cmake)
+        _cpp_assert_exists(${test_root}/share/cmake/dummy/${share_file})
+    endforeach()
+endfunction()
 
-function(_cpp_test_build_fails)
-    set(_ctbf_O_KWARGS PATH NAME CONTENTS REASON)
-    cmake_parse_arguments(_ctbf "" "${_ctbf_O_KWARGS}" "" ${ARGN})
-    _cpp_run_cmake_command(
-        COMMAND "set(CPP_DEBUG_MODE ON)
-                 _cpp_run_sub_build(
-                     ${_ctbf_PATH}
-                     NO_INSTALL
-                     NAME ${_ctbf_NAME}
-                     CONTENTS \"${_ctbf_CONTENTS}\"
-                 )"
-        INCLUDES cpp_cmake_helpers
-        RESULT _ctbf_result
-        OUTPUT _ctbf_output
-
-    )
-    _cpp_debug_print("${_ctbf_output}")
-    _cpp_assert_true(_ctbf_result)
-    _cpp_assert_contains("${_ctbf_REASON}" "${_ctbf_output}")
+function(verify_cpp_install test_root)
+    foreach(share_file cpp-config.cmake cpp-config-version.cmake)
+        _cpp_assert_exists(${test_root}/share/cmake/cpp/${share_file})
+    endforeach()
 endfunction()

@@ -18,7 +18,7 @@
 
 #This ensures that each dependency is locatable
 foreach(_@CPP_project_name@_depend @_ci_DEPENDS@ )
-    find_package(${_@CPP_project_name@_depend} REQUIRED)
+    cpp_find_dependency(${_@CPP_project_name@_depend})
 endforeach()
 
 

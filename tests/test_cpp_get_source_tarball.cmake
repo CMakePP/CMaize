@@ -1,0 +1,6 @@
+include(${CMAKE_TOOLCHAIN_FILE})
+include(cpp_unit_test_helpers.cmake)
+include(cpp_dependency)
+include(cpp_assert)
+set(CPP_DEBUG_MODE ON)
+_cpp_setup_build_env("get_source_tarball")

@@ -77,7 +77,10 @@ endfunction()
 
 function(_cpp_assert_contains _cac_substring _cac_string)
     string(FIND "${_cac_string}" "${_cac_substring}" _cac_result)
-    _cpp_assert_not_equal("${_cac_result}" "-1")
+    if("${_cac_result}" STREQUAL "-1")
+        set(_cac_msg "Substring \"${_cac_substring}\" not contained in string")
+        message(FATAL_ERROR "${_cac_msg} \"${_cac_string}\"")
+    endif()
 endfunction()
 
 function(_cpp_assert_does_not_contain _cadnc_substring _cadnc_string)

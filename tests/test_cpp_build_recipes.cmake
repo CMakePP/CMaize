@@ -32,28 +32,7 @@ _cpp_assert_exists(${test1_root}/install/include/dummy/a.hpp)
 # Test _cpp_parse_gh_url
 ################################################################################
 
-set(repo "CMakePackagingProject/CMakePackagingProject")
-set(test_root ${test_prefix}/parse_gh)
-_cpp_run_sub_build(
-    ${test_root}/test1
-    NO_INSTALL
-    NAME test1
-    CONTENTS "include(cpp_build_recipes)
-              include(cpp_assert)
-              _cpp_parse_gh_url(test1_return \"https://www.github.com/${repo}\")
-              _cpp_assert_equal(\"${repo}\" \"\${test1_return}\")"
-)
 
-#URL without https://
-_cpp_run_sub_build(
-    ${test_root}/test2
-    NO_INSTALL
-    NAME test2
-    CONTENTS "include(cpp_build_recipes)
-              include(cpp_assert)
-              _cpp_parse_gh_url(test2_return \"www.github.com/${repo}\")
-              _cpp_assert_equal(\"${repo}\" \"\${test2_return}\")"
-)
 
 
 #URL without https://www.

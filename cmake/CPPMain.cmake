@@ -30,7 +30,8 @@ macro(CPPMain)
 
     #Options for CPP
     cpp_option(CPP_DEBUG_MODE ON)
-    cpp_option(CPP_INSTALL_CACHE $ENV{HOME}/.cpp_cache)
+    #cpp_option(CPP_INSTALL_CACHE $ENV{HOME}/.cpp_cache)
+    cpp_option(CPP_INSTALL_CACHE ${CMAKE_BINARY_DIR}/.cpp_cache)
     cpp_option(CPP_FIND_RECIPES ${PROJECT_SOURCE_DIR}/cmake/find_external)
     cpp_option(CPP_BUILD_RECIPES ${PROJECT_SOURCE_DIR}/cmake/build_external)
 

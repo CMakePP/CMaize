@@ -16,6 +16,7 @@
 include(cpp_assert) #For _cpp_assert_false
 include(cpp_print) #For _cpp_debug_print
 include(cpp_options) #For _cpp_option
+
 function(_cpp_run_cmake_command)
     set(_crcc_O_kwargs COMMAND OUTPUT BINARY_DIR RESULT)
     set(_crcc_M_kwargs INCLUDES CMAKE_ARGS)
@@ -88,8 +89,6 @@ function(_cpp_run_sub_build _crsb_dir)
     )
     _cpp_non_empty(_crsb_output_set _crsb_OUTPUT)
     _cpp_write_top_list("${_crsb_dir}" "${_crsb_NAME}" "${_crsb_CONTENTS}")
-
-
 
     if(_crsb_NO_INSTALL)
         set(_crsb_install_prefix "")
