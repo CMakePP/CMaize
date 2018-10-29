@@ -417,7 +417,11 @@ function(cpp_find_or_build_dependency)
         return()
     endif()
 
-    _cpp_untar_directory(${_cfobd_tar_file} ${_cfobd_source_path}/source)
+    if(EXISTS ${_cfobd_source_path}/source)
+    else()
+        _cpp_untar_directory(${_cfobd_tar_file} ${_cfobd_source_path}/source)
+    endif()
+
     _cpp_build_local_dependency(
          NAME ${_cfobd_NAME}
          BINARY_DIR ${_cfobd_root}/CMakeFiles
