@@ -17,9 +17,7 @@
 @PACKAGE_INIT@
 
 #This ensures that each dependency is locatable
-foreach(_@CPP_project_name@_depend @_ci_DEPENDS@ )
-    cpp_find_dependency(${_@CPP_project_name@_depend})
-endforeach()
+@_ci_find_depends@
 
 
 include("${CMAKE_CURRENT_LIST_DIR}/@_ci_exports@.cmake")

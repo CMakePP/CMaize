@@ -167,6 +167,19 @@ function(cpp_install)
         endforeach()
     endforeach()
 
+    #Can have duplicates if multiple components of the same dependency
+    if(_ci_DEPENDS)
+        list(REMOVE_DUPLICATES _ci_DEPENDS)
+        foreach(_ci_depend_i ${_ci_DEPENDS})
+            get_target_property(
+                _ci_cmd_i
+                _cpp_${_ci_depend_i}_interface
+                INTERFACE_VERSION
+            )
+            set(_ci_find_depends "${_ci_find_depends}${_ci_cmd_i}\n")
+        endforeach()
+    endif()
+
     # Directory where the generated files will be stored.
     set(_ci_generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
     # Path to the version file

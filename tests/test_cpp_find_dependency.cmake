@@ -48,6 +48,17 @@ CONTENTS
 )
 
 _cpp_add_test(
+TITLE "_cpp_dummy_interface target is created"
+CONTENTS
+    "set(dummy_ROOT ${install_path})"
+    "${prefix})"
+    "if(TARGET _cpp_dummy_interface)"
+    "else()"
+    "   message(FATAL_ERROR \"Did not make target.\")"
+    "endif()"
+)
+
+_cpp_add_test(
 TITLE "Finds it if PATHS are provided"
 CONTENTS
     "${prefix} REQUIRED PATHS ${install_path})"

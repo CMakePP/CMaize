@@ -37,3 +37,15 @@ CONTENTS
     "${prefix}/${test_number}.tar.gz URL ${cpp_url})"
     "_cpp_assert_exists(${test_prefix}/${test_number}.tar.gz)"
 )
+
+_cpp_dummy_cxx_library(${test_prefix}/${test_number}/dummy)
+_cpp_add_test(
+TITLE "Only tars the deepest directory of full/relative paths"
+CONTENTS
+    "${prefix}/${test_number}.tar.gz SOURCE_DIR ${test_prefix}/dummy)"
+    "_cpp_untar_directory("
+    "   ${test_prefix}/${test_number}.tar.gz"
+    "   ${test_prefix}/${test_number}/dummy"
+    ")"
+    "_cpp_assert_exists(\"${test_prefix}/${test_number}/dummy/a.hpp\")"
+)

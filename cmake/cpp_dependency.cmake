@@ -92,7 +92,7 @@ function(cpp_find_dependency)
 
     if(TARGET _cpp_${_cfd_NAME}_interface)
         #Avoid setting interface target 2x
-    elseif()
+    else()
         _cpp_record_find(${ARGN})
     endif()
 
@@ -208,6 +208,12 @@ endfunction()
 function(_cpp_get_source_tarball _cgrt_file)
     set(_cgrt_O_kwargs URL SOURCE_DIR)
     cmake_parse_arguments(_cgrt "" "${_cgrt_O_kwargs}" "" "${ARGN}")
+    if(_cgrt_URL)
+        _cpp_debug_print("Getting source from URL: ${_cgrt_URL}")
+    endif()
+    if(_cgrt_SOURCE_DIR)
+        _cpp_debug_print("Getting source from dir: ${_cgrt_SOURCE_DIR}")
+    endif()
     _cpp_xor(_cgrt_one_set _cgrt_URL _cgrt_SOURCE_DIR)
     if(NOT _cgrt_one_set)
         message(FATAL_ERROR "Please specify either URL or SOURCE_DIR")
@@ -216,10 +222,13 @@ function(_cpp_get_source_tarball _cgrt_file)
     _cpp_contains(_cgrt_is_gh "github.com/" "${_cgrt_URL}")
 
     if(_cgrt_SOURCE_DIR)
+        #User gave us /a/long/path/to/here and we want the tarball to untar to
+        #just here
+        get_filename_component(_cgrt_work_dir "${_cgrt_SOURCE_DIR}" DIRECTORY)
+        get_filename_component(_cgrt_dir "${_cgrt_SOURCE_DIR}" NAME)
         execute_process(
-            COMMAND ${CMAKE_COMMAND} -E tar "cfz" "${_cgrt_file}"
-                    "${_cgrt_SOURCE_DIR}"
-
+            COMMAND ${CMAKE_COMMAND} -E tar "cfz" "${_cgrt_file}" "${_cgrt_dir}"
+            WORKING_DIRECTORY ${_cgrt_work_dir}
         )
         return()
     endif()
@@ -277,62 +286,155 @@ endfunction()
 
 function(_cpp_build_local_dependency)
     set(_cbld_O_kwargs NAME SOURCE_DIR INSTALL_DIR TOOLCHAIN BINARY_DIR)
-    cmake_parse_arguments(_cbld "" "${_cbld_O_kwargs}" "" "${ARGN}")
+    set(_cbld_M_kwargs CMAKE_ARGS)
+    cmake_parse_arguments(
+        _cbld
+        ""
+        "${_cbld_O_kwargs}"
+        "${_cbld_M_kwargs}"
+        "${ARGN}"
+    )
     cpp_option(_cbld_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
-    cpp_option(_cbld_BINARY_DIR "${CMAKE_BINARY_DIR}")
+    cpp_option(_cbld_BINARY_DIR "${CMAKE_BINARY_DIR}/${_cbld_NAME}")
     _cpp_assert_true(_cbld_NAME _cbld_SOURCE_DIR _cbld_INSTALL_DIR)
+
+    #Can't rely on the toolchain b/c CMake's option command overrides it...
+    set(_cbld_cmake_args "-DCMAKE_INSTALL_PREFIX=${_cbld_INSTALL_DIR}\n")
+    set(
+        _cbld_cmake_args
+        "${_cbld_cmake_args}-DCMAKE_TOOLCHAIN_FILE=${_cbld_TOOLCHAIN}\n"
+    )
+    foreach(_cbld_arg_i ${_cbld_CMAKE_ARGS})
+        set(
+            _cbld_cmake_args
+            "${_cbld_cmake_args}-D${_cbld_arg_i}\n"
+        )
+    endforeach()
+
     _cpp_run_sub_build(
-            ${_cbld_BINARY_DIR}/${_cbld_NAME}
+            ${_cbld_BINARY_DIR}
             NO_INSTALL
             NAME ${_cbld_NAME}
             OUTPUT _cbld_output
+            TOOLCHAIN ${_cbld_TOOLCHAIN}
             CONTENTS "include(ExternalProject)
                   ExternalProject_Add(
                       ${_cbld_NAME}_External
                       SOURCE_DIR ${_cbld_SOURCE_DIR}
                       INSTALL_DIR ${_cbld_BINARY_DIR}/install
-                      CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${_cbld_INSTALL_DIR}
-                                 -DCMAKE_TOOLCHAIN_FILE=${_cbld_TOOLCHAIN})"
+                      CMAKE_ARGS ${_cbld_cmake_args}
+                  )"
     )
 endfunction()
 
-function(_cpp_build_dependency _cbd_tar _cbd_destination)
-    cpp_option(_cbd_BINARY_DIR ${CMAKE_BINARY_DIR}/external/${_cbd_NAME})
-    _cpp_untar_directory(${_cbd_tar} ${_cbd_BINARY_DIR})
-    _cpp_build_local_dependency(
-            NAME ${_cbd_NAME}
-            SOURCE_DIR ${_cbd_source}
-            INSTALL_DIR ${_cbd_destination}
-            ${_cbd_UNPARSED_ARGUMENTS}
+function(_cpp_update_find_cmd _cufc_name _cufc_path)
+    get_target_property(
+            _cufc_command
+            _cpp_${_cufc_name}_interface
+            INTERFACE_VERSION
     )
-endfunction()
-
-function(_cpp_get_cache_path _cgcp_result)
-    file(SHA1 ${_cgcp_TARBALL} _cgcp_src_hash)
-    file(SHA1 ${_cgcp_TOOLCHAIN} _cgcp_tc_hash)
-    set(_cgcp_prefix ${_cgcp_CPP_CACHE}/${_cgcp_NAME}/${_cgcp_src_hash})
-    set(_cgcp_return ${_cgcp_prefix}/${_cgcp_tc_hash} PARENT_SCOPE)
+    _cpp_contains(_cufc_path_set "PATHS" "${_cufc_command}")
+    if(_cufc_path_set)
+        return() #Avoid setting it twice
+    endif()
+    string(
+        REGEX REPLACE "\\)" " PATHS ${_cufc_path})"
+        _cufc_command
+        "${_cufc_command}"
+    )
+    set_target_properties(
+         _cpp_${_cufc_name}_interface
+         PROPERTIES INTERFACE_VERSION "${_cufc_command}"
+    )
 endfunction()
 
 function(cpp_find_or_build_dependency)
-    find_dependency(_cfbod_NAME RESULT _cfbod_found)
-    if(_cfbod_found)
+    #If dummy target exists we already found this dependency
+    if(TARGET _cpp_${_cfobd_NAME}_External)
+        return()
+    endif()
+    #Because of kwargs taking multiple values need to manually forward args
+    set(_cfobd_T_kwargs PRIVATE)
+    set(_cfobd_O_kwargs NAME BINARY_DIR BRANCH URL SOURCE_DIR CPP_CACHE)
+    set(_cfobd_M_kwargs CMAKE_ARGS)
+    cmake_parse_arguments(
+        _cfobd
+        "${_cfobd_T_kwargs}"
+        "${_cfobd_O_kwargs}"
+        "${_cfobd_M_kwargs}"
+        "${ARGN}"
+    )
+    _cpp_assert_true(_cfobd_NAME)
+    cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
+    cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
+
+    #Look for dependency before we build it
+    cpp_find_dependency(NAME ${_cfobd_NAME} RESULT _cfobd_found)
+    if(_cfobd_found)
         return()
     endif()
 
-    set(_cfobd_tar_file ${_cfobd_BINARY_DIR}/external/${_cfobd_NAME}.tar.gz)
-    _cpp_get_source_tarball(_cfobd_tar_file "${ARGN}")
-    _cpp_get_cache_path(
-            _cfobd_dest
-            NAME ${_cfobd_NAME}
-            TARBALL ${_cfobd_tar_file}
-            TOOLCHAIN ${_cfobd_TOOLCHAIN}
-            CPP_CACHE ${_cfobd_CPP_CACHE}
+    #Didn't find it so now we build it
+    set(_cfobd_root ${_cfobd_BINARY_DIR}/external/${_cfobd_NAME})
+    file(MAKE_DIRECTORY ${_cfobd_root})
 
+    #Get the source
+    set(_cfobd_tar_file ${_cfobd_root}/${_cfobd_NAME}.tar.gz)
+    _cpp_get_source_tarball(
+            ${_cfobd_tar_file}
+            ${ARGN}
     )
-    _cpp_build_dependency(_cfobd_tar_file _cfobd_dest)
-    #Append to target Root
 
-    #Set root
-    find_dependency(_cfobd_NAME REQUIRED)
+    #Make the new toolchain by copying old and appending CMAKE_ARGS
+    set(_cfobd_toolchain ${_cfobd_root}/toolchain.cmake)
+    file(READ ${CMAKE_TOOLCHAIN_FILE} _cfobd_contents)
+    file(WRITE ${_cfobd_toolchain} "${_cfobd_contents}")
+    _cpp_change_toolchain(
+        TOOLCHAIN ${_cfobd_toolchain}
+        CMAKE_ARGS "${_cfobd_CMAKE_ARGS}"
+    )
+
+    #Build from source
+    file(SHA1 ${_cfobd_tar_file} _cfobd_src_hash)
+    set(
+        _cfobd_source_path
+        ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_src_hash}
+    )
+    file(SHA1 ${_cfobd_toolchain} _cfobd_tc_hash)
+    set(_cfobd_install_path ${_cfobd_source_path}/${_cfobd_tc_hash})
+
+    #Now that we know the install path try to find it one more time in case CPP
+    #already built it
+    cpp_find_dependency(
+        NAME ${_cfobd_NAME}
+        PATHS ${_cfobd_install_path}
+        RESULT _cfobd_found
+    )
+    if(_cfobd_found)
+        _cpp_debug_print("Using cached version at: ${_cfobd_install_path}")
+        _cpp_update_find_cmd(${_cfobd_NAME} ${_cfobd_install_path})
+        add_library(_cpp_${_cfobd_NAME}_External INTERFACE)
+        return()
+    endif()
+
+    _cpp_untar_directory(${_cfobd_tar_file} ${_cfobd_source_path}/source)
+    _cpp_build_local_dependency(
+         NAME ${_cfobd_NAME}
+         BINARY_DIR ${_cfobd_root}/CMakeFiles
+         SOURCE_DIR ${_cfobd_source_path}/source
+         TOOLCHAIN ${_cfobd_toolchain}
+         INSTALL_DIR ${_cfobd_install_path}
+         CMAKE_ARGS ${_cfobd_CMAKE_ARGS}
+    )
+
+    #Update the find_dependency command on the target
+    _cpp_update_find_cmd(${_cfobd_NAME} ${_cfobd_install_path})
+
+    #Find it so variables/targets are in scope
+    cpp_find_dependency(
+        NAME ${_cfobd_NAME}
+        REQUIRED
+        PATHS ${_cfobd_source_path}/${_cfobd_tc_hash}
+    )
+    add_library(_cpp_${_cfobd_NAME}_External INTERFACE)
 endfunction()

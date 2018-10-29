@@ -78,7 +78,7 @@ endfunction()
 
 function(_cpp_run_sub_build _crsb_dir)
     set(_crsb_T_kwargs NO_BUILD NO_INSTALL)
-    set(_crsb_O_kwargs INSTALL_PREFIX OUTPUT CONTENTS NAME)
+    set(_crsb_O_kwargs INSTALL_PREFIX OUTPUT CONTENTS NAME TOOLCHAIN)
     set(_crsb_M_kwargs CMAKE_ARGS)
     cmake_parse_arguments(
         _crsb
@@ -88,6 +88,7 @@ function(_cpp_run_sub_build _crsb_dir)
         ${ARGN}
     )
     _cpp_non_empty(_crsb_output_set _crsb_OUTPUT)
+    cpp_option(_crsb_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
     _cpp_write_top_list("${_crsb_dir}" "${_crsb_NAME}" "${_crsb_CONTENTS}")
 
     if(_crsb_NO_INSTALL)
@@ -110,7 +111,7 @@ function(_cpp_run_sub_build _crsb_dir)
         "CMake command: ${CMAKE_COMMAND}
         -H${_crsb_dir}
         -Bbuild
-        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+        -DCMAKE_TOOLCHAIN_FILE=${_crsb_TOOLCHAIN}
         -DCMAKE_CPP_DEBUG_MODE=ON
         ${_crsb_add_args}"
     )
@@ -119,7 +120,7 @@ function(_cpp_run_sub_build _crsb_dir)
         COMMAND ${CMAKE_COMMAND}
                 -H${_crsb_dir}
                 -Bbuild
-                -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+                -DCMAKE_TOOLCHAIN_FILE=${_crsb_TOOLCHAIN}
                 -DCPP_DEBUG_MODE=ON
                 ${_crsb_add_args}
         WORKING_DIRECTORY ${_crsb_dir}

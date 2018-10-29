@@ -48,18 +48,22 @@ endfunction()
 
 function(_cpp_change_toolchain)
     set(_cct_O_kwargs TOOLCHAIN)
-    set(_cct_M_kwargs VARIABLES)
-    cmake_parse_arguments(_cct "" "${_cct_O_kwargs}" "${_cct_M_kwargs}" ${ARGN})
+    set(_cct_M_kwargs CMAKE_ARGS)
+    cmake_parse_arguments(
+        _cct
+        ""
+        "${_cct_O_kwargs}"
+        "${_cct_M_kwargs}"
+        "${ARGN}"
+    )
     cpp_option(_cct_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
     file(READ "${_cct_TOOLCHAIN}" _cct_contents)
-    list(LENGTH _cct_VARIABLES _cct_length)
-    set(_cct_i "0")
-    while(_cct_i LESS _cct_length)
-        math(EXPR _cct_j "${_cct_i} + 1")
-        list(GET _cct_VARIABLES "${_cct_i}" _cct_var)
-        list(GET _cct_VARIABLES "${_cct_j}" _cct_value)
+    foreach(_cct_cmake_arg ${_cct_CMAKE_ARGS})
+        string(REGEX MATCH "([^=]*)=(.*)" _cct_found "${_cct_cmake_arg}")
+        set(_cct_var "${CMAKE_MATCH_1}")
+        set(_cct_val "${CMAKE_MATCH_2}")
         _cpp_contains(_cct_has_val "${_cct_var}" "${_cct_contents}")
-        set(_cct_new_line "set(${_cct_var} \"${_cct_value}\")")
+        set(_cct_new_line "set(${_cct_var} \"${_cct_val}\")")
         if(_cct_has_val)
             set(_cct_regex_str "set\\(${_cct_var} [^\\)]*\\)")
             string(
@@ -69,9 +73,8 @@ function(_cpp_change_toolchain)
                 _cct_contents "${_cct_contents}"
             )
         else()
-            list(APPEND _cct_contents "${_cct_new_line}")
+            set(_cct_contents "${_cct_contents}${_cct_new_line}\n")
         endif()
-        math(EXPR _cct_i "${_cct_i} + 2")
-    endwhile()
+    endforeach()
     file(WRITE "${_cct_TOOLCHAIN}" "${_cct_contents}")
 endfunction()

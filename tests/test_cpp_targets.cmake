@@ -233,7 +233,7 @@ _cpp_assert_exists(${test1_share}/dummy-targets-debug.cmake)
 
 #Content checks
 file(READ ${test1_share}/dummy-targets.cmake test1_targets)
-_cpp_assert_contains("dummy::dummy" "${test1_targets}")
+_cpp_assert_contains("dummy::dummy" "${test1_targets}")URL
 
 #Library with dependency
 set(test2_root ${test_root}/test2)

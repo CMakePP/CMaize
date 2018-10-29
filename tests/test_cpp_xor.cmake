@@ -51,3 +51,12 @@ CONTENTS
     "_cpp_xor(output arg1 arg2)"
     "_cpp_assert_false(output)"
 )
+
+_cpp_add_test(
+TITLE "TRUE and empty string"
+CONTENTS
+    "set(arg1 \"\")"
+    "set(arg2 TRUE)"
+    "_cpp_xor(output arg1 arg2)"
+    "_cpp_assert_true(output)"
+)
