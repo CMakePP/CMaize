@@ -50,9 +50,9 @@ function(cpp_add_library _cal_name)
         ${ARGN}
     )
 
-    _cpp_non_empty(_cal_has_src _cal_SOURCES)
-    _cpp_non_empty(_cal_has_incs _cal_INCLUDES)
-    _cpp_non_empty(_cal_has_deps _cal_DEPENDS)
+    _cpp_is_not_empty(_cal_has_src _cal_SOURCES)
+    _cpp_is_not_empty(_cal_has_incs _cal_INCLUDES)
+    _cpp_is_not_empty(_cal_has_deps _cal_DEPENDS)
     cpp_option(_cal_CXX_STANDARD 17)
     cpp_option(_cal_INCLUDE_DIR ${PROJECT_SOURCE_DIR})
     if(_cal_STATIC)
@@ -113,7 +113,7 @@ function(cpp_add_executable _cae_name)
             "${_cae_M_KWARGS}"
             ${ARGN}
     )
-    _cpp_non_empty(_cae_has_src _cae_SOURCES)
+    _cpp_is_not_empty(_cae_has_src _cae_SOURCES)
     _cpp_assert_true(_cae_has_src)
     add_executable(${_cae_name} ${_cae_SOURCES})
     cpp_option(_cae_CXX_STANDARD 17)
@@ -126,7 +126,7 @@ function(cpp_add_executable _cae_name)
     target_compile_features(
         ${_cae_name} PUBLIC "cxx_std_${_cae_CXX_STANDARD}"
     )
-    _cpp_non_empty(_cae_has_deps _cae_DEPENDS)
+    _cpp_is_not_empty(_cae_has_deps _cae_DEPENDS)
     if(_cae_has_deps)
         target_link_libraries(${_cae_name} ${_cae_DEPENDS})
     endif()

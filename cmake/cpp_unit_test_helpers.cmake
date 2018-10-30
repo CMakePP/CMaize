@@ -35,9 +35,11 @@ function(_cpp_add_test)
 
     #Write testing files and run test
     foreach(_cat_line ${_cat_CONTENTS})
-        #Need to re-escape quotes and $'s
+        message("${_cat_line}")
+        #Need to re-escape quotes, $'s, and ;'s
         string(REPLACE "\"" "\\\"" _cat_line "${_cat_line}")
         string(REPLACE "\$" "\\\$" _cat_line "${_cat_line}")
+        string(REPLACE "\;" "\\\\\;" _cat_line "${_cat_line}")
         set(_cat_commands "${_cat_commands}${_cat_line}\n")
     endforeach()
     _cpp_run_cmake_command(

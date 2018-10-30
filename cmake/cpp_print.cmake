@@ -33,7 +33,7 @@ function(_cpp_print_target _cpt_name)
             TARGET ${_cpt_name}
             PROPERTY ${_cpt_prop}
         )
-        _cpp_non_empty(_cpt_has_prop _cpt_value)
+        _cpp_is_not_empty(_cpt_has_prop _cpt_value)
         if(_cpt_has_prop)
             message("${_cpt_prop} : ${_cpt_value}")
         endif()
@@ -49,7 +49,7 @@ function(_cpp_print_interface _cpt_name)
                 TARGET ${_cpt_name}
                 PROPERTY INTERFACE_${_cpt_prop}
         )
-        _cpp_non_empty(_cpt_has_prop _cpt_value)
+        _cpp_is_not_empty(_cpt_has_prop _cpt_value)
         if(_cpt_has_prop)
             message("${_cpt_prop} : ${_cpt_value}")
         endif()

@@ -36,7 +36,7 @@ function(_cpp_record_find)
     _cpp_assert_true(_crf_NAME)
     set(_crf_command "cpp_find_dependency(\n")
     foreach(_crf_O_kwarg_i ${_crf_O_kwargs})
-        _cpp_non_empty(_crf_set _crf_${_crf_O_kwarg_i})
+        _cpp_is_not_empty(_crf_set _crf_${_crf_O_kwarg_i})
         if(_crf_set)
             set(
               _crf_command
@@ -45,7 +45,7 @@ function(_cpp_record_find)
         endif()
     endforeach()
     foreach(_crf_M_kwarg_i ${_crf_M_kwargs})
-        _cpp_non_empty(_crf_set _crf_${_crf_M_kwarg_i})
+        _cpp_is_not_empty(_crf_set _crf_${_crf_M_kwarg_i})
         if(_crf_set)
             set(_crf_command "${_crf_command}    ${_crf_M_kwarg_i} ")
             foreach(_crf_value_i ${_crf_${_crf_M_kwarg_i}})
@@ -99,7 +99,7 @@ function(cpp_find_dependency)
 
 
     #Did the user set XXX_ROOT?  If so try to find package
-    _cpp_non_empty(_cfd_root_set ${_cfd_NAME}_ROOT)
+    _cpp_is_not_empty(_cfd_root_set ${_cfd_NAME}_ROOT)
     if(_cfd_root_set)
         find_package(
             ${_cfd_NAME}
@@ -185,7 +185,7 @@ function(_cpp_get_gh_url _cggu_return)
     _cpp_debug_print("Organization/User: ${_cggu_org}\nRepo: ${_cggu_repo}")
 
     if(_cggu_PRIVATE)
-        _cpp_non_empty(_cggu_token_set CPP_GITHUB_TOKEN)
+        _cpp_is_not_empty(_cggu_token_set CPP_GITHUB_TOKEN)
         if(NOT _cggu_token_set)
             message(
                 FATAL_ERROR

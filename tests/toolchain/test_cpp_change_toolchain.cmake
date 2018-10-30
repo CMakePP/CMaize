@@ -1,5 +1,5 @@
 include(${CMAKE_TOOLCHAIN_FILE})
-include(cpp_unit_test_helpers.cmake)
+include(cpp_unit_test_helpers)
 _cpp_setup_build_env("change_toolchain")
 
 set(test_dir ${test_prefix}/${test_number})
@@ -49,4 +49,12 @@ CONTENTS
     "                          \"${test_dir}/toolchain.cmake\")"
     "_cpp_assert_file_contains(\"not_a_value\""
     "                          \"${test_dir}/toolchain.cmake\")"
+)
+
+set(test_dir ${test_prefix}/${test_number})
+_cpp_add_test(
+TITLE "Writes toolchain if it DNE"
+CONTENTS
+    "_cpp_change_toolchain(TOOLCHAIN ${test_dir}/toolchain.cmake)"
+    "_cpp_assert_exists(${test_dir}/toolchain.cmake)"
 )

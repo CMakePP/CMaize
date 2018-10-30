@@ -1,5 +1,5 @@
 include(${CMAKE_TOOLCHAIN_FILE})
-include(cpp_unit_test_helpers.cmake)
+include(cpp_unit_test_helpers)
 include(cpp_dependency)
 include(cpp_assert)
 set(CPP_DEBUG_MODE ON)
@@ -11,9 +11,9 @@ set(gh_repo "github.com/CMakePackagingProject/CMakePackagingProject")
 #The successful unpacking of our repo is checked by asserting that our files are
 #there
 function(validate_result _cpp_vr_dir)
-    set(_cpp_comps bin cmake CMakeLists.txt cpp-config.cmake.in Jenkinsfile
-                   LICENSE README.md tests
-    )
+    set(_cpp_comps bin cmake ../CMakeLists.txt cpp-config.cmake.in Jenkinsfile
+        LICENSE README.md tests
+        )
     foreach(_vr_comp ${_cpp_comps})
         _cpp_assert_exists(${_cpp_vr_dir}/${_vr_comp})
     endforeach()

@@ -38,7 +38,7 @@ function(_cpp_is_empty _cie_return _cie_input)
     set(${_cie_return} ${_cie_empty} PARENT_SCOPE)
 endfunction()
 
-function(_cpp_non_empty _cne_return _cne_input)
+function(_cpp_is_not_empty _cne_return _cne_input)
     string(COMPARE NOTEQUAL "${${_cne_input}}" "" _cne_empty)
     set(${_cne_return} ${_cne_empty} PARENT_SCOPE)
 endfunction()

@@ -1,5 +1,5 @@
 include(${CMAKE_TOOLCHAIN_FILE})
-include(cpp_unit_test_helpers.cmake)
+include(../../cmake/cpp_unit_test_helpers.cmake)
 _cpp_setup_build_env("write_toolchain")
 
 _cpp_add_test(

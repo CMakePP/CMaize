@@ -31,9 +31,7 @@ macro(CPPMain)
     #Options for CPP
     cpp_option(CPP_DEBUG_MODE ON)
     #cpp_option(CPP_INSTALL_CACHE $ENV{HOME}/.cpp_cache)
-    cpp_option(CPP_INSTALL_CACHE ${CMAKE_BINARY_DIR}/.cpp_cache)
-    cpp_option(CPP_FIND_RECIPES ${PROJECT_SOURCE_DIR}/cmake/find_external)
-    cpp_option(CPP_BUILD_RECIPES ${PROJECT_SOURCE_DIR}/cmake/build_external)
+    cpp_option(CPP_INSTALL_CACHE ${CMAKE_BINARY_DIR}/cpp_cache)
 
     #CMake options that should be considered in some regard
     cpp_option(CMAKE_BUILD_TYPE Debug)
@@ -61,11 +59,14 @@ macro(CPPMain)
     endif()
 
     #Write a toolchain file to forward if the user did not provide one
-    _cpp_is_empty(_cm_tool CMAKE_TOOLCHAIN_FILE)
+    _cpp_is_not_empty(_cm_tool CMAKE_TOOLCHAIN_FILE)
     if(_cm_tool)
-        _cpp_write_toolchain_file()
+       set(_cm_msg1 "Adding ${CMAKE_TOOLCHAIN_FILE} contents to")
+        _cpp_debug_print(
+           "${_cm_msg1} ${CMAKE_BINARY_DIR}/toolchain.cmake"
+        )
     endif()
-
+    _cpp_write_toolchain_file()
 
     #Print out the details of the configuration
     message("Install settings for ${PROJECT_NAME}:")

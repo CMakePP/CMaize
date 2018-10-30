@@ -1,7 +1,7 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_assert)
 include(cpp_cmake_helpers)
-include(cpp_unit_test_helpers.cmake)
+include(../cmake/cpp_unit_test_helpers.cmake)
 
 _cpp_setup_build_env(cpp_assert)
 

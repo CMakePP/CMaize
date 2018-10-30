@@ -1,5 +1,5 @@
 include(${CMAKE_TOOLCHAIN_FILE})
-include(cpp_unit_test_helpers.cmake)
+include(cpp_unit_test_helpers)
 _cpp_setup_build_env("get_source_tarball")
 
 set(common_fail "Please specify either URL or SOURCE_DIR")

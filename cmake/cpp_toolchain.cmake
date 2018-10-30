@@ -28,36 +28,20 @@ function(_cpp_get_toolchain_vars _cgtv_return)
     set(${_cgtv_return} "${_cgtv_vars}" PARENT_SCOPE)
 endfunction()
 
-function(_cpp_write_toolchain_file)
-    set(_cwtf_O_kwargs DESTINATION)
-    cmake_parse_arguments(_cwtf "" "${_cwtf_O_kwargs}" "" ${ARGN})
-    cpp_option(_cwtf_DESTINATION "${CMAKE_BINARY_DIR}")
-    set(_cwtf_file ${_cwtf_DESTINATION}/toolchain.cmake)
-    set(_cwtf_contents)
-    _cpp_get_toolchain_vars(_cwtf_vars)
-    foreach(_cwtf_var ${_cwtf_vars})
-        _cpp_non_empty(_cwtf_non_empty ${_cwtf_var})
-        if(_cwtf_non_empty)
-            set(_cwtf_line "set(${_cwtf_var} \"${${_cwtf_var}}\")\n")
-            set(_cwtf_contents "${_cwtf_contents}${_cwtf_line}")
-        endif()
-    endforeach()
-    file(WRITE ${_cwtf_file} ${_cwtf_contents})
-    set(CMAKE_TOOLCHAIN_FILE ${_cwtf_file} PARENT_SCOPE)
-endfunction()
-
 function(_cpp_change_toolchain)
     set(_cct_O_kwargs TOOLCHAIN)
     set(_cct_M_kwargs CMAKE_ARGS)
     cmake_parse_arguments(
-        _cct
-        ""
-        "${_cct_O_kwargs}"
-        "${_cct_M_kwargs}"
-        "${ARGN}"
+            _cct
+            ""
+            "${_cct_O_kwargs}"
+            "${_cct_M_kwargs}"
+            "${ARGN}"
     )
     cpp_option(_cct_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
-    file(READ "${_cct_TOOLCHAIN}" _cct_contents)
+    if(EXISTS ${_cct_TOOLCHAIN})
+        file(READ "${_cct_TOOLCHAIN}" _cct_contents)
+    endif()
     foreach(_cct_cmake_arg ${_cct_CMAKE_ARGS})
         string(REGEX MATCH "([^=]*)=(.*)" _cct_found "${_cct_cmake_arg}")
         set(_cct_var "${CMAKE_MATCH_1}")
@@ -67,10 +51,10 @@ function(_cpp_change_toolchain)
         if(_cct_has_val)
             set(_cct_regex_str "set\\(${_cct_var} [^\\)]*\\)")
             string(
-                REGEX
-                REPLACE "${_cct_regex_str}"
-                "${_cct_new_line}"
-                _cct_contents "${_cct_contents}"
+                    REGEX
+                    REPLACE "${_cct_regex_str}"
+                    "${_cct_new_line}"
+                    _cct_contents "${_cct_contents}"
             )
         else()
             set(_cct_contents "${_cct_contents}${_cct_new_line}\n")
@@ -78,3 +62,26 @@ function(_cpp_change_toolchain)
     endforeach()
     file(WRITE "${_cct_TOOLCHAIN}" "${_cct_contents}")
 endfunction()
+
+function(_cpp_write_toolchain_file)
+    set(_cwtf_O_kwargs DESTINATION)
+    cmake_parse_arguments(_cwtf "" "${_cwtf_O_kwargs}" "" ${ARGN})
+    cpp_option(_cwtf_DESTINATION "${CMAKE_BINARY_DIR}")
+    set(_cwtf_file ${_cwtf_DESTINATION}/toolchain.cmake)
+    set(_cwtf_contents)
+    _cpp_get_toolchain_vars(_cwtf_vars)
+    foreach(_cwtf_var ${_cwtf_vars})
+        _cpp_is_not_empty(_cwtf_non_empty ${_cwtf_var})
+        if(_cwtf_non_empty)
+            list(
+                APPEND
+                _cwtf_contents
+                "${_cwtf_var}=${${_cwtf_var}}"
+            )
+        endif()
+    endforeach()
+    _cpp_change_toolchain(TOOLCHAIN ${_cwtf_file} CMAKE_ARGS ${_cwtf_contents})
+    set(CMAKE_TOOLCHAIN_FILE ${_cwtf_file} PARENT_SCOPE)
+endfunction()
+
+

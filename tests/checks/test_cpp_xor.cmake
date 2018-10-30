@@ -1,5 +1,5 @@
 include(${CMAKE_TOOLCHAIN_FILE})
-include(cpp_unit_test_helpers.cmake)
+include(cpp_unit_test_helpers)
 _cpp_setup_build_env("test_cpp_xor")
 
 _cpp_add_test(

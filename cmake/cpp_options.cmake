@@ -13,15 +13,22 @@
 #                        limitations under the License.                        #
 ################################################################################
 
-include(cpp_checks) #For _cpp_non_empty
+include(cpp_checks) #For _cpp_is_not_empty
 include(cpp_print) #For _cpp_debug_print
 
 function(cpp_option _cpo_opt _cpo_default)
-    _cpp_non_empty(_cpo_valid ${_cpo_opt})
+    _cpp_is_not_empty(_cpo_valid ${_cpo_opt})
     if(_cpo_valid)
         _cpp_debug_print("${_cpo_opt} set by user to: ${${_cpo_opt}}")
     else()
         set(${_cpo_opt} ${_cpo_default} PARENT_SCOPE)
         _cpp_debug_print("${_cpo_opt} set to default: ${_cpo_default}")
     endif()
+endfunction()
+
+function(_cpp_forward_list _cfl_return _cfl_list)
+    message("${_cfl_list}")
+    string(REGEX REPLACE ";" "\\\;" _cfl_temp_return "${_cfl_list}")
+    message("${_cfl_temp_return}")
+    set(${_cfl_return} "${_cfl_temp_return}" PARENT_SCOPE)
 endfunction()

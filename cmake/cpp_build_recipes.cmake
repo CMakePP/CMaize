@@ -46,7 +46,7 @@ function(cpp_github_cmake _cgc_name _cgc_url)
     set(_cgc_gh_api "https://api.github.com/repos")
 
     _cpp_option(_cgc_BRANCH master)
-    _cpp_non_empty(_cgc_token_set _cgc_TOKEN)
+    _cpp_is_not_empty(_cgc_token_set _cgc_TOKEN)
     if(_cgc_token_set AND _cgc_PRIVATE)
         set(_cgc_token "?access_token=${_cgc_TOKEN}")
     elseif(_cgc_PRIVATE)

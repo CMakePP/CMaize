@@ -28,7 +28,7 @@ function(_cpp_run_cmake_command)
         ${ARGN}
     )
 
-    _cpp_non_empty(_crcc_cmd_set _crcc_COMMAND)
+    _cpp_is_not_empty(_crcc_cmd_set _crcc_COMMAND)
     _cpp_assert_true(_crcc_cmd_set)
     cpp_option(_crcc_BINARY_DIR ${CMAKE_BINARY_DIR})
 
@@ -87,14 +87,14 @@ function(_cpp_run_sub_build _crsb_dir)
         "${_crsb_M_kwargs}"
         ${ARGN}
     )
-    _cpp_non_empty(_crsb_output_set _crsb_OUTPUT)
+    _cpp_is_not_empty(_crsb_output_set _crsb_OUTPUT)
     cpp_option(_crsb_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
     _cpp_write_top_list("${_crsb_dir}" "${_crsb_NAME}" "${_crsb_CONTENTS}")
 
     if(_crsb_NO_INSTALL)
         set(_crsb_install_prefix "")
     else()
-        _cpp_non_empty(_crsb_install_set _crsb_INSTALL_PREFIX)
+        _cpp_is_not_empty(_crsb_install_set _crsb_INSTALL_PREFIX)
         _cpp_assert_true(_crsb_install_set)
         set(
             _crsb_install_prefix
