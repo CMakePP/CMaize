@@ -1,5 +1,6 @@
 set(
-    USE_CASE_TESTS provided_toolchain
+    USE_CASE_TESTS  provided_lists
+                    provided_toolchain
 )
 
 foreach(test_i ${USE_CASE_TESTS})

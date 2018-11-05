@@ -1,2 +1,0 @@
-include(${CMAKE_TOOLCHAIN_FILE})
-

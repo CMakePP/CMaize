@@ -58,3 +58,17 @@ CONTENTS
     "_cpp_change_toolchain(TOOLCHAIN ${test_dir}/toolchain.cmake)"
     "_cpp_assert_exists(${test_dir}/toolchain.cmake)"
 )
+
+set(test_dir ${test_prefix}/${test_number})
+_cpp_add_test(
+TITLE "Can pass packed list"
+CONTENTS
+    "_cpp_change_toolchain("
+    "   TOOLCHAIN ${test_dir}/toolchain.cmake"
+    "   CMAKE_ARGS CMAKE_PREFIX_PATH=\"/a/path/1_cpp_0_cpp_/a/path/2\""
+    ")"
+)
+_cpp_assert_file_contains(
+    "set(CMAKE_PREFIX_PATH \"/a/path/1;/a/path/2\")"
+    "${test_dir}/toolchain.cmake"
+)

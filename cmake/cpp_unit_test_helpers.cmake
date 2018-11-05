@@ -1,7 +1,7 @@
 include(cpp_cmake_helpers)
 include(cpp_checks)
 
-set(test_number 0)
+set(test_number 1)
 function(_cpp_print_banner _cpb_msg)
     string(RANDOM LENGTH 80 ALPHABET "*" _cpb_banner)
     message("${_cpb_banner}")
@@ -10,56 +10,34 @@ function(_cpp_print_banner _cpb_msg)
 endfunction()
 
 function(_cpp_add_test)
-    set(_cat_T_kwargs SHOULD_FAIL)
-    set(_cat_O_kwargs REASON TITLE)
-    set(_cat_M_kwargs CONTENTS)
-    cmake_parse_arguments(
-        _cat
-        "${_cat_T_kwargs}"
-        "${_cat_O_kwargs}"
-        "${_cat_M_kwargs}"
-        "${ARGN}"
+    cpp_parse_arguments(
+        _cat "${ARGN}"
+        TOGGLES SHOULD_FAIL
+        OPTIONS REASON TITLE
+        LISTS CONTENTS
+        REQUIRED TITLE CONTENTS
     )
 
-    #We use should fail b/c it's more descriptive and less common, but
-    #internally should pass is more convenient
     if(_cat_SHOULD_FAIL)
-        set(_cat_should_pass FALSE)
-    else()
-        set(_cat_should_pass TRUE)
+        set(_cat_can_fail CAN_FAIL)
     endif()
-
-    math(EXPR test_number "${test_number} + 1")
-    set(test_number "${test_number}" PARENT_SCOPE)
-    set(_cat_result_msg "${_cat_TITLE} ..................")
-
-    #Write testing files and run test
-    foreach(_cat_line ${_cat_CONTENTS})
-        message("${_cat_line}")
-        #Need to re-escape quotes, $'s, and ;'s
-        string(REPLACE "\"" "\\\"" _cat_line "${_cat_line}")
-        string(REPLACE "\$" "\\\$" _cat_line "${_cat_line}")
-        string(REPLACE "\;" "\\\\\;" _cat_line "${_cat_line}")
-        set(_cat_commands "${_cat_commands}${_cat_line}\n")
+    foreach(_cat_cmd_i ${_cat_CONTENTS})
+        set(_cat_commands "${_cat_commands}\n${_cat_cmd_i}")
     endforeach()
-    _cpp_run_cmake_command(
-        COMMAND "set(CPP_DEBUG_MODE ON)
-                _cpp_run_sub_build(
-                   ${test_prefix}/${test_number}
-                   NO_INSTALL
-                   NAME ${test_number}
-                   CONTENTS \"${_cat_commands}\"
-                )"
-        INCLUDES cpp_cmake_helpers
+    _cpp_run_sub_build(
+        ${test_prefix}/${test_number}
+        NAME ${test_number}
+        NO_INSTALL
+        ${_cat_can_fail}
         RESULT _cat_result
         OUTPUT _cat_output
+        CONTENTS "set(CPP_DEBUG_MODE ON)\n${_cat_commands}"
     )
 
     #Report status to the user
     #We get back 0 if there's no errors so result=true means we had an error
-    #We get a failure unless XOR passes, but not a great way to do XOR in CMake
     set(_cat_passed TRUE)
-    if(NOT _cat_should_pass)
+    if(_cat_SHOULD_FAIL)
         if(_cat_result AND _cat_REASON) #Did it crashed for the right reason?
             _cpp_contains(_cat_reason_met "${_cat_REASON}" "${_cat_output}")
             if(NOT _cat_reason_met)
@@ -70,18 +48,20 @@ function(_cpp_add_test)
         else() #Passed, but it wasn't supposed to
             set(_cat_passed FALSE)
         endif()
-    elseif(_cat_result) #crashed, but not supposed to
-        set(_cat_passed FALSE)
     endif()
 
+    #Print the result
+    set(_cat_result_msg "${_cat_TITLE} ..................")
     if(_cat_passed)
         message("${_cat_result_msg}passed")
     else()
         message("${_cat_result_msg}***failed")
         message(FATAL_ERROR "Output:\n\n${_cat_output}")
     endif()
-endfunction()
 
+    math(EXPR test_number "${test_number} + 1")
+    set(test_number "${test_number}" PARENT_SCOPE)
+endfunction()
 
 function(_cpp_make_random_dir _cmrd_result _cmrd_prefix)
     string(RANDOM _cmrd_random_prefix)
@@ -113,17 +93,16 @@ function(_cpp_dummy_cxx_package _cdcp_prefix)
     cpp_option(_cdcp_NAME dummy)
     set(_cdcp_root ${_cdcp_prefix}/${_cdcp_NAME})
     _cpp_dummy_cxx_library(${_cdcp_root})
-    _cpp_write_top_list(
+    _cpp_write_list(
         ${_cdcp_root}
-        ${_cdcp_NAME}
-        "include(cpp_targets)
-         cpp_add_library(
-            ${_cdcp_NAME}
-            SOURCES  a.cpp
-            INCLUDES a.hpp
-         )
-         cpp_install(TARGETS ${_cdcp_NAME})
-    "
+        NAME ${_cdcp_NAME}
+        CONTENTS "include(cpp_targets)"
+                 "cpp_add_library("
+                 "  ${_cdcp_NAME}"
+                 "  SOURCES  a.cpp"
+                 "  INCLUDES a.hpp"
+                 ")"
+                 "cpp_install(TARGETS ${_cdcp_NAME})"
     )
 endfunction()
 
