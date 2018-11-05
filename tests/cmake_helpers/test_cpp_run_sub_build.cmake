@@ -54,3 +54,23 @@ CONTENTS
 "_cpp_assert_does_not_exist(${src_dir}/install)"
 "_cpp_assert_exists(${test_prefix}/${test_number}/install)"
 )
+
+file(
+    WRITE ${test_prefix}/${test_number}/test_toolchain.cmake
+    "set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})\nset(foo bar)"
+)
+set(src_dir ${test_prefix}/${test_number})
+_cpp_run_sub_build(
+   ${src_dir}
+   NAME dummy
+   NO_INSTALL
+   TOOLCHAIN ${src_dir}/test_toolchain.cmake
+   CONTENTS
+       "_cpp_assert_equal(bar \"\${foo}\")"
+       "_cpp_assert_file_contains("
+       "    \"set(foo bar)\""
+       "    \${CMAKE_TOOLCHAIN_FILE}"
+       ")"
+   OUTPUT test_output
+)
+message("${test_output}")

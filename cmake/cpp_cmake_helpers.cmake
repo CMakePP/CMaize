@@ -33,7 +33,8 @@ function(_cpp_write_list _cwl_directory)
     )
     list(
         APPEND _cwl_contents
-        "include(CPPMain)" "CPPMain()" "${_cwl_CONTENTS}"
+        "include(CPPMain)" "CPPMain()"
+        "${_cwl_CONTENTS}"
     )
     string(REPLACE ";" "\n" _cwl_contents "${_cwl_contents}")
     file(WRITE ${_cwl_directory}/CMakeLists.txt "${_cwl_contents}")
