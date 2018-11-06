@@ -54,6 +54,7 @@ _cpp_add_test(
 TITLE "Fails if PRIVATE keyword is present, but CPP_GITHUB_TOKEN is not set"
 SHOULD_FAIL REASON  "For private repos CPP_GITHUB_TOKEN must be a valid token."
 CONTENTS
+    "set(CPP_GITHUB_TOKEN \"\")"
     "_cpp_get_gh_url(output URL github.com/organization/repo PRIVATE)"
 )
 
