@@ -112,6 +112,12 @@ function(cpp_find_dependency)
         )
         if(${_cfd_NAME}_FOUND)
           _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
+          get_filename_component(
+              _cfd_install_path
+              ${${_cfd_NAME}_CONFIG}
+              DIRECTORY
+          )
+          _cpp_update_find_cmd(${_cfd_NAME} ${_cfd_install_path})
           return()
         endif()
 
@@ -142,6 +148,12 @@ function(cpp_find_dependency)
     )
     if(${_cfd_NAME}_FOUND)
         _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
+        get_filename_component(
+                _cfd_install_path
+                ${${_cfd_NAME}_CONFIG}
+                DIRECTORY
+        )
+        _cpp_update_find_cmd(${_cfd_NAME} ${_cfd_install_path})
         return()
     endif()
 
@@ -413,8 +425,6 @@ function(cpp_find_or_build_dependency)
     )
     if(_cfobd_found)
         _cpp_debug_print("Using cached version at: ${_cfobd_install_path}")
-        _cpp_update_find_cmd(${_cfobd_NAME} ${_cfobd_install_path})
-        add_library(_cpp_${_cfobd_NAME}_External INTERFACE)
         return()
     endif()
 
@@ -432,14 +442,11 @@ function(cpp_find_or_build_dependency)
          CMAKE_ARGS ${_cfobd_CMAKE_ARGS}
     )
 
-    #Update the find_dependency command on the target
-    _cpp_update_find_cmd(${_cfobd_NAME} ${_cfobd_install_path})
-
     #Find it so variables/targets are in scope
     cpp_find_dependency(
         NAME ${_cfobd_NAME}
         REQUIRED
         PATHS ${_cfobd_source_path}/${_cfobd_tc_hash}
     )
-    add_library(_cpp_${_cfobd_NAME}_External INTERFACE)
+
 endfunction()
