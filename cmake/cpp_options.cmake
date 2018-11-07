@@ -28,6 +28,10 @@ endfunction()
 
 function(cpp_parse_arguments _cpa_prefix _cpa_argn)
     set(_cpa_M_kwargs TOGGLES OPTIONS LISTS REQUIRED)
+    foreach(_cpa_arg_i ${_cpa_M_kwargs})
+        set()
+
+
     cmake_parse_arguments(_cpa "" "" "${_cpa_M_kwargs}" "${ARGN}")
     cmake_parse_arguments(
         ${_cpa_prefix}

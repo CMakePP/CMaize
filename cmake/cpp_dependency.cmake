@@ -63,19 +63,14 @@ function(_cpp_record_find)
 endfunction()
 
 function(cpp_find_dependency)
-    set(_cfd_T_kwargs REQUIRED)
-    set(_cfd_O_kwargs NAME VERSION RESULT)
-    set(_cfd_M_kwargs COMPONENTS VIRTUAL PATHS)
-
-    cmake_parse_arguments(
-            _cfd
-            "${_cfd_T_kwargs}"
-            "${_cfd_O_kwargs}"
-            "${_cfd_M_kwargs}"
-            "${ARGN}"
+    message("${ARGN}")
+    cpp_parse_arguments(
+        _cfd "${ARGN}"
+        TOGGLES REQUIRED
+        OPTIONS NAME VERSION RESULT
+        LISTS COMPONENTS VIRTUAL PATHS
+        REQUIRED NAME
     )
-    _cpp_assert_true(_cfd_NAME)
-
 
     if(_cfd_COMPONENTS)
         set(_cfd_components "COMPONENTS" ${_cfd_COMPONENTS})
@@ -96,54 +91,53 @@ function(cpp_find_dependency)
         _cpp_record_find(${ARGN})
     endif()
 
-
+    #set(_cfd_quiet QUIET)
 
     #Did the user set XXX_ROOT?  If so try to find package
     _cpp_is_not_empty(_cfd_root_set ${_cfd_NAME}_ROOT)
     if(_cfd_root_set)
+        _cpp_debug_print("Using ${_cfd_NAME}_ROOT: ${${_cfd_NAME}_ROOT}")
+        cmake_policy(SET CMP0074 NEW)
         find_package(
             ${_cfd_NAME}
             ${_cfd_VERSION}
             CONFIG
-            QUIET
+            ${_cfd_quiet}
             PATHS "${${_cfd_NAME}_ROOT}"
             NO_DEFAULT_PATH
             ${_cfd_components}
         )
         if(${_cfd_NAME}_FOUND)
           _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
-          get_filename_component(
-              _cfd_install_path
-              ${${_cfd_NAME}_CONFIG}
-              DIRECTORY
-          )
-          _cpp_update_find_cmd(${_cfd_NAME} ${_cfd_install_path})
-          return()
+        else()
+            find_package(
+                ${_cfd_NAME}
+                ${_cfd_VERSION}
+                REQUIRED
+                MODULE
+                ${_cfd_quiet}
+                ${_cfd_components}
+            )
         endif()
-
-        find_package(
-            ${_cfd_NAME}
-            ${_cfd_VERSION}
-            REQUIRED
-            MODULE
-            QUIET
-            ${_cfd_components}
-        )
+        #Root was obviously good
+        _cpp_update_find_cmd(${_cfd_NAME} ${${_cfd_NAME}_ROOT})
         return()
     endif()
 
-    list(APPEND CMAKE_PREFIX_PATH "${_cfd_PATHS}")
+    message("CFD: ${CMAKE_PREFIX_PATH} ${_cfd_PATHS}")
+    list(APPEND CMAKE_PREFIX_PATH ${_cfd_PATHS})
     #Start by hoping that a package is ideal
     find_package(
         ${_cfd_NAME}
         ${_cfd_VERSION}
         CONFIG
-#        QUIET
-        NO_PACKAGE_ROOT_PATH
-        NO_SYSTEM_ENVIRONMENT_PATH
-        NO_CMAKE_PACKAGE_REGISTRY
-        NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
-        PATHS ${_cfd_install}
+        ${_cfd_quiet}
+#        NO_PACKAGE_ROOT_PATH
+        NO_DEFAULT_PATH
+#        NO_SYSTEM_ENVIRONMENT_PATH
+#        NO_CMAKE_PACKAGE_REGISTRY
+#        NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
+        PATHS ${_cfd_PATHS}
         ${_cfd_components}
     )
     if(${_cfd_NAME}_FOUND)
@@ -157,17 +151,17 @@ function(cpp_find_dependency)
         return()
     endif()
 
-
     find_package(
         ${_cfd_NAME}
         ${_cfd_VERSION}
         ${_cfd_required}
         MODULE
-        QUIET
+        ${_cfd_quiet}
         ${_cfd_components}
     )
 
     if(${_cfd_NAME}_FOUND)
+        _cpp_update_find_cmd(${_cfd_NAME} "${_cfd_PATHS}")
         return()
     endif()
     if(_cfd_RESULT)
@@ -366,18 +360,13 @@ function(cpp_find_or_build_dependency)
     if(TARGET _cpp_${_cfobd_NAME}_External)
         return()
     endif()
-    #Because of kwargs taking multiple values need to manually forward args
-    set(_cfobd_T_kwargs PRIVATE)
-    set(_cfobd_O_kwargs NAME BINARY_DIR BRANCH URL SOURCE_DIR CPP_CACHE)
-    set(_cfobd_M_kwargs CMAKE_ARGS)
-    cmake_parse_arguments(
-        _cfobd
-        "${_cfobd_T_kwargs}"
-        "${_cfobd_O_kwargs}"
-        "${_cfobd_M_kwargs}"
-        "${ARGN}"
+    cpp_parse_arguments(
+        _cfobd "${ARGN}"
+        TOGGLES PRIVATE
+        OPTIONS NAME BINARY_DIR BRANCH URL SOURCE_DIR CPP_CACHE
+        LISTS CMAKE_ARGS
+        REQUIRED NAME
     )
-    _cpp_assert_true(_cfobd_NAME)
     cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
     cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
 
@@ -393,10 +382,7 @@ function(cpp_find_or_build_dependency)
 
     #Get the source
     set(_cfobd_tar_file ${_cfobd_root}/${_cfobd_NAME}.tar.gz)
-    _cpp_get_source_tarball(
-            ${_cfobd_tar_file}
-            ${ARGN}
-    )
+    _cpp_get_source_tarball(${_cfobd_tar_file} ${ARGN})
 
     #Make the new toolchain by copying old and appending CMAKE_ARGS
     set(_cfobd_toolchain ${_cfobd_root}/toolchain.cmake)
@@ -415,12 +401,12 @@ function(cpp_find_or_build_dependency)
     )
     file(SHA1 ${_cfobd_toolchain} _cfobd_tc_hash)
     set(_cfobd_install_path ${_cfobd_source_path}/${_cfobd_tc_hash})
-
+    message("CFOBD: ${_cfobd_install_path}")
     #Now that we know the install path try to find it one more time in case CPP
     #already built it
     cpp_find_dependency(
         NAME ${_cfobd_NAME}
-        PATHS ${_cfobd_install_path}
+        PATHS "${_cfobd_install_path}"
         RESULT _cfobd_found
     )
     if(_cfobd_found)
@@ -434,7 +420,7 @@ function(cpp_find_or_build_dependency)
     endif()
 
     _cpp_build_local_dependency(
-         NAME ${_cfobd_NAME}
+         NAME ${_cfobd_NAME}_Build
          BINARY_DIR ${_cfobd_root}/CMakeFiles
          SOURCE_DIR ${_cfobd_source_path}/source
          TOOLCHAIN ${_cfobd_toolchain}
@@ -444,9 +430,9 @@ function(cpp_find_or_build_dependency)
 
     #Find it so variables/targets are in scope
     cpp_find_dependency(
-        NAME ${_cfobd_NAME}
-        REQUIRED
-        PATHS ${_cfobd_source_path}/${_cfobd_tc_hash}
+       NAME  ${_cfobd_NAME}
+       PATHS ${_cfobd_install_path}
+       REQUIRED
     )
 
 endfunction()
