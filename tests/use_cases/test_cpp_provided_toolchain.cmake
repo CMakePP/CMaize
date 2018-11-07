@@ -35,3 +35,20 @@ CONTENTS
     "_cpp_assert_exists(${result_tc_file})"
 )
 
+_cpp_add_test(
+TITLE "Contains our new cache"
+CONTENTS
+    "_cpp_assert_file_contains("
+    "   \"set(CPP_INSTALL_CACHE \\\"${test_prefix}/test_cache\\\")\""
+    "   ${result_tc_file}"
+    ")"
+)
+
+_cpp_add_test(
+TITLE "Contains variables we didn't set"
+CONTENTS
+    "_cpp_assert_file_contains("
+    "   \"set(CMAKE_CXX_COMPILER\""
+    "   ${result_tc_file}"
+    ")"
+)

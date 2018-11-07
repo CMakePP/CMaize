@@ -112,6 +112,12 @@ function(cpp_find_dependency)
         )
         if(${_cfd_NAME}_FOUND)
           _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
+          get_filename_component(
+              _cfd_install_path
+              ${${_cfd_NAME}_CONFIG}
+              DIRECTORY
+          )
+          _cpp_update_find_cmd(${_cfd_NAME} ${_cfd_install_path})
           return()
         endif()
 
@@ -142,6 +148,12 @@ function(cpp_find_dependency)
     )
     if(${_cfd_NAME}_FOUND)
         _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
+        get_filename_component(
+                _cfd_install_path
+                ${${_cfd_NAME}_CONFIG}
+                DIRECTORY
+        )
+        _cpp_update_find_cmd(${_cfd_NAME} ${_cfd_install_path})
         return()
     endif()
 
@@ -182,7 +194,7 @@ function(_cpp_get_gh_url _cggu_return)
     string(REGEX MATCH "github\\.com/([^/]*)/([^/]*)" "" "${_cggu_URL}")
     set(_cggu_org "${CMAKE_MATCH_1}")
     set(_cggu_repo "${CMAKE_MATCH_2}")
-    _cpp_debug_print("Organization/User: ${_cggu_org}\nRepo: ${_cggu_repo}")
+    _cpp_debug_print("Organization/User: ${_cggu_org} Repo: ${_cggu_repo}")
 
     if(_cggu_PRIVATE)
         _cpp_is_not_empty(_cggu_token_set CPP_GITHUB_TOKEN)
@@ -313,18 +325,19 @@ function(_cpp_build_local_dependency)
 
     _cpp_run_sub_build(
             ${_cbld_BINARY_DIR}
-            NO_INSTALL
             NAME ${_cbld_NAME}
             OUTPUT _cbld_output
+            NO_INSTALL
             TOOLCHAIN ${_cbld_TOOLCHAIN}
-            CONTENTS "include(ExternalProject)
-                  ExternalProject_Add(
-                      ${_cbld_NAME}_External
-                      SOURCE_DIR ${_cbld_SOURCE_DIR}
-                      INSTALL_DIR ${_cbld_BINARY_DIR}/install
-                      CMAKE_ARGS ${_cbld_cmake_args}
-                  )"
+            CONTENTS "include(ExternalProject)"
+                     "ExternalProject_Add("
+                     "  ${_cbld_NAME}_External"
+                     "  SOURCE_DIR ${_cbld_SOURCE_DIR}"
+                     "  INSTALL_DIR ${_cbld_BINARY_DIR}/install"
+                     "  CMAKE_ARGS ${_cbld_cmake_args}"
+                     ")"
     )
+    _cpp_debug_print("${_cbld_output}")
 endfunction()
 
 function(_cpp_update_find_cmd _cufc_name _cufc_path)
@@ -412,8 +425,6 @@ function(cpp_find_or_build_dependency)
     )
     if(_cfobd_found)
         _cpp_debug_print("Using cached version at: ${_cfobd_install_path}")
-        _cpp_update_find_cmd(${_cfobd_NAME} ${_cfobd_install_path})
-        add_library(_cpp_${_cfobd_NAME}_External INTERFACE)
         return()
     endif()
 
@@ -431,14 +442,11 @@ function(cpp_find_or_build_dependency)
          CMAKE_ARGS ${_cfobd_CMAKE_ARGS}
     )
 
-    #Update the find_dependency command on the target
-    _cpp_update_find_cmd(${_cfobd_NAME} ${_cfobd_install_path})
-
     #Find it so variables/targets are in scope
     cpp_find_dependency(
         NAME ${_cfobd_NAME}
         REQUIRED
         PATHS ${_cfobd_source_path}/${_cfobd_tc_hash}
     )
-    add_library(_cpp_${_cfobd_NAME}_External INTERFACE)
+
 endfunction()

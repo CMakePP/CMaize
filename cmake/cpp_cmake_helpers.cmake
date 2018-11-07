@@ -17,164 +17,173 @@ include(cpp_assert) #For _cpp_assert_false
 include(cpp_print) #For _cpp_debug_print
 include(cpp_options) #For _cpp_option
 
-function(_cpp_run_cmake_command)
-    set(_crcc_O_kwargs COMMAND OUTPUT BINARY_DIR RESULT)
-    set(_crcc_M_kwargs INCLUDES CMAKE_ARGS)
-    cmake_parse_arguments(
-        _crcc
-        ""
-        "${_crcc_O_kwargs}"
-        "${_crcc_M_kwargs}"
-        ${ARGN}
+function(_cpp_write_list _cwl_directory)
+    cpp_parse_arguments(
+        _cwl "${ARGN}"
+        OPTIONS NAME
+        LISTS CONTENTS
+        REQUIRED NAME
     )
-
-    _cpp_is_not_empty(_crcc_cmd_set _crcc_COMMAND)
-    _cpp_assert_true(_crcc_cmd_set)
-    cpp_option(_crcc_BINARY_DIR ${CMAKE_BINARY_DIR})
-
-    foreach(_crcc_arg ${_crcc_CMAKE_ARGS})
-        list(APPEND _crcc_args "-D${_crcc_arg}")
-    endforeach()
-
-    #Piece file contents together
-    set(_crcc_contents "include(\${CMAKE_TOOLCHAIN_FILE})")
-    foreach(_crcc_inc ${_crcc_INCLUDES})
-        set(_crcc_contents "${_crcc_contents}\ninclude(${_crcc_inc})")
-    endforeach()
-    set(_crcc_contents "${_crcc_contents}\n${_crcc_COMMAND}")
-
-    #TODO: Call _cpp_run_sub_build????
-
-    #Write to a random file in scratch dir
-    string(RANDOM _crcc_prefix)
-    set(_crcc_file ${_crcc_BINARY_DIR}/${_crcc_prefix}.cmake)
-    file(WRITE ${_crcc_file} "${_crcc_contents}")
-    execute_process(
-        COMMAND ${CMAKE_COMMAND}
-                -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-                -DCPP_DEBUG_MODE=ON
-                ${_crcc_args}
-                -P ${_crcc_file}
-
-        OUTPUT_VARIABLE _crcc_out
-        ERROR_VARIABLE  _crcc_out
-        RESULT_VARIABLE _crcc_var
+    cpp_option(CMAKE_PROJECT_VERSION "0.0.0")
+    #This is the boilerplate header
+    set(_cwl_contents "cmake_minimum_required(VERSION ${CMAKE_VERSION})")
+    list(
+        APPEND _cwl_contents
+        "project(${_cwl_NAME} VERSION ${CMAKE_PROJECT_VERSION})"
     )
-    #Don't assert success as we may be checking for failure
-    set(${_crcc_RESULT} ${_crcc_var} PARENT_SCOPE)
-    set(${_crcc_OUTPUT} "${_crcc_out}" PARENT_SCOPE)
+    list(
+        APPEND _cwl_contents
+        "include(CPPMain)" "CPPMain()"
+        "${_cwl_CONTENTS}"
+    )
+    string(REPLACE ";" "\n" _cwl_contents "${_cwl_contents}")
+    file(WRITE ${_cwl_directory}/CMakeLists.txt "${_cwl_contents}")
 endfunction()
 
-function(_cpp_write_top_list _cwtl_dir _cwtl_name _cwtl_contents)
-    file(
-        WRITE ${_cwtl_dir}/CMakeLists.txt
-"cmake_minimum_required(VERSION ${CMAKE_VERSION})
-project(${_cwtl_name} VERSION 0.0.0)
-include(CPPMain)
-CPPMain()
-${_cwtl_contents}"
+function(_cpp_run_sub_make)
+    cpp_parse_arguments(
+        _crsm "${ARGN}"
+        OPTIONS BINARY_DIR COMMAND OUTPUT RESULT TARGET
+        REQUIRED BINARY_DIR
     )
+
+    if(_crsm_TARGET)
+        execute_process(
+                COMMAND ${CMAKE_COMMAND}
+                        --build ${_crsm_BINARY_DIR}
+                        --target ${_crsm_TARGET}
+                OUTPUT_VARIABLE _crsm_output
+                ERROR_VARIABLE _crsm_output
+                RESULT_VARIABLE _crsm_result
+        )
+    else()
+        execute_process(
+                COMMAND ${CMAKE_COMMAND} --build ${_crsm_BINARY_DIR}
+                OUTPUT_VARIABLE _crsm_output
+                ERROR_VARIABLE _crsm_output
+                RESULT_VARIABLE _crsm_result
+        )
+    endif()
+    if(_crsm_COMMAND)
+        set(${_crsm_COMMAND} "${_crsm_command}" PARENT_SCOPE)
+    endif()
+    if(_crsc_OUTPUT)
+        set(${_crsm_OUTPUT} "${_crsm_output}" PARENT_SCOPE)
+    endif()
+    if(_crsc_RESULT)
+        set(${_crsm_RESULT} "${_crsm_result}" PARENT_SCOPE)
+    endif()
 endfunction()
 
 function(_cpp_run_sub_build _crsb_dir)
-    set(_crsb_T_kwargs NO_BUILD NO_INSTALL)
-    set(_crsb_O_kwargs INSTALL_PREFIX OUTPUT CONTENTS NAME TOOLCHAIN)
-    set(_crsb_M_kwargs CMAKE_ARGS)
-    cmake_parse_arguments(
-        _crsb
-        "${_crsb_T_kwargs}"
-        "${_crsb_O_kwargs}"
-        "${_crsb_M_kwargs}"
-        ${ARGN}
+    cpp_parse_arguments(
+        _crsb "${ARGN}"
+        TOGGLES NO_BUILD NO_INSTALL CAN_FAIL
+        OPTIONS NAME OUTPUT RESULT BINARY_DIR INSTALL_DIR TOOLCHAIN
+        LISTS CONTENTS
+        REQUIRED NAME
     )
-    _cpp_is_not_empty(_crsb_output_set _crsb_OUTPUT)
-    cpp_option(_crsb_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
-    _cpp_write_top_list("${_crsb_dir}" "${_crsb_NAME}" "${_crsb_CONTENTS}")
-
-    if(_crsb_NO_INSTALL)
-        set(_crsb_install_prefix "")
-    else()
-        _cpp_is_not_empty(_crsb_install_set _crsb_INSTALL_PREFIX)
-        _cpp_assert_true(_crsb_install_set)
-        set(
-            _crsb_install_prefix
-            "-DCMAKE_INSTALL_PREFIX=${_crsb_INSTALL_PREFIX}"
+    cpp_option(_crsb_BINARY_DIR "${_crsb_dir}/build")
+    cpp_option(_crsb_INSTALL_DIR "${_crsb_dir}/install")
+    cpp_option(_crsb_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
+    cpp_option(_crsb_OUTPUT "CPP_DEV_NULL")
+    cpp_option(_crsb_RESULT "CPP_DEV_NULL")
+    _cpp_is_not_empty(_crsb_has_content _crsb_CONTENTS)
+    if(_crsb_has_content)
+        _cpp_write_list(
+            ${_crsb_dir}
+            NAME ${_crsb_NAME}
+            CONTENTS ${_crsb_CONTENTS}
         )
     endif()
 
-    set(_crsb_add_args "${_crsb_install_prefix}")
-    foreach(_crsb_arg ${_crsb_CMAKE_ARGS})
-        list(APPEND _crsb_add_args "-D${_crsb_arg}")
-    endforeach()
-
-    _cpp_debug_print(
-        "CMake command: ${CMAKE_COMMAND}
-        -H${_crsb_dir}
-        -Bbuild
-        -DCMAKE_TOOLCHAIN_FILE=${_crsb_TOOLCHAIN}
-        -DCMAKE_CPP_DEBUG_MODE=ON
-        ${_crsb_add_args}"
-    )
+    ############################### Configure ##################################
 
     execute_process(
-        COMMAND ${CMAKE_COMMAND}
-                -H${_crsb_dir}
-                -Bbuild
-                -DCMAKE_TOOLCHAIN_FILE=${_crsb_TOOLCHAIN}
-                -DCPP_DEBUG_MODE=ON
-                ${_crsb_add_args}
-        WORKING_DIRECTORY ${_crsb_dir}
-        OUTPUT_VARIABLE _crsb_cmake_out
-        ERROR_VARIABLE _crsb_cmake_out
-        RESULT_VARIABLE _crsb_cmake
+       COMMAND ${CMAKE_COMMAND}
+               -H.
+               -B${_crsb_BINARY_DIR}
+               -DCMAKE_INSTALL_PREFIX=${_crsb_INSTALL_DIR}
+               -DCMAKE_TOOLCHAIN_FILE=${_crsb_TOOLCHAIN}
+       WORKING_DIRECTORY ${_crsb_dir}
+       OUTPUT_VARIABLE _crsb_configure_output
+       ERROR_VARIABLE _crsb_configure_output
+       RESULT_VARIABLE _crsb_configure_failed
     )
-    _cpp_debug_print("Result of configuring ${_crsb_NAME}:\n${_crsb_cmake_out}")
-    if(_crsb_output_set)
-        set(${_crsb_OUTPUT} "${_crsb_cmake_out}")
+
+    set(${_crsb_OUTPUT} "${${_crsb_OUTPUT}}${_crsb_configure_output}")
+    set(
+        ${_crsb_OUTPUT} "${${_crsb_OUTPUT}}${_crsb_configure_output}"
+        PARENT_SCOPE
+    )
+    set(${_crsb_RESULT} "${_crsb_configure_failed}" PARENT_SCOPE)
+    if(${_crsb_configure_failed})
+        if(_crsb_CAN_FAIL)
+            return()
+        else()
+            message(
+                FATAL_ERROR
+                "Configure failed with output: ${_crsb_configure_output}"
+            )
+        endif()
     endif()
-    _cpp_assert_false(_crsb_cmake)
+
+    ################################   Build   #################################
 
     if(_crsb_NO_BUILD)
-        if(_crsb_output_set)
-            set(${_crsb_OUTPUT} "${${_crsb_OUTPUT}}" PARENT_SCOPE)
-        endif()
         return()
     endif()
 
     execute_process(
-        COMMAND ${CMAKE_COMMAND} --build ${_crsb_dir}/build
-        RESULT_VARIABLE _crsb_build
-        OUTPUT_VARIABLE _crsb_build_out
-        ERROR_VARIABLE _crsb_build_out
+        COMMAND ${CMAKE_COMMAND} --build ${_crsb_BINARY_DIR}
+        OUTPUT_VARIABLE _crsb_build_output
+        ERROR_VARIABLE _crsb_build_output
+        RESULT_VARIABLE _crsb_build_failed
     )
-
-    _cpp_debug_print("Result of building ${_crsb_NAME}:\n${_crsb_build_out}")
-    if(_crsb_output_set)
-        list(APPEND ${_crsb_OUTPUT} "${_crsb_build_out}")
+    set(${_crsb_OUTPUT} "${${_crsb_OUTPUT}}${_crsb_build_output}")
+    set(
+        ${_crsb_OUTPUT} "${${_crsb_OUTPUT}}${_crsb_build_output}"
+            PARENT_SCOPE
+    )
+    set(${_crsb_RESULT} "${_crsb_build_failed}" PARENT_SCOPE)
+    if(${_crsb_configure_failed})
+        if(_crsb_CAN_FAIL)
+            return()
+        else()
+            message(
+                FATAL_ERROR
+                "Build failed with output: ${_crsb_build_output}"
+            )
+        endif()
     endif()
-    _cpp_assert_false(_crsb_make)
 
+
+    ############################    Install     ################################
     if(_crsb_NO_INSTALL)
-        if(_crsb_output_set)
-            set(${_crsb_OUTPUT} "${${_crsb_OUTPUT}}" PARENT_SCOPE)
-        endif()
         return()
     endif()
-    execute_process(
-        COMMAND ${CMAKE_COMMAND}
-                --build ${_crsb_dir}/build
-                --target install
-        RESULT_VARIABLE _crsb_install
-        OUTPUT_VARIABLE _crsb_install_out
-        ERROR_VARIABLE _crsb_install_out
-    )
-    _cpp_debug_print(
-        "Result of installing ${_crsb_NAME}:\n${_crsb_install_out}"
-    )
-    if(_crsb_output_set)
-        list(APPEND ${_crsb_OUTPUT} "${_crsb_install_out}")
-        set(${_crsb_OUTPUT} "${${_crsb_OUTPUT}}" PARENT_SCOPE)
-    endif()
-    _cpp_assert_false(_crsb_install)
 
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} --build ${_crsb_BINARY_DIR} --target install
+        OUTPUT_VARIABLE _crsb_install_output
+        ERROR_VARIABLE _crsb_install_output
+        RESULT_VARIABLE _crsb_install_failed
+    )
+    set(${_crsb_OUTPUT} "${${_crsb_OUTPUT}}${_crsb_install_output}")
+    set(
+            ${_crsb_OUTPUT} "${${_crsb_OUTPUT}}${_crsb_install_output}"
+            PARENT_SCOPE
+    )
+    set(${_crsb_RESULT} "${_crsb_install_failed}" PARENT_SCOPE)
+
+    if(${_crsb_install_failed})
+        if(_crsb_CAN_FAIL)
+            return()
+        else()
+            message(
+                FATAL_ERROR
+                "Install failed with output: ${_crsb_install_output}"
+            )
+        endif()
+    endif()
 endfunction()

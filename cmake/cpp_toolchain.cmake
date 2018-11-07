@@ -29,14 +29,10 @@ function(_cpp_get_toolchain_vars _cgtv_return)
 endfunction()
 
 function(_cpp_change_toolchain)
-    set(_cct_O_kwargs TOOLCHAIN)
-    set(_cct_M_kwargs CMAKE_ARGS)
-    cmake_parse_arguments(
-            _cct
-            ""
-            "${_cct_O_kwargs}"
-            "${_cct_M_kwargs}"
-            "${ARGN}"
+    cpp_parse_arguments(
+        _cct "${ARGN}"
+        OPTIONS TOOLCHAIN
+        LISTS CMAKE_ARGS
     )
     cpp_option(_cct_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
     if(EXISTS ${_cct_TOOLCHAIN})
@@ -47,7 +43,7 @@ function(_cpp_change_toolchain)
         set(_cct_var "${CMAKE_MATCH_1}")
         set(_cct_val "${CMAKE_MATCH_2}")
         _cpp_contains(_cct_has_val "${_cct_var}" "${_cct_contents}")
-        set(_cct_new_line "set(${_cct_var} \"${_cct_val}\")")
+        set(_cct_new_line "set(${_cct_var} ${_cct_val})")
         if(_cct_has_val)
             set(_cct_regex_str "set\\(${_cct_var} [^\\)]*\\)")
             string(
@@ -60,24 +56,24 @@ function(_cpp_change_toolchain)
             set(_cct_contents "${_cct_contents}${_cct_new_line}\n")
         endif()
     endforeach()
-    file(WRITE "${_cct_TOOLCHAIN}" "${_cct_contents}")
+    _cpp_unpack_list(_cct_unpacked "${_cct_contents}")
+    file(WRITE "${_cct_TOOLCHAIN}" "${_cct_unpacked}")
 endfunction()
 
 function(_cpp_write_toolchain_file)
-    set(_cwtf_O_kwargs DESTINATION)
-    cmake_parse_arguments(_cwtf "" "${_cwtf_O_kwargs}" "" ${ARGN})
+    cpp_parse_arguments(
+        _cwtf "${ARGN}"
+        OPTIONS DESTINATION
+    )
     cpp_option(_cwtf_DESTINATION "${CMAKE_BINARY_DIR}")
     set(_cwtf_file ${_cwtf_DESTINATION}/toolchain.cmake)
-    set(_cwtf_contents)
     _cpp_get_toolchain_vars(_cwtf_vars)
     foreach(_cwtf_var ${_cwtf_vars})
         _cpp_is_not_empty(_cwtf_non_empty ${_cwtf_var})
         if(_cwtf_non_empty)
-            list(
-                APPEND
-                _cwtf_contents
-                "${_cwtf_var}=${${_cwtf_var}}"
-            )
+            #string(REPLACE ";" "\;" _cwtf_temp "${${_cwtf_var}}")
+            _cpp_pack_list(_cwtf_packed "${${_cwtf_var}}")
+            list(APPEND _cwtf_contents "${_cwtf_var}=\"${_cwtf_packed}\"")
         endif()
     endforeach()
     _cpp_change_toolchain(TOOLCHAIN ${_cwtf_file} CMAKE_ARGS ${_cwtf_contents})

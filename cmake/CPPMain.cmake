@@ -28,6 +28,14 @@ set(CPP_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 macro(CPPMain)
     _cpp_debug_print("Using CPP: ${CPP_SRC_DIR}")
 
+    #Guard against in-source builds
+#    if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
+#        message(
+#            FATAL_ERROR
+#            "Please specify a build directory like cmake -B<build_dir>".
+#        )
+#    endif()
+
     #Options for CPP
     cpp_option(CPP_DEBUG_MODE ON)
     #cpp_option(CPP_INSTALL_CACHE $ENV{HOME}/.cpp_cache)
@@ -58,15 +66,20 @@ macro(CPPMain)
         SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CPP_LIBDIR}")
     endif()
 
-    #Write a toolchain file to forward if the user did not provide one
+    #If user provided us a toolchain file we need to merge our options with it
     _cpp_is_not_empty(_cm_tool CMAKE_TOOLCHAIN_FILE)
     if(_cm_tool)
        set(_cm_msg1 "Adding ${CMAKE_TOOLCHAIN_FILE} contents to")
         _cpp_debug_print(
            "${_cm_msg1} ${CMAKE_BINARY_DIR}/toolchain.cmake"
         )
+        configure_file(
+            ${CMAKE_TOOLCHAIN_FILE}
+            ${CMAKE_BINARY_DIR}/toolchain.cmake
+            COPYONLY
+        )
     endif()
-    _cpp_write_toolchain_file()
+    _cpp_write_toolchain_file(DESTINATION ${CMAKE_BINARY_DIR})
 
     #Print out the details of the configuration
     message("Install settings for ${PROJECT_NAME}:")
