@@ -26,14 +26,12 @@ include(cpp_cmake_helpers) #For _cpp_write_top_list/_cpp_run_sub_build
 function(_cpp_record_find)
     set(_crf_O_kwargs NAME VERSION)
     set(_crf_M_kwargs COMPONENTS CMAKE_ARGS VIRTUAL)
-    cmake_parse_arguments(
-        _crf
-        ""
-        "${_crf_O_kwargs}"
-        "${_crf_M_kwargs}"
-        "${ARGN}"
+    cpp_parse_arguments(
+        _crf "${ARGN}"
+        OPTIONS ${_crf_O_kwargs}
+        LISTS ${_crf_M_kwargs}
+        MUST_SET NAME
     )
-    _cpp_assert_true(_crf_NAME)
     set(_crf_command "cpp_find_dependency(\n")
     foreach(_crf_O_kwarg_i ${_crf_O_kwargs})
         _cpp_is_not_empty(_crf_set _crf_${_crf_O_kwarg_i})
@@ -62,16 +60,50 @@ function(_cpp_record_find)
     )
 endfunction()
 
+function(_cpp_special_find)
+    #Did the user set XXX_ROOT?  If so try to find package
+    _cpp_is_not_empty(_cfd_root_set ${_cfd_NAME}_ROOT)
+    if(_cfd_root_set)
+        _cpp_debug_print("Using ${_cfd_NAME}_ROOT: ${${_cfd_NAME}_ROOT}")
+        cmake_policy(SET CMP0074 NEW)
+        find_package(
+                ${_cfd_NAME}
+                ${_cfd_VERSION}
+                CONFIG
+                ${_cfd_quiet}
+                PATHS "${${_cfd_NAME}_ROOT}"
+                NO_DEFAULT_PATH
+                ${_cfd_components}
+        )
+        if(${_cfd_NAME}_FOUND)
+            _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
+        else()
+            find_package(
+                    ${_cfd_NAME}
+                    ${_cfd_VERSION}
+                    REQUIRED
+                    MODULE
+                    ${_cfd_quiet}
+                    ${_cfd_components}
+            )
+        endif()
+        #Root was obviously good
+        _cpp_update_find_cmd(${_cfd_NAME} ${${_cfd_NAME}_ROOT})
+        return()
+    endif()
+endfunction()
+
+
 function(cpp_find_dependency)
     message("${ARGN}")
+    set(_cfd_original_targets ${BUILDSYSTEM_TARGETS})
     cpp_parse_arguments(
         _cfd "${ARGN}"
-        TOGGLES REQUIRED
+        TOGGLES OPTIONAL
         OPTIONS NAME VERSION RESULT
-        LISTS COMPONENTS VIRTUAL PATHS
+        LISTS COMPONENTS PATHS
         REQUIRED NAME
     )
-
     if(_cfd_COMPONENTS)
         set(_cfd_components "COMPONENTS" ${_cfd_COMPONENTS})
     endif()
@@ -92,37 +124,9 @@ function(cpp_find_dependency)
     endif()
 
     #set(_cfd_quiet QUIET)
+    _cpp_special_find()
 
-    #Did the user set XXX_ROOT?  If so try to find package
-    _cpp_is_not_empty(_cfd_root_set ${_cfd_NAME}_ROOT)
-    if(_cfd_root_set)
-        _cpp_debug_print("Using ${_cfd_NAME}_ROOT: ${${_cfd_NAME}_ROOT}")
-        cmake_policy(SET CMP0074 NEW)
-        find_package(
-            ${_cfd_NAME}
-            ${_cfd_VERSION}
-            CONFIG
-            ${_cfd_quiet}
-            PATHS "${${_cfd_NAME}_ROOT}"
-            NO_DEFAULT_PATH
-            ${_cfd_components}
-        )
-        if(${_cfd_NAME}_FOUND)
-          _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
-        else()
-            find_package(
-                ${_cfd_NAME}
-                ${_cfd_VERSION}
-                REQUIRED
-                MODULE
-                ${_cfd_quiet}
-                ${_cfd_components}
-            )
-        endif()
-        #Root was obviously good
-        _cpp_update_find_cmd(${_cfd_NAME} ${${_cfd_NAME}_ROOT})
-        return()
-    endif()
+    #call find recipe
 
     message("CFD: ${CMAKE_PREFIX_PATH} ${_cfd_PATHS}")
     list(APPEND CMAKE_PREFIX_PATH ${_cfd_PATHS})

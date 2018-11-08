@@ -2,12 +2,6 @@ include(cpp_cmake_helpers)
 include(cpp_checks)
 
 set(test_number 1)
-function(_cpp_print_banner _cpb_msg)
-    string(RANDOM LENGTH 80 ALPHABET "*" _cpb_banner)
-    message("${_cpb_banner}")
-    message("${_cpb_msg}")
-    message("${_cpb_banner}")
-endfunction()
 
 function(_cpp_add_test)
     cpp_parse_arguments(
@@ -15,7 +9,7 @@ function(_cpp_add_test)
         TOGGLES SHOULD_FAIL
         OPTIONS REASON TITLE
         LISTS CONTENTS
-        REQUIRED TITLE CONTENTS
+        MUST_SET TITLE CONTENTS
     )
 
     if(_cat_SHOULD_FAIL)
@@ -110,15 +104,12 @@ function(_cpp_install_dummy_cxx_package _cidcp_prefix)
     cmake_parse_arguments(_cidcp "" "NAME" "" ${ARGN})
     cpp_option(_cidcp_NAME dummy)
     set(_cidcp_root ${_cidcp_prefix}/${_cidcp_NAME})
-    _cpp_dummy_cxx_package(${_cidcp_prefix} ${ARGN})
+    _cpp_dummy_cxx_package(${_cidcp_prefix} NAME ${_cidcp_NAME})
     _cpp_run_sub_build(
-        ${_cidcp_prefix}
-        INSTALL_PREFIX ${_cidcp_prefix}/install
-        NAME build_${_cidcp_NAME}
-        CONTENTS "include(cpp_build_recipes)
-                  cpp_local_cmake(${_cidcp_NAME} ${_cidcp_root})"
+        ${_cidcp_root}
+        INSTALL_DIR ${_cidcp_prefix}/install
+        NAME ${_cidcp_NAME}
     )
-
     #Sanity check
     set(_cidcp_path ${_cidcp_prefix}/install/share/cmake)
     _cpp_assert_exists(
@@ -126,6 +117,31 @@ function(_cpp_install_dummy_cxx_package _cidcp_prefix)
     )
 endfunction()
 
+function(_cpp_naive_install_cxx_package _cnicp_prefix)
+    cpp_option(_cnicp_NAME dummy)
+    set(_cnicp_root ${_cnicp_prefix}/${_cnicp_NAME})
+    _cpp_dummy_cxx_library(${_cnicp_root})
+    set(_cnicp_install ${_cnicp_root}/install)
+    _cpp_write_list(
+        ${_cnicp_root}
+        NAME dummy
+        CONTENTS "add_library(dummy a.cpp)"
+                 "install("
+                 "   TARGETS dummy"
+                 "   LIBRARY DESTINATION ${_cnicp_install}/lib"
+                 "   ARCHIVE DESTINATION ${_cnicp_install}/lib"
+                 ")"
+                "install(FILES a.hpp DESTINATION ${_cnicp_install}/include)"
+    )
+    _cpp_run_sub_build(
+        ${_cnicp_root}
+        INSTALL_DIR ${_cnicp_install}
+        NAME ${_cnicp_NAME}
+    )
+    _cpp_assert_exists(
+        ${_cnicp_install}/include/a.hpp
+    )
+endfunction()
 
 function(_cpp_make_test_toolchain _cmtt_prefix)
     file(READ ${CMAKE_TOOLCHAIN_FILE} _cmtt_file)

@@ -27,12 +27,34 @@ function(cpp_option _co_opt _co_default)
 endfunction()
 
 function(cpp_parse_arguments _cpa_prefix _cpa_argn)
-    set(_cpa_M_kwargs TOGGLES OPTIONS LISTS REQUIRED)
-    foreach(_cpa_arg_i ${_cpa_M_kwargs})
-        set()
+    set(_cpa_M_kwargs TOGGLES OPTIONS LISTS MUST_SET)
+    #Ensure that our keywords don't appear more than once
+    foreach(_cpa_option_i ${_cpa_M_kwargs})
+        string(REGEX MATCHALL "${_cpa_option_i}" _cpa_matches "${ARGN}")
+        list(LENGTH _cpa_matches _cpa_n)
+        if(_cpa_n GREATER 1)
+            message(
+                FATAL_ERROR
+                "Keyword ${_cpa_option_i} passed ${_cpa_n} times"
+            )
+        endif()
+    endforeach()
 
-
+    #Get the keywords the user wants us to parse
     cmake_parse_arguments(_cpa "" "" "${_cpa_M_kwargs}" "${ARGN}")
+
+    #Ensure that the user's keywords don't appear more than once
+    foreach(_cpa_option_i ${_cpa_TOGGLES} ${_cpa_OPTIONS} ${_cpa_LISTS})
+        string(REGEX MATCHALL "${_cpa_option_i}" _cpa_matches "${_cpa_argn}")
+        list(LENGTH _cpa_matches _cpa_n)
+        if(_cpa_n GREATER 1)
+            message(
+                    FATAL_ERROR
+                    "Keyword ${_cpa_option_i} passed ${_cpa_n} times"
+            )
+        endif()
+    endforeach()
+
     cmake_parse_arguments(
         ${_cpa_prefix}
         "${_cpa_TOGGLES}"
@@ -40,24 +62,26 @@ function(cpp_parse_arguments _cpa_prefix _cpa_argn)
         "${_cpa_LISTS}"
         "${_cpa_argn}"
     )
-    #Ensure the values of the options are single values and not lists
+
+
+    #Ensure the values of the options are set
     foreach(_cpa_option_i ${_cpa_OPTIONS})
-        list(LENGTH _cpa_counter _cpa_${_cpa_option_i})
-        if(_cpa_counter GREATER 1)
-            message(
-                FATAL_ERROR
-                "OPTION: ${_cpa_option_i} is list: ${_cpa_${_cpa_option_i}}"
-            )
+        _cpp_is_empty(_cpa_empty_option ${_cpa_prefix}_${_cpa_option_i})
+        _cpp_contains(_cpa_passed "${_cpa_option_i}" "${_cpa_argn}")
+        if(_cpa_empty_option AND _cpa_passed)
+            message(FATAL_ERROR "OPTION: ${_cpa_option_i} is empty.")
         endif()
     endforeach()
+
     #Ensure required variables are set
-    foreach(_cpa_option_i ${_cpa_REQUIRED})
+    foreach(_cpa_option_i ${_cpa_MUST_SET})
         set(_cpa_var ${_cpa_prefix}_${_cpa_option_i})
         _cpp_is_empty(_cpa_not_set ${_cpa_var})
         if(_cpa_not_set)
             message(FATAL_ERROR "Required option ${_cpa_var} is not set")
         endif()
     endforeach()
+
     #Forward the results
     foreach(_cpa_category TOGGLES OPTIONS LISTS)
         foreach(_cpa_option_i ${_cpa_${_cpa_category}})

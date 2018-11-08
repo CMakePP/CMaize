@@ -97,3 +97,25 @@ function(_cpp_assert_file_does_not_contain _cafdnc_substring _cafdnc_file)
     file(READ ${_cafdnc_file} _cafdnc_contents)
     _cpp_assert_does_not_contain("${_cafdnc_substring}" "${_cafdnc_contents}")
 endfunction()
+
+function(_cpp_assert_target_property _catp_target _catp_prop _catp_corr_value)
+    get_target_property(_catp_value "${_catp_target}" "${_catp_prop}")
+    if("${_catp_value}" STREQUAL "NOTFOUND")
+        message(
+            FATAL_ERROR
+            "Target ${_catp_target} does not have property ${_catp_prop}."
+        )
+    endif()
+    if("${_catp_value}" STREQUAL "${_catp_corr_value}")
+        return()
+    else()
+        message(
+            FATAL_ERROR
+            "${_catp_prop} set to ${_catp_value} not ${_catp_corr_value}."
+        )
+    endif()
+endfunction()
+
+
+
+

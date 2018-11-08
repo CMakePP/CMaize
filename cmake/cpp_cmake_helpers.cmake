@@ -22,7 +22,7 @@ function(_cpp_write_list _cwl_directory)
         _cwl "${ARGN}"
         OPTIONS NAME
         LISTS CONTENTS
-        REQUIRED NAME
+        MUST_SET NAME
     )
     cpp_option(CMAKE_PROJECT_VERSION "0.0.0")
     #This is the boilerplate header
@@ -36,15 +36,17 @@ function(_cpp_write_list _cwl_directory)
         "include(CPPMain)" "CPPMain()"
         "${_cwl_CONTENTS}"
     )
-    string(REPLACE ";" "\n" _cwl_contents "${_cwl_contents}")
-    file(WRITE ${_cwl_directory}/CMakeLists.txt "${_cwl_contents}")
+    foreach(_cwl_content_i ${_cwl_contents})
+        set(_cwl_contents_temp "${_cwl_contents_temp}\n${_cwl_content_i}")
+    endforeach()
+    file(WRITE ${_cwl_directory}/CMakeLists.txt "${_cwl_contents_temp}")
 endfunction()
 
 function(_cpp_run_sub_make)
     cpp_parse_arguments(
         _crsm "${ARGN}"
         OPTIONS BINARY_DIR COMMAND OUTPUT RESULT TARGET
-        REQUIRED BINARY_DIR
+        MUST_SET BINARY_DIR
     )
 
     if(_crsm_TARGET)
@@ -81,7 +83,7 @@ function(_cpp_run_sub_build _crsb_dir)
         TOGGLES NO_BUILD NO_INSTALL CAN_FAIL
         OPTIONS NAME OUTPUT RESULT BINARY_DIR INSTALL_DIR TOOLCHAIN
         LISTS CONTENTS
-        REQUIRED NAME
+        MUST_SET NAME
     )
     cpp_option(_crsb_BINARY_DIR "${_crsb_dir}/build")
     cpp_option(_crsb_INSTALL_DIR "${_crsb_dir}/install")
