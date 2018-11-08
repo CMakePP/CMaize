@@ -100,7 +100,7 @@ endfunction()
 
 function(_cpp_assert_target_property _catp_target _catp_prop _catp_corr_value)
     get_target_property(_catp_value "${_catp_target}" "${_catp_prop}")
-    if("${_catp_value}" STREQUAL "NOTFOUND")
+    if("${_catp_value}" STREQUAL "_catp_value-NOTFOUND")
         message(
             FATAL_ERROR
             "Target ${_catp_target} does not have property ${_catp_prop}."

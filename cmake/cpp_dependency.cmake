@@ -60,201 +60,163 @@ function(_cpp_record_find)
     )
 endfunction()
 
-function(_cpp_special_find)
-    #Did the user set XXX_ROOT?  If so try to find package
-    _cpp_is_not_empty(_cfd_root_set ${_cfd_NAME}_ROOT)
-    if(_cfd_root_set)
-        _cpp_debug_print("Using ${_cfd_NAME}_ROOT: ${${_cfd_NAME}_ROOT}")
-        cmake_policy(SET CMP0074 NEW)
-        find_package(
-                ${_cfd_NAME}
-                ${_cfd_VERSION}
-                CONFIG
-                ${_cfd_quiet}
-                PATHS "${${_cfd_NAME}_ROOT}"
-                NO_DEFAULT_PATH
-                ${_cfd_components}
-        )
-        if(${_cfd_NAME}_FOUND)
-            _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
-        else()
-            find_package(
-                    ${_cfd_NAME}
-                    ${_cfd_VERSION}
-                    REQUIRED
-                    MODULE
-                    ${_cfd_quiet}
-                    ${_cfd_components}
-            )
-        endif()
-        #Root was obviously good
-        _cpp_update_find_cmd(${_cfd_NAME} ${${_cfd_NAME}_ROOT})
+macro(_cpp_find_from_config _cffc_name _cffc_version _cffc_comps _cffc_path)
+#This only honors CMAKE_PREFIX_PATH and whatever paths were provided
+    find_package(
+        ${_cffc_name}
+        ${_cffc_version}
+        ${_cffc_comps}
+        CONFIG
+        QUIET
+        PATHS "${_cffc_path}"
+        NO_PACKAGE_ROOT_PATH
+        NO_SYSTEM_ENVIRONMENT_PATH
+        NO_CMAKE_PACKAGE_REGISTRY
+        NO_CMAKE_SYSTEM_PATH
+        NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
+    )
+endmacro()
+
+macro(_cpp_find_from_module _cffm_name _cffm_version _cffm_comps)
+    find_package(
+        ${_cgfs_name}
+        ${_cgfs_version}
+        ${_cgfs_comps}
+        MODULE
+        QUIET
+    )
+endmacro()
+
+function(_cpp_generic_find_search _cgfs_found _cgfs_name _cgfs_version
+                                  _cgfs_comps _cgfs_path)
+
+    #Will change this if not the case
+    set(${_cgfs_found} TRUE PARENT_SCOPE)
+
+    #Check if target exists, if so return
+    _cpp_is_target(_cgfs_exists "${_cgfs_name}")
+    if(_cgfs_exists)
         return()
     endif()
+
+    get_directory_property(
+        _cgfs_old_targets
+        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        BUILDSYSTEM_TARGETS
+    )
+
+    #Being blunt we only want to use modules if the user provides them since
+    #CMake's versions suck...
+    _cpp_exists(_cgfs_has_recipe "${_cgfs_path}/Find${_cgfs_name}.cmake")
+    if(_cgfs_has_recipe)
+        list(APPEND CMAKE_MODULE_PATH "${_cffm_path}")
+        _cpp_find_from_module(${_cgfs_name} "${_cgfs_version}" "${_cgfs_comps}")
+    else()
+        _cpp_find_from_config(
+           ${_cgfs_name} "${_cgfs_version}" "${_cgfs_comps}" "${_cgfs_path}"
+        )
+    endif()
+
+    if(NOT ${_cgfs_name}_FOUND)
+        set(${_cgfs_found} FALSE PARENT_SCOPE)
+        return()
+    endif()
+
+    #Determine if new targets were made
+    get_directory_property(
+        _cgfs_targets
+        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        BUILDSYSTEM_TARGETS
+    )
+    list(APPEND _cgfs_targets ${_cgfs_old_targets})
+    list(LENGTH _cgfs_targets _cgfs_n)
+    if(${_cgfs_n} GREATER 0)
+        list(REMOVE_DUPLICATES _cgfs_targets)
+        list(LENGTH _cgfs_targets _cgfs_n_new)
+        if(${_cgfs_n_new} GREATER 0)
+            _cpp_debug_print("New targets: ${_cgfs_targets}")
+            return()
+        endif()
+    endif()
+
+    #Didn't get a target, assume the dependency set the standard CMake variables
+    add_library(${_cgfs_name} INTERFACE)
+    string(TOUPPER ${_cgfs_name} _cgfs_uc_name)
+    strign(TOLOWER ${_cgfs_name} _cgfs_lc_name)
+    foreach(_cgfs_var ${_cgfs_name} ${_cgfs_uc_name} ${_cgfs_lc_name})
+        set(_cgfs_include ${_cgfs_var}_INCLUDE_DIRS)
+        _cpp_is_not_empty(_cgfs_has_incs _cgfs_include)
+        if(_cgfs_has_incs)
+            target_include_directories(${_cgfs_name} INTERFACE ${_cgfs_include})
+        endif()
+        set(_cgfs_lib ${_cgfs_var}_LIBRARIES)
+        _cpp_is_not_empty(_cgfs_has_libs _cgfs_lib)
+        if(_cgfs_has_libs)
+            target_link_libraries(${_cgfs_name} INTERFACE ${_cgfs_lib})
+        endif()
+    endforeach()
+endfunction()
+
+function(_cpp_special_find _csf_name _csf_version _csf_comps)
+    string(TOUPPER "${_csf_name}" _csf_uc_name)
+    string(TOLOWER "${_csf_name}" _csf_lc_name)
+    foreach(_csf_case ${_csf_name} ${_csf_uc_name} ${_csf_lc_name})
+        foreach(_csf_suffix _DIR _ROOT)
+            set(_csf_var ${_csf_case}_${_csf_suffix})
+            #Did the user set this variable
+            _cpp_is_not_empty(_csf_set ${_csf_var})
+            if(_csf_set)
+                _cpp_debug_print(
+                   "Looking for ${_csf_name} with ${_csf_var}=${${_csf_var}}"
+                )
+                _cpp_generic_find_search(
+                    _csf_found
+                    ${_csf_name}
+                    "${_csf_version}"
+                    "${_csf_comps}"
+                    ${${_csf_var}}
+                )
+                if(NOT _csf_found)
+                    message(
+                        FATAL_ERROR
+                        "${_csf_var} set, but ${_csf_name} not found there"
+                    )
+                endif()
+            endif()
+        endforeach()
+    endforeach()
 endfunction()
 
 
 function(cpp_find_dependency)
-    message("${ARGN}")
-    set(_cfd_original_targets ${BUILDSYSTEM_TARGETS})
     cpp_parse_arguments(
         _cfd "${ARGN}"
         TOGGLES OPTIONAL
         OPTIONS NAME VERSION RESULT
-        LISTS COMPONENTS PATHS
+        LISTS COMPONENTS
         REQUIRED NAME
     )
+    cpp_option(_cfd_RESULT CPP_DEV_NULL)
     if(_cfd_COMPONENTS)
         set(_cfd_components "COMPONENTS" ${_cfd_COMPONENTS})
     endif()
-    if(_cfd_REQUIRED)
-        set(_cfd_required "REQUIRED")
-    endif()
+    set(${_cfd_RESULT} TRUE PARENT_SCOPE)
 
-    if(_cfd_RESULT)
-        #We'll change this if it's not actually found
-        set(${_cfd_RESULT} TRUE PARENT_SCOPE)
-    endif()
+    #Honor special variables
+    _cpp_special_find(${_cfd_NAME} "${_cfd_VERSION}" "${_cfd_COMPONENTS}")
 
-
-    if(TARGET _cpp_${_cfd_NAME}_interface)
-        #Avoid setting interface target 2x
-    else()
-        _cpp_record_find(${ARGN})
-    endif()
-
-    #set(_cfd_quiet QUIET)
-    _cpp_special_find()
-
-    #call find recipe
-
-    message("CFD: ${CMAKE_PREFIX_PATH} ${_cfd_PATHS}")
-    list(APPEND CMAKE_PREFIX_PATH ${_cfd_PATHS})
-    #Start by hoping that a package is ideal
-    find_package(
-        ${_cfd_NAME}
-        ${_cfd_VERSION}
-        CONFIG
-        ${_cfd_quiet}
-#        NO_PACKAGE_ROOT_PATH
-        NO_DEFAULT_PATH
-#        NO_SYSTEM_ENVIRONMENT_PATH
-#        NO_CMAKE_PACKAGE_REGISTRY
-#        NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
-        PATHS ${_cfd_PATHS}
-        ${_cfd_components}
+    #Try a generic search (only honors CMAKE_PREFIX_PATH
+    _cpp_generic_find_search(
+        _cfd_found ${_cfd_NAME} "${_cfd_VERSION}" "${_cfd_COMPONENTS}" ""
     )
-    if(${_cfd_NAME}_FOUND)
-        _cpp_debug_print("Found config file: ${${_cfd_NAME}_CONFIG}")
-        get_filename_component(
-                _cfd_install_path
-                ${${_cfd_NAME}_CONFIG}
-                DIRECTORY
-        )
-        _cpp_update_find_cmd(${_cfd_NAME} ${_cfd_install_path})
+
+    if(_cfd_OPTIONAL)
+        #Write find command to target
         return()
     endif()
 
-    find_package(
-        ${_cfd_NAME}
-        ${_cfd_VERSION}
-        ${_cfd_required}
-        MODULE
-        ${_cfd_quiet}
-        ${_cfd_components}
-    )
+    message(FATAL_ERROR "Could not locate ${_cfd_NAME}")
 
-    if(${_cfd_NAME}_FOUND)
-        _cpp_update_find_cmd(${_cfd_NAME} "${_cfd_PATHS}")
-        return()
-    endif()
-    if(_cfd_RESULT)
-        set(${_cfd_RESULT} FALSE PARENT_SCOPE)
-    endif()
-endfunction()
-
-function(_cpp_get_gh_url _cggu_return)
-    set(_cggu_T_kwargs PRIVATE)
-    set(_cggu_O_kwargs URL BRANCH)
-    cmake_parse_arguments(
-        _cggu
-        "${_cggu_T_kwargs}"
-        "${_cggu_O_kwargs}"
-        ""
-        "${ARGN}"
-    )
-    _cpp_assert_true(_cggu_URL)
-    cpp_option(_cggu_BRANCH master)
-    _cpp_assert_contains("github.com" "${_cggu_URL}")
-
-    #This parses the organization and repo out of the string
-    set(_cggu_string "github.com/")
-    string(REGEX MATCH "github\\.com/([^/]*)/([^/]*)" "" "${_cggu_URL}")
-    set(_cggu_org "${CMAKE_MATCH_1}")
-    set(_cggu_repo "${CMAKE_MATCH_2}")
-    _cpp_debug_print("Organization/User: ${_cggu_org} Repo: ${_cggu_repo}")
-
-    if(_cggu_PRIVATE)
-        _cpp_is_not_empty(_cggu_token_set CPP_GITHUB_TOKEN)
-        if(NOT _cggu_token_set)
-            message(
-                FATAL_ERROR
-                "For private repos CPP_GITHUB_TOKEN must be a valid token."
-            )
-        endif()
-        set(_cggu_token "?access_token=${CPP_GITHUB_TOKEN}")
-    endif()
-    set(
-            _cggu_url_prefix
-            "https://api.github.com/repos/${_cggu_org}/${_cggu_repo}/tarball"
-    )
-    set(
-            ${_cggu_return}
-            "${_cggu_url_prefix}/${_cggu_BRANCH}${_cggu_token}"
-            PARENT_SCOPE
-    )
-endfunction()
-
-function(_cpp_get_source_tarball _cgrt_file)
-    set(_cgrt_O_kwargs URL SOURCE_DIR)
-    cmake_parse_arguments(_cgrt "" "${_cgrt_O_kwargs}" "" "${ARGN}")
-    if(_cgrt_URL)
-        _cpp_debug_print("Getting source from URL: ${_cgrt_URL}")
-    endif()
-    if(_cgrt_SOURCE_DIR)
-        _cpp_debug_print("Getting source from dir: ${_cgrt_SOURCE_DIR}")
-    endif()
-    _cpp_xor(_cgrt_one_set _cgrt_URL _cgrt_SOURCE_DIR)
-    if(NOT _cgrt_one_set)
-        message(FATAL_ERROR "Please specify either URL or SOURCE_DIR")
-    endif()
-
-    _cpp_contains(_cgrt_is_gh "github.com/" "${_cgrt_URL}")
-
-    if(_cgrt_SOURCE_DIR)
-        #User gave us /a/long/path/to/here and we want the tarball to untar to
-        #just here
-        get_filename_component(_cgrt_work_dir "${_cgrt_SOURCE_DIR}" DIRECTORY)
-        get_filename_component(_cgrt_dir "${_cgrt_SOURCE_DIR}" NAME)
-        execute_process(
-            COMMAND ${CMAKE_COMMAND} -E tar "cfz" "${_cgrt_file}" "${_cgrt_dir}"
-            WORKING_DIRECTORY ${_cgrt_work_dir}
-        )
-        return()
-    endif()
-
-    #Determine the URL to call to get the tarball
-    if(_cgrt_is_gh)
-        _cpp_get_gh_url(_cgrt_url2call "${ARGN}")
-    else()
-        set(_cgrt_msg "${_cgrt_URL} does not appear to be a valid URL.")
-        message(
-                FATAL_ERROR
-                "${_cgrt_msg} Only GitHub URLs are supported at this time."
-        )
-    endif()
-    #Actually get it
-    file(DOWNLOAD "${_cgrt_url2call}" "${_cgrt_file}")
 endfunction()
 
 function(_cpp_untar_directory _cud_tar _cud_destination)
@@ -293,72 +255,6 @@ function(_cpp_untar_directory _cud_tar _cud_destination)
     endif()
 endfunction()
 
-
-function(_cpp_build_local_dependency)
-    set(_cbld_O_kwargs NAME SOURCE_DIR INSTALL_DIR TOOLCHAIN BINARY_DIR)
-    set(_cbld_M_kwargs CMAKE_ARGS)
-    cmake_parse_arguments(
-        _cbld
-        ""
-        "${_cbld_O_kwargs}"
-        "${_cbld_M_kwargs}"
-        "${ARGN}"
-    )
-    cpp_option(_cbld_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
-    cpp_option(_cbld_BINARY_DIR "${CMAKE_BINARY_DIR}/${_cbld_NAME}")
-    _cpp_assert_true(_cbld_NAME _cbld_SOURCE_DIR _cbld_INSTALL_DIR)
-
-    #Can't rely on the toolchain b/c CMake's option command overrides it...
-    set(_cbld_cmake_args "-DCMAKE_INSTALL_PREFIX=${_cbld_INSTALL_DIR}\n")
-    set(
-        _cbld_cmake_args
-        "${_cbld_cmake_args}-DCMAKE_TOOLCHAIN_FILE=${_cbld_TOOLCHAIN}\n"
-    )
-    foreach(_cbld_arg_i ${_cbld_CMAKE_ARGS})
-        set(
-            _cbld_cmake_args
-            "${_cbld_cmake_args}-D${_cbld_arg_i}\n"
-        )
-    endforeach()
-
-    _cpp_run_sub_build(
-            ${_cbld_BINARY_DIR}
-            NAME ${_cbld_NAME}
-            OUTPUT _cbld_output
-            NO_INSTALL
-            TOOLCHAIN ${_cbld_TOOLCHAIN}
-            CONTENTS "include(ExternalProject)"
-                     "ExternalProject_Add("
-                     "  ${_cbld_NAME}_External"
-                     "  SOURCE_DIR ${_cbld_SOURCE_DIR}"
-                     "  INSTALL_DIR ${_cbld_BINARY_DIR}/install"
-                     "  CMAKE_ARGS ${_cbld_cmake_args}"
-                     ")"
-    )
-    _cpp_debug_print("${_cbld_output}")
-endfunction()
-
-function(_cpp_update_find_cmd _cufc_name _cufc_path)
-    get_target_property(
-            _cufc_command
-            _cpp_${_cufc_name}_interface
-            INTERFACE_VERSION
-    )
-    _cpp_contains(_cufc_path_set "PATHS" "${_cufc_command}")
-    if(_cufc_path_set)
-        return() #Avoid setting it twice
-    endif()
-    string(
-        REGEX REPLACE "\\)" " PATHS ${_cufc_path})"
-        _cufc_command
-        "${_cufc_command}"
-    )
-    set_target_properties(
-         _cpp_${_cufc_name}_interface
-         PROPERTIES INTERFACE_VERSION "${_cufc_command}"
-    )
-endfunction()
-
 function(cpp_find_or_build_dependency)
     #If dummy target exists we already found this dependency
     if(TARGET _cpp_${_cfobd_NAME}_External)
@@ -367,12 +263,35 @@ function(cpp_find_or_build_dependency)
     cpp_parse_arguments(
         _cfobd "${ARGN}"
         TOGGLES PRIVATE
-        OPTIONS NAME BINARY_DIR BRANCH URL SOURCE_DIR CPP_CACHE
+        OPTIONS NAME BINARY_DIR BRANCH URL SOURCE_DIR CPP_CACHE FIND_RECIPE
         LISTS CMAKE_ARGS
         REQUIRED NAME
     )
     cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
     cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
+
+    #Honor special variables
+    _cpp_special_find(${_cfobd_NAME} "${_cfobd_VERSION}" "${_cfobd_COMPONETS}")
+
+    #Use get recipe to get source
+    _cpp_get_recipe_dispatch(_cfobd_get_recipe)
+    include(${_cfobd_get_recipe})
+
+    #Calculate hashes
+
+    #Look for package using computed dir
+    _cpp_find_recipe_dispatch(_cfobd_find_recipe)
+    _cpp_find_from_recipe(${_cfobd_find_recipe})
+
+
+    #If not found, build dependency
+    _cpp_build_recipe_dispatch(_cfobd_build_recipe)
+
+
+    #Look again, (find-recipe better be valid now)
+    _cpp_find_from_recipe(${_cfobd_find_recipe})
+    include(${_cfobd_get_recipe})
+
 
     #Look for dependency before we build it
     cpp_find_dependency(NAME ${_cfobd_NAME} RESULT _cfobd_found)
