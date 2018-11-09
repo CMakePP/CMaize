@@ -1,83 +1,108 @@
 function(_cpp_get_gh_url _cggu_return)
-    set(_cggu_T_kwargs PRIVATE)
-    set(_cggu_O_kwargs URL BRANCH)
-    cmake_parse_arguments(
-            _cggu
-            "${_cggu_T_kwargs}"
-            "${_cggu_O_kwargs}"
-            ""
-            "${ARGN}"
+    cpp_parse_arguments(
+        _cggu "${ARGN}"
+        TOGGLES PRIVATE
+        OPTIONS URL BRANCH VERSION
+        MUST_SET URL
     )
-    _cpp_assert_true(_cggu_URL)
-    cpp_option(_cggu_BRANCH master)
     _cpp_assert_contains("github.com" "${_cggu_URL}")
+    _cpp_is_not_empty(_cggu_version_set _cggu_VERSION)
+    if(_cggu_version_set)
+        _cpp_error("CPP's GitHub capabilities do not support version yet")
+    endif()
+    cpp_option(_cggu_BRANCH master)
 
     #This parses the organization and repo out of the string
-    set(_cggu_string "github.com/")
     string(REGEX MATCH "github\\.com/([^/]*)/([^/]*)" "" "${_cggu_URL}")
     set(_cggu_org "${CMAKE_MATCH_1}")
     set(_cggu_repo "${CMAKE_MATCH_2}")
     _cpp_debug_print("Organization/User: ${_cggu_org} Repo: ${_cggu_repo}")
 
+    #Handle commandline access to private repositories
     if(_cggu_PRIVATE)
         _cpp_is_not_empty(_cggu_token_set CPP_GITHUB_TOKEN)
         if(NOT _cggu_token_set)
-            message(
-                    FATAL_ERROR
-                    "For private repos CPP_GITHUB_TOKEN must be a valid token."
+            _cpp_error(
+                "For private repos CPP_GITHUB_TOKEN must be a valid token."
+                "Trobleshooting: Did you set CPP_GITHUB_TOKEN?"
             )
         endif()
         set(_cggu_token "?access_token=${CPP_GITHUB_TOKEN}")
     endif()
     set(
-            _cggu_url_prefix
-            "https://api.github.com/repos/${_cggu_org}/${_cggu_repo}/tarball"
+         _cggu_prefix
+         "https://api.github.com/repos/${_cggu_org}/${_cggu_repo}/tarball"
     )
     set(
-            ${_cggu_return}
-            "${_cggu_url_prefix}/${_cggu_BRANCH}${_cggu_token}"
-            PARENT_SCOPE
+        ${_cggu_return}
+        "${_cggu_prefix}/${_cggu_BRANCH}${_cggu_token}"
+        PARENT_SCOPE
     )
 endfunction()
 
-function(_cpp_get_source_tarball _cgrt_file)
-    set(_cgrt_O_kwargs URL SOURCE_DIR)
-    cmake_parse_arguments(_cgrt "" "${_cgrt_O_kwargs}" "" "${ARGN}")
-    if(_cgrt_URL)
-        _cpp_debug_print("Getting source from URL: ${_cgrt_URL}")
-    endif()
-    if(_cgrt_SOURCE_DIR)
-        _cpp_debug_print("Getting source from dir: ${_cgrt_SOURCE_DIR}")
-    endif()
-    _cpp_xor(_cgrt_one_set _cgrt_URL _cgrt_SOURCE_DIR)
-    if(NOT _cgrt_one_set)
-        message(FATAL_ERROR "Please specify either URL or SOURCE_DIR")
-    endif()
-
-    _cpp_contains(_cgrt_is_gh "github.com/" "${_cgrt_URL}")
-
-    if(_cgrt_SOURCE_DIR)
-        #User gave us /a/long/path/to/here and we want the tarball to untar to
-        #just here
-        get_filename_component(_cgrt_work_dir "${_cgrt_SOURCE_DIR}" DIRECTORY)
-        get_filename_component(_cgrt_dir "${_cgrt_SOURCE_DIR}" NAME)
-        execute_process(
-                COMMAND ${CMAKE_COMMAND} -E tar "cfz" "${_cgrt_file}" "${_cgrt_dir}"
-                WORKING_DIRECTORY ${_cgrt_work_dir}
+function(_cpp_url_dispatcher _cud_contents _cud_dir _cud_url _cud_version)
+    #At the moment we know how to parse GitHub URLs, if the url isn't for GitHub
+    #we assume it's a direct download link (download command will fail, if
+    #it's not)
+    _cpp_contains(_cud_is_gh "github" "${_cud_url}")
+    if(_cud_is_gh)
+        _cpp_get_gh_url(
+            _cud_url URL "${_cud_url}" VERSION "${_cud_version}" ${ARGN}
         )
-        return()
     endif()
+    set(
+        ${_cud_contents}
+        "_cpp_download_tarball(${_cud_dir} ${_cud_url})"
+        PARENT_SCOPE
+    )
 
-    #Determine the URL to call to get the tarball
-    if(_cgrt_is_gh)
-        _cpp_get_gh_url(_cgrt_url2call "${ARGN}")
+endfunction()
+
+function(_cpp_get_recipe_dispatch _cgrd_dir)
+    cpp_parse_arguments(
+        _cgrd "${ARGN}"
+        OPTIONS NAME VERSION URL SOURCE_DIR
+        MUST_SET NAME
+    )
+    string(TOLOWER "${_cgrd_NAME}" _cgrd_lc_name)
+    set(_cgrd_recipe_name "${_cgrd_dir}/get-${_cgrd_lc_name}.cmake")
+    set(_cgrd_tar_name "${_cgrd_dir}/${_cgrd_NAME}.tar.gz")
+
+    #Get the file's contents
+    if(_cgrd_URL)
+        _cpp_url_dispatcher(
+            _cgrd_contents
+            "${_cgrd_tar_name}"
+            "${_cgrd_URL}"
+            "${_cgrd_VERSION}"
+            ${_cgrd_UNPARSED_ARGUMENTS}
+        )
+    elseif(_cgrd_SOURCE_DIR)
+        set(
+            _cgrd_contents
+            "_cpp_tar_directory(${_cgrd_tar_name} ${_cgrd_SOURCE_DIR})"
+        )
     else()
-        set(_cgrt_msg "${_cgrt_URL} does not appear to be a valid URL.")
-        message(
-                FATAL_ERROR
-                "${_cgrt_msg} Only GitHub URLs are supported at this time."
+        _cpp_error(
+            "Not sure how to get source for dependency ${_cgrd_NAME}."
+            "Troubleshooting: Did you specify URL or SOURCE_DIR?"
         )
     endif()
-    #Actually get it
-    file(DOWNLOAD "${_cgrt_url2call}" "${_cgrt_file}")
+
+    #Check if the get-recipe exists, if so make sure it's the same recipe
+    _cpp_exists(_cgrd_exists "${_cgrd_recipe_name}")
+    if(_cgrd_exists)
+        file(READ "${_cgrd_recipe_name}" _cgrd_old_contents)
+        _cpp_are_not_equal(
+            _cgrd_different "${_cgrd_old_contents}" "${_cgrd_contents}"
+        )
+        if(_cgrd_different)
+            _cpp_error(
+               "Get recipe already exists with different content."
+               "Troubleshooting: Did you change where a dependency came from?"
+           )
+        endif()
+    else()
+        file(WRITE "${_cgrd_recipe_name}" "${_cgrd_contents}")
+    endif()
 endfunction()

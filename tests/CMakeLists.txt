@@ -1,6 +1,4 @@
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-file(COPY ../cmake/cpp_unit_test_helpers.cmake DESTINATION ${CMAKE_BINARY_DIR}/tests)
-
 include(cpp_print) #For debug printing
 
 function(cpp_cmake_unit_test _ccut_name)
@@ -20,7 +18,7 @@ function(cpp_cmake_unit_test _ccut_name)
     _cpp_debug_print("  File: ${_ccut_test_file}")
 endfunction()
 
-foreach(subdir_i checks cmake_helpers dependency find_recipes options
-                 toolchain use_cases)
+foreach(subdir_i checks cmake_helpers compression dependency find_recipes
+                 get_recipes options toolchain use_cases)
     add_subdirectory(${subdir_i})
 endforeach()

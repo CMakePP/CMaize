@@ -48,19 +48,6 @@ CONTENTS
 )
 
 _cpp_add_test(
-TITLE "Setting an option to no value fails"
-SHOULD_FAIL REASON "OPTION: A_OPTION is empty."
-CONTENTS
-    "function(dummy_fxn)"
-    "   cpp_parse_arguments("
-    "       test \"\${ARGN}\""
-    "       OPTIONS A_OPTION"
-    "   )"
-    "endfunction()"
-    "dummy_fxn(A_OPTION \"\")"
-)
-
-_cpp_add_test(
 TITLE "Passing our keyword multiple times is an error"
 SHOULD_FAIL REASON "Keyword OPTIONS passed 2 times"
 CONTENTS

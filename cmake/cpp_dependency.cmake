@@ -219,85 +219,82 @@ function(cpp_find_dependency)
 
 endfunction()
 
-function(_cpp_untar_directory _cud_tar _cud_destination)
-    _cpp_assert_exists(${_cud_tar})
-    string(RANDOM _cud_prefix)
-    set(_cud_buffer_dir ${_cud_destination}/${_cud_prefix})
-    file(MAKE_DIRECTORY ${_cud_buffer_dir})
-    execute_process(
-            COMMAND ${CMAKE_COMMAND} -E tar "xzf" "${_cud_tar}"
-            WORKING_DIRECTORY ${_cud_buffer_dir}
-    )
-
-    #We're expecting a single directory
-    file(GLOB _cud_tar_files "${_cud_buffer_dir}/*")
-    list(LENGTH _cud_tar_files _cud_nfiles)
-    _cpp_debug_print(
-        "Tarball contained ${_cud_nfiles} files: ${_cud_tar_files}."
-    )
-
-    if(_cud_nfiles LESS 1)
-        message(FATAL_ERROR "The tarball was empty")
-    elseif(_cud_nfiles GREATER 1)
-        message(FATAL_ERROR "The tarball contained more than 1 thing.")
-    endif()
-
-    list(GET _cud_tar_files 0 _cud_dir)
-    if(IS_DIRECTORY "${_cud_dir}")
-        file(GLOB _cud_files "${_cud_dir}/*")
-        foreach(_cud_file_i ${_cud_files})
-            get_filename_component(_cud_file_j ${_cud_file_i} NAME)
-            file(RENAME ${_cud_file_i} ${_cud_destination}/${_cud_file_j})
-        endforeach()
-        file(REMOVE "${_cud_buffer_dir}")
-    else()
-        message(FATAL_ERROR "The tarball does not contain a directory.")
-    endif()
-endfunction()
-
 function(cpp_find_or_build_dependency)
+    cpp_parse_arguments(
+        _cfobd "${ARGN}"
+        OPTIONS NAME GET_RECIPE FIND_RECIPE BUILD_RECIPE TOOLCHAIN VERSION
+        LISTS COMPONENTS CMAKE_ARGS
+        MUST_SET NAME
+    )
+    cpp_option(_cfobd_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
+    cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
+    cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
+
+
+    set(_cfobd_root ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_VERSION})
+
     #If dummy target exists we already found this dependency
     if(TARGET _cpp_${_cfobd_NAME}_External)
         return()
     endif()
-    cpp_parse_arguments(
-        _cfobd "${ARGN}"
-        TOGGLES PRIVATE
-        OPTIONS NAME BINARY_DIR BRANCH URL SOURCE_DIR CPP_CACHE FIND_RECIPE
-        LISTS CMAKE_ARGS
-        REQUIRED NAME
-    )
-    cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
-    cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
 
     #Honor special variables
     _cpp_special_find(${_cfobd_NAME} "${_cfobd_VERSION}" "${_cfobd_COMPONETS}")
 
     #Use get recipe to get source
-    _cpp_get_recipe_dispatch(_cfobd_get_recipe)
+    _cpp_get_recipe_dispatch(
+        _cfobd_get_dir
+        NAME ${_cfobd_NAME}
+        VERSION ${_cfobd_VERSION}
+        ${_cfobd_UNPARSED_ARGUMENTS}
+    )
+    set(_cfobd_get_recipe ${_cfobd_get_dir}/get-${_cfobd_NAME}.cmake)
+    set(_cfobd_get_tar ${_cfobd_get_dir}/${_cfobd_NAME}.cmake)
     include(${_cfobd_get_recipe})
+    file(SHA1 ${_cfobd_get_tar} _cfobd_src_hash)
 
-    #Calculate hashes
+    set(
+        _cfobd_install_path
+        ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_src_hash}
+    )
+    set(_cfobd_toolchain ${_cfobd_install_path}/toolchain.cmake)
+    file(READ ${_cfobd_TOOLCHAIN} _cfobd_contents)
+    file(WRITE ${_cfobd_toolchain} "${_cfobd_contents}")
+    _cpp_change_toolchain(
+            TOOLCHAIN ${_cfobd_toolchain}
+            CMAKE_ARGS "${_cfobd_CMAKE_ARGS}"
+    )
+    file(SHA1 ${_cfobd_toolchain} _cfobd_tc_hash)
+    set(_cfobd_install_path "${_cfobd_install_path}/${_cfobd_tc_hash}")
+
 
     #Look for package using computed dir
-    _cpp_find_recipe_dispatch(_cfobd_find_recipe)
-    _cpp_find_from_recipe(${_cfobd_find_recipe})
+    _cpp_generic_find_search(
+       _cfobd_found
+       ${_cfobd_NAME}
+       "${_cfobd_VERSION}"
+       "${_cfobd_COMPONENTS}"
+       ${_cfobd_install_path}
+    )
 
-
-    #If not found, build dependency
-    _cpp_build_recipe_dispatch(_cfobd_build_recipe)
+    if(NOT _cfobd_found)
+        _cpp_build_recipe_dispatch(_cfobd_build_recipe)
+    endif()
 
 
     #Look again, (find-recipe better be valid now)
-    _cpp_find_from_recipe(${_cfobd_find_recipe})
-    include(${_cfobd_get_recipe})
+    _cpp_generic_find_search(
+        _cfobd_found
+        ${_cfobd_NAME}
+        "${_cfobd_VERSION}"
+        "${_cfobd_COMPONENTS}"
+        ${_cfobd_install_path}
+    )
 
-
-    #Look for dependency before we build it
-    cpp_find_dependency(NAME ${_cfobd_NAME} RESULT _cfobd_found)
-    if(_cfobd_found)
-        return()
+    if(NOT _cfobd_found)
+        message(FATAL_ERROR "Could not find built ${_cfobd_NAME}")
     endif()
+
 
     #Didn't find it so now we build it
     set(_cfobd_root ${_cfobd_BINARY_DIR}/external/${_cfobd_NAME})
@@ -307,17 +304,10 @@ function(cpp_find_or_build_dependency)
     set(_cfobd_tar_file ${_cfobd_root}/${_cfobd_NAME}.tar.gz)
     _cpp_get_source_tarball(${_cfobd_tar_file} ${ARGN})
 
-    #Make the new toolchain by copying old and appending CMAKE_ARGS
-    set(_cfobd_toolchain ${_cfobd_root}/toolchain.cmake)
-    file(READ ${CMAKE_TOOLCHAIN_FILE} _cfobd_contents)
-    file(WRITE ${_cfobd_toolchain} "${_cfobd_contents}")
-    _cpp_change_toolchain(
-        TOOLCHAIN ${_cfobd_toolchain}
-        CMAKE_ARGS "${_cfobd_CMAKE_ARGS}"
-    )
+
 
     #Build from source
-    file(SHA1 ${_cfobd_tar_file} _cfobd_src_hash)
+
     set(
         _cfobd_source_path
         ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_src_hash}
@@ -359,3 +349,4 @@ function(cpp_find_or_build_dependency)
     )
 
 endfunction()
+

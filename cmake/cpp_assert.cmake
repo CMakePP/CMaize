@@ -116,6 +116,25 @@ function(_cpp_assert_target_property _catp_target _catp_prop _catp_corr_value)
     endif()
 endfunction()
 
+function(_cpp_assert_is_directory _caid_path)
+    _cpp_is_not_directory(_caid_is_not_dir "${_caid_path}")
+    if(_caid_is_not_dir)
+        message(
+            FATAL_ERROR
+            "The path ${_caid_path} is not a directory."
+            "Troubleshooting: Does it exist? Is it actually a file?"
+        )
+    endif()
+endfunction()
 
-
+function(_cpp_assert_is_not_directory _caid_path)
+    _cpp_is_directory(_caid_is_dir "${_caid_path}")
+    if(_caid_is_dir)
+        message(
+            FATAL_ERROR
+            "The path ${_caid_path} is a directory."
+            "Troubleshooting: Was it supposed to be a file?"
+        )
+    endif()
+endfunction()
 

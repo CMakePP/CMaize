@@ -1,6 +1,7 @@
 set(
     GET_RECIPES_TESTS get_gh_url
-                      get_source_tarball
+                      get_recipe_dispatch
+                      url_dispatcher
 )
 
 foreach(test_i ${GET_RECIPES_TESTS})

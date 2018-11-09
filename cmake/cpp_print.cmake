@@ -21,6 +21,9 @@ function(_cpp_debug_print _cdp_msg)
     endif()
 endfunction()
 
+function(_cpp_error)
+    message(FATAL_ERROR ${ARGN})
+endfunction()
 
 function(_cpp_print_target _cpt_name)
     message("Target : ${_cpt_name}")
@@ -55,3 +58,4 @@ function(_cpp_print_interface _cpt_name)
         endif()
     endforeach()
 endfunction()
+
