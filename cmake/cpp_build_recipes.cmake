@@ -56,3 +56,8 @@ function(_cpp_build_local_dependency)
     )
     _cpp_debug_print("${_cbld_output}")
 endfunction()
+
+function(_cpp_build_recipe_dispatch _cbrd_recipe _cbrd_dir)
+    #Check directory for a CMakeLists.txt file
+
+endfunction()

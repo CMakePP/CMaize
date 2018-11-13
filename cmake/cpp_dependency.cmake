@@ -254,7 +254,7 @@ function(cpp_find_or_build_dependency)
     file(SHA1 ${_cfobd_get_tar} _cfobd_src_hash)
 
     set(
-        _cfobd_install_path
+        _cfobd_src_path
         ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_src_hash}
     )
     set(_cfobd_toolchain ${_cfobd_install_path}/toolchain.cmake)
@@ -265,8 +265,7 @@ function(cpp_find_or_build_dependency)
             CMAKE_ARGS "${_cfobd_CMAKE_ARGS}"
     )
     file(SHA1 ${_cfobd_toolchain} _cfobd_tc_hash)
-    set(_cfobd_install_path "${_cfobd_install_path}/${_cfobd_tc_hash}")
-
+    set(_cfobd_install_path ${_cfobd_src_path}/${_cfobd_tc_hash})
 
     #Look for package using computed dir
     _cpp_generic_find_search(
@@ -278,6 +277,8 @@ function(cpp_find_or_build_dependency)
     )
 
     if(NOT _cfobd_found)
+        _cpp_untar_directory(${_cfobd_get_tar} ${_cfobd_src_path})
+
         _cpp_build_recipe_dispatch(_cfobd_build_recipe)
     endif()
 
