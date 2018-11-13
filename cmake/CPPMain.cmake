@@ -25,6 +25,8 @@ include(cpp_targets)
 include(cpp_dependency)
 include(cpp_compression)
 include(cpp_get_recipes)
+include(cpp_build_recipes)
+include(cpp_find_package)
 set(CPP_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 macro(CPPMain)

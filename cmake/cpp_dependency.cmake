@@ -60,103 +60,6 @@ function(_cpp_record_find)
     )
 endfunction()
 
-macro(_cpp_find_from_config _cffc_name _cffc_version _cffc_comps _cffc_path)
-#This only honors CMAKE_PREFIX_PATH and whatever paths were provided
-    find_package(
-        ${_cffc_name}
-        ${_cffc_version}
-        ${_cffc_comps}
-        CONFIG
-        QUIET
-        PATHS "${_cffc_path}"
-        NO_PACKAGE_ROOT_PATH
-        NO_SYSTEM_ENVIRONMENT_PATH
-        NO_CMAKE_PACKAGE_REGISTRY
-        NO_CMAKE_SYSTEM_PATH
-        NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
-    )
-endmacro()
-
-macro(_cpp_find_from_module _cffm_name _cffm_version _cffm_comps)
-    find_package(
-        ${_cgfs_name}
-        ${_cgfs_version}
-        ${_cgfs_comps}
-        MODULE
-        QUIET
-    )
-endmacro()
-
-function(_cpp_generic_find_search _cgfs_found _cgfs_name _cgfs_version
-                                  _cgfs_comps _cgfs_path)
-
-    #Will change this if not the case
-    set(${_cgfs_found} TRUE PARENT_SCOPE)
-
-    #Check if target exists, if so return
-    _cpp_is_target(_cgfs_exists "${_cgfs_name}")
-    if(_cgfs_exists)
-        return()
-    endif()
-
-    get_directory_property(
-        _cgfs_old_targets
-        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        BUILDSYSTEM_TARGETS
-    )
-
-    #Being blunt we only want to use modules if the user provides them since
-    #CMake's versions suck...
-    _cpp_exists(_cgfs_has_recipe "${_cgfs_path}/Find${_cgfs_name}.cmake")
-    if(_cgfs_has_recipe)
-        list(APPEND CMAKE_MODULE_PATH "${_cffm_path}")
-        _cpp_find_from_module(${_cgfs_name} "${_cgfs_version}" "${_cgfs_comps}")
-    else()
-        _cpp_find_from_config(
-           ${_cgfs_name} "${_cgfs_version}" "${_cgfs_comps}" "${_cgfs_path}"
-        )
-    endif()
-
-    if(NOT ${_cgfs_name}_FOUND)
-        set(${_cgfs_found} FALSE PARENT_SCOPE)
-        return()
-    endif()
-
-    #Determine if new targets were made
-    get_directory_property(
-        _cgfs_targets
-        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        BUILDSYSTEM_TARGETS
-    )
-    list(APPEND _cgfs_targets ${_cgfs_old_targets})
-    list(LENGTH _cgfs_targets _cgfs_n)
-    if(${_cgfs_n} GREATER 0)
-        list(REMOVE_DUPLICATES _cgfs_targets)
-        list(LENGTH _cgfs_targets _cgfs_n_new)
-        if(${_cgfs_n_new} GREATER 0)
-            _cpp_debug_print("New targets: ${_cgfs_targets}")
-            return()
-        endif()
-    endif()
-
-    #Didn't get a target, assume the dependency set the standard CMake variables
-    add_library(${_cgfs_name} INTERFACE)
-    string(TOUPPER ${_cgfs_name} _cgfs_uc_name)
-    strign(TOLOWER ${_cgfs_name} _cgfs_lc_name)
-    foreach(_cgfs_var ${_cgfs_name} ${_cgfs_uc_name} ${_cgfs_lc_name})
-        set(_cgfs_include ${_cgfs_var}_INCLUDE_DIRS)
-        _cpp_is_not_empty(_cgfs_has_incs _cgfs_include)
-        if(_cgfs_has_incs)
-            target_include_directories(${_cgfs_name} INTERFACE ${_cgfs_include})
-        endif()
-        set(_cgfs_lib ${_cgfs_var}_LIBRARIES)
-        _cpp_is_not_empty(_cgfs_has_libs _cgfs_lib)
-        if(_cgfs_has_libs)
-            target_link_libraries(${_cgfs_name} INTERFACE ${_cgfs_lib})
-        endif()
-    endforeach()
-endfunction()
-
 function(_cpp_special_find _csf_name _csf_version _csf_comps)
     string(TOUPPER "${_csf_name}" _csf_uc_name)
     string(TOLOWER "${_csf_name}" _csf_lc_name)
@@ -257,7 +160,7 @@ function(cpp_find_or_build_dependency)
         _cfobd_src_path
         ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_src_hash}
     )
-    set(_cfobd_toolchain ${_cfobd_install_path}/toolchain.cmake)
+    set(_cfobd_toolchain ${_cfobd_src_path}/toolchain.cmake)
     file(READ ${_cfobd_TOOLCHAIN} _cfobd_contents)
     file(WRITE ${_cfobd_toolchain} "${_cfobd_contents}")
     _cpp_change_toolchain(
@@ -278,10 +181,18 @@ function(cpp_find_or_build_dependency)
 
     if(NOT _cfobd_found)
         _cpp_untar_directory(${_cfobd_get_tar} ${_cfobd_src_path})
-
-        _cpp_build_recipe_dispatch(_cfobd_build_recipe)
+        set(
+            _cfobd_build_recipe
+            ${_cfobd_install_dir}/build-${_cfobd_NAME}.cmake
+        )
+        _cpp_build_recipe_dispatch(
+            ${_cfobd_build_recipe}
+            SOURCE_DIR ${_cfobd_src_path}
+            INSTALL_DIR ${_cfobd_install_dir}
+            TOOLCHAIN ${_cfobd_toolchain}
+        )
+        include(${_cfobd_build_recipe})
     endif()
-
 
     #Look again, (find-recipe better be valid now)
     _cpp_generic_find_search(
@@ -290,63 +201,6 @@ function(cpp_find_or_build_dependency)
         "${_cfobd_VERSION}"
         "${_cfobd_COMPONENTS}"
         ${_cfobd_install_path}
-    )
-
-    if(NOT _cfobd_found)
-        message(FATAL_ERROR "Could not find built ${_cfobd_NAME}")
-    endif()
-
-
-    #Didn't find it so now we build it
-    set(_cfobd_root ${_cfobd_BINARY_DIR}/external/${_cfobd_NAME})
-    file(MAKE_DIRECTORY ${_cfobd_root})
-
-    #Get the source
-    set(_cfobd_tar_file ${_cfobd_root}/${_cfobd_NAME}.tar.gz)
-    _cpp_get_source_tarball(${_cfobd_tar_file} ${ARGN})
-
-
-
-    #Build from source
-
-    set(
-        _cfobd_source_path
-        ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_src_hash}
-    )
-    file(SHA1 ${_cfobd_toolchain} _cfobd_tc_hash)
-    set(_cfobd_install_path ${_cfobd_source_path}/${_cfobd_tc_hash})
-    message("CFOBD: ${_cfobd_install_path}")
-    #Now that we know the install path try to find it one more time in case CPP
-    #already built it
-    cpp_find_dependency(
-        NAME ${_cfobd_NAME}
-        PATHS "${_cfobd_install_path}"
-        RESULT _cfobd_found
-    )
-    if(_cfobd_found)
-        _cpp_debug_print("Using cached version at: ${_cfobd_install_path}")
-        return()
-    endif()
-
-    if(EXISTS ${_cfobd_source_path}/source)
-    else()
-        _cpp_untar_directory(${_cfobd_tar_file} ${_cfobd_source_path}/source)
-    endif()
-
-    _cpp_build_local_dependency(
-         NAME ${_cfobd_NAME}_Build
-         BINARY_DIR ${_cfobd_root}/CMakeFiles
-         SOURCE_DIR ${_cfobd_source_path}/source
-         TOOLCHAIN ${_cfobd_toolchain}
-         INSTALL_DIR ${_cfobd_install_path}
-         CMAKE_ARGS ${_cfobd_CMAKE_ARGS}
-    )
-
-    #Find it so variables/targets are in scope
-    cpp_find_dependency(
-       NAME  ${_cfobd_NAME}
-       PATHS ${_cfobd_install_path}
-       REQUIRED
     )
 
 endfunction()
