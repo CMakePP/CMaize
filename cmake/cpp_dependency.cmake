@@ -109,7 +109,7 @@ function(cpp_find_dependency)
     _cpp_special_find(${_cfd_NAME} "${_cfd_VERSION}" "${_cfd_COMPONENTS}")
 
     #Try a generic search (only honors CMAKE_PREFIX_PATH
-    _cpp_generic_find_search(
+    _cpp_find_package(
         _cfd_found ${_cfd_NAME} "${_cfd_VERSION}" "${_cfd_COMPONENTS}" ""
     )
 
@@ -171,7 +171,7 @@ function(cpp_find_or_build_dependency)
     set(_cfobd_install_path ${_cfobd_src_path}/${_cfobd_tc_hash})
 
     #Look for package using computed dir
-    _cpp_generic_find_search(
+    _cpp_find_package(
        _cfobd_found
        ${_cfobd_NAME}
        "${_cfobd_VERSION}"
@@ -195,7 +195,7 @@ function(cpp_find_or_build_dependency)
     endif()
 
     #Look again, (find-recipe better be valid now)
-    _cpp_generic_find_search(
+    _cpp_find_package(
         _cfobd_found
         ${_cfobd_NAME}
         "${_cfobd_VERSION}"
