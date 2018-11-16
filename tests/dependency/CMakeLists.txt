@@ -1,7 +1,9 @@
 set(
         DEPEND_TESTS find_dependency
-        find_or_build_dependency find_package
-        record_find
+                     find_or_build_dependency
+                     find_package
+                     record_find
+                     special_find
 )
 
 foreach(test_i ${DEPEND_TESTS})
