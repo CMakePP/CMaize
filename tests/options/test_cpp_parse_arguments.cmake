@@ -46,30 +46,3 @@ CONTENTS
     "endfunction()"
     "dummy_fxn()"
 )
-
-_cpp_add_test(
-TITLE "Passing our keyword multiple times is an error"
-SHOULD_FAIL REASON "Keyword OPTIONS passed 2 times"
-CONTENTS
-"function(dummy_fxn)"
-"   cpp_parse_arguments("
-"       test \"\${ARGN}\""
-"       OPTIONS A_OPTION"
-"       OPTIONS B_OPTION"
-"   )"
-"endfunction()"
-"dummy_fxn()"
-)
-
-_cpp_add_test(
-TITLE "Passing our keyword multiple times is an error"
-SHOULD_FAIL REASON "Keyword A_OPTION passed 2 times"
-CONTENTS
-"function(dummy_fxn)"
-"   cpp_parse_arguments("
-"       test \"\${ARGN}\""
-"       OPTIONS A_OPTION"
-"   )"
-"endfunction()"
-"dummy_fxn(A_OPTION value1 A_OPTION value2)"
-)

@@ -10,9 +10,10 @@ TITLE "Basic CMake usage"
 CONTENTS
     "_cpp_build_recipe_dispatch("
     "   ${src_dir}/build-dummy.cmake"
-    "   SOURCE_DIR ${src_dir}/dummy"
-    "   INSTALL_DIR ${src_dir}/install"
-    "   TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE}"
+    "   ${src_dir}/dummy"
+    "   ${CMAKE_TOOLCHAIN_FILE}"
+    "   ${src_dir}/install"
+    "   \"\""
     ")"
     "_cpp_assert_exists(${src_dir}/build-dummy.cmake)"
 )

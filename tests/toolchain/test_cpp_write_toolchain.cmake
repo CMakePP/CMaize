@@ -38,6 +38,6 @@ CONTENTS
     "_cpp_write_toolchain_file(DESTINATION ${test_dir})"
 )
 _cpp_assert_file_contains(
-    "set(CMAKE_PREFIX_PATH \"/a/path/1;/a/path/2\")"
+    "set(CMAKE_PREFIX_PATH \"/a/path/1;/a/path/2\" CACHE INTERNAL \"\")"
     "${test_dir}/toolchain.cmake"
 )
