@@ -50,7 +50,7 @@ function(_cpp_find_package _cfp_found _cfp_name _cfp_recipe _cfp_path)
     endif()
 
     #Didn't get a target, assume the dependency set the standard CMake variables
-    add_library(${_cfp_name} INTERFACE)
+    add_library(${_cfp_name} INTERFACE IMPORTED)
     string(TOUPPER ${_cfp_name} _cfp_uc_name)
     string(TOLOWER ${_cfp_name} _cfp_lc_name)
     foreach(_cfp_var ${_cfp_name} ${_cfp_uc_name} ${_cfp_lc_name})
