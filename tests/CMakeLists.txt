@@ -1,4 +1,6 @@
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+file(COPY ../cmake/cpp_unit_test_helpers.cmake DESTINATION ${CMAKE_BINARY_DIR}/tests)
+
 include(cpp_print) #For debug printing
 
 function(cpp_cmake_unit_test _ccut_name)
