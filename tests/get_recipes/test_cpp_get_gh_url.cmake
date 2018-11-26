@@ -3,16 +3,7 @@ include(cpp_unit_test_helpers)
 _cpp_setup_build_env("get_gh_url")
 
 #All of the returns start the same prefix
-set(
-    prefix
-    "https://api.github.com/repos/organization/repo/tarball")
-
-_cpp_add_test(
-TITLE "Fails if URL is not set"
-SHOULD_FAIL REASON "_cggu_URL is set to false value:"
-CONTENTS
-    "_cpp_get_gh_url(output)"
-)
+set(prefix "https://api.github.com/repos/organization/repo/tarball")
 
 _cpp_add_test(
 TITLE "Basic usage"
@@ -51,6 +42,12 @@ CONTENTS
 )
 
 _cpp_add_test(
+TITLE "Fails if URL is not set"
+SHOULD_FAIL REASON "Required option _cggu_URL is not set"
+CONTENTS "_cpp_get_gh_url(output)"
+)
+
+_cpp_add_test(
 TITLE "Fails if PRIVATE keyword is present, but CPP_GITHUB_TOKEN is not set"
 SHOULD_FAIL REASON  "For private repos CPP_GITHUB_TOKEN must be a valid token."
 CONTENTS
@@ -62,6 +59,5 @@ _cpp_add_test(
 TITLE "Crashes if github.com is not in URL"
 SHOULD_FAIL
 REASON  "Substring \"github.com\" not contained in string \"organization/repo\""
-CONTENTS
-    "_cpp_get_gh_url(output URL organization/repo)"
+CONTENTS "_cpp_get_gh_url(output URL organization/repo)"
 )

@@ -49,7 +49,7 @@ CONTENTS "${prefix}/bad2.tar.gz ${test_prefix}/${test_number})"
 
 _cpp_add_test(
 TITLE "Fails if tarball does not contain a directory"
-SHOULD_FAIL REASON "The tarball does not contain a directory"
+SHOULD_FAIL REASON "is not a directory."
 CONTENTS "${prefix}/bad1.tar.gz ${test_prefix}/${test_number})"
 )
 

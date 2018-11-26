@@ -1,6 +1,7 @@
 set(
     OPTIONS_TESTS option
                   pack_list
+                  parse_arguments
                   unpack_list
 )
 

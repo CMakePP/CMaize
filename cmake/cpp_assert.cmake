@@ -97,3 +97,44 @@ function(_cpp_assert_file_does_not_contain _cafdnc_substring _cafdnc_file)
     file(READ ${_cafdnc_file} _cafdnc_contents)
     _cpp_assert_does_not_contain("${_cafdnc_substring}" "${_cafdnc_contents}")
 endfunction()
+
+function(_cpp_assert_target_property _catp_target _catp_prop _catp_corr_value)
+    get_target_property(_catp_value "${_catp_target}" "${_catp_prop}")
+    if("${_catp_value}" STREQUAL "_catp_value-NOTFOUND")
+        message(
+            FATAL_ERROR
+            "Target ${_catp_target} does not have property ${_catp_prop}."
+        )
+    endif()
+    if("${_catp_value}" STREQUAL "${_catp_corr_value}")
+        return()
+    else()
+        message(
+            FATAL_ERROR
+            "${_catp_prop} set to ${_catp_value} not ${_catp_corr_value}."
+        )
+    endif()
+endfunction()
+
+function(_cpp_assert_is_directory _caid_path)
+    _cpp_is_not_directory(_caid_is_not_dir "${_caid_path}")
+    if(_caid_is_not_dir)
+        message(
+            FATAL_ERROR
+            "The path ${_caid_path} is not a directory."
+            "Troubleshooting: Does it exist? Is it actually a file?"
+        )
+    endif()
+endfunction()
+
+function(_cpp_assert_is_not_directory _caid_path)
+    _cpp_is_directory(_caid_is_dir "${_caid_path}")
+    if(_caid_is_dir)
+        message(
+            FATAL_ERROR
+            "The path ${_caid_path} is a directory."
+            "Troubleshooting: Was it supposed to be a file?"
+        )
+    endif()
+endfunction()
+

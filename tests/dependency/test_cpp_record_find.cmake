@@ -5,7 +5,7 @@ _cpp_setup_build_env("record_find")
 #Code factorization for retrieving the property
 set(
     get_prop
-    "get_target_property(output _cpp_test_interface INTERFACE_VERSION)"
+    "get_target_property(output _cpp_test_External INTERFACE_VERSION)"
 )
 
 #Code factorization for the correct answer
@@ -17,15 +17,16 @@ set(prefix "\"cpp_find_dependency(\n    NAME test\n")
 
 _cpp_add_test(
 TITLE "Fails if NAME is not set"
-SHOULD_FAIL REASON "_crf_NAME is set to false value:"
-CONTENTS "_cpp_record_find()"
+SHOULD_FAIL REASON "Required option _crf_NAME is not set"
+CONTENTS "_cpp_record_find(cpp_find_dependency)"
 )
 
 _cpp_add_test(
 TITLE "Basic call"
 CONTENTS
-    "_cpp_record_find(NAME test)"
+    "_cpp_record_find(cpp_find_dependency NAME test)"
     "${get_prop}"
+
     "_cpp_assert_contains("
         "${prefix})\""
         "\"\${output}\""
@@ -35,7 +36,7 @@ CONTENTS
 _cpp_add_test(
 TITLE "Honors VERSION"
 CONTENTS
-    "_cpp_record_find(NAME test VERSION 1.0.0)"
+    "_cpp_record_find(cpp_find_dependency NAME test VERSION 1.0.0)"
     "${get_prop}"
     "_cpp_assert_contains("
         "${prefix}    VERSION 1.0.0\n)\""
@@ -46,7 +47,7 @@ CONTENTS
 _cpp_add_test(
 TITLE   "Honors COMPONENTS"
 CONTENTS
-    "_cpp_record_find(NAME test COMPONENTS comp1 comp2)"
+    "_cpp_record_find(cpp_find_dependency NAME test COMPONENTS comp1 comp2)"
     "${get_prop}"
     "_cpp_assert_contains("
         "${prefix}    COMPONENTS comp1 comp2 \n)\""
@@ -57,7 +58,11 @@ CONTENTS
 _cpp_add_test(
 TITLE   "Honors CMAKE_ARGS"
 CONTENTS
-    "_cpp_record_find(NAME test CMAKE_ARGS var1=val1 var2=val2)"
+    "_cpp_record_find("
+    "   cpp_find_dependency"
+    "   NAME test"
+    "   CMAKE_ARGS var1=val1 var2=val2"
+    ")"
     "${get_prop}"
     "_cpp_assert_contains("
         "${prefix}    CMAKE_ARGS var1=val1 var2=val2 \n)\""
@@ -65,15 +70,25 @@ CONTENTS
     ")"
 )
 
-set(prefix2 "${prefix}    VERSION 1.0.0\n    COMPONENTS comp1 comp2 \n")
+set(prefix "cpp_find_or_build_dependency(\n    OPTIONAL\n    NAME test\n")
+set(prefix "${prefix}    VERSION 1.0.0\n    URL www.awebsite.com\n")
+set(prefix "${prefix}    COMPONENTS comp1 comp2 \n")
+set(prefix "${prefix}    CMAKE_ARGS var1=val1 var2=val2 \n)")
 _cpp_add_test(
 TITLE "The whole darn signature"
 CONTENTS
-    "_cpp_record_find(NAME test VERSION 1.0.0 COMPONENTS comp1 comp2"
-    "                 CMAKE_ARGS var1=val1 var2=val2)"
+    "_cpp_record_find("
+    "   cpp_find_or_build_dependency"
+    "   NAME test"
+    "   OPTIONAL"
+    "   VERSION 1.0.0"
+    "   URL www.awebsite.com"
+    "   COMPONENTS comp1 comp2"
+    "   CMAKE_ARGS var1=val1 var2=val2"
+    ")"
     "${get_prop}"
     "_cpp_assert_contains("
-        "${prefix2}    CMAKE_ARGS var1=val1 var2=val2 \n)\""
+        "\"${prefix}\""
         "\"\${output}\""
     ")"
 )

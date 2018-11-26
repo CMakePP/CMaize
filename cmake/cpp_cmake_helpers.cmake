@@ -22,7 +22,7 @@ function(_cpp_write_list _cwl_directory)
         _cwl "${ARGN}"
         OPTIONS NAME
         LISTS CONTENTS
-        REQUIRED NAME
+        MUST_SET NAME
     )
     cpp_option(CMAKE_PROJECT_VERSION "0.0.0")
     #This is the boilerplate header
@@ -36,15 +36,17 @@ function(_cpp_write_list _cwl_directory)
         "include(CPPMain)" "CPPMain()"
         "${_cwl_CONTENTS}"
     )
-    string(REPLACE ";" "\n" _cwl_contents "${_cwl_contents}")
-    file(WRITE ${_cwl_directory}/CMakeLists.txt "${_cwl_contents}")
+    foreach(_cwl_content_i ${_cwl_contents})
+        set(_cwl_contents_temp "${_cwl_contents_temp}\n${_cwl_content_i}")
+    endforeach()
+    file(WRITE ${_cwl_directory}/CMakeLists.txt "${_cwl_contents_temp}")
 endfunction()
 
 function(_cpp_run_sub_make)
     cpp_parse_arguments(
         _crsm "${ARGN}"
         OPTIONS BINARY_DIR COMMAND OUTPUT RESULT TARGET
-        REQUIRED BINARY_DIR
+        MUST_SET BINARY_DIR
     )
 
     if(_crsm_TARGET)
@@ -80,8 +82,8 @@ function(_cpp_run_sub_build _crsb_dir)
         _crsb "${ARGN}"
         TOGGLES NO_BUILD NO_INSTALL CAN_FAIL
         OPTIONS NAME OUTPUT RESULT BINARY_DIR INSTALL_DIR TOOLCHAIN
-        LISTS CONTENTS
-        REQUIRED NAME
+        LISTS CONTENTS CMAKE_ARGS
+        MUST_SET NAME
     )
     cpp_option(_crsb_BINARY_DIR "${_crsb_dir}/build")
     cpp_option(_crsb_INSTALL_DIR "${_crsb_dir}/install")
@@ -96,6 +98,12 @@ function(_cpp_run_sub_build _crsb_dir)
             CONTENTS ${_crsb_CONTENTS}
         )
     endif()
+    _cpp_is_not_empty(_crsb_has_args _crsb_CMAKE_ARGS)
+    if(_crsb_has_args)
+        foreach(_crsb_arg_i ${_crsb_CMAKE_ARGS})
+            list(APPEND _crsb_args "-D${_crsb_arg_i}")
+        endforeach()
+    endif()
 
     ############################### Configure ##################################
 
@@ -105,6 +113,7 @@ function(_cpp_run_sub_build _crsb_dir)
                -B${_crsb_BINARY_DIR}
                -DCMAKE_INSTALL_PREFIX=${_crsb_INSTALL_DIR}
                -DCMAKE_TOOLCHAIN_FILE=${_crsb_TOOLCHAIN}
+               ${_crsb_args}
        WORKING_DIRECTORY ${_crsb_dir}
        OUTPUT_VARIABLE _crsb_configure_output
        ERROR_VARIABLE _crsb_configure_output

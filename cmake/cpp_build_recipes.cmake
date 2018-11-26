@@ -13,68 +13,53 @@
 #                        limitations under the License.                        #
 ################################################################################
 
-include(ExternalProject)
-include(cpp_options)
-include(cpp_checks)
-include(cpp_print)
-include(cpp_assert)
+function(_cpp_write_cmake_build _cwcb_file _cwcb_src _cwcb_dir _cwcb_tc)
 
-function(cpp_local_cmake _clc_name _clc_dir)
-    ExternalProject_Add(
-        ${_clc_name}_External
-        SOURCE_DIR ${_clc_dir}
-        INSTALL_DIR ${CMAKE_BINARY_DIR}/install
-        CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-                   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    file(WRITE ${_cwcb_file}
+"_cpp_run_sub_build(
+    ${_cwcb_src}
+    NAME external_dependency
+    INSTALL_DIR ${_cwcb_dir}
+    TOOLCHAIN ${_cwcb_tc}
+)"
+   )
+endfunction()
 
+function(_cpp_write_user_build _cwub_file _cwub_src _cwub_dir _cwub_tc
+                               _cwub_recipe)
+    file(READ ${_cwub_recipe} _cwub_contents)
+    file(WRITE ${_cwub_file}
+"_cpp_run_sub_build(
+    ${_cwub_src}
+    NAME external_dependency
+    INSTALL_DIR ${_cwub_dir}
+    TOOLCHAIN ${_cwub_tc}
+    CONTENTS ${_cwub_contents}
+"
     )
 endfunction()
 
-
-function(cpp_github_cmake _cgc_name _cgc_url)
-    _cpp_parse_gh_url(_cgc_repo ${_cgc_url})
-    set(_cgc_T_kwargs PRIVATE)
-    set(_cgc_O_kwargs TOKEN BRANCH)
-    set(_cgc_M_kwargs CMAKE_ARGS)
-    cmake_parse_arguments(
-        _cgc
-        "${_cgc_T_kwargs}"
-        "${_cgc_O_kwargs}"
-        "${_cgc_M_kwargs}"
-        ${ARGN}
-    )
-    set(_cgc_gh_api "https://api.github.com/repos")
-
-    _cpp_option(_cgc_BRANCH master)
-    _cpp_is_not_empty(_cgc_token_set _cgc_TOKEN)
-    if(_cgc_token_set AND _cgc_PRIVATE)
-        set(_cgc_token "?access_token=${_cgc_TOKEN}")
-    elseif(_cgc_PRIVATE)
-        set(
-            _cgc_msg1
-            "Private repo encountered, but no token set.  Did you forget to"
+function(_cpp_build_recipe_dispatch _cbrd_output _cbrd_src _cbrd_tc
+                                    _cbrd_install _cbrd_build)
+    #Check directory for a CMakeLists.txt file
+    _cpp_exists(_cbrd_is_cmake ${_cbrd_src}/CMakeLists.txt)
+    _cpp_is_not_empty(_cbrd_user_recipe _cbrd_build)
+    if(_cbrd_user_recipe)
+        _cpp_write_user_build(
+            ${_cbrd_output}
+            ${_cbrd_src}
+            ${_cbrd_install}
+            ${_cbrd_tc}
+            ${_cbrd_build}
         )
-        message(
-           FATAL_ERROR
-           "${_cgc_msg1} set CPP_GITHUB_TOKEN?"
+    elseif(_cbrd_is_cmake)
+        _cpp_write_cmake_build(
+            ${_cbrd_output}
+            ${_cbrd_src}
+            ${_cbrd_install}
+            ${_cbrd_tc}
         )
+    else()
+        _cpp_error("Not sure how to build dependency's source code")
     endif()
-    set(
-        _cgc_url
-        "${_cgc_gh_api}/${_cgc_repo}/tarball/${_cgc_BRANCH}${_cgc_token}"
-    )
-
-    set(_crsb_add_args)
-    foreach(_cgc_arg ${_cgc_CMAKE_ARGS})
-        list(APPEND _cgc_add_args "-D${_cgc_arg}")
-    endforeach()
-    _cpp_debug_print("Building CMake project at URL: ${_cgc_url}")
-    ExternalProject_Add(
-        ${_cgc_name}_External
-        URL ${_cgc_url}
-        INSTALL_DIR ${CMAKE_BINARY_DIR}/install
-        CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-                   -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-                   ${_cgc_add_args}
-    )
 endfunction()
