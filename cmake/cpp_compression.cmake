@@ -20,7 +20,7 @@ function(_cpp_tar_directory _ctd_output _ctd_dir2tar)
 endfunction()
 
 function(_cpp_download_tarball _cdt_output _cdt_url)
-    _cpp_debug_print("Getting tarball from URL: ${_cdt_URL}")
+    _cpp_debug_print("Getting tarball from URL: ${_cdt_url}")
     file(DOWNLOAD "${_cdt_url}" "${_cdt_output}")
 endfunction()
 

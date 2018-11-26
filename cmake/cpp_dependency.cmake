@@ -16,7 +16,7 @@
 include(cpp_print) #For _cpp_debug_print
 include(cpp_checks) #For _cpp_is_valid
 include(cpp_cmake_helpers) #For _cpp_write_top_list/_cpp_run_sub_build
-
+include(cpp_find_recipes)
 # Developer Note:
 #  Be very careful with intermediate variables, it is possible for many of these
 #  functions to be called recursively (while trying to find/build other
@@ -33,6 +33,11 @@ function(_cpp_record_find _crf_cmd)
         LISTS ${_crf_M_kwargs}
         MUST_SET NAME
     )
+    set(_crf_target _cpp_${_crf_NAME}_External)
+    if(TARGET ${_crf_target})
+        return() #Just do nothing we're nesting find_ calls
+    endif()
+
     set(_crf_command "${_crf_cmd}(\n")
     if(_crf_OPTIONAL)
         set(_crf_command "${_crf_command}    OPTIONAL\n")
@@ -64,7 +69,7 @@ function(_cpp_record_find _crf_cmd)
     )
 endfunction()
 
-function(_cpp_special_find _csf_was_found _csf_name _csf_version _csf_comps)
+function(_cpp_special_find _csf_was_found _csf_name _csf_recipe)
     string(TOUPPER "${_csf_name}" _csf_uc_name)
     string(TOLOWER "${_csf_name}" _csf_lc_name)
     set(${_csf_was_found} FALSE)
@@ -74,21 +79,18 @@ function(_cpp_special_find _csf_was_found _csf_name _csf_version _csf_comps)
             #Did the user set this variable
             _cpp_is_not_empty(_csf_set ${_csf_var})
             if(_csf_set)
+                set(_csf_value ${${_csf_var}})
                 _cpp_debug_print(
-                   "Looking for ${_csf_name} with ${_csf_var}=${${_csf_var}}"
+                   "Looking for ${_csf_name} with ${_csf_var}=${_csf_value}"
                 )
                 _cpp_find_package(
-                    _csf_found
-                    ${_csf_name}
-                    "${_csf_version}"
-                    "${_csf_comps}"
-                    ${${_csf_var}}
+                    _csf_found ${_csf_name} ${_csf_recipe} ${_csf_value}
                 )
                 if(NOT _csf_found)
                     _cpp_error(
                        "${_csf_var} set, but ${_csf_name} not found there"
                        "Troubleshooting:"
-                       "  Is ${_csf_name} installed to ${${_csf_var}}?"
+                       "  Is ${_csf_name} installed to ${_csf_value}?"
                     )
                 endif()
                 set(${_csf_was_found} TRUE)
@@ -102,37 +104,59 @@ function(_cpp_special_find _csf_was_found _csf_name _csf_version _csf_comps)
     set(${_csf_was_found} ${${_csf_was_found}} PARENT_SCOPE)
 endfunction()
 
+function(_cpp_cache_root _ccr_return _ccr_cache _ccr_name _ccr_ver _ccr_comps)
+    set(_ccr_root ${_ccr_cache}/${_ccr_name})
+    _cpp_is_not_empty(_ccr_has_ver _ccr_ver)
+    if(_ccr_has_ver)
+        set(_ccr_root "${_ccr_root}/${_ccr_ver}")
+    else()
+        set(_ccr_root "${_ccr_root}/latest")
+    endif()
+    set(${_ccr_return} ${_ccr_root} PARENT_SCOPE)
+endfunction()
 
 function(cpp_find_dependency)
     cpp_parse_arguments(
         _cfd "${ARGN}"
         TOGGLES OPTIONAL
-        OPTIONS NAME VERSION RESULT
+        OPTIONS NAME VERSION RESULT CPP_CACHE PATH FIND_RECIPE
         LISTS COMPONENTS
         MUST_SET NAME
     )
     cpp_option(_cfd_RESULT CPP_DEV_NULL)
+    cpp_option(_cfd_CPP_CACHE ${CPP_INSTALL_CACHE})
+    _cpp_record_find("cpp_find_dependency" ${ARGN})
     set(${_cfd_RESULT} TRUE PARENT_SCOPE)
+    _cpp_cache_root(
+        _cfd_root
+        ${_cfd_CPP_CACHE}
+        ${_cfd_NAME}
+        "${_cfd_VERSION}"
+        "${_cfd_COMPONENTS}"
+    )
+    if(_cfd_FIND_RECIPE)
+        set(_cfd_find_recipe ${_cfd_root}/module/Find${_cfd_NAME}.cmake)
+        configure_file(${_cfd_FIND_RECIPE} ${_cfd_find_recipe} COPYONLY)
+    endif()
+    set(_cfd_recipe ${_cfd_root}/find-${_cfd_NAME}.cmake)
+    _cpp_find_recipe_dispatch(
+        ${_cfd_recipe}
+        ${_cfd_NAME}
+        "${_cfd_VERSION}"
+        "${_cfd_COMPONENTS}"
+        "${_cfd_find_recipe}"
+    )
 
-    #If dummy target exists we already found this dependency
-    if(TARGET _cpp_${_cfd_NAME}_External)
+    #Honor special variables
+    _cpp_special_find(_cfd_found ${_cfd_NAME} ${_cfd_recipe})
+
+    if(${_cfd_found})
         return()
     endif()
 
-    #Honor special variables
-    _cpp_special_find(
-       _cfd_found ${_cfd_NAME} "${_cfd_VERSION}" "${_cfd_COMPONENTS}"
-    )
-
-    if(NOT ${_cfd_found})
-        #Try a generic search (only honors CMAKE_PREFIX_PATH)
-        _cpp_find_package(
-            _cfd_found ${_cfd_NAME} "${_cfd_VERSION}" "${_cfd_COMPONENTS}" ""
-        )
-    endif()
-
+    _cpp_find_package(_cfd_found ${_cfd_NAME} ${_cfd_recipe} "${_cfd_PATH}")
     if(${_cfd_found} OR ${_cfd_OPTIONAL})
-        _cpp_record_find("cpp_find_dependency" ${ARGN})
+        set(${_cfd_RESULT} ${_cfd_found} PARENT_SCOPE)
         return()
     endif()
 
@@ -147,102 +171,88 @@ endfunction()
 function(cpp_find_or_build_dependency)
     cpp_parse_arguments(
         _cfobd "${ARGN}"
-        OPTIONS NAME GET_RECIPE FIND_RECIPE BUILD_RECIPE TOOLCHAIN VERSION
+        OPTIONS NAME GET_RECIPE FIND_RECIPE BUILD_RECIPE TOOLCHAIN
         LISTS COMPONENTS CMAKE_ARGS
         MUST_SET NAME
     )
+    _cpp_record_find("cpp_find_or_build_dependency" ${ARGN})
     cpp_option(_cfobd_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
     cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
     cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
 
-    set(_cfobd_root ${_cfobd_CPP_CACHE}/${_cfobd_NAME})
-    if(_cfobd_VERSION)
-        set(_cfobd_root "${_cfobd_root}/${_cfobd_VERSION}")
-    else()
-        set(_cfobd_root "${_cfobd_root}/latest")
-    endif()
-
-    #If dummy target exists we already found this dependency
-    if(TARGET _cpp_${_cfobd_NAME}_External)
-        return()
-    endif()
-
-    _cpp_record_find(cpp_find_or_build_dependency ${ARGN})
-
-    #Honor special variables
-    _cpp_special_find(
-        _cfobd_found ${_cfobd_NAME} "${_cfobd_VERSION}" "${_cfobd_COMPONETS}"
+    _cpp_cache_root(
+        _cfobd_root
+        ${_cfobd_CPP_CACHE}
+        ${_cfobd_NAME}
+        "${_cfobd_VERSION}"
+        "${_cfobd_COMPONENTS}"
     )
-
-    if(${_cfobd_found})
-        return()
-    endif()
-
 
     #Use get recipe to get source
-    _cpp_get_recipe_dispatch(
-        ${_cfobd_root}
-        NAME ${_cfobd_NAME}
-        VERSION ${_cfobd_VERSION}
-        ${_cfobd_UNPARSED_ARGUMENTS}
-    )
     set(_cfobd_get_recipe ${_cfobd_root}/get-${_cfobd_NAME}.cmake)
     set(_cfobd_get_tar ${_cfobd_root}/${_cfobd_NAME}.tar.gz)
+    _cpp_get_recipe_dispatch(
+            ${_cfobd_get_recipe}
+            ${_cfobd_get_tar}
+            NAME ${_cfobd_NAME}
+            VERSION ${_cfobd_VERSION}
+            ${_cfobd_UNPARSED_ARGUMENTS}
+    )
     include(${_cfobd_get_recipe})
     file(SHA1 ${_cfobd_get_tar} _cfobd_src_hash)
 
-    set(
-        _cfobd_src_path
-        ${_cfobd_CPP_CACHE}/${_cfobd_NAME}/${_cfobd_src_hash}
-    )
+    set(_cfobd_src_path ${_cfobd_root}/${_cfobd_src_hash})
 
+    #Write toolchain we will use (we still need to forward arguments though)
     set(_cfobd_toolchain ${_cfobd_src_path}/toolchain.cmake)
     file(READ ${_cfobd_TOOLCHAIN} _cfobd_contents)
     file(WRITE ${_cfobd_toolchain} "${_cfobd_contents}")
     _cpp_change_toolchain(
-            TOOLCHAIN ${_cfobd_toolchain}
-            CMAKE_ARGS "${_cfobd_CMAKE_ARGS}"
+        TOOLCHAIN ${_cfobd_toolchain}
+        CMAKE_ARGS "${_cfobd_CMAKE_ARGS}"
     )
     file(SHA1 ${_cfobd_toolchain} _cfobd_tc_hash)
     set(_cfobd_install_path ${_cfobd_src_path}/${_cfobd_tc_hash})
 
-    #Look for package using computed dir
-    _cpp_find_package(
-       _cfobd_found
-       ${_cfobd_NAME}
-       "${_cfobd_VERSION}"
-       "${_cfobd_COMPONENTS}"
-       ${_cfobd_install_path}
+    cpp_find_dependency(
+        NAME ${_cfobd_NAME}
+        OPTIONAL
+        RESULT _cfobd_found
+        PATH ${_cfobd_install_path}
+        VERSION "${_cfobd_VERSION}"
+        COMPONENTS "${_cfobd_COMPONENTS}"
+        CPP_CACHE ${_cfobd_CPP_CACHE}
+        FIND_RECIPE "${_cfobd_FIND_RECIPE}"
     )
 
     if(${_cfobd_found})
         return()
     endif()
 
-    _cpp_untar_directory(${_cfobd_get_tar} ${_cfobd_src_path})
-    if(_cfobd_BUILD_RECIPE)
-        include(${_cfobd_BUILD_RECIPE})
-    else()
-        set(
-            _cfobd_build_recipe
-            ${_cfobd_install_path}/build-${_cfobd_NAME}.cmake
-        )
-        _cpp_build_recipe_dispatch(
-            ${_cfobd_build_recipe}
-            SOURCE_DIR ${_cfobd_src_path}
-            INSTALL_DIR ${_cfobd_install_path}
-            TOOLCHAIN ${_cfobd_toolchain}
-        )
-        include(${_cfobd_build_recipe})
+    set(_cfobd_build_recipe ${_cfobd_src_path}/build-${_cfobd_NAME}.cmake)
+    _cpp_does_not_exist(_cfobd_src_dne ${_cfobd_src_path}/source)
+    if(_cfobd_src_dne)
+        _cpp_untar_directory(${_cfobd_get_tar} ${_cfobd_src_path}/source)
     endif()
 
-    #Look again, (find-recipe better be valid now)
-    _cpp_find_package(
-        _cfobd_found
-        ${_cfobd_NAME}
-        "${_cfobd_VERSION}"
-        "${_cfobd_COMPONENTS}"
+    _cpp_build_recipe_dispatch(
+        ${_cfobd_build_recipe}
+        ${_cfobd_src_path}/source
+        ${_cfobd_toolchain}
         ${_cfobd_install_path}
+        "${_cfobd_BUILD_RECIPE}"
+    )
+    include(${_cfobd_build_recipe})
+
+    #Look again, (find-recipe better be valid now)
+    cpp_find_dependency(
+        NAME ${_cfobd_NAME}
+        RESULT _cfobd_found
+        PATH ${_cfobd_install_path}
+        VERSION "${_cfobd_VERSION}"
+        COMPONENTS "${_cfobd_COMPONENTS}"
+        CPP_CACHE ${_cfobd_CPP_CACHE}
+        FIND_RECIPE "${_cfobd_FIND_RECIPE}"
     )
 
 endfunction()

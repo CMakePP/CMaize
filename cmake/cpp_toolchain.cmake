@@ -43,7 +43,7 @@ function(_cpp_change_toolchain)
         set(_cct_var "${CMAKE_MATCH_1}")
         set(_cct_val "${CMAKE_MATCH_2}")
         _cpp_contains(_cct_has_val "${_cct_var}" "${_cct_contents}")
-        set(_cct_new_line "set(${_cct_var} ${_cct_val})")
+        set(_cct_new_line "set(${_cct_var} ${_cct_val} CACHE INTERNAL \"\")")
         if(_cct_has_val)
             set(_cct_regex_str "set\\(${_cct_var} [^\\)]*\\)")
             string(

@@ -1,6 +1,5 @@
 set(
-    FIND_RECIPES_TESTS find_using_path
-                       find_using_user_recipe
+    FIND_RECIPES_TESTS find_recipe_dispatch
 )
 
 foreach(test_i ${FIND_RECIPES_TESTS})

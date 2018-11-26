@@ -55,22 +55,22 @@ CONTENTS
 "_cpp_assert_exists(${test_prefix}/${test_number}/install)"
 )
 
-file(
-    WRITE ${test_prefix}/${test_number}/test_toolchain.cmake
-    "set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})\nset(foo bar)"
-)
 set(src_dir ${test_prefix}/${test_number})
-_cpp_run_sub_build(
-   ${src_dir}
-   NAME dummy
-   NO_INSTALL
-   TOOLCHAIN ${src_dir}/test_toolchain.cmake
-   CONTENTS
-       "_cpp_assert_equal(bar \"\${foo}\")"
-       "_cpp_assert_file_contains("
-       "    \"set(foo bar)\""
-       "    \${CMAKE_TOOLCHAIN_FILE}"
-       ")"
-   OUTPUT test_output
+file(
+    WRITE ${src_dir}/test/CMakeLists.txt
+"include(cpp_assert)
+ _cpp_assert_equal(\"\${option1}\" 33)
+ _cpp_assert_equal(\"\${option2}\" 44)
+"
 )
-message("${test_output}")
+_cpp_add_test(
+TITLE "Honors CMAKE_ARGS"
+CONTENTS
+    "_cpp_run_sub_build("
+    "   ${src_dir}/test"
+    "   NAME dummy"
+    "   NO_BUILD"
+    "   CMAKE_ARGS option1=33"
+    "              option2=44"
+    ")"
+)

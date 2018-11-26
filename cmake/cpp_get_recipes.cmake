@@ -58,21 +58,19 @@ function(_cpp_url_dispatcher _cud_contents _cud_dir _cud_url _cud_version)
 
 endfunction()
 
-function(_cpp_get_recipe_dispatch _cgrd_dir)
+function(_cpp_get_recipe_dispatch _cgrd_recipe _cgrd_tar)
     cpp_parse_arguments(
         _cgrd "${ARGN}"
         OPTIONS NAME VERSION URL SOURCE_DIR
         MUST_SET NAME
     )
     string(TOLOWER "${_cgrd_NAME}" _cgrd_lc_name)
-    set(_cgrd_recipe_name "${_cgrd_dir}/get-${_cgrd_lc_name}.cmake")
-    set(_cgrd_tar_name "${_cgrd_dir}/${_cgrd_NAME}.tar.gz")
 
     #Get the file's contents
     if(_cgrd_URL)
         _cpp_url_dispatcher(
             _cgrd_contents
-            "${_cgrd_tar_name}"
+            "${_cgrd_tar}"
             "${_cgrd_URL}"
             "${_cgrd_VERSION}"
             ${_cgrd_UNPARSED_ARGUMENTS}
@@ -80,7 +78,7 @@ function(_cpp_get_recipe_dispatch _cgrd_dir)
     elseif(_cgrd_SOURCE_DIR)
         set(
             _cgrd_contents
-            "_cpp_tar_directory(${_cgrd_tar_name} ${_cgrd_SOURCE_DIR})"
+            "_cpp_tar_directory(${_cgrd_tar} ${_cgrd_SOURCE_DIR})"
         )
     else()
         _cpp_error(
@@ -90,9 +88,9 @@ function(_cpp_get_recipe_dispatch _cgrd_dir)
     endif()
 
     #Check if the get-recipe exists, if so make sure it's the same recipe
-    _cpp_exists(_cgrd_exists "${_cgrd_recipe_name}")
+    _cpp_exists(_cgrd_exists "${_cgrd_recipe}")
     if(_cgrd_exists)
-        file(READ "${_cgrd_recipe_name}" _cgrd_old_contents)
+        file(READ "${_cgrd_recipe}" _cgrd_old_contents)
         _cpp_are_not_equal(
             _cgrd_different "${_cgrd_old_contents}" "${_cgrd_contents}"
         )
@@ -103,6 +101,6 @@ function(_cpp_get_recipe_dispatch _cgrd_dir)
            )
         endif()
     else()
-        file(WRITE "${_cgrd_recipe_name}" "${_cgrd_contents}")
+        file(WRITE "${_cgrd_recipe}" "${_cgrd_contents}")
     endif()
 endfunction()

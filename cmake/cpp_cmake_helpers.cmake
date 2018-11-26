@@ -82,7 +82,7 @@ function(_cpp_run_sub_build _crsb_dir)
         _crsb "${ARGN}"
         TOGGLES NO_BUILD NO_INSTALL CAN_FAIL
         OPTIONS NAME OUTPUT RESULT BINARY_DIR INSTALL_DIR TOOLCHAIN
-        LISTS CONTENTS
+        LISTS CONTENTS CMAKE_ARGS
         MUST_SET NAME
     )
     cpp_option(_crsb_BINARY_DIR "${_crsb_dir}/build")
@@ -98,6 +98,12 @@ function(_cpp_run_sub_build _crsb_dir)
             CONTENTS ${_crsb_CONTENTS}
         )
     endif()
+    _cpp_is_not_empty(_crsb_has_args _crsb_CMAKE_ARGS)
+    if(_crsb_has_args)
+        foreach(_crsb_arg_i ${_crsb_CMAKE_ARGS})
+            list(APPEND _crsb_args "-D${_crsb_arg_i}")
+        endforeach()
+    endif()
 
     ############################### Configure ##################################
 
@@ -107,6 +113,7 @@ function(_cpp_run_sub_build _crsb_dir)
                -B${_crsb_BINARY_DIR}
                -DCMAKE_INSTALL_PREFIX=${_crsb_INSTALL_DIR}
                -DCMAKE_TOOLCHAIN_FILE=${_crsb_TOOLCHAIN}
+               ${_crsb_args}
        WORKING_DIRECTORY ${_crsb_dir}
        OUTPUT_VARIABLE _crsb_configure_output
        ERROR_VARIABLE _crsb_configure_output
