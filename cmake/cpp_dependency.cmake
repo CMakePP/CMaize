@@ -134,18 +134,22 @@ function(cpp_find_dependency)
         "${_cfd_VERSION}"
         "${_cfd_COMPONENTS}"
     )
-    if(_cfd_FIND_RECIPE)
-        set(_cfd_find_recipe ${_cfd_root}/module/Find${_cfd_NAME}.cmake)
-        configure_file(${_cfd_FIND_RECIPE} ${_cfd_find_recipe} COPYONLY)
-    endif()
     set(_cfd_recipe ${_cfd_root}/find-${_cfd_NAME}.cmake)
-    _cpp_find_recipe_dispatch(
-        ${_cfd_recipe}
-        ${_cfd_NAME}
-        "${_cfd_VERSION}"
-        "${_cfd_COMPONENTS}"
-        "${_cfd_find_recipe}"
-    )
+    _cpp_does_not_exist(_cfd_write_recipe ${_cfd_recipe})
+    if(_cfd_write_recipe)
+        if(_cfd_FIND_RECIPE)
+            set(_cfd_find_recipe ${_cfd_root}/module/Find${_cfd_NAME}.cmake)
+            configure_file(${_cfd_FIND_RECIPE} ${_cfd_find_recipe} COPYONLY)
+        endif()
+
+        _cpp_find_recipe_dispatch(
+            ${_cfd_recipe}
+            ${_cfd_NAME}
+            "${_cfd_VERSION}"
+            "${_cfd_COMPONENTS}"
+            "${_cfd_find_recipe}"
+        )
+    endif()
 
     #Honor special variables
     _cpp_special_find(_cfd_found ${_cfd_NAME} ${_cfd_recipe})
@@ -180,6 +184,30 @@ function(cpp_find_or_build_dependency)
     cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
     cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
 
+    #Get the effective version of the dependency
+    _cpp_is_not_empty(_cfobd_version_set _cfobd_VERSION)
+    if(_cfobd_version_set)
+        set(_cfobd_eff_ver ${_cfobd_VERSION})
+    else()
+        set(_cfobd_eff_ver latest)
+    endif()
+
+    set(_cfobd_root ${_cfobd_CPP_CACHE}/${_cfobd_NAME})
+
+
+    _cpp_cache_get_recipe_path(
+        _cfobd_get_recipe ${_cfobd_CPP_CACHE} ${_cfobd_NAME}
+    )
+    _cpp_does_not_exist(_cfobd_have_get ${_cfo)
+
+    ############################ Get Step ######################################
+    set(_cfobd_get_recipe ${_cfobd_root}/get-${_cfobd_NAME}.cmake)
+    set(_cfobd_get_tar ${_cfobd_root}/${_cfobd_NAME}.${_cfobd_eff_ver}.tar.gz)
+    _cpp_get_recipe_dispatch(${_cfobd_get_recipe} ${_cfobd_UNPARSED_ARGUMENTS})
+
+    include(${_cfobd_get_recipe})
+    _cpp_get_recipe(${_cfobd_get_tar} "${_cfobd_VERSION}")
+
     _cpp_cache_root(
         _cfobd_root
         ${_cfobd_CPP_CACHE}
@@ -188,17 +216,6 @@ function(cpp_find_or_build_dependency)
         "${_cfobd_COMPONENTS}"
     )
 
-    #Use get recipe to get source
-    set(_cfobd_get_recipe ${_cfobd_root}/get-${_cfobd_NAME}.cmake)
-    set(_cfobd_get_tar ${_cfobd_root}/${_cfobd_NAME}.tar.gz)
-    _cpp_get_recipe_dispatch(
-            ${_cfobd_get_recipe}
-            ${_cfobd_get_tar}
-            NAME ${_cfobd_NAME}
-            VERSION ${_cfobd_VERSION}
-            ${_cfobd_UNPARSED_ARGUMENTS}
-    )
-    include(${_cfobd_get_recipe})
     file(SHA1 ${_cfobd_get_tar} _cfobd_src_hash)
 
     set(_cfobd_src_path ${_cfobd_root}/${_cfobd_src_hash})

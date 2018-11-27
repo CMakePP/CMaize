@@ -11,11 +11,6 @@ function(_cpp_find_package _cfp_found _cfp_name _cfp_recipe _cfp_path)
         return()
     endif()
 
-    get_directory_property(
-        _cfp_old_targets
-        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        BUILDSYSTEM_TARGETS
-    )
     include(${_cfp_recipe})
     _cpp_call_recipe("${_cfp_path}")
 
@@ -35,17 +30,9 @@ function(_cpp_find_package _cfp_found _cfp_name _cfp_recipe _cfp_path)
         return()
     endif()
 
-    #Determine if new targets were made
-    get_directory_property(
-        _cfp_targets
-        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        BUILDSYSTEM_TARGETS
-    )
-    list(LENGTH _cfp_n_new _cfp_targets)
-    list(LENGTH _cfp_n_old _cfp_old_targets)
-    _cpp_are_not_equal(_cfp_new_targets "${_cfp_n_new}" "${_cfp_n_old}")
-    if(_cfp_new_targets)
-        _cpp_debug_print("New targets: ${_cfp_targets}")
+    #Check if it made a target
+    _cpp_is_target(_cfp_have_target ${_cfp_name})
+    if(_cfp_have_target)
         return()
     endif()
 

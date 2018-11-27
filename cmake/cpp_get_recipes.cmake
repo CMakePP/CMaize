@@ -2,14 +2,10 @@ function(_cpp_get_gh_url _cggu_return)
     cpp_parse_arguments(
         _cggu "${ARGN}"
         TOGGLES PRIVATE
-        OPTIONS URL BRANCH VERSION
+        OPTIONS URL VERSION BRANCH
         MUST_SET URL
     )
     _cpp_assert_contains("github.com" "${_cggu_URL}")
-    _cpp_is_not_empty(_cggu_version_set _cggu_VERSION)
-    if(_cggu_version_set)
-        _cpp_error("CPP's GitHub capabilities do not support version yet")
-    endif()
     cpp_option(_cggu_BRANCH master)
 
     #This parses the organization and repo out of the string
@@ -40,67 +36,55 @@ function(_cpp_get_gh_url _cggu_return)
     )
 endfunction()
 
-function(_cpp_url_dispatcher _cud_contents _cud_dir _cud_url _cud_version)
+function(_cpp_url_dispatcher _cud_contents _cud_url)
     #At the moment we know how to parse GitHub URLs, if the url isn't for GitHub
     #we assume it's a direct download link (download command will fail, if
     #it's not)
     _cpp_contains(_cud_is_gh "github" "${_cud_url}")
+    set(_cud_recipe "function(_cpp_get_recipe _cgr_tar _cgr_version)")
     if(_cud_is_gh)
-        _cpp_get_gh_url(
-            _cud_url URL "${_cud_url}" VERSION "${_cud_version}" ${ARGN}
+        set(
+            _cud_recipe
+"${_cud_recipe}
+    _cpp_get_gh_url(
+        _cgr_url
+        URL ${_cud_url}
+        ${ARGN}
+    )"
         )
+    else()
+        set(_cud_recipe "${_cud_recipe}\n    set(_cgr_url ${_cud_url})")
     endif()
     set(
-        ${_cud_contents}
-        "_cpp_download_tarball(${_cud_dir} ${_cud_url})"
-        PARENT_SCOPE
+        _cud_recipe
+"${_cud_recipe}
+    _cpp_download_tarball(\${_cgr_tar} \${_cgr_url})
+endfunction()"
     )
-
+    set(${_cud_contents} "${_cud_recipe}" PARENT_SCOPE)
 endfunction()
 
-function(_cpp_get_recipe_dispatch _cgrd_recipe _cgrd_tar)
-    cpp_parse_arguments(
-        _cgrd "${ARGN}"
-        OPTIONS NAME VERSION URL SOURCE_DIR
-        MUST_SET NAME
-    )
-    string(TOLOWER "${_cgrd_NAME}" _cgrd_lc_name)
-
+function(_cpp_get_recipe_dispatch _cgrd_return)
+    cpp_parse_arguments(_cgrd "${ARGN}" OPTIONS URL SOURCE_DIR)
     #Get the file's contents
     if(_cgrd_URL)
         _cpp_url_dispatcher(
             _cgrd_contents
-            "${_cgrd_tar}"
             "${_cgrd_URL}"
-            "${_cgrd_VERSION}"
             ${_cgrd_UNPARSED_ARGUMENTS}
         )
     elseif(_cgrd_SOURCE_DIR)
         set(
             _cgrd_contents
-            "_cpp_tar_directory(${_cgrd_tar} ${_cgrd_SOURCE_DIR})"
+            "function(_cpp_get_recipe _cgr_tar _cgr_version)
+            _cpp_tar_directory(\${_cgr_tar} ${_cgrd_SOURCE_DIR})
+            endfunction()"
         )
     else()
         _cpp_error(
-            "Not sure how to get source for dependency ${_cgrd_NAME}."
+            "Not sure how to get source for dependency."
             "Troubleshooting: Did you specify URL or SOURCE_DIR?"
         )
     endif()
-
-    #Check if the get-recipe exists, if so make sure it's the same recipe
-    _cpp_exists(_cgrd_exists "${_cgrd_recipe}")
-    if(_cgrd_exists)
-        file(READ "${_cgrd_recipe}" _cgrd_old_contents)
-        _cpp_are_not_equal(
-            _cgrd_different "${_cgrd_old_contents}" "${_cgrd_contents}"
-        )
-        if(_cgrd_different)
-            _cpp_error(
-               "Get recipe already exists with different content."
-               "Troubleshooting: Did you change where a dependency came from?"
-           )
-        endif()
-    else()
-        file(WRITE "${_cgrd_recipe}" "${_cgrd_contents}")
-    endif()
+    set(${_cgrd_return} "${_cgrd_contents}" PARENT_SCOPE)
 endfunction()
