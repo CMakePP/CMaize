@@ -21,6 +21,6 @@ function(cpp_cmake_unit_test _ccut_name)
 endfunction()
 
 foreach(subdir_i build_recipes cache checks cmake_helpers compression dependency
-                 find_recipes get_recipes options toolchain use_cases)
+                 find_recipes options recipes toolchain use_cases)
     add_subdirectory(${subdir_i})
 endforeach()

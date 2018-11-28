@@ -1,12 +1,5 @@
 include_guard()
-
-function(_cpp_cache_get_recipe_path _ccgrp_path _ccgrp_cache _ccgrp_name)
-    set(
-        ${_ccgrp_path}
-        ${_ccgrp_cache}/get_recipes/get-${_ccgrp_name}.cmake
-        PARENT_SCOPE
-    )
-endfunction()
+include(cache/cache_paths)
 
 function(_cpp_cache_get_recipe _cchr_recipe _cchr_cache _cchr_name)
     _cpp_cache_get_recipe_path(${_cchr_recipe} ${_cchr_cache} ${_cchr_name})

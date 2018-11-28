@@ -121,7 +121,7 @@ function(_cpp_naive_install_cxx_package _cnicp_prefix)
     cpp_option(_cnicp_NAME dummy)
     set(_cnicp_root ${_cnicp_prefix}/${_cnicp_NAME})
     _cpp_dummy_cxx_library(${_cnicp_root})
-    set(_cnicp_install ${_cnicp_root}/install)
+    set(_cnicp_install ${_cnicp_prefix}/install)
     _cpp_write_list(
         ${_cnicp_root}
         NAME dummy

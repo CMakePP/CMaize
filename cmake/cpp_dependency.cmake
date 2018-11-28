@@ -16,7 +16,7 @@
 include(cpp_print) #For _cpp_debug_print
 include(cpp_checks) #For _cpp_is_valid
 include(cpp_cmake_helpers) #For _cpp_write_top_list/_cpp_run_sub_build
-include(cpp_find_recipes)
+
 # Developer Note:
 #  Be very careful with intermediate variables, it is possible for many of these
 #  functions to be called recursively (while trying to find/build other
