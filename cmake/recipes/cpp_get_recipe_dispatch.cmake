@@ -8,7 +8,9 @@ function(_cpp_get_recipe_dispatch _cgrd_return)
 
     #Get the file's contents
     if(_cgrd_URL)
-        _cpp_url_dispatcher(_cgrd_body "${_cgrd_URL}" ${ARGN})
+        _cpp_url_dispatcher(
+            _cgrd_body "${_cgrd_URL}" ${_cgrd_UNPARSED_ARGUMENTS}
+        )
     elseif(_cgrd_SOURCE_DIR)
         set(_cgrd_body "_cpp_tar_directory(\${_cgr_tar} ${_cgrd_SOURCE_DIR})")
     else()
@@ -19,7 +21,7 @@ function(_cpp_get_recipe_dispatch _cgrd_return)
     endif()
     set(
         ${_cgrd_return}
-        "${_cgrd_header}${_cgrd_body}${_cgrd_footer}"
+        "${_cgrd_header}\n${_cgrd_body}\n${_cgrd_footer}"
         PARENT_SCOPE
     )
 endfunction()

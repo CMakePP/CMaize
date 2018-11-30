@@ -12,6 +12,12 @@ function(_cpp_tar_directory _ctd_output _ctd_dir2tar)
     get_filename_component(_ctd_work_dir "${_ctd_dir2tar}" DIRECTORY)
     get_filename_component(_ctd_dir "${_ctd_dir2tar}" NAME)
 
+    #CMake will not create the destination directory
+    get_filename_component(_ctd_dest_dir "${_ctd_output}" DIRECTORY)
+    _cpp_does_not_exist(_ctd_work_dne ${_ctd_dest_dir})
+    if(_ctd_work_dne)
+        file(MAKE_DIRECTORY ${_ctd_dest_dir})
+    endif()
     _cpp_debug_print("Tarring ${_ctd_dir2tar} into ${_ctd_output}.")
     execute_process(
         COMMAND ${CMAKE_COMMAND} -E tar "cfz" "${_ctd_output}" "${_ctd_dir}"

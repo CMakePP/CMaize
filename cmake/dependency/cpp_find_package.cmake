@@ -1,6 +1,8 @@
 include_guard()
+include(cache/cache_find_recipe)
 
-function(_cpp_find_package _cfp_found _cfp_name _cfp_recipe _cfp_path)
+function(_cpp_find_package _cfp_found _cfp_cache _cfp_name _cfp_version
+                                      _cfp_comps _cfp_path)
 
     #Will change this if not the case
     set(${_cfp_found} TRUE PARENT_SCOPE)
@@ -11,8 +13,9 @@ function(_cpp_find_package _cfp_found _cfp_name _cfp_recipe _cfp_path)
         return()
     endif()
 
+    _cpp_cache_find_recipe(_cfp_recipe ${_cfp_cache} ${_cfp_name})
     include(${_cfp_recipe})
-    _cpp_call_recipe("${_cfp_path}")
+    _cpp_find_recipe("${_cfp_version}" "${_cfp_comps}" "${_cfp_path}")
 
     #Assuming the recipe calls find_package, note that in its infinite wisdom
     #CMake will set XXX_DIR to XXX_DIR-NOTFOUND screwing with our special find

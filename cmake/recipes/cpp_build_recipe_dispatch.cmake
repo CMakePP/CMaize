@@ -12,7 +12,8 @@
 #     See the License for the specific language governing permissions and      #
 #                        limitations under the License.                        #
 ################################################################################
-
+include_guard()
+include(cpp_cmake_helpers)
 function(_cpp_configure_dispatch _ccd_install _ccd_src _ccd_tc)
     #Check directory for a CMakeLists.txt file
     _cpp_exists(_ccd_is_cmake ${_ccd_src}/CMakeLists.txt)
@@ -38,23 +39,20 @@ function(_cpp_write_user_build _cwub_return _cwub_recipe)
 "_cpp_run_sub_build(
     \${_cbr_src}
     NAME external_dependency
-    INSTALL_DIR \${_cbr_dir}
+    INSTALL_DIR \${_cbr_install}
     TOOLCHAIN \${_cbr_tc}
-    CONTENTS ${_cwub_contents}
-"
+    CONTENTS \"${_cwub_contents}\"
+)"
         PARENT_SCOPE
     )
 endfunction()
 
 function(_cpp_build_recipe_dispatch _cbrd_output)
-    cpp_parse_arguments(_cbrd "${ARGN}" OPTION BUILD_MODULE)
+    cpp_parse_arguments(_cbrd "${ARGN}" OPTIONS BUILD_MODULE)
 
-    set(
-        _cbrd_header
-        "function(_cpp_build_recipe _cbr_install _cbr_src _cbr_tc)"
-    )
-    set(_cbrd_footer "endfunction()")
-
+    set(_cbrd_start "function(_cpp_build_recipe _cbr_install _cbr_src _cbr_tc)")
+    set(_cbrd_include "include(recipes/cpp_build_recipe_dispatch)")
+    set(_cbrd_end "endfunction()")
     _cpp_is_not_empty(_cbrd_user_recipe _cbrd_BUILD_MODULE)
     if(_cbrd_user_recipe)
         _cpp_write_user_build(_cbrd_body ${_cbrd_BUILD_MODULE})
@@ -64,5 +62,9 @@ function(_cpp_build_recipe_dispatch _cbrd_output)
            "_cpp_configure_dispatch(\${_cbr_install} \${_cbr_src} \${_cbr_tc})"
         )
     endif()
-    set(${_cbrd_output} "${_cbrd_header}${_cbrd_body}${_cbrd_footer}")
+    set(
+        ${_cbrd_output}
+        "${_cbrd_start}\n${_cbrd_include}\n${_cbrd_body}\n${_cbrd_end}"
+        PARENT_SCOPE
+    )
 endfunction()

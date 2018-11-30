@@ -1,10 +1,8 @@
 include_guard()
 include(cache/cache_paths)
 
-function(_cpp_cache_build_recipe _ccbr_recipe _ccbr_cache _ccbr_name
-                                 _ccbr_version)
-    _cpp_cache_build_recipe_path(_ccbr_recipe_path ${_ccbr_cache} ${_ccbr_name}
-                                                   "${_ccbr_version}")
+function(_cpp_cache_build_recipe _ccbr_recipe _ccbr_cache _ccbr_name)
+    _cpp_cache_build_recipe_path(_ccbr_recipe_path ${_ccbr_cache} ${_ccbr_name})
     _cpp_does_not_exist(_ccbr_dne ${_ccbr_recipe_path})
     if(_ccbr_dne)
         _cpp_error(
@@ -16,11 +14,8 @@ function(_cpp_cache_build_recipe _ccbr_recipe _ccbr_cache _ccbr_name
     endif()
 endfunction()
 
-function(_cpp_cache_add_build_recipe _ccabr_cache _ccabr_name _ccabr_version
-                                     _ccabr_contents)
-    _cpp_cache_build_recipe_path(
-      _ccabr_recipe ${_ccabr_cache} ${_ccabr_name} "${_ccabr_version}"
-    )
+function(_cpp_cache_add_build_recipe _ccabr_cache _ccabr_name _ccabr_contents)
+    _cpp_cache_build_recipe_path(_ccabr_recipe ${_ccabr_cache} ${_ccabr_name})
     _cpp_exists(_ccabr_already_present ${_ccabr_recipe})
     if(_ccabr_already_present)
         file(WRITE ${_ccabr_recipe}.temp "${_ccabr_contents}")
