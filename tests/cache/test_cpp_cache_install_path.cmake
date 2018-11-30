@@ -1,0 +1,41 @@
+include(${CMAKE_TOOLCHAIN_FILE})
+include(cpp_unit_test_helpers)
+include(cache/cache_paths)
+_cpp_setup_build_env("cache_install_path")
+
+_cpp_add_test(
+TITLE "Set to NOTFOUND if tarball DNE"
+CONTENTS
+    "include(cache/cache_paths)"
+    "_cpp_cache_install_path(output ${test_prefix} dummy \"\" \"\")"
+    "_cpp_assert_equal(\"output-NOTFOUND\" \"\${output}\")"
+)
+
+set(src_dir ${test_prefix}/${test_number})
+_cpp_cache_tarball_path(version ${src_dir} dummy 1.0)
+_cpp_cache_tarball_path(no_version ${src_dir} dummy "")
+file(WRITE ${version} "hi")
+file(WRITE ${no_version} "hi")
+file(SHA1 ${version} hash)
+file(SHA1 ${CMAKE_TOOLCHAIN_FILE} tc_hash)
+set(corr ${src_dir}/dummy/${hash}/${tc_hash})
+
+_cpp_add_test(
+TITLE "Works for version"
+CONTENTS
+    "include(cache/cache_paths)"
+    "_cpp_cache_install_path("
+    "   output ${src_dir} dummy 1.0 ${CMAKE_TOOLCHAIN_FILE}"
+    ")"
+    "_cpp_assert_equal(\"${corr}\" \"\${output}\")"
+)
+
+_cpp_add_test(
+TITLE "Works for no version"
+CONTENTS
+    "include(cache/cache_paths)"
+    "_cpp_cache_install_path("
+    "   output ${src_dir} dummy \"\" ${CMAKE_TOOLCHAIN_FILE}"
+    ")"
+    "_cpp_assert_equal(\"${corr}\" \"\${output}\")"
+)

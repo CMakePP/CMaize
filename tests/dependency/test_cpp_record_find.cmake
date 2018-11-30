@@ -18,12 +18,15 @@ set(prefix "\"cpp_find_dependency(\n    NAME test\n")
 _cpp_add_test(
 TITLE "Fails if NAME is not set"
 SHOULD_FAIL REASON "Required option _crf_NAME is not set"
-CONTENTS "_cpp_record_find(cpp_find_dependency)"
+CONTENTS
+    "include(dependency/cpp_record_find)"
+    "_cpp_record_find(cpp_find_dependency)"
 )
 
 _cpp_add_test(
 TITLE "Basic call"
 CONTENTS
+    "include(dependency/cpp_record_find)"
     "_cpp_record_find(cpp_find_dependency NAME test)"
     "${get_prop}"
 
@@ -36,6 +39,7 @@ CONTENTS
 _cpp_add_test(
 TITLE "Honors VERSION"
 CONTENTS
+    "include(dependency/cpp_record_find)"
     "_cpp_record_find(cpp_find_dependency NAME test VERSION 1.0.0)"
     "${get_prop}"
     "_cpp_assert_contains("
@@ -47,6 +51,7 @@ CONTENTS
 _cpp_add_test(
 TITLE   "Honors COMPONENTS"
 CONTENTS
+    "include(dependency/cpp_record_find)"
     "_cpp_record_find(cpp_find_dependency NAME test COMPONENTS comp1 comp2)"
     "${get_prop}"
     "_cpp_assert_contains("
@@ -58,6 +63,7 @@ CONTENTS
 _cpp_add_test(
 TITLE   "Honors CMAKE_ARGS"
 CONTENTS
+    "include(dependency/cpp_record_find)"
     "_cpp_record_find("
     "   cpp_find_dependency"
     "   NAME test"
@@ -70,15 +76,17 @@ CONTENTS
     ")"
 )
 
-set(prefix "cpp_find_or_build_dependency(\n    OPTIONAL\n    NAME test\n")
-set(prefix "${prefix}    VERSION 1.0.0\n    URL www.awebsite.com\n")
+set(prefix "cpp_find_dependency(\n    OPTIONAL\n    NAME test\n")
+set(prefix "${prefix}    VERSION 1.0.0\n")
+set(prefix "${prefix}    URL www.awebsite.com\n")
 set(prefix "${prefix}    COMPONENTS comp1 comp2 \n")
 set(prefix "${prefix}    CMAKE_ARGS var1=val1 var2=val2 \n)")
 _cpp_add_test(
 TITLE "The whole darn signature"
 CONTENTS
+    "include(dependency/cpp_record_find)"
     "_cpp_record_find("
-    "   cpp_find_or_build_dependency"
+    "   cpp_find_dependency"
     "   NAME test"
     "   OPTIONAL"
     "   VERSION 1.0.0"

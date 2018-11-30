@@ -1,0 +1,11 @@
+include_guard()
+
+function(_cpp_cache_sanitize_version _ccsv_output _ccsv_version)
+    _cpp_is_empty(_ccsv_no_ver _ccsv_version)
+    if(_ccsv_no_ver)
+        set(_ccsv_eff_ver "latest")
+    else()
+        set(_ccsv_eff_ver ${_ccsv_version})
+    endif()
+    set(${_ccsv_output} ${_ccsv_eff_ver} PARENT_SCOPE)
+endfunction()
