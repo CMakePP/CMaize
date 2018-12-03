@@ -1,5 +1,6 @@
 set(
     RECIPE_TESTS assemble_gh_url
+                 autotools_conf_cmd
                  build_recipe_dispatch
                  find_from_config
                  find_from_module

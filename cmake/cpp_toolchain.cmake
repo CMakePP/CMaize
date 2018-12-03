@@ -15,18 +15,7 @@
 
 include(cpp_checks) #For _cpp_is_valid
 include(cpp_options) #For cpp_option
-
-function(_cpp_get_toolchain_vars _cgtv_return)
-    set(_cgtv_vars CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER
-                    CMAKE_SYSTEM_NAME
-                    CMAKE_MODULE_PATH CMAKE_PREFIX_PATH
-                    BUILD_SHARED_LIBS
-                    CMAKE_SHARED_LIBRARY_PREFIX CMAKE_SHARED_LIBRARY_SUFFIX
-                    CMAKE_STATIC_LIBRARY_PREFIX CMAKE_STATIC_LIBRARY_SUFFIX
-                    CPP_INSTALL_CACHE CPP_GITHUB_TOKEN
-    )
-    set(${_cgtv_return} "${_cgtv_vars}" PARENT_SCOPE)
-endfunction()
+include(toolchain/cpp_toolchain_get_vars)
 
 function(_cpp_change_toolchain)
     cpp_parse_arguments(
@@ -67,7 +56,7 @@ function(_cpp_write_toolchain_file)
     )
     cpp_option(_cwtf_DESTINATION "${CMAKE_BINARY_DIR}")
     set(_cwtf_file ${_cwtf_DESTINATION}/toolchain.cmake)
-    _cpp_get_toolchain_vars(_cwtf_vars)
+    _cpp_toolchain_get_vars(_cwtf_vars)
     foreach(_cwtf_var ${_cwtf_vars})
         _cpp_is_not_empty(_cwtf_non_empty ${_cwtf_var})
         if(_cwtf_non_empty)

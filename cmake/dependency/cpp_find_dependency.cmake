@@ -50,6 +50,7 @@ function(cpp_find_dependency)
     )
 
     if(${_cfd_found})
+        set(${_cfd_RESULT} TRUE PARENT_SCOPE)
         return()
     endif()
 
