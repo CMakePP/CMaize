@@ -1,5 +1,7 @@
 set(
     TOOLCHAIN_TESTS change_toolchain
+                    toolchain_contains
+                    toolchain_get
                     write_toolchain
 )
 

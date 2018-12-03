@@ -5,10 +5,8 @@ _cpp_setup_build_env("build_recipe_dispatch")
 set(header "function(_cpp_build_recipe _cbr_install _cbr_src _cbr_tc)")
 set(footer "endfunction()")
 
-set(
-    body
-    "_cpp_configure_dispatch(\\\${_cbr_install} \\\${_cbr_src} \\\${_cbr_tc})"
-)
+set(args "\\\${_cbr_install} \\\${_cbr_src} \\\${_cbr_tc} \\\"\\\"")
+set(body "_cpp_configure_dispatch(${args})")
 _cpp_add_test(
 TITLE "Autobuild project: contents"
 CONTENTS

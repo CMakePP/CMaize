@@ -155,7 +155,7 @@ function(_cpp_run_sub_build _crsb_dir)
             PARENT_SCOPE
     )
     set(${_crsb_RESULT} "${_crsb_build_failed}" PARENT_SCOPE)
-    if(${_crsb_configure_failed})
+    if(${_crsb_build_failed})
         if(_crsb_CAN_FAIL)
             return()
         else()

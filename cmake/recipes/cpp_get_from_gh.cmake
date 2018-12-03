@@ -27,11 +27,20 @@ function(_cpp_parse_gh_url _cpgu_org _cpgu_repo _cpgu_url)
 endfunction()
 
 function(_cpp_assemble_gh_url _cagu_url _cagu_org _cagu_repo _cagu_private
-                              _cagu_branch)
+                              _cagu_branch _cagu_version)
+
     set(
         _cagu_prefix
         "https://api.github.com/repos/${_cagu_org}/${_cagu_repo}/tarball"
     )
+    _cpp_is_not_empty(_cagu_have_version _cagu_version)
+
+    if(_cagu_have_version)
+        set(_cagu_tar "${_cagu_version}")
+    else()
+        set(_cagu_tar "${_cagu_branch}")
+    endif()
+
     #Handle commandline access to private repositories
     if(_cagu_private)
         _cpp_is_not_empty(_cagu_token_set CPP_GITHUB_TOKEN)
@@ -43,7 +52,7 @@ function(_cpp_assemble_gh_url _cagu_url _cagu_org _cagu_repo _cagu_private
         endif()
         set(_cagu_token "?access_token=${CPP_GITHUB_TOKEN}")
     endif()
-    set(${_cagu_url} ${_cagu_prefix}/${_cagu_branch}${_cagu_token} PARENT_SCOPE)
+    set(${_cagu_url} ${_cagu_prefix}/${_cagu_tar}${_cagu_token} PARENT_SCOPE)
 endfunction()
 
 
@@ -54,7 +63,12 @@ function(_cpp_get_from_gh _cgfg_tar _cgfg_version _cgfg_url)
 
     _cpp_parse_gh_url(_cgfg_org _cgfg_repo ${_cgfg_url})
     _cpp_assemble_gh_url(
-        _cgfg_url ${_cgfg_org} ${_cgfg_repo} ${_cgfg_PRIVATE} ${_cgfg_BRANCH}
+        _cgfg_url
+        ${_cgfg_org}
+        ${_cgfg_repo}
+        ${_cgfg_PRIVATE}
+        ${_cgfg_BRANCH}
+        "${_cgfg_version}"
     )
 
     _cpp_download_tarball(${_cgfg_tar} ${_cgfg_url})

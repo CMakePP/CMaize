@@ -8,7 +8,7 @@ _cpp_add_test(
 TITLE "Basic usage"
 CONTENTS
     "include(recipes/cpp_get_from_gh)"
-    "_cpp_assemble_gh_url(url org repo FALSE master)"
+    "_cpp_assemble_gh_url(url org repo FALSE master \"\")"
     "_cpp_assert_equal(${prefix}/master \${url})"
 )
 
@@ -17,7 +17,7 @@ TITLE "Basic private repo usage"
 CONTENTS
     "include(recipes/cpp_get_from_gh)"
     "set(CPP_GITHUB_TOKEN 333)"
-    "_cpp_assemble_gh_url(url org repo TRUE master)"
+    "_cpp_assemble_gh_url(url org repo TRUE master \"\")"
     "_cpp_assert_equal(${prefix}/master?access_token=333 \${url})"
 )
 
@@ -27,5 +27,5 @@ SHOULD_FAIL REASON "CPP_GITHUB_TOKEN must be a valid token."
 CONTENTS
     "include(recipes/cpp_get_from_gh)"
     "set(CPP_GITHUB_TOKEN \"\")"
-    "_cpp_assemble_gh_url(url org repo TRUE master)"
+    "_cpp_assemble_gh_url(url org repo TRUE master \"\")"
 )

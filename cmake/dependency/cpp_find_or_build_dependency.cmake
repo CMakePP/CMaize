@@ -21,7 +21,7 @@ include(dependency/cpp_find_dependency)
 function(cpp_find_or_build_dependency)
     cpp_parse_arguments(
         _cfobd "${ARGN}"
-        OPTIONS NAME TOOLCHAIN CPP_CACHE
+        OPTIONS NAME TOOLCHAIN CPP_CACHE VERSION
         LISTS COMPONENTS CMAKE_ARGS
         MUST_SET NAME
     )
