@@ -45,12 +45,19 @@ def parse_file(file, docs):
             fxn_line = "{}<{}> ".format(fxn_line, var)
         fxn_line = "{}<{}>)".format(fxn_line, fxn_params[-1])
 
+        #Add the parsed documentation to it
         fxn_line = fxn_line + "\n"
         for line in doc.split('\n'):
             fxn_line = "{}\n    {}".format(fxn_line, line)
-        docs[fxn_name] = fxn_line
 
+        #reST has problems if the name starts with an underscore
+        sanitized_name = fxn_name.replace("_cpp", "cpp")
 
+        #Make the header for the file
+        header = ".. _{}-label:\n\n".format(sanitized_name)
+        header += "{}\n{}\n\n".format(sanitized_name, '#'*len(sanitized_name))
+
+        docs[sanitized_name + ".rst"] = header + fxn_line
 
 def parse_dir(root_dir, docs):
     for file in os.listdir(root_dir):
@@ -59,8 +66,17 @@ def parse_dir(root_dir, docs):
             print(full_file)
             sub_docs = {}
             parse_dir(full_file, sub_docs)
+
+            #Start an index file for this module
+            index_content = "\n{}\n{}\n\n".format(file, '#'*len(file))
+            index_content += "Contents\n========\n\n"
+            index_content += ".. toctree::\n    :maxdepth: 2\n\n"
+
             for k,v in sub_docs.items():
+                index_content += "    {}\n".format(k.replace('.rst', ''))
                 docs[os.path.join(file, k)] = v
+            docs[os.path.join(file, "index.rst")] = index_content
+
         else:
             with open(full_file, "r") as f:
                 parse_file(f, docs)
@@ -76,7 +92,7 @@ def main():
     output_dir = os.path.join(root_dir, "docs", "source", "apis")
 
     for k,v in docs.items():
-        with open(os.path.join(output_dir,k) + ".rst", "w") as f:
+        with open(os.path.join(output_dir,k), "w") as f:
             f.write(v)
 
 
