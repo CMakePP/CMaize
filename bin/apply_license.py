@@ -25,20 +25,12 @@ limitations under the License.""".format(comment_char, year, author)
     rv+=banner + "\n"
     return rv
 
-
-
-
-def main() :
-    year = "2018"
-    author = "Ryan M. Richard"
-    comment_char = '#'
-    lines_in_lic = 15
-    curr_dir = os.path.dirname(os.path.realpath(__file__))
-    root_dir = os.path.dirname(curr_dir)
-    new_license = make_license(year, author, comment_char)
-
-    for filename in os.listdir(os.path.join(root_dir, "cmake")):
-        file_path = os.path.join(root_dir, "cmake", filename)
+def process_files(root_dir, lines_in_lic, new_license):
+    for filename in os.listdir(root_dir):
+        file_path = os.path.join(root_dir, filename)
+        if os.path.isdir(file_path):
+            process_files(file_path, lines_in_lic, new_license)
+            continue
         temp_path = file_path + ".temp"
         if filename.endswith(".temp"):
             continue
@@ -55,6 +47,19 @@ def main() :
                     g.write(l)
         os.remove(file_path)
         os.rename(temp_path, file_path)
+
+
+def main() :
+    year = "2018"
+    author = "Ryan M. Richard"
+    comment_char = '#'
+    lines_in_lic = 15
+    curr_dir = os.path.dirname(os.path.realpath(__file__))
+    root_dir = os.path.dirname(curr_dir)
+    new_license = make_license(year, author, comment_char)
+
+    source_dir = os.path.join(root_dir, "cmake")
+    process_files(source_dir, lines_in_lic, new_license)
 
 
 if __name__ == "__main__":
