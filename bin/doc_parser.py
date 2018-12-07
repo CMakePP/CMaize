@@ -41,9 +41,12 @@ def parse_file(file, docs):
 
         #Piece the actual reST function command together
         fxn_line = ".. function:: {}(".format(fxn_name)
-        for var in fxn_params[:-1]:
-            fxn_line = "{}<{}> ".format(fxn_line, var)
-        fxn_line = "{}<{}>)".format(fxn_line, fxn_params[-1])
+        if len(fxn_params):
+            for var in fxn_params[:-1]:
+                fxn_line = "{}<{}> ".format(fxn_line, var)
+            fxn_line = "{}<{}>)".format(fxn_line, fxn_params[-1])
+        else:
+            fxn_line = "{})".format(fxn_line)
 
         #Add the parsed documentation to it
         fxn_line = fxn_line + "\n"
