@@ -18,6 +18,7 @@ include(dependency/cpp_special_find)
 include(dependency/cpp_find_package)
 include(dependency/cpp_record_find)
 include(cache/cache_paths)
+include(cache/cache_add_dependency)
 
 function(cpp_find_dependency)
     cpp_parse_arguments(
@@ -43,17 +44,7 @@ function(cpp_find_dependency)
         ${_cfd_optional}
     )
 
-    if(_cfd_FIND_MODULE)
-        _cpp_find_recipe_dispatch(
-            _cfd_contents
-            ${_cfd_CPP_CACHE}
-            ${_cfd_NAME}
-            FIND_MODULE "${_cfd_FIND_MODULE}"
-        )
-        _cpp_cache_add_find_recipe(
-            ${_cfd_CPP_CACHE} ${_cfd_NAME} ${_cfd_contents}
-        )
-    endif()
+    _cpp_cache_write_find_recipe(${_cfd_CPP_CACHE} ${_cfd_NAME} ${ARGN})
 
     #Honor special variables
     _cpp_special_find(

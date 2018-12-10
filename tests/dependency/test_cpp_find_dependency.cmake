@@ -10,6 +10,7 @@ _cpp_install_dummy_cxx_package(${src_dir})
 _cpp_cache_add_dependency(
     ${CPP_INSTALL_CACHE} dummy SOURCE_DIR ${src_dir}/dummy
 )
+
 set(install_path ${src_dir}/install)
 
 _cpp_add_test(
