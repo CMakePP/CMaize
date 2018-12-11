@@ -11,23 +11,8 @@ set(footer "endmacro()")
 
 
 set(src_dir ${test_prefix}/${test_number})
-_cpp_naive_install_cxx_package(${src_dir})
-#Write a typical Finddummy.cmake file
-file(
-    WRITE "${test_prefix}/Finddummy.cmake"
-"
-find_path(DUMMY_INCLUDE_DIR a.hpp)
-find_library(DUMMY_LIBRARY dummy)
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(
-    DUMMY DEFAULT_MSG
-    DUMMY_LIBRARY
-    DUMMY_INCLUDE_DIR
-)
-set(DUMMY_INCLUDE_DIRS \${DUMMY_INCLUDE_DIR})
-set(DUMMY_LIBRARIES \${DUMMY_LIBRARY})
-"
-)
+_cpp_install_naive_cxx_package(install_dir ${src_dir})
+_cpp_naive_find_module(module ${src_dir})
 
 set(include "include(recipes/cpp_find_from_module)")
 set(fxn "_cpp_find_from_module(dummy ${args})")
@@ -36,7 +21,7 @@ TITLE "User provided module: contents"
 CONTENTS
     "include(recipes/cpp_find_recipe_dispatch)"
     "_cpp_find_recipe_dispatch("
-    "   output ${src_dir} dummy FIND_MODULE ${test_prefix}/Finddummy.cmake"
+    "   output ${src_dir} dummy FIND_MODULE ${module}"
     ")"
     "_cpp_assert_contains(\"${header}\" \"\${output}\")"
     "_cpp_assert_contains(\"${include}\" \"\${output}\")"
@@ -50,7 +35,7 @@ TITLE "User provided module: works"
 CONTENTS
     "include(recipes/cpp_find_recipe_dispatch)"
     "_cpp_find_recipe_dispatch("
-    "   output ${src_dir} dummy FIND_MODULE ${test_prefix}/Finddummy.cmake"
+    "   output ${src_dir} dummy FIND_MODULE ${module}"
     ")"
     "file(WRITE ${recipe} \"\${output}\")"
     "include(${recipe})"

@@ -16,19 +16,15 @@
 include(cpp_cmake_helpers)
 include(cpp_checks)
 include(unit_testing/cpp_add_test)
+include(unit_testing/cpp_dummy_cxx_library)
+include(unit_testing/cpp_naive_cxx_package)
+include(unit_testing/cpp_install_naive_cxx_package)
+include(unit_testing/cpp_naive_find_module)
 
 function(_cpp_make_random_dir _cmrd_result _cmrd_prefix)
     string(RANDOM _cmrd_random_prefix)
     set(${_cmrd_result} ${_cmrd_prefix}/${_cmrd_random_prefix} PARENT_SCOPE)
     file(MAKE_DIRECTORY ${_cmrd_prefix}/${_cmrd_random_prefix})
-endfunction()
-
-function(_cpp_dummy_cxx_library _cdcl_prefix)
-    file(WRITE ${_cdcl_prefix}/a.hpp "int a_fxn();")
-    file(
-        WRITE ${_cdcl_prefix}/a.cpp
-        "#include \"a.hpp\"\nint a_fxn(){return 2;}"
-    )
 endfunction()
 
 function(_cpp_dummy_cxx_executable _cdce_prefix)
@@ -77,31 +73,7 @@ function(_cpp_install_dummy_cxx_package _cidcp_prefix)
     )
 endfunction()
 
-function(_cpp_naive_install_cxx_package _cnicp_prefix)
-    cpp_option(_cnicp_NAME dummy)
-    set(_cnicp_root ${_cnicp_prefix}/${_cnicp_NAME})
-    _cpp_dummy_cxx_library(${_cnicp_root})
-    set(_cnicp_install ${_cnicp_prefix}/install)
-    _cpp_write_list(
-        ${_cnicp_root}
-        NAME dummy
-        CONTENTS "add_library(dummy a.cpp)"
-                 "install("
-                 "   TARGETS dummy"
-                 "   LIBRARY DESTINATION ${_cnicp_install}/lib"
-                 "   ARCHIVE DESTINATION ${_cnicp_install}/lib"
-                 ")"
-                "install(FILES a.hpp DESTINATION ${_cnicp_install}/include)"
-    )
-    _cpp_run_sub_build(
-        ${_cnicp_root}
-        INSTALL_DIR ${_cnicp_install}
-        NAME ${_cnicp_NAME}
-    )
-    _cpp_assert_exists(
-        ${_cnicp_install}/include/a.hpp
-    )
-endfunction()
+
 
 function(_cpp_make_test_toolchain _cmtt_prefix)
     file(READ ${CMAKE_TOOLCHAIN_FILE} _cmtt_file)
