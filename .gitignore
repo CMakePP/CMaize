@@ -3,3 +3,4 @@
 
 #Build directories
 cmake-build*
+docs/build
