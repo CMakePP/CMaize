@@ -16,8 +16,20 @@
 include_guard()
 include(recipes/cpp_url_dispatcher)
 
+function(_cpp_get_recipe_kwargs _cgrk_toggles _cgrk_options _cgrk_lists)
+    set(${_cgrk_toggles} PRIVATE PARENT_SCOPE)
+    set(${_cgrk_options} URL SOURCE_DIR BRANCH PARENT_SCOPE)
+    set(${_cgrk_lists} "" PARENT_SCOPE)
+endfunction()
+
 function(_cpp_get_recipe_dispatch _cgrd_return)
-    cpp_parse_arguments(_cgrd "${ARGN}" OPTIONS URL SOURCE_DIR)
+    _cpp_get_recipe_kwargs(_cgrd_toggles _cgrd_options _cgrd_lists)
+    cpp_parse_arguments(
+        _cgrd "${ARGN}"
+        TOGGLES ${_cgrd_toggles}
+        OPTIONS ${_cgrd_options}
+        LISTS ${_cgrd_lists}
+    )
     set(_cgrd_header "function(_cpp_get_recipe _cgr_tar _cgr_version)")
     set(_cgrd_footer "endfunction()")
 

@@ -25,8 +25,20 @@ function(_cpp_update_find_header _cufh_header _cufh_cache _cufh_name)
     set(${_cufh_header} "${_cufh_contents}" PARENT_SCOPE)
 endfunction()
 
+function(_cpp_find_recipe_kwargs _cfrk_toggles _cfrk_options _cfrk_lists)
+    set(${_cfrk_toggles} "" PARENT_SCOPE)
+    set(${_cfrk_options} FIND_MODULE PARENT_SCOPE)
+    set(${_cfrk_lists} "" PARENT_SCOPE)
+endfunction()
+
 function(_cpp_find_recipe_dispatch _cfrd_contents _cfrd_cache _cfrd_name)
-    cpp_parse_arguments(_cfrd "${ARGN}" OPTIONS FIND_MODULE)
+    _cpp_find_recipe_kwargs(_cfrd_toggles _cfrd_options _cfrd_lists)
+    cpp_parse_arguments(
+        _cfrd "${ARGN}"
+        TOGGLES ${_cfrd_toggles}
+        OPTIONS ${_cfrd_options}
+        LISTS ${_cfrd_lists}
+    )
 
     #We use a macro b/c we're wrapping find_package which introduces variables
     set(_cfrd_start "macro(_cpp_find_recipe _cfr_version _cfr_comps _cfr_path)")

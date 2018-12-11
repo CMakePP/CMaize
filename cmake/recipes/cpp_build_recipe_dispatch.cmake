@@ -13,23 +13,10 @@
 #                        limitations under the License.                        #
 ################################################################################
 
-################################################################################
-#                        Copyright 2018 Ryan M. Richard                        #
-#       Licensed under the Apache License, Version 2.0 (the "License");        #
-#       you may not use this file except in compliance with the License.       #
-#                   You may obtain a copy of the License at                    #
-#                                                                              #
-#                  http://www.apache.org/licenses/LICENSE-2.0                  #
-#                                                                              #
-#     Unless required by applicable law or agreed to in writing, software      #
-#      distributed under the License is distributed on an "AS IS" BASIS,       #
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
-#     See the License for the specific language governing permissions and      #
-#                        limitations under the License.                        #
-################################################################################
 include_guard()
 include(cpp_cmake_helpers)
 include(recipes/cpp_autotools_conf_cmd)
+
 function(_cpp_autotools_conf _cac_install _cac_src _cac_tc _cac_args)
     find_program(_cac_autoconf autoconf)
     #For autotools we always use make, so don't use CMAKE_MAKE_PROGRAM variable
@@ -99,11 +86,16 @@ function(_cpp_write_user_build _cwub_return _cwub_recipe)
     )
 endfunction()
 
+function(_cpp_build_recipe_kwargs _cbrk_toggles _cbrk_options _cbrk_lists)
+    set(${_cbrk_toggles} "" PARENT_SCOPE)
+    set(${_cbrk_options} BUILD_MODULE PARENT_SCOPE)
+    set(${_cbrk_lists} CMAKE_ARGS PARENT_SCOPE)
+endfunction()
+
 function(_cpp_build_recipe_dispatch _cbrd_output)
+    _cpp_build_recipe_kwargs(_cbrd_toggles _cbrd_options _cbrd_lists)
     cpp_parse_arguments(
-        _cbrd "${ARGN}"
-        OPTIONS BUILD_MODULE
-        LISTS CMAKE_ARGS
+        _cbrd "${ARGN}" OPTIONS ${_cbrd_options} LISTS ${_cbrd_lists}
     )
 
     set(_cbrd_start "function(_cpp_build_recipe _cbr_install _cbr_src _cbr_tc)")
