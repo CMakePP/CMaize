@@ -3,23 +3,9 @@ include(cpp_unit_test_helpers)
 _cpp_setup_build_env("find_from_module")
 
 set(src_dir ${test_prefix}/${test_number})
-_cpp_naive_install_cxx_package(${src_dir})
+_cpp_install_naive_cxx_package(install_dir ${src_dir})
+_cpp_naive_find_module(module ${test_prefix})
 
-#Write a typical Finddummy.cmake file
-file(
-    WRITE "${test_prefix}/Finddummy.cmake"
-"find_path(DUMMY_INCLUDE_DIR a.hpp)
-find_library(DUMMY_LIBRARY dummy)
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(
-    dummy DEFAULT_MSG
-    DUMMY_LIBRARY
-    DUMMY_INCLUDE_DIR
-)
-set(DUMMY_INCLUDE_DIRS \${DUMMY_INCLUDE_DIR})
-set(DUMMY_LIBRARIES \${DUMMY_LIBRARY})
-"
-)
 #I think CMake is finding it in the package registry, but I'm having problems
 #stopping that behavior
 
@@ -39,7 +25,7 @@ TITLE "Finds dummy with path"
 CONTENTS
     "include(recipes/cpp_find_from_module)"
     "list(APPEND CMAKE_MODULE_PATH ${test_prefix})"
-    "_cpp_find_from_module(dummy \"\" \"\" ${src_dir}/install)"
+    "_cpp_find_from_module(dummy \"\" \"\" ${install_dir})"
     "_cpp_assert_true(dummy_FOUND)"
 )
 

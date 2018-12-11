@@ -51,6 +51,7 @@ function(cpp_find_or_build_dependency)
         COMPONENTS "${_cfobd_COMPONENTS}"
         CPP_CACHE ${_cfobd_CPP_CACHE}
         TOOLCHAIN ${_cfobd_toolchain}
+        ${_cfobd_UNPARSED_ARGUMENTS}
     )
 
     if(${_cfobd_found})
@@ -71,6 +72,7 @@ function(cpp_find_or_build_dependency)
         COMPONENTS "${_cfobd_COMPONENTS}"
         CPP_CACHE ${_cfobd_CPP_CACHE}
         TOOLCHAIN ${_cfobd_toolchain}
+        ${_cfobd_UNPARSED_ARGUMENTS}
     )
 endfunction()
 
