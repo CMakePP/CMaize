@@ -82,9 +82,9 @@ considerations that were part of its design.
 Other Relevant Projects
 -----------------------
 
-
 In order to put CPP in perspective this section describes some other relevant
-projects.
+projects. Projects are considered relevant if they strive to simplify the
+writing of the CMake infrastructure for generating a build system.
 
 Hunter
 ^^^^^^
@@ -144,9 +144,7 @@ and seemed to fit our needs, but then a number of problems began to manifest
 Build, Link, Triumph (BLT)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-BLT's home is `here <https://github.com/llnl/blt>`_. Just came across this
-repo so I don't know much about it yet, but at first glance appears to do much
-of what CPP does.
+BLT's home is `here <https://github.com/llnl/blt>`_.
 
 Autocmake
 ^^^^^^^^^
@@ -157,3 +155,8 @@ Cinch
 ^^^^^
 
 Cinch's home is `here <https://github.com/laristra/cinch>`_.
+
+Just A Working Setup (JAWS)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+JAWS's home is `here <https://github.com/DevSolar/jaws>`_.

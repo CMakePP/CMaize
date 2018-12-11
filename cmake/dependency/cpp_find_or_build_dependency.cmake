@@ -29,9 +29,8 @@ function(cpp_find_or_build_dependency)
     cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
     cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
 
-    _cpp_cache_add_dependency(
-        ${_cfobd_CPP_CACHE} ${_cfobd_NAME} ${ARGN}
-    )
+    _cpp_cache_write_get_recipe(${_cfobd_CPP_CACHE} ${_cfobd_NAME} ${ARGN})
+    _cpp_cache_write_build_recipe(${_cfobd_CPP_CACHE} ${_cfobd_NAME} ${ARGN})
 
     _cpp_record_find("cpp_find_or_build_dependency" ${ARGN})
 

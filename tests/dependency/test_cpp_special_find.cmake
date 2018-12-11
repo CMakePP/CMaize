@@ -5,7 +5,8 @@ _cpp_setup_build_env("special_find")
 
 set(src_dir ${test_prefix}/${test_number})
 _cpp_install_dummy_cxx_package(${src_dir})
-_cpp_cache_add_dependency(${src_dir} dummy SOURCE_DIR ${src_dir}/dummy)
+_cpp_cache_write_get_recipe(${src_dir} dummy SOURCE_DIR ${src_dir}/dummy)
+_cpp_cache_write_find_recipe(${src_dir} dummy)
 
 _cpp_add_test(
 TITLE "If variables not set, found is false"
