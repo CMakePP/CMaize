@@ -16,5 +16,4 @@ Contents
    dependencies
    lists
    unit_testing
-   unit_test_helpers
    additional_resources

@@ -47,3 +47,26 @@ CONTENTS
     "   \"${prefix}\""
     ")"
 )
+
+set(src_dir ${test_prefix}/${test_number})
+_cpp_naive_cxx_package(root_dir install_dir ${src_dir} NAME dummy2)
+_cpp_naive_find_module(module ${src_dir} NAME dummy2)
+set(url github.com/CMakePackagingProject/CMakePackagingProject)
+set(prefix "cpp_find_or_build_dependency(\n")
+set(prefix "${prefix}    NAME dummy2\n")
+set(prefix "${prefix}    SOURCE_DIR ${root_dir}\n")
+set(prefix "${prefix}    FIND_MODULE ${module}${suffix}")
+_cpp_add_test(
+TITLE "Basic find module usage"
+"include(dependency/cpp_find_or_build_dependency)"
+"cpp_find_or_build_dependency("
+"   NAME dummy2"
+"   SOURCE_DIR ${root_dir}"
+"   FIND_MODULE ${module}"
+")"
+"_cpp_assert_target_property("
+"   _cpp_dummy2_External"
+"   INTERFACE_VERSION"
+"   \"${prefix}\""
+")"
+)

@@ -35,22 +35,9 @@ CONTENTS
 )
 
 set(src_dir ${test_prefix}/${test_number})
-set(module ${src_dir}/Finddummy.cmake)
-file(WRITE ${module}
-"
-find_path(DUMMY_INCLUDE_DIR a.hpp)
-find_library(DUMMY_LIBRARY dummy)
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(
-    dummy DEFAULT_MSG
-    DUMMY_LIBRARY
-    DUMMY_INCLUDE_DIR
-)
-set(DUMMY_INCLUDE_DIRS \${DUMMY_INCLUDE_DIR})
-set(DUMMY_LIBRARIES \${DUMMY_LIBRARY})
-"
-)
-_cpp_naive_install_cxx_package(${src_dir})
+
+_cpp_naive_find_module(module ${test_prefix})
+_cpp_install_naive_cxx_package(install_dir ${src_dir})
 _cpp_cache_add_dependency(
     ${src_dir}
     dummy
@@ -62,7 +49,7 @@ _cpp_add_test(
 TITLE "Can find via module"
 CONTENTS
     "include(dependency/cpp_find_package)"
-    "_cpp_find_package(found ${src_dir} dummy \"\" \"\" ${src_dir}/install)"
+    "_cpp_find_package(found ${src_dir} dummy \"\" \"\" ${install_dir})"
     "_cpp_assert_true(found)"
 )
 
@@ -70,7 +57,7 @@ _cpp_add_test(
 TITLE "Finding via module makes target"
 CONTENTS
     "include(dependency/cpp_find_package)"
-    "_cpp_find_package(found ${src_dir} dummy \"\" \"\" ${src_dir}/install)"
+    "_cpp_find_package(found ${src_dir} dummy \"\" \"\" ${install_dir})"
     "_cpp_is_target(made_dummy dummy)"
     "_cpp_assert_true(made_dummy)"
 
