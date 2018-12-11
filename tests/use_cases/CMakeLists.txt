@@ -1,5 +1,6 @@
 set(
-    USE_CASE_TESTS  provided_lists
+    USE_CASE_TESTS  multiple_caches
+                    provided_lists
                     provided_toolchain
 )
 

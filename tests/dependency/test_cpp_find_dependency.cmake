@@ -3,13 +3,14 @@ include(cpp_unit_test_helpers)
 include(cache/cache_add_dependency)
 
 _cpp_setup_build_env("find_dependency")
-
+set(suffix "\n    CPP_CACHE ${CPP_INSTALL_CACHE}\n)")
 #Makes and installs a library to test_prefix/dummy/install
 set(src_dir ${test_prefix}/${test_number})
 _cpp_install_dummy_cxx_package(${src_dir})
 _cpp_cache_add_dependency(
     ${CPP_INSTALL_CACHE} dummy SOURCE_DIR ${src_dir}/dummy
 )
+
 set(install_path ${src_dir}/install)
 
 _cpp_add_test(
@@ -29,14 +30,14 @@ CONTENTS
 )
 
 _cpp_add_test(
-TITLE "Does not fails if can't find project and OPTIONAL set"
+TITLE "Does not fail if can't find project and OPTIONAL set"
 CONTENTS
     "include(dependency/cpp_find_dependency)"
     "cpp_find_dependency(NAME dummy OPTIONAL)"
     "_cpp_assert_target_property("
     "   _cpp_dummy_External"
     "   INTERFACE_VERSION"
-    "   \"cpp_find_dependency(\n    OPTIONAL\n    NAME dummy\n)\""
+    "   \"cpp_find_dependency(\n    OPTIONAL\n    NAME dummy${suffix}\""
     ")"
 )
 
@@ -49,7 +50,7 @@ CONTENTS
     "_cpp_assert_target_property("
     "   _cpp_dummy_External"
     "   INTERFACE_VERSION"
-    "   \"cpp_find_dependency(\n    NAME dummy\n)\""
+    "   \"cpp_find_dependency(\n    NAME dummy${suffix}\""
     ")"
 
 )
@@ -63,7 +64,7 @@ CONTENTS
     "_cpp_assert_target_property("
     "   _cpp_dummy_External"
     "   INTERFACE_VERSION"
-    "   \"cpp_find_dependency(\n    NAME dummy\n    VERSION 0.0.0\n)\""
+    "   \"cpp_find_dependency(\n    NAME dummy\n    VERSION 0.0.0${suffix}\""
     ")"
 )
 

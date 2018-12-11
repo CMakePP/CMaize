@@ -58,7 +58,8 @@ function(_cpp_record_find _crf_cmd)
             set(_crf_command "${_crf_command}\n")
         endif()
     endforeach()
-    set(_crf_command "${_crf_command})")
+    #Add the CPP cache
+    set(_crf_command "${_crf_command}    CPP_CACHE ${CPP_INSTALL_CACHE}\n)")
     add_library(_cpp_${_crf_NAME}_External INTERFACE)
     set_target_properties(
             _cpp_${_crf_NAME}_External

@@ -15,62 +15,7 @@
 
 include(cpp_cmake_helpers)
 include(cpp_checks)
-
-set(test_number 1)
-
-function(_cpp_add_test)
-    cpp_parse_arguments(
-        _cat "${ARGN}"
-        TOGGLES SHOULD_FAIL
-        OPTIONS REASON TITLE
-        LISTS CONTENTS
-        MUST_SET TITLE CONTENTS
-    )
-
-    if(_cat_SHOULD_FAIL)
-        set(_cat_can_fail CAN_FAIL)
-    endif()
-    foreach(_cat_cmd_i ${_cat_CONTENTS})
-        set(_cat_commands "${_cat_commands}\n${_cat_cmd_i}")
-    endforeach()
-    _cpp_run_sub_build(
-        ${test_prefix}/${test_number}
-        NAME ${test_number}
-        NO_INSTALL
-        ${_cat_can_fail}
-        RESULT _cat_result
-        OUTPUT _cat_output
-        CONTENTS "set(CPP_DEBUG_MODE ON)\n${_cat_commands}"
-    )
-
-    #Report status to the user
-    #We get back 0 if there's no errors so result=true means we had an error
-    set(_cat_passed TRUE)
-    if(_cat_SHOULD_FAIL)
-        if(_cat_result AND _cat_REASON) #Did it crashed for the right reason?
-            _cpp_contains(_cat_reason_met "${_cat_REASON}" "${_cat_output}")
-            if(NOT _cat_reason_met)
-                set(_cat_passed FALSE)
-            endif()
-        elseif(_cat_result)
-            #Okay crashed like it was supposed to, but no reason to check
-        else() #Passed, but it wasn't supposed to
-            set(_cat_passed FALSE)
-        endif()
-    endif()
-
-    #Print the result
-    set(_cat_result_msg "${_cat_TITLE} ..................")
-    if(_cat_passed)
-        message("${_cat_result_msg}passed")
-    else()
-        message("${_cat_result_msg}***failed")
-        message(FATAL_ERROR "Output:\n\n${_cat_output}")
-    endif()
-
-    math(EXPR test_number "${test_number} + 1")
-    set(test_number "${test_number}" PARENT_SCOPE)
-endfunction()
+include(unit_testing/cpp_add_test)
 
 function(_cpp_make_random_dir _cmrd_result _cmrd_prefix)
     string(RANDOM _cmrd_random_prefix)

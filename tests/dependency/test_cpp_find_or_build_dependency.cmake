@@ -1,7 +1,7 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
 _cpp_setup_build_env("find_or_build_dependency")
-
+set(suffix "\n    CPP_CACHE ${CPP_INSTALL_CACHE}\n)")
 _cpp_add_test(
 TITLE "Crashes if NAME not set"
 SHOULD_FAIL REASON "Required option _cfobd_NAME is not set"
@@ -16,8 +16,7 @@ set(src_dir ${src_dir}/dummy)
 
 set(prefix "cpp_find_or_build_dependency(\n")
 set(prefix "${prefix}    NAME dummy\n")
-set(prefix "${prefix}    SOURCE_DIR ${src_dir}\n")
-set(prefix "${prefix})")
+set(prefix "${prefix}    SOURCE_DIR ${src_dir}${suffix}")
 _cpp_add_test(
 TITLE "Basic local usage:target set"
 CONTENTS
@@ -36,8 +35,7 @@ CONTENTS
 set(url github.com/CMakePackagingProject/CMakePackagingProject)
 set(prefix "cpp_find_or_build_dependency(\n")
 set(prefix "${prefix}    NAME cpp\n")
-set(prefix "${prefix}    URL ${url}\n")
-set(prefix "${prefix})")
+set(prefix "${prefix}    URL ${url}${suffix}")
 _cpp_add_test(
 TITLE "Basic URL usage:target set"
 CONTENTS
