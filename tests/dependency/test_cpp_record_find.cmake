@@ -10,7 +10,7 @@ set(
 
 #Code factorization for the correct answer
 set(prefix "\"cpp_find_dependency(\n    NAME test\n")
-
+set(suffix "    CPP_CACHE ${CPP_INSTALL_CACHE}\n)")
 ################################################################################
 #   Tests Start Here
 ################################################################################
@@ -29,9 +29,8 @@ CONTENTS
     "include(dependency/cpp_record_find)"
     "_cpp_record_find(cpp_find_dependency NAME test)"
     "${get_prop}"
-
     "_cpp_assert_contains("
-        "${prefix})\""
+        "${prefix}${suffix}\""
         "\"\${output}\""
     ")"
 )
@@ -43,7 +42,7 @@ CONTENTS
     "_cpp_record_find(cpp_find_dependency NAME test VERSION 1.0.0)"
     "${get_prop}"
     "_cpp_assert_contains("
-        "${prefix}    VERSION 1.0.0\n)\""
+        "${prefix}    VERSION 1.0.0\n${suffix}\""
         "\"\${output}\""
     ")"
 )
@@ -55,7 +54,7 @@ CONTENTS
     "_cpp_record_find(cpp_find_dependency NAME test COMPONENTS comp1 comp2)"
     "${get_prop}"
     "_cpp_assert_contains("
-        "${prefix}    COMPONENTS comp1 comp2 \n)\""
+        "${prefix}    COMPONENTS comp1 comp2 \n${suffix}\""
         "\"\${output}\""
     ")"
 )
@@ -71,7 +70,7 @@ CONTENTS
     ")"
     "${get_prop}"
     "_cpp_assert_contains("
-        "${prefix}    CMAKE_ARGS var1=val1 var2=val2 \n)\""
+        "${prefix}    CMAKE_ARGS var1=val1 var2=val2 \n${suffix}\""
         "\"\${output}\""
     ")"
 )
@@ -80,7 +79,7 @@ set(prefix "cpp_find_dependency(\n    OPTIONAL\n    NAME test\n")
 set(prefix "${prefix}    VERSION 1.0.0\n")
 set(prefix "${prefix}    URL www.awebsite.com\n")
 set(prefix "${prefix}    COMPONENTS comp1 comp2 \n")
-set(prefix "${prefix}    CMAKE_ARGS var1=val1 var2=val2 \n)")
+set(prefix "${prefix}    CMAKE_ARGS var1=val1 var2=val2 \n${suffix}")
 _cpp_add_test(
 TITLE "The whole darn signature"
 CONTENTS
