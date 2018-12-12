@@ -20,11 +20,21 @@ include(dependency/cpp_record_find)
 include(cache/cache_paths)
 include(cache/cache_add_dependency)
 
+
+
+
+## Function for finding a dependency.
+#
+# This function is the public API for users who want CPP to find a dependency
+# that the end-user is responsible for building (*i.e.*, this function is the
+# public API for finding a dependency that CPP can not build). This function is
+# also used internally in :ref:`cpp_find_or_build_dependency` to handle the
+# "finding" part.
 function(cpp_find_dependency)
     cpp_parse_arguments(
             _cfd "${ARGN}"
             TOGGLES OPTIONAL
-            OPTIONS NAME VERSION RESULT CPP_CACHE PATH FIND_MODULE TOOLCHAIN
+            OPTIONS
             LISTS COMPONENTS
             MUST_SET NAME
     )
@@ -79,7 +89,7 @@ function(cpp_find_dependency)
     endif()
 
     _cpp_error(
-        "Could not locate ${_cfd_NAME}"
+        "Could not locate ${_cfd_NAME}. "
         "Troubleshooting: Is the path to ${_cfd_NAME} in CMAKE_PREFIX_PATH?"
         "   (current value of CMAKE_PREFIX_PATH is: ${CMAKE_PREFIX_PATH})"
     )

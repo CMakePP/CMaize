@@ -14,15 +14,22 @@
 ################################################################################
 
 include_guard()
-include(recipes/cpp_get_recipe_dispatch)
+include(recipes/cpp_generate_get_recipe)
 include(cache/cache_get_recipe)
-include(recipes/cpp_build_recipe_dispatch)
+include(recipes/cpp_generate_build_recipe)
 include(cache/cache_build_recipe)
-include(recipes/cpp_find_recipe_dispatch)
+include(recipes/cpp_generate_find_recipe)
 include(cache/cache_find_recipe)
 
-function(_cpp_cache_write_get_recipe _ccwgr_cache _ccwgr_name)
-    _cpp_get_recipe_dispatch(_ccwgr_get_contents ${ARGN})
+function(_cpp_cache_write_get_recipe _ccwgr_cache _ccwgr_name _ccwgr_url
+                                     _ccwgr_private _ccwgr_branch _ccwgr_src)
+    _cpp_generate_get_recipe(
+        _ccwgr_get_contents
+        "${_ccwgr_url}"
+        "${_ccwgr_private}"
+        "${_ccwgr_branch}"
+        "${_ccwgr_src}"
+    )
     _cpp_cache_add_get_recipe(
         ${_ccwgr_cache} ${_ccwgr_name} "${_ccwgr_get_contents}"
     )
@@ -36,8 +43,11 @@ function(_cpp_cache_write_find_recipe _ccwfr_cache _ccwfr_name)
     )
 endfunction()
 
-function(_cpp_cache_write_build_recipe _ccwbr_cache _ccwbr_name)
-    _cpp_build_recipe_dispatch(_ccwbr_build_conts ${ARGN})
+function(_cpp_cache_write_build_recipe _ccwbr_cache _ccwbr_name _ccwbr_args
+                                       _ccwbr_module)
+    _cpp_generate_build_recipe(
+      _ccwbr_build_conts "${_ccwbr_args}" "${_ccwbr_module}"
+    )
     _cpp_cache_add_build_recipe(
         ${_ccwbr_cache} ${_ccwbr_name} "${_ccwbr_build_conts}"
     )
