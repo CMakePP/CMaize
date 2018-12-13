@@ -5,6 +5,7 @@ cpp_find_or_build_dependency
 
 .. function:: cpp_find_or_build_dependency()
 
+    Function for building a dependency if we can not locate it.
     
     This function is the public API for users who want CPP to build a dependency
     if it can not be found.

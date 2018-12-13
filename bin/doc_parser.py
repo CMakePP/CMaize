@@ -29,16 +29,6 @@ def parse_file(file, docs):
         #...and now clear any residual #, like those making blank lines
         doc = doc.replace('#', '')
 
-        #Skim the brief off, the brief is everything until the first blank line.
-        blank_line = 0
-        print(doc)
-        lines = doc.split('\n')
-        while lines[blank_line]:
-            blank_line = blank_line + 1
-        brief = ' '.join(lines[:blank_line])
-        doc = lines[blank_line:]
-
-
         #Figure out the prefix on the variables by skimming fxn's name
         fxn_name_parts = fxn_name.split('_')
         letters = [word[0] if len(word) else '_' for word in fxn_name_parts]
@@ -60,7 +50,7 @@ def parse_file(file, docs):
 
         #Add the parsed documentation to it
         fxn_line = fxn_line + "\n"
-        for line in doc:
+        for line in doc.split('\n'):
             fxn_line = "{}\n    {}".format(fxn_line, line)
 
         #reST has problems if the name starts with an underscore
@@ -70,7 +60,7 @@ def parse_file(file, docs):
         header = ".. _{}-label:\n\n".format(sanitized_name)
         header += "{}\n{}\n\n".format(sanitized_name, '#'*len(sanitized_name))
 
-        docs[sanitized_name + ".rst"] = (header + fxn_line, brief)
+        docs[sanitized_name + ".rst"] = header + fxn_line
 
 def parse_dir(root_dir, docs):
     for file in os.listdir(root_dir):
@@ -86,9 +76,8 @@ def parse_dir(root_dir, docs):
             index_content += ".. toctree::\n    :maxdepth: 2\n\n"
 
             for k,v in sub_docs.items():
-                index_content += "    {}: {}\n".format(k.replace('.rst', ''),
-                                                       v[1])
-                docs[os.path.join(file, k)] = v[0]
+                index_content += "    {}\n".format(k.replace(".rst", ''))
+                docs[os.path.join(file, k)] = v
             docs[os.path.join(file, "index.rst")] = index_content
 
         else:

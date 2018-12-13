@@ -5,6 +5,7 @@ cpp_parse_arguments
 
 .. function:: cpp_parse_arguments(<_prefix> <_argn>)
 
+    Function for parsing the kwargs given to a CPP function.
     
     This function wraps the CMake function ``cmake_parse_arguments`` and makes it
     more user-friendly. The biggest addition is more error checking. This

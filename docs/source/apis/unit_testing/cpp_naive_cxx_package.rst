@@ -5,6 +5,7 @@ cpp_naive_cxx_package
 
 .. function:: _cpp_naive_cxx_package(<src> <prefix>)
 
+    Writes out a C++ package that uses CMake naively.
     
     For our purposes a naive usage of CMake amounts to not writing a
     ``XXX-config.cmake`` file upon installation. This function will generate the

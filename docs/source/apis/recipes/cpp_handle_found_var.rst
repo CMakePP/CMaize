@@ -5,6 +5,7 @@ cpp_handle_found_var
 
 .. function:: _cpp_handle_found_var(<found> <name>)
 
+    Function for processing the ``<Name>_FOUND`` variable of ``find_package``
     
     CMake's ``find_package`` function returns the result via ``<Name>_FOUND``
     variable. While convention is that the capitalization of the package's name

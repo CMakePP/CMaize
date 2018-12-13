@@ -5,6 +5,7 @@ cpp_kwargs_unique
 
 .. function:: _cpp_kwargs_unique(<kwargs> <argn>)
 
+    Given a list of keywords, ensures each keyword only appears once
     
     When working with kwargs, it is ambiguous if a kwarg appears more than once.
     For example assume we are looking for the kwarg "OPTION" and the user has

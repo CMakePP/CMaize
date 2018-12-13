@@ -5,6 +5,7 @@ cpp_handle_find_module_vars
 
 .. function:: _cpp_handle_find_module_vars(<name>)
 
+    Function for turning the usual find module variables into a target
     
     In the olden days of CMake one found dependencies by using find modules. For
     the most part these find modules do not create targets. Modern CMake dictates

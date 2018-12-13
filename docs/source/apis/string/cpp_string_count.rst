@@ -5,6 +5,7 @@ cpp_string_count
 
 .. function:: _cpp_string_count(<return> <substr> <str>)
 
+    Function for determining how many times a substring appears in a string.
     
     Given a string, this function will determine how many times a particular
     substring appears in that string. Since CMake values are intrinsically

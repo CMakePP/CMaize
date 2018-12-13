@@ -5,6 +5,7 @@ cpp_cache_write_find_recipe
 
 .. function:: _cpp_cache_write_find_recipe(<cache> <name> <module>)
 
+    Wrapper function for generating a find-recipe and adding it to the cache.
     
     :param cache: The CPP cache to add the recipe to.
     :param name: The name of the dependency the recipe is for.

@@ -5,6 +5,7 @@ cpp_dummy_cxx_library
 
 .. function:: _cpp_dummy_cxx_library(<prefix>)
 
+    Creates the C++ source and header file for a simple test library
     
     This function will create a header file ``XXX.hpp`` which declares a single
     function ``int XXX_fxn()`` and a source file ``XXX.cpp``, which defines the

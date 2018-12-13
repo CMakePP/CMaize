@@ -5,6 +5,7 @@ cpp_find_dependency
 
 .. function:: cpp_find_dependency()
 
+    Function for finding a dependency.
     
     This function is the public API for users who want CPP to find a dependency
     that the end-user is responsible for building (*i.e.*, this function is the
