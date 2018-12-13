@@ -24,15 +24,15 @@ _cpp_add_test(
 TITLE "Finds dummy with path"
 CONTENTS
     "include(recipes/cpp_find_from_module)"
-    "list(APPEND CMAKE_MODULE_PATH ${test_prefix})"
-    "_cpp_find_from_module(dummy \"\" \"\" ${install_dir})"
-    "_cpp_assert_true(dummy_FOUND)"
+    "_cpp_find_from_module(found dummy \"\" \"\" ${install_dir} ${module})"
+    "_cpp_assert_true(found)"
 )
 
 _cpp_add_test(
-TITLE "Fails if module file is not in CMAKE_MODULE_PATH"
-SHOULD_FAIL REASON "Finddummy.cmake was not found in"
+TITLE "Fails if module file does not exist"
+SHOULD_FAIL REASON "No such file or directory: not/a/directory"
 CONTENTS
     "include(recipes/cpp_find_from_module)"
-    "_cpp_find_from_module(dummy \"\" \"\" \"\")"
+    "_cpp_find_from_module(found dummy \"\" \"\" \"\" not/a/directory)"
+    "_cpp_assert_false(found)"
 )

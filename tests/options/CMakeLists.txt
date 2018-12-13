@@ -1,5 +1,6 @@
 set(
-    OPTIONS_TESTS option
+    OPTIONS_TESTS kwargs_unique
+                  option
                   pack_list
                   parse_arguments
                   unpack_list

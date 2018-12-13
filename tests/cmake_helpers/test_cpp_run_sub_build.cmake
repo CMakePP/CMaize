@@ -8,44 +8,44 @@ set(src_dir ${test_prefix}/${test_number}/dummy)
 _cpp_add_test(
 TITLE "Errs if NAME is not specified"
 SHOULD_FAIL REASON "Required option _crsb_NAME is not set"
-CONTENTS
-    "_cpp_run_sub_build(${src_dir})"
+"include(cpp_cmake_helpers)"
+"_cpp_run_sub_build(${src_dir})"
 )
 
 _cpp_dummy_cxx_package(${test_prefix}/${test_number})
 set(src_dir ${test_prefix}/${test_number}/dummy)
 _cpp_add_test(
 TITLE "Basic usage"
-CONTENTS
-    "_cpp_run_sub_build("
-    "   ${src_dir}"
-    "   NAME dummy"
-    "   RESULT failed"
-    ")"
-    "_cpp_assert_exists(${src_dir}/build)"
-    "_cpp_assert_exists(${src_dir}/install)"
-    "_cpp_assert_false(\${failed})"
+"include(cpp_cmake_helpers)"
+"_cpp_run_sub_build("
+"   ${src_dir}"
+"   NAME dummy"
+"   RESULT failed"
+")"
+"_cpp_assert_exists(${src_dir}/build)"
+"_cpp_assert_exists(${src_dir}/install)"
+"_cpp_assert_false(\${failed})"
 )
 
 _cpp_dummy_cxx_package(${test_prefix}/${test_number})
 set(src_dir ${test_prefix}/${test_number}/dummy)
 _cpp_add_test(
 TITLE "Honors BINARY_DIR"
-CONTENTS
-    "_cpp_run_sub_build("
-    "   ${src_dir}"
-    "   NAME dummy"
-    "   BINARY_DIR ${test_prefix}/${test_number}/build"
-    ")"
-    "_cpp_assert_does_not_exist(${src_dir}/build)"
-    "_cpp_assert_exists(${test_prefix}/${test_number}/build)"
+"include(cpp_cmake_helpers)"
+"_cpp_run_sub_build("
+"   ${src_dir}"
+"   NAME dummy"
+"   BINARY_DIR ${test_prefix}/${test_number}/build"
+")"
+"_cpp_assert_does_not_exist(${src_dir}/build)"
+"_cpp_assert_exists(${test_prefix}/${test_number}/build)"
 )
 
 _cpp_dummy_cxx_package(${test_prefix}/${test_number})
 set(src_dir ${test_prefix}/${test_number}/dummy)
 _cpp_add_test(
 TITLE "Honors INSTALL_DIR"
-CONTENTS
+"include(cpp_cmake_helpers)"
 "_cpp_run_sub_build("
 "   ${src_dir}"
 "   NAME dummy"
@@ -65,12 +65,12 @@ file(
 )
 _cpp_add_test(
 TITLE "Honors CMAKE_ARGS"
-CONTENTS
-    "_cpp_run_sub_build("
-    "   ${src_dir}/test"
-    "   NAME dummy"
-    "   NO_BUILD"
-    "   CMAKE_ARGS option1=33"
-    "              option2=44"
-    ")"
+"include(cpp_cmake_helpers)"
+"_cpp_run_sub_build("
+"   ${src_dir}/test"
+"   NAME dummy"
+"   NO_BUILD"
+"   CMAKE_ARGS option1=33"
+"              option2=44"
+")"
 )

@@ -23,7 +23,7 @@ function(_cpp_record_find _crf_cmd)
     cpp_parse_arguments(
         _crf "${ARGN}"
         TOGGLES ${_crf_T_kwargs}
-        OPTIONS ${_crf_O_kwargs}
+        OPTIONS ${_crf_O_kwargs} TOOLCHAIN CPP_CACHE RESULT BINARY_DIR
         LISTS ${_crf_M_kwargs}
         MUST_SET NAME
     )

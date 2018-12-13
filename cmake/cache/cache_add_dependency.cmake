@@ -14,37 +14,69 @@
 ################################################################################
 
 include_guard()
-include(recipes/cpp_get_recipe_dispatch)
+include(recipes/cpp_generate_get_recipe)
 include(cache/cache_get_recipe)
-include(recipes/cpp_build_recipe_dispatch)
+include(recipes/cpp_generate_build_recipe)
 include(cache/cache_build_recipe)
-include(recipes/cpp_find_recipe_dispatch)
+include(recipes/cpp_generate_find_recipe)
 include(cache/cache_find_recipe)
 
-function(_cpp_cache_write_get_recipe _ccwgr_cache _ccwgr_name)
-    _cpp_get_recipe_dispatch(_ccwgr_get_contents ${ARGN})
+## Wrapper function for generating a get-recipe and adding it to the cache.
+#
+# :param cache: The CPP cache to add the recipe to.
+# :param name: The name of the dependency the recipe is for.
+# :param url: The URL to download the dependency from. Set to empty string if
+#     using a local directory.
+# :param private: Whether or not the dependency is hosted in a private GitHub
+#     repository. Ignored if dependency is not on GitHub.
+# :param branch: The branch of the source code to use if the source code is
+#     managed by git. Ignored if dependency does not use git for version
+#     control.
+# :param src: The path to the dependency's source code. Set to empty string if
+#     the dependency will be downloaded.
+function(_cpp_cache_write_get_recipe _ccwgr_cache _ccwgr_name _ccwgr_url
+                                     _ccwgr_private _ccwgr_branch _ccwgr_src)
+    _cpp_generate_get_recipe(
+        _ccwgr_get_contents
+        "${_ccwgr_url}"
+        "${_ccwgr_private}"
+        "${_ccwgr_branch}"
+        "${_ccwgr_src}"
+    )
     _cpp_cache_add_get_recipe(
         ${_ccwgr_cache} ${_ccwgr_name} "${_ccwgr_get_contents}"
     )
 endfunction()
 
-function(_cpp_cache_write_find_recipe _ccwfr_cache _ccwfr_name)
-    _cpp_find_recipe_dispatch(
-        _ccwfr_find_conts ${_ccwfr_cache} ${_ccwfr_name} ${ARGN})
+## Wrapper function for generating a find-recipe and adding it to the cache.
+#
+# :param cache: The CPP cache to add the recipe to.
+# :param name: The name of the dependency the recipe is for.
+# :param module: The find module to use for locating the dependency. Set to the
+#     empty string if we are using config files.
+function(_cpp_cache_write_find_recipe _ccwfr_cache _ccwfr_name _ccwfr_module)
+    _cpp_generate_find_recipe(
+            _ccwfr_find_conts ${_ccwfr_name} "${_ccwfr_module}"
+    )
     _cpp_cache_add_find_recipe(
         ${_ccwfr_cache} ${_ccwfr_name} "${_ccwfr_find_conts}"
     )
 endfunction()
 
-function(_cpp_cache_write_build_recipe _ccwbr_cache _ccwbr_name)
-    _cpp_build_recipe_dispatch(_ccwbr_build_conts ${ARGN})
+## Wrapper function for generating a build-recipe and adding it to the cache.
+#
+# :param cache: The CPP cache to add the recipe to.
+# :param name: The name of the dependency the recipe is for.
+# :param args: CMake variables to pass to the dependency at configure time. Set
+#     to the empty string if there are no such variables.
+# :param module: The build module for building the dependency. Set to the empty
+#     string if CPP can automatically build the dependency.
+function(_cpp_cache_write_build_recipe _ccwbr_cache _ccwbr_name _ccwbr_args
+                                       _ccwbr_module)
+    _cpp_generate_build_recipe(
+      _ccwbr_build_conts "${_ccwbr_args}" "${_ccwbr_module}"
+    )
     _cpp_cache_add_build_recipe(
         ${_ccwbr_cache} ${_ccwbr_name} "${_ccwbr_build_conts}"
     )
-endfunction()
-
-function(_cpp_cache_add_dependency _ccad_cache _ccad_name)
-    _cpp_cache_write_get_recipe(${_ccad_cache} ${_ccad_name} ${ARGN})
-    _cpp_cache_write_find_recipe(${_ccad_cache} ${_ccad_name} ${ARGN})
-    _cpp_cache_write_build_recipe(${_ccad_cache} ${_ccad_name} ${ARGN})
 endfunction()

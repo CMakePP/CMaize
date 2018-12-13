@@ -24,6 +24,50 @@ function(_cpp_cache_get_recipe_path _ccgrp_path _ccgrp_cache _ccgrp_name)
     )
 endfunction()
 
+function(_cpp_cache_find_recipe_path _ccfrp_path _ccfrp_cache _ccfrp_name)
+    set(
+            ${_ccfrp_path}
+            ${_ccfrp_cache}/find_recipes/find-${_ccfrp_name}.cmake
+            PARENT_SCOPE
+    )
+endfunction()
+
+function(_cpp_cache_build_recipe_path _ccbrp_output _ccbrp_cache _ccbrp_name)
+    set(_ccbrp_filename build-${_ccbrp_name}.cmake)
+    set(
+            ${_ccbrp_output}
+            ${_ccbrp_cache}/build_recipes/${_ccbrp_filename}
+            PARENT_SCOPE
+    )
+endfunction()
+
+function(_cpp_cache_recipe_path _ccrp_path _ccrp_type _ccrp_cache _ccrp_name)
+    if("${_ccrp_type}" STREQUAL "FIND")
+        set(
+            ${_ccrp_path}
+            ${_ccrp_cache}/find_recipes/find-${_ccrp_name}.cmake
+            PARENT_SCOPE
+        )
+    elseif("${_ccrp_type}" STREQUAL "GET")
+        set(
+            ${_ccrp_path}
+            ${_ccrp_cache}/get_recipes/get-${_ccrp_name}.cmake
+            PARENT_SCOPE
+        )
+    elseif("${_ccrp_type}" STREQUAL "BUILD")
+        set(
+            ${_ccrp_path}
+            ${_ccrp_cache}/build_recipes/build-${_ccrp_name}.cmake
+            PARENT_SCOPE
+        )
+    else()
+        _cpp_error(
+            "Unrecognized recipe type: ${_ccrp_type}. "
+            "Recognized types are: GET, FIND, BUILD."
+        )
+    endif()
+endfunction()
+
 function(_cpp_cache_tarball_path _cctp_output _cctp_cache _cctp_name _cctp_ver)
     _cpp_cache_sanitize_version(_cctp_eff_ver "${_cctp_ver}")
     #Return the result
@@ -51,13 +95,6 @@ function(_cpp_cache_source_path _ccsp_path _ccsp_cache _ccsp_name _ccsp_version)
     )
 endfunction()
 
-function(_cpp_cache_find_recipe_path _ccfrp_path _ccfrp_cache _ccfrp_name)
-    set(
-        ${_ccfrp_path}
-        ${_ccfrp_cache}/find_recipes/find-${_ccfrp_name}.cmake
-        PARENT_SCOPE
-    )
-endfunction()
 
 function(_cpp_cache_find_module_path _ccfmp_path _ccfmp_cache _ccfmp_name)
     set(
@@ -67,14 +104,7 @@ function(_cpp_cache_find_module_path _ccfmp_path _ccfmp_cache _ccfmp_name)
     )
 endfunction()
 
-function(_cpp_cache_build_recipe_path _ccbrp_output _ccbrp_cache _ccbrp_name)
-    set(_ccbrp_filename build-${_ccbrp_name}.cmake)
-    set(
-            ${_ccbrp_output}
-            ${_ccbrp_cache}/build_recipes/${_ccbrp_filename}
-            PARENT_SCOPE
-    )
-endfunction()
+
 
 function(_cpp_cache_install_path _ccip_output _ccip_cache _ccip_name
                                  _ccip_version _ccip_tc)

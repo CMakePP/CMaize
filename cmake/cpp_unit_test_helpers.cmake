@@ -20,6 +20,7 @@ include(unit_testing/cpp_dummy_cxx_library)
 include(unit_testing/cpp_naive_cxx_package)
 include(unit_testing/cpp_install_naive_cxx_package)
 include(unit_testing/cpp_naive_find_module)
+include(unit_testing/cpp_cache_dummy_cxx_library)
 
 function(_cpp_make_random_dir _cmrd_result _cmrd_prefix)
     string(RANDOM _cmrd_random_prefix)

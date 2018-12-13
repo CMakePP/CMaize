@@ -16,27 +16,43 @@
 include_guard()
 
 include(dependency/cpp_sanitize_version)
+include(dependency/cpp_handle_find_module_vars)
+include(recipes/cpp_handle_found_var)
 
-#Pulled this function out to avoid contaminating the namespace
-function(_cpp_check_for_module _ccfm_name)
-    find_file(
-        _ccfm_found
-        "Find${_ccfm_name}.cmake"
-        PATHS ${CMAKE_MODULE_PATH}
-     #   NO_DEFAULT_PATH
-    )
-    _cpp_contains(_ccfm_module_not_found "NOTFOUND" "${_ccfm_found}")
-    if(_ccfm_module_not_found)
-        _cpp_error(
-            "Find${_ccfm_name}.cmake was not found in CMAKE_MODULE_PATH."
-            "CMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}."
-        )
-    endif()
-endfunction()
-
-macro(_cpp_find_from_module _cffm_name _cffm_version _cffm_comps _cffm_path)
-    _cpp_check_for_module(${_cffm_name})
+## Function that attempts to locate a dependency using a CMake find module.
+#
+# This function wraps CMake's ``find_package`` function in "module" mode. This
+# function is specifically designed so that CMake will use the provided find
+# module and **NOT** any of the find modules CMake ships with. This is done by
+# setting ``CMAKE_MODULE_PATH`` to the directory containing the find module and
+# then relying on CMake to use modules found in that path first. We avoid using
+# the find modules provided with CMake because, bluntly, they suck. If the
+# package is found this function will create a target for it (the target's name
+# will be the same as the package's name) if the find module does not do so.
+# Finally, this function will return the result using the ``<name>_FOUND``
+# variable, where ``<name>`` is the same as the input case.
+#
+# :param found: Set to True if the dependency was found and false otherwise.
+# :param name: The name of the dependency we are attempting to locate.
+# :param version: The minimum version of the dependency we are trying to find.
+# :param comps: A list of the components the dependency must have.
+# :param path: A hint for where ``find_package`` should look.
+#
+# :CMake Variables:
+#
+#     * *CMAKE_PREFIX_PATH* - Used to provide ``find_package`` a list of end-
+#       user provided paths.
+function(_cpp_find_from_module _cffm_found _cffm_name _cffm_version _cffm_comps
+                               _cffm_path _cffm_module)
+    _cpp_assert_exists(${_cffm_module})
+    get_filename_component(_cffm_dir ${_cffm_module} DIRECTORY)
+    list(APPEND CMAKE_MODULE_PATH ${_cffm_dir})
     list(APPEND CMAKE_PREFIX_PATH ${_cffm_path})
     _cpp_sanitize_version(_cffm_temp "${_ccfm_version}")
-    find_package(${_cffm_name} ${_cffm_temp} ${_cffm_comps} MODULE QUIET)
-endmacro()
+    find_package(${_cffm_name} ${_cffm_temp} ${_cffm_comps} MODULE)
+    _cpp_handle_found_var(_cffm_was_found ${_cffm_name})
+    if(${_cffm_was_found})
+        _cpp_handle_find_module_vars(${_cffm_name})
+    endif()
+    set(${_cffm_found} ${_cffm_was_found} PARENT_SCOPE)
+endfunction()
