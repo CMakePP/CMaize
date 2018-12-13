@@ -1,6 +1,5 @@
 set(
     CACHE_TESTS cache_add_build_recipe
-                cache_add_dependency
                 cache_add_find_module
                 cache_add_find_recipe
                 cache_add_get_recipe

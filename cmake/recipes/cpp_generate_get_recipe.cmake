@@ -20,7 +20,7 @@ include_guard()
 function(_cpp_generate_get_recipe _cggr_output _cggr_url _cggr_private
          _cggr_branch _cggr_src)
     set(
-        ${_cgbr_output}
+        ${_cggr_output}
 "function(_cpp_get_recipe _cgr_tar _cgr_version)
     include(recipes/cpp_get_recipe_dispatch)
     _cpp_get_recipe_dispatch(

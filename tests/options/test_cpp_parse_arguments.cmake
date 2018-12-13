@@ -30,18 +30,18 @@ SHOULD_FAIL REASON "Found unparsed kwargs: NOT_A_KWARGvalue1."
 "dummy_fxn(A_TOGGLE)"
 )
 
-_cpp_add_test(
-TITLE "Errors if the user's kwargs appear more than once."
-SHOULD_FAIL REASON "The kwarg A_TOGGLE appears 2 times in the kwargs"
-"function(dummy_fxn)"
-"    cpp_parse_arguments("
-"        test \"\${ARGN}\""
-"        TOGGLES A_TOGGLE"
-"        LISTS A_LIST"
-"    )"
-"endfunction()"
-"dummy_fxn(A_TOGGLE A_TOGGLE)"
-)
+#_cpp_add_test(
+#TITLE "Errors if the user's kwargs appear more than once."
+#SHOULD_FAIL REASON "The kwarg A_TOGGLE appears 2 times in the kwargs"
+#"function(dummy_fxn)"
+#"    cpp_parse_arguments("
+#"        test \"\${ARGN}\""
+#"        TOGGLES A_TOGGLE"
+#"        LISTS A_LIST"
+#"    )"
+#"endfunction()"
+#"dummy_fxn(A_TOGGLE A_TOGGLE)"
+#)
 
 _cpp_add_test(
 TITLE "Basic usage"

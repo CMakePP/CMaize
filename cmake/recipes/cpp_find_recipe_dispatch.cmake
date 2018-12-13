@@ -14,56 +14,49 @@
 ################################################################################
 
 include_guard()
-include(cache/cache_find_module)
+include(recipes/cpp_find_from_module)
+include(recipes/cpp_find_from_config)
 
-function(_cpp_update_find_header _cufh_header _cufh_cache _cufh_name)
-    _cpp_cache_find_module(_cufh_recipe ${_cufh_cache} ${_cufh_name})
-    get_filename_component(_cufh_dir ${_cufh_recipe} DIRECTORY)
-    set(_cufh_mod_path "list(APPEND CMAKE_MODULE_PATH ${_cufh_dir})")
-    set(_cufh_orig_header "${${_cufh_header}}")
-    set(_cufh_contents "${_cufh_orig_header}\n    ${_cufh_mod_path}")
-    set(${_cufh_header} "${_cufh_contents}" PARENT_SCOPE)
-endfunction()
-
-function(_cpp_find_recipe_kwargs _cfrk_toggles _cfrk_options _cfrk_lists)
-    set(${_cfrk_toggles} "" PARENT_SCOPE)
-    set(${_cfrk_options} FIND_MODULE PARENT_SCOPE)
-    set(${_cfrk_lists} "" PARENT_SCOPE)
-endfunction()
-
-function(_cpp_find_recipe_dispatch _cfrd_contents _cfrd_cache _cfrd_name)
-    _cpp_find_recipe_kwargs(_cfrd_toggles _cfrd_options _cfrd_lists)
-    cpp_parse_arguments(
-        _cfrd "${ARGN}"
-        TOGGLES ${_cfrd_toggles}
-        OPTIONS ${_cfrd_options}
-        LISTS ${_cfrd_lists}
-    )
-
-    #We use a macro b/c we're wrapping find_package which introduces variables
-    set(_cfrd_start "macro(_cpp_find_recipe _cfr_version _cfr_comps _cfr_path)")
-    set(_cfrd_end "endmacro()")
-    _cpp_is_not_empty(_cfrd_have_module _cfrd_FIND_MODULE)
+## Function which starts the find process
+#
+# At the moment we only support two mechanisms for finding a dependency: using a
+# CMake find module or by using config files. The config file variant is the
+# preferred mechanism; however, it is not a viable path for projects that do not
+# use CMake. This function is responsible for dispatching to the appropriate
+# handler.
+#
+# :param name: The name of the dependency we are attempting to find.
+# :param version: The minimum required version of the dependency.
+# :param comps: A list of required components.
+# :param path: A hint for where to look.
+# :param optional: Set to true if failing to find the package is an error.
+# :param module: The CMake find module to use. Set to empty string if you want
+#     CPP to try to find the dependency using config files.
+#
+# :CMake Variables:
+#
+#     * *CMAKE_PREFIX_PATH* - Used to provide ``find_package`` a list of end-
+#       user provided paths.
+function(_cpp_find_recipe_dispatch _cfrd_found _cfrd_name _cfrd_version
+                                   _cfrd_comps _cfrd_path _cfrd_module)
+    _cpp_is_not_empty(_cfrd_have_module _cfrd_module)
     if(_cfrd_have_module)
-        _cpp_cache_add_find_module(
-            ${_cfrd_cache} ${_cfrd_name} ${_cfrd_FIND_MODULE}
+        _cpp_find_from_module(
+            _cfrd_was_found
+            ${_cfrd_name}
+            "${_cfrd_version}"
+            "${_cfrd_comps}"
+            "${_cfrd_path}"
+            "${_cfrd_module}"
         )
-        _cpp_update_find_header(_cfrd_start ${_cfrd_cache} ${_cfrd_name})
-        set(_cfrd_type "module")
     else()
-        set(_cfrd_type "config")
+        _cpp_find_from_config(
+            _cfrd_was_found
+            ${_cfrd_name}
+            "${_cfrd_version}"
+            "${_cfrd_comps}"
+            "${_cfrd_path}"
+        )
     endif()
-    #These are the args that get passed to _cpp_find_from_XXX, factored out
-    set(_cfrd_args "\"\${_cfr_version}\" \"\${_cfr_comps}\" \"\${_cfr_path}\"")
-    set(
-        _cfrd_body
-"    include(recipes/cpp_find_from_${_cfrd_type})
-    _cpp_find_from_${_cfrd_type}(${_cfrd_name} ${_cfrd_args})"
-    )
-
-    set(
-        ${_cfrd_contents}
-        "${_cfrd_start}\n${_cfrd_body}\n${_cfrd_end}"
-        PARENT_SCOPE
-    )
+    set(${_cfrd_found} ${_cfrd_was_found} PARENT_SCOPE)
 endfunction()
