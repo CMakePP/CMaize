@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("get_recipe_dispatch")
+_cpp_setup_test_env("get_recipe_dispatch")
 
 set(tarball ${test_prefix}/${test_number}/cpp.tar.gz)
 set(cpp_url "github.com/CMakePackagingProject/CMakePackagingProject")

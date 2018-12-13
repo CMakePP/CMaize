@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("run_sub_build")
+_cpp_setup_test_env("run_sub_build")
 
 _cpp_dummy_cxx_package(${test_prefix}/${test_number})
 set(src_dir ${test_prefix}/${test_number}/dummy)

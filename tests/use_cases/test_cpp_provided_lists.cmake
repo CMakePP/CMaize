@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("provided_lists")
+_cpp_setup_test_env("provided_lists")
 
 # In this scenario a user has provided the cmake command with a variable that
 # contains a list.  For the present test that varible is CMAKE_PRFEIX_PATH

@@ -3,7 +3,7 @@ include(cpp_assert)
 include(CPPMain)
 include(../cmake/cpp_unit_test_helpers.cmake)
 
-_cpp_setup_build_env(cpp_main)
+_cpp_setup_test_env(cpp_main)
 set(PROJECT_NAME test_cpp_main)
 
 ################################################################################

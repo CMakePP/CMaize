@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("build_recipe_dispatch")
+_cpp_setup_test_env("build_recipe_dispatch")
 
 set(src_dir ${test_prefix}/${test_number})
 set(install_dir ${src_dir}/install)

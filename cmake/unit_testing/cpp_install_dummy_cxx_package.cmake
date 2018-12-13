@@ -14,21 +14,29 @@
 ################################################################################
 
 include_guard()
-include(cache/cache_add_dependency)
 
-## Wrapper function for writing the recipes for a dummy C++ library
+## Function for creating and installing a dummy C++ package.
 #
-# For a dummy C++ library generated with the :ref:`cpp_dummy_cxx_library-label`
-# function, this function will write the appropriate recipes to the cache.
+# This function piggybacks off of :ref:`cpp_dummy_cxx_package-label`. After the
+# package is created this function additionally calls :ref:`cpp_run_sub_build`
+# to build the package. The resulting package is installed to
+# ``<prefix>/install``. Note that the resulting package is installed with a
+# config file that can locate it. For installing a less well written library
+# consider :ref:`cpp_install_naive_cxx_package`.
 #
-# :param cache: The CPP cache to write the recipes to.
-# :param path: The path provided to the ``_cpp_dummy_cxx_library`` function.
-function(_cpp_cache_dummy_cxx_library _ccdcl_cache _ccdcl_path)
-    set(_ccdcl_name dummy)
-    set(_ccdcl_src ${_ccdcl_path}/${_ccdcl_name})
-    _cpp_cache_write_get_recipe(
-        ${_ccdcl_cache} ${_ccdcl_name} "" "" "" ${_ccdcl_src}
+# :param prefix: The directory in which the package should be generated.
+#
+# :kwargs:
+#
+#     * *NAME* - The name of the package. Defaults to "dummy".
+function(_cpp_install_dummy_cxx_package _cidcp_prefix)
+    cmake_parse_arguments(_cidcp "" "NAME" "" ${ARGN})
+    cpp_option(_cidcp_NAME dummy)
+    set(_cidcp_root ${_cidcp_prefix}/${_cidcp_NAME})
+    _cpp_dummy_cxx_package(${_cidcp_prefix} NAME ${_cidcp_NAME})
+    _cpp_run_sub_build(
+        ${_cidcp_root}
+        INSTALL_DIR ${_cidcp_prefix}/install
+        NAME ${_cidcp_NAME}
     )
-    _cpp_cache_write_find_recipe(${_ccdcl_cache} ${_ccdcl_name} "")
-    _cpp_cache_write_build_recipe(${_ccdcl_cache} ${_ccdcl_name} "" "")
 endfunction()

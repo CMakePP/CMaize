@@ -1,7 +1,7 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
 include(cache/cache_add_dependency)
-_cpp_setup_build_env("special_find")
+_cpp_setup_test_env("special_find")
 
 set(src_dir ${test_prefix}/${test_number})
 _cpp_install_dummy_cxx_package(${src_dir})

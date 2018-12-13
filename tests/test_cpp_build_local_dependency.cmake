@@ -3,7 +3,7 @@ include(../cmake/cpp_unit_test_helpers.cmake)
 include(cpp_dependency)
 include(cpp_assert)
 set(CPP_DEBUG_MODE ON)
-_cpp_setup_build_env("build_local_dependency")
+_cpp_setup_test_env("build_local_dependency")
 
 #Set up dummy package
 _cpp_dummy_cxx_package(${test_prefix})

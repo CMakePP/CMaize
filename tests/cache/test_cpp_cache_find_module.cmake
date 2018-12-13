@@ -1,7 +1,7 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
 include(cache/cache_paths)
-_cpp_setup_build_env("cache_find_module")
+_cpp_setup_test_env("cache_find_module")
 
 _cpp_cache_find_module_path(path ${test_prefix} dummy)
 file(WRITE ${path} "Hi")

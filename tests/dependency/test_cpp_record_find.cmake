@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("record_find")
+_cpp_setup_test_env("record_find")
 
 #Code factorization for retrieving the property
 set(
