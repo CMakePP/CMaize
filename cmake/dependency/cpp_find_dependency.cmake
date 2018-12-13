@@ -72,6 +72,7 @@ function(cpp_find_dependency)
         VERSION "${_cfd_VERSION}"
         COMPONENTS "${_cfd_COMPONENTS}"
         ${_cfd_optional}
+        ${_cfd_FIND_MODULE}
     )
 
     _cpp_cache_write_find_recipe(
