@@ -5,7 +5,6 @@ cpp_add_test
 
 .. function:: _cpp_add_test()
 
-    Function for declaring a test of a CMake function
     
     This function implements what Catch2 would call a section. Basically it
     will run the contents of the test, in the current environment, without

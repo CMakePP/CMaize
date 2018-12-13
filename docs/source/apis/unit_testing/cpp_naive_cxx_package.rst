@@ -3,9 +3,8 @@
 cpp_naive_cxx_package
 #####################
 
-.. function:: _cpp_naive_cxx_package(<src> <install> <prefix>)
+.. function:: _cpp_naive_cxx_package(<src> <prefix>)
 
-    Writes out a C++ package that uses CMake naively.
     
     For our purposes a naive usage of CMake amounts to not writing a
     ``XXX-config.cmake`` file upon installation. This function will generate the
@@ -14,8 +13,6 @@ cpp_naive_cxx_package
     
     :param src: An identifier which, after this call, will store the path to the
         directory containing the source code.
-    :param install: An identifier which, after this call, will store he path to
-        the install directory for the packge.
     :param prefix: The path where the directory containing the files should live.
     
     :kwargs:

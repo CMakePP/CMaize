@@ -5,7 +5,6 @@ cpp_user_build
 
 .. function:: _cpp_user_build(<install> <src> <tc> <recipe>)
 
-    Function which builds a dependency from a user-provided build module.
     
     :param install: The path to the install root for the dependency.
     :param src: The path to the root of the source tree.

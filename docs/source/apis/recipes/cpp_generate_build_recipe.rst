@@ -5,7 +5,6 @@ cpp_generate_build_recipe
 
 .. function:: _cpp_generate_build_recipe(<output> <args> <module>)
 
-    Function which generates the build-recipe for a dependency.
     
     The build-recipe configures, builds, and installs the dependency. This
     function generates the callback to be used as the build-recipe. Ultimately,

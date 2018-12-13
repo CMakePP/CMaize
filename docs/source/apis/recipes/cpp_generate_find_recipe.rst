@@ -5,7 +5,6 @@ cpp_generate_find_recipe
 
 .. function:: _cpp_generate_find_recipe(<output> <name> <module>)
 
-    Function which generates the find-recipe for a dependency.
     
     The find-recipe searches for an installed version of a dependency. This
     function generates the callback to be used as the find-recipe. Ultimately,
