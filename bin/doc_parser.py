@@ -4,17 +4,21 @@ import re
 def parse_file(file, docs):
     #Get a list of functions in the file (note regex also grabs function() from
     #endfunction()
-    fxn_name = re.compile(r"""function\(.*\)""")
     f_contents = file.read()
-    fxns = re.findall(fxn_name, f_contents)
+    fxns = f_contents.split("endfunction()")
     for fxn_i in fxns:
-        if fxn_i == "function()":
+        fxn_name_re = re.compile(r"""function\((.*?)(?:( .*)\)|\))""")
+        fxn_name_list = re.search(fxn_name_re, fxn_i)
+        if fxn_name_list == None:
             continue
-        escaped_fxn = fxn_i.replace('(',"\(").replace(')',"\)")
-        fxn_doc = re.compile(r"""## ((?:.*\n)*){}""".format(escaped_fxn))
-        doc = re.search(fxn_doc, f_contents)
+        fxn_name = fxn_name_list.group(1)
+        fxn_args = fxn_name_list.group(2)
+        print(fxn_name, "[",fxn_args,"]")
+        fxn_re = "function\({}".format(fxn_name)
+        fxn_doc = re.compile(r"""## ((?:.*\n)*?){}""".format(fxn_re))
+        doc = re.search(fxn_doc, fxn_i)
         if doc == None:
-            print("WARNING: No documentation for fxn {}".format(fxn_i))
+            print("WARNING: No documentation for fxn {}".format(fxn_name))
             continue
         #Still has the #'s from the block comment, get rid of those by...
 
@@ -23,13 +27,7 @@ def parse_file(file, docs):
 
         #...and now clear any residual #, like those making blank lines
         doc = doc.replace('#', '')
-
-        #Grab the 1st argument to function() (that's the fxn's name)
-        fxn_i = fxn_i.replace('(', ' ').replace(')', '')
-        fxn_name = fxn_i.split()[1]
-
-        #Rest of the args are the parameters
-        fxn_params = fxn_i.split()[2:]
+        print(doc)
 
         #Figure out the prefix on the variables by skimming fxn's name
         fxn_name_parts = fxn_name.split('_')
@@ -37,14 +35,16 @@ def parse_file(file, docs):
         abbrv = ''.join(letters)
 
         #Take prefix off of the arguments
-        fxn_params = [ var.replace(abbrv + '_', '') for var in fxn_params]
+        if not fxn_args:
+            fxn_args = ""
+        fxn_args = [ var.replace(abbrv + '_', '') for var in fxn_args.split()]
 
         #Piece the actual reST function command together
         fxn_line = ".. function:: {}(".format(fxn_name)
-        if len(fxn_params):
-            for var in fxn_params[:-1]:
+        if len(fxn_args):
+            for var in fxn_args[:-1]:
                 fxn_line = "{}<{}> ".format(fxn_line, var)
-            fxn_line = "{}<{}>)".format(fxn_line, fxn_params[-1])
+            fxn_line = "{}<{}>)".format(fxn_line, fxn_args[-1])
         else:
             fxn_line = "{})".format(fxn_line)
 
@@ -91,7 +91,7 @@ def main():
 
     docs = {}
     parse_dir(source_dir, docs)
-
+    print(docs)
     output_dir = os.path.join(root_dir, "docs", "source", "apis")
 
     for k,v in docs.items():

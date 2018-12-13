@@ -25,7 +25,7 @@ TITLE "Build project one"
 #Step 3: Attempt to find dependency w/wrong cache
 _cpp_add_test(
 TITLE "Fails to find project one"
-SHOULD_FAIL REASON "Could not locate dummy1"
+SHOULD_FAIL REASON "Could not find dummy1"
 "include(dependency/cpp_find_dependency)"
 "set(CPP_INSTALL_CACHE ${test_prefix}/cpp_cache2)"
 "cpp_find_dependency("

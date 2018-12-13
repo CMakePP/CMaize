@@ -26,14 +26,12 @@ include(unit_testing/cpp_dummy_cxx_library)
 #
 # :param src: An identifier which, after this call, will store the path to the
 #     directory containing the source code.
-# :param install: An identifier which, after this call, will store he path to
-#     the install directory for the packge.
 # :param prefix: The path where the directory containing the files should live.
 #
 # :kwargs:
 #
 #     * *NAME* (``option``) - The name of the dependency. Defaults to "dummy".
-function(_cpp_naive_cxx_package _cncp_src _cncp_install _cncp_prefix)
+function(_cpp_naive_cxx_package _cncp_src _cncp_prefix)
     cmake_parse_arguments(_cncp "" "NAME" "" "${ARGN}")
     if("${_cncp_NAME}" STREQUAL "")
         set(_cncp_NAME dummy)
@@ -44,19 +42,16 @@ function(_cpp_naive_cxx_package _cncp_src _cncp_install _cncp_prefix)
     set(${_cncp_src} ${${_cncp_src}} PARENT_SCOPE)
     _cpp_dummy_cxx_library(${${_cncp_src}})
 
-
     #Write the CMakeLists.txt
-    set(${_cncp_install} ${_cncp_prefix}/install)
-    set(${_cncp_install} ${${_cncp_install}} PARENT_SCOPE)
     _cpp_write_list(
         ${${_cncp_src}}
         NAME ${_cncp_NAME}
         CONTENTS "add_library(${_cncp_NAME} a.cpp)"
         "install("
         "   TARGETS ${_cncp_NAME}"
-        "   LIBRARY DESTINATION ${${_cncp_install}}/lib"
-        "   ARCHIVE DESTINATION ${${_cncp_install}}/lib"
+        "   LIBRARY DESTINATION \${CMAKE_INSTALL_PREFIX}/lib"
+        "   ARCHIVE DESTINATION \${CMAKE_INSTALL_PREFIX}/lib"
         ")"
-        "install(FILES a.hpp DESTINATION ${${_cncp_install}}/include)"
+        "install(FILES a.hpp DESTINATION \${CMAKE_INSTALL_PREFIX}/include)"
     )
 endfunction()

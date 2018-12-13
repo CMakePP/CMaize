@@ -9,7 +9,6 @@ set(
                  get_recipe_dispatch
                  parse_gh_url
                  url_dispatcher
-                 update_find_header
 )
 
 foreach(test_i ${RECIPE_TESTS})

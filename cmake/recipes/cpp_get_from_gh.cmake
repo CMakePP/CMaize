@@ -15,6 +15,17 @@
 
 include_guard()
 
+## Function which parses the organization and repository out of a GitHub URL
+#
+# This function will take a GitHub URL of the form ``github.com/org/repo`` and
+# parse out the organization and repository. The actual parsing is insensitive
+# to whether or not generic prefixes like ``www.`` and ``https://`` are present.
+# The function will raise errors if an organization or a repository is not
+# present.
+#
+# :param org: The identifier to store the organization's name under.
+# :param repo: The identifier to store the repository's name under.
+# :param url: The URL that we are parsing.
 function(_cpp_parse_gh_url _cpgu_org _cpgu_repo _cpgu_url)
     string(REGEX MATCH "github\\.com/([^/]*)/([^/]*)" "" "${_cpgu_url}")
     set(${_cpgu_org} "${CMAKE_MATCH_1}")
@@ -41,6 +52,24 @@ function(_cpp_parse_gh_url _cpgu_org _cpgu_repo _cpgu_url)
     set(${_cpgu_repo} ${${_cpgu_repo}} PARENT_SCOPE)
 endfunction()
 
+## Function that wraps the GitHub URL API
+#
+# This function takes the various pieces of input and assembles the URL to use
+# to retrieve the spefied version of a dependency hosted on GitHub. This
+# function is responsible for handleing the ``PRIVATE`` kwarg and will error if
+# the user has not set ``CPP_GITHUB_TOKEN``.
+#
+# :param url: The identifier which will contain the returned URL.
+# :param org: The GitHub organization which owns the repository.
+# :param repo: The repository to access.
+# :param private: True if this is a private GitHub repository, False if public.
+# :param branch: The git branch to use.
+# :param version: The version of the dependency to clone.
+#
+# :CMake Variables:
+#
+#     * *CPP_GITHUB_TOKEN* - Used to get the user's GitHub access token if we
+#       are cloning a private repository.
 function(_cpp_assemble_gh_url _cagu_url _cagu_org _cagu_repo _cagu_private
                               _cagu_branch _cagu_version)
 
@@ -70,40 +99,35 @@ function(_cpp_assemble_gh_url _cagu_url _cagu_org _cagu_repo _cagu_private
     set(${_cagu_url} ${_cagu_prefix}/${_cagu_tar}${_cagu_token} PARENT_SCOPE)
 endfunction()
 
-
-function(_cpp_get_from_gh _cgfg_tar _cgfg_version _cgfg_url)
-    cpp_parse_arguments(_cgfg "${ARGN}" TOGGLES PRIVATE OPTIONS BRANCH)
+## Function wrapping the process of downloading source code from GitHub.
+#
+# :param tar: The path to where the tarball should go, including the tarball
+#     name.
+# :param version: The version of the dependency to obtain.
+# :param url: The URL to the GitHub repository.
+# :param private: True if this is a private GitHub repository and False
+#     otherwise.
+# :param branch: The branch of the source to use. Defaults to ``master`` if the
+#     empty string is passed.
+#
+# :CMake Variables:
+#
+#     * *CPP_GITHUB_TOKEN* - Used to get the user's GitHub access token if we
+#       are cloning a private repository.
+function(_cpp_get_from_gh _cgfg_tar _cgfg_version _cgfg_url _cgfg_private
+                          _cgfg_branch)
     _cpp_assert_contains("github.com" "${_cgfg_url}")
-    cpp_option(_cgfg_BRANCH master)
+    cpp_option(_cgfg_branch master)
 
     _cpp_parse_gh_url(_cgfg_org _cgfg_repo ${_cgfg_url})
     _cpp_assemble_gh_url(
         _cgfg_url
         ${_cgfg_org}
         ${_cgfg_repo}
-        ${_cgfg_PRIVATE}
-        ${_cgfg_BRANCH}
+        ${_cgfg_private}
+        ${_cgfg_branch}
         "${_cgfg_version}"
     )
 
     _cpp_download_tarball(${_cgfg_tar} ${_cgfg_url})
-endfunction()
-
-function(_cpp_gh_get_recipe_body _cggrb_output _cggrb_url)
-    #Can't just dump the args as the order may change invalidating memoiztion
-    cpp_parse_arguments(_cggrb "${ARGN}" TOGGLES PRIVATE OPTIONS BRANCH)
-    set(_cggrb_include "include(recipes/cpp_get_from_gh)")
-    set(_cggrb_cmd              "_cpp_get_from_gh(\n")
-    set(_cggrb_cmd "${_cggrb_cmd}    \${_cgr_tar}\n")
-    set(_cggrb_cmd "${_cggrb_cmd}    \"\${_cgr_version}\"\n")
-    set(_cggrb_cmd "${_cggrb_cmd}    ${_cggrb_url}\n")
-    if(_cggrb_PRIVATE)
-        set(_cggrb_cmd "${_cggrb_cmd}    PRIVATE\n")
-    endif()
-    _cpp_is_not_empty(_cggrb_have_branch _cggrb_BRANCH)
-    if(_cggrb_have_branch)
-        set(_cggrb_cmd "${_cggrb_cmd}    BRANCH ${_cggrb_BRANCH}\n")
-    endif()
-    set(_cggrb_cmd "${_cggrb_cmd})")
-    set(${_cggrb_output} "${_cggrb_include}\n${_cggrb_cmd}" PARENT_SCOPE)
 endfunction()

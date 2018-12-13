@@ -29,13 +29,9 @@ include(unit_testing/cpp_naive_cxx_package)
 #
 #     * *NAME* (``option``) - The name of the dependency. Defaults to "dummy".
 function(_cpp_install_naive_cxx_package _cincp_install _cincp_prefix)
-    _cpp_naive_cxx_package(
-        _cincp_src ${_cincp_install} ${_cincp_prefix} ${ARGN}
-    )
+    _cpp_naive_cxx_package(_cincp_src ${_cincp_prefix} ${ARGN})
     _cpp_run_sub_build(
-        ${_cincp_src}
-        INSTALL_DIR ${${_cincp_install}}
-        NAME install_naive
+        ${_cincp_src} INSTALL_DIR ${_cincp_prefix}/install NAME install_naive
     )
-    set(${_cincp_install} ${${_cincp_install}} PARENT_SCOPE)
+    set(${_cincp_install} ${_cincp_prefix} PARENT_SCOPE)
 endfunction()
