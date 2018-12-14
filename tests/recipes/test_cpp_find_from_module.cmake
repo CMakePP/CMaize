@@ -22,17 +22,29 @@ _cpp_naive_find_module(module ${test_prefix})
 
 _cpp_add_test(
 TITLE "Finds dummy with path"
-CONTENTS
-    "include(recipes/cpp_find_from_module)"
-    "_cpp_find_from_module(found dummy \"\" \"\" ${install_dir} ${module})"
-    "_cpp_assert_true(found)"
+"include(recipes/cpp_find_from_module)"
+"_cpp_find_from_module(found dummy \"\" \"\" ${install_dir}/install ${module})"
+"_cpp_assert_true(found)"
 )
 
 _cpp_add_test(
 TITLE "Fails if module file does not exist"
 SHOULD_FAIL REASON "No such file or directory: not/a/directory"
-CONTENTS
-    "include(recipes/cpp_find_from_module)"
-    "_cpp_find_from_module(found dummy \"\" \"\" \"\" not/a/directory)"
-    "_cpp_assert_false(found)"
+"include(recipes/cpp_find_from_module)"
+"_cpp_find_from_module(found dummy \"\" \"\" \"\" not/a/directory)"
+"_cpp_assert_false(found)"
+)
+
+_cpp_add_test(
+TITLE "Writes to target"
+"include(recipes/cpp_find_from_module)"
+"add_library(_cpp_dummy_External INTERFACE)"
+"_cpp_find_from_module(found dummy \"\" \"\" ${install_dir}/install ${module})"
+"_cpp_assert_true(found)"
+"get_target_property(file _cpp_dummy_External INTERFACE_INCLUDE_DIRECTORIES)"
+"list(APPEND CMAKE_PREFIX_PATH ${install_dir}/install)"
+"_cpp_assert_equal("
+"   \"\${file}\""
+"   \"set(dummy_ROOT \\\"\${CMAKE_PREFIX_PATH}\\\")\""
+")"
 )

@@ -59,8 +59,21 @@ function(_cpp_find_from_config _cffc_found _cffc_name _cffc_version _cffc_comps
     )
     #CMake sets Name_DIR to Name_DIR-NOTFOUND if the config file wasn't found
     #this screws with thte call to special_find, so unset it
-    if("${${_cffc_name}_DIR}" STREQUAL "${_cffc_name}_DIR-NOTFOUND")
-        unset(${_cffc_name}_DIR CACHE)
+    set(_cffc_dir ${_cffc_name}_DIR)
+    set(_cffc_value "${${_cffc_dir}}")
+    _cpp_debug_print("After search: ${_cffc_dir} = ${_cffc_value}")
+    if("${_cffc_value}" STREQUAL "${_cffc_dir}-NOTFOUND")
+        unset(${_cffc_dir} CACHE)
+    else()
+        set(_cffc_helper_target _cpp_${_cffc_name}_External)
+        _cpp_is_target(_cffc_is_target ${_cffc_helper_target})
+        if(_cffc_is_target)
+            set_target_properties(
+                ${_cffc_helper_target}
+                PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
+                "set(${_cffc_dir} ${_cffc_value})"
+            )
+        endif()
     endif()
     _cpp_handle_found_var(_cffc_was_found ${_cffc_name})
     set(${_cffc_found} ${_cffc_was_found} PARENT_SCOPE)
