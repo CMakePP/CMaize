@@ -62,6 +62,9 @@ function(cpp_find_dependency)
     cpp_option(_cfd_CPP_CACHE ${CPP_INSTALL_CACHE})
     cpp_option(_cfd_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
 
+    #Will change it if this isn't the case
+    set(${_cfd_RESULT} TRUE PARENT_SCOPE)
+
     if(_cfd_OPTIONAL)
         set(_cfd_optional "OPTIONAL")
     endif()
@@ -90,7 +93,6 @@ function(cpp_find_dependency)
     )
 
     if(_cfd_found)
-        set(${_cfd_RESULT} TRUE PARENT_SCOPE)
         return()
     endif()
 
@@ -106,9 +108,14 @@ function(cpp_find_dependency)
     _cpp_find_recipe(
         _cfd_found "${_cfd_VERSION}" "${_cfd_COMPONENTS}" "${_cfd_path}"
     )
-    if(_cfd_found OR _cfd_OPTIONAL)
+
+    if(_cfd_found)
+        return()
+    elseif(_cfd_OPTIONAL)
+        set(${_cfd_RESULT} FALSE PARENT_SCOPE)
         return()
     endif()
+
     _cpp_error(
         "Could not find ${_cfd_NAME}. Make sure ${_cfd_NAME}'s install path is "
         "included in the CMAKE_PREFIX_PATH variable. Current "
