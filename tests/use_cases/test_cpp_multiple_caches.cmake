@@ -1,7 +1,7 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
 include(cpp_toolchain)
-_cpp_setup_build_env("multiple_caches")
+_cpp_setup_test_env("multiple_caches")
 
 # In this scenario a user has built a project using one CPP cache and now
 # they are building a different project, using a different CPP cache.

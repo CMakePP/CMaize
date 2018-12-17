@@ -4,7 +4,7 @@ include(../cmake/cpp_unit_test_helpers.cmake)
 include(cpp_targets)
 include(cpp_print)
 
-_cpp_setup_build_env("cpp_targets")
+_cpp_setup_test_env("cpp_targets")
 set(CPP_DEBUG_MODE ON)
 
 ################################################################################

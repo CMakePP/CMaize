@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("url_dispatcher")
+_cpp_setup_test_env("url_dispatcher")
 
 
 set(tarball ${test_prefix}/${test_number}/cpp.tar.gz)

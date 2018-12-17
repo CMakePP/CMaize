@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("tar_directory")
+_cpp_setup_test_env("tar_directory")
 
 _cpp_dummy_cxx_library(${test_prefix}/dummy)
 

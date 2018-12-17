@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("change_toolchain")
+_cpp_setup_test_env("change_toolchain")
 
 set(test_dir ${test_prefix}/${test_number})
 _cpp_add_test(

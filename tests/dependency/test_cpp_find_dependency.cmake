@@ -1,7 +1,7 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
 include(cache/cache_add_dependency)
-_cpp_setup_build_env("find_dependency")
+_cpp_setup_test_env("find_dependency")
 
 set(suffix "\n    CPP_CACHE ${CPP_INSTALL_CACHE}\n)")
 #Makes and installs a library to test_prefix/dummy/install

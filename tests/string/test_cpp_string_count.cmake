@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("string_count")
+_cpp_setup_test_env("string_count")
 
 _cpp_add_test(
 TITLE "No matches"

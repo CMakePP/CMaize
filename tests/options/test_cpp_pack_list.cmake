@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("pack_list")
+_cpp_setup_test_env("pack_list")
 
 _cpp_add_test(
 TITLE "Empty list is empty"

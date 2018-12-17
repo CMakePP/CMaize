@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("cpp_untar_directory")
+_cpp_setup_test_env("cpp_untar_directory")
 
 #Make some tarballs
 _cpp_dummy_cxx_library(${test_prefix}/dummy)
