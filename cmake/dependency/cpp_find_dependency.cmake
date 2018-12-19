@@ -105,6 +105,7 @@ function(cpp_find_dependency)
     )
 
     _cpp_does_not_contain(_cfd_have_path "NOTFOUND" "${_cfd_path}")
+
     if(_cfd_have_path)
         include(${_cfd_recipe})
         _cpp_find_recipe(
