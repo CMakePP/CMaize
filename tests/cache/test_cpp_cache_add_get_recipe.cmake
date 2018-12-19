@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("cache_add_get_recipe")
+_cpp_setup_test_env("cache_add_get_recipe")
 
 set(corr_path ${test_prefix}/get_recipes/get-dummy.cmake)
 

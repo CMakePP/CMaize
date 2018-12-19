@@ -15,6 +15,7 @@
 
 include(cpp_print) #For debug printing
 include(cpp_checks)
+include(target/target_has_property)
 
 function(_cpp_parse_target _cpt_project _cpt_component _cpt_target)
     string(FIND "${_cpt_target}" "::" _cpt_colon_start)
@@ -171,10 +172,18 @@ function(cpp_install)
     if(_ci_DEPENDS)
         list(REMOVE_DUPLICATES _ci_DEPENDS)
         foreach(_ci_depend_i ${_ci_DEPENDS})
+            set(_ci_helper_target _cpp_${_ci_depend_i}_External)
+            _cpp_target_has_property(
+                _ci_has_dir ${_ci_helper_target} INTERFACE_INCLUDE_DIRECTORIES
+            )
+            if(_ci_has_dir)
+                get_target_property(
+                    _ci_dir ${_ci_helper_target} INTERFACE_INCLUDE_DIRECTORIES
+                )
+                set(_ci_find_depends "${_ci_find_depends}${_ci_dir}\n")
+            endif()
             get_target_property(
-                _ci_cmd_i
-                _cpp_${_ci_depend_i}_External
-                INTERFACE_VERSION
+                _ci_cmd_i ${_ci_helper_target} INTERFACE_VERSION
             )
             set(_ci_find_depends "${_ci_find_depends}${_ci_cmd_i}\n")
         endforeach()

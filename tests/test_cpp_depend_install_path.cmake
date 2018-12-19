@@ -5,7 +5,7 @@ include(cpp_assert)
 set(CPP_DEBUG_MODE ON)
 
 #Set-up test and get typical Toolchain's hash
-_cpp_setup_build_env("cpp_depend_install_path")
+_cpp_setup_test_env("cpp_depend_install_path")
 file(SHA1 ${CMAKE_TOOLCHAIN_FILE} toolchain_hash)
 
 

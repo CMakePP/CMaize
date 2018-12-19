@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("find_recipe_dispatch")
+_cpp_setup_test_env("find_recipe_dispatch")
 
 set(src_dir ${test_prefix}/${test_number})
 _cpp_install_naive_cxx_package(install_dir ${src_dir})

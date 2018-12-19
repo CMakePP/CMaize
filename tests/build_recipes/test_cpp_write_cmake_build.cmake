@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("write_cmake_build")
+_cpp_setup_test_env("write_cmake_build")
 
 set(src_dir ${test_prefix}/${test_number})
 _cpp_dummy_cxx_package(${src_dir})

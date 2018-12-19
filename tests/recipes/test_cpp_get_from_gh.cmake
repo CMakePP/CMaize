@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("get_from_gh")
+_cpp_setup_test_env("get_from_gh")
 
 
 set(cpp_repo "github.com/CMakePackagingProject/CMakePackagingProject")

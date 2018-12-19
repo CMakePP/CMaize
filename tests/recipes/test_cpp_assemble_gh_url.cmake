@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("assemble_gh_url")
+_cpp_setup_test_env("assemble_gh_url")
 
 set(prefix https://api.github.com/repos/org/repo/tarball)
 

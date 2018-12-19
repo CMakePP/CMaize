@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("provided_toolchain")
+_cpp_setup_test_env("provided_toolchain")
 
 # In this scenario a user is providing a CPP project a toolchain and that
 # toolchain only sets some variables.  CPP needs to set the remaining variables

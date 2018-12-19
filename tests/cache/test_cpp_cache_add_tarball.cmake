@@ -1,7 +1,7 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
 include(cache/cache_paths)
-_cpp_setup_build_env("cache_add_tarball")
+_cpp_setup_test_env("cache_add_tarball")
 
 _cpp_cache_tarball_path(no_version ${test_prefix} dummy "")
 _cpp_cache_tarball_path(version ${test_prefix} dummy 1.0)

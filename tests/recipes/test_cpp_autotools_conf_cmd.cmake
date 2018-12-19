@@ -1,6 +1,6 @@
 include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
-_cpp_setup_build_env("autotools_conf_cmd")
+_cpp_setup_test_env("autotools_conf_cmd")
 
 set(comps "CXX=${CMAKE_CXX_COMPILER} CC=${CMAKE_C_COMPILER}")
 set(flags " ")

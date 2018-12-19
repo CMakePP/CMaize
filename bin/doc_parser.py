@@ -18,16 +18,16 @@ def parse_file(file, docs):
         fxn_doc = re.compile(r"""## ((?:.*\n)*?){}""".format(fxn_re))
         doc = re.search(fxn_doc, fxn_i)
         if doc == None:
-            print("WARNING: No documentation for fxn {}".format(fxn_name))
+            #print("WARNING: No documentation for fxn {}".format(fxn_name))
             continue
         #Still has the #'s from the block comment, get rid of those by...
 
         #...assuming there's a space between the # and the comment
+
         doc = doc.group(1).replace('# ', '')
 
         #...and now clear any residual #, like those making blank lines
         doc = doc.replace('#', '')
-        print(doc)
 
         #Figure out the prefix on the variables by skimming fxn's name
         fxn_name_parts = fxn_name.split('_')
@@ -76,7 +76,7 @@ def parse_dir(root_dir, docs):
             index_content += ".. toctree::\n    :maxdepth: 2\n\n"
 
             for k,v in sub_docs.items():
-                index_content += "    {}\n".format(k.replace('.rst', ''))
+                index_content += "    {}\n".format(k.replace(".rst", ''))
                 docs[os.path.join(file, k)] = v
             docs[os.path.join(file, "index.rst")] = index_content
 
@@ -91,10 +91,13 @@ def main():
 
     docs = {}
     parse_dir(source_dir, docs)
-    print(docs)
     output_dir = os.path.join(root_dir, "docs", "source", "apis")
 
     for k,v in docs.items():
+        relative_dir = os.path.dirname(k)
+        full_path = os.path.join(output_dir, relative_dir)
+        if not os.path.isdir(full_path):
+            os.mkdir(full_path)
         with open(os.path.join(output_dir,k), "w") as f:
             f.write(v)
 
