@@ -104,10 +104,14 @@ function(cpp_find_dependency)
         "${_cfd_TOOLCHAIN}"
     )
 
-    include(${_cfd_recipe})
-    _cpp_find_recipe(
-        _cfd_found "${_cfd_VERSION}" "${_cfd_COMPONENTS}" "${_cfd_path}"
-    )
+    _cpp_does_not_contain(_cfd_have_path "NOTFOUND" "${_cfd_path}")
+
+    if(_cfd_have_path)
+        include(${_cfd_recipe})
+        _cpp_find_recipe(
+            _cfd_found "${_cfd_VERSION}" "${_cfd_COMPONENTS}" "${_cfd_path}"
+        )
+    endif()
 
     if(_cfd_found)
         return()
