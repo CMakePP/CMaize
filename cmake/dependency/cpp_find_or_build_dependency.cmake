@@ -62,7 +62,7 @@ function(cpp_find_or_build_dependency)
         _cfobd "${ARGN}"
         TOGGLES PRIVATE
         OPTIONS NAME VERSION TOOLCHAIN CPP_CACHE FIND_MODULE BINARY_DIR
-                URL BRANCH SOURCE_DIR
+                URL BRANCH SOURCE_DIR BUILD_MODULE
         LISTS COMPONENTS CMAKE_ARGS
         MUST_SET NAME
     )
