@@ -69,11 +69,6 @@ function(cpp_find_dependency)
         set(_cfd_optional "OPTIONAL")
     endif()
 
-    if(_cfd_FIND_MODULE)
-        file(READ )
-        _cpp_cache_add_find_module(${_cfd_CPP_CACHE} ${_cfd_NAME} $)
-    endif()
-
     _cpp_record_find(
         "cpp_find_dependency"
         NAME "${_cfd_NAME}"
