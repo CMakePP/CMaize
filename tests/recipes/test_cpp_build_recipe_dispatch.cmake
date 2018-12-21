@@ -20,16 +20,18 @@ TITLE "Basic CMake project"
 "_cpp_assert_exists(${install_dir}/include)"
 )
 
-set(src_dir ${test_prefix}/${test_number})
-set(install_dir ${src_dir}/install)
-_cpp_dummy_cxx_library(${src_dir}/dummy)
-file(WRITE ${src_dir}/Builddummy.cmake
-"cpp_add_library(
-  dummy
-  SOURCES  a.cpp
-  INCLUDES a.hpp
-)
-cpp_install(TARGETS dummy)"
+set(prefix_dir ${test_prefix}/${test_number})
+set(install_dir ${prefix_dir}/install)
+_cpp_dummy_cxx_package(${prefix_dir}/src)
+file(WRITE ${prefix_dir}/Builddummy.cmake
+"include(ExternalProject)
+ExternalProject_Add(
+   dummy_External
+   SOURCE_DIR \${CMAKE_CURRENT_SOURCE_DIR}/dummy
+   CMAKE_CACHE_ARGS -DCMAKE_MODULE_PATH:LIST=\${CMAKE_MODULE_PATH}
+                    -DCMAKE_INSTALL_PREFIX:PATH=\${CMAKE_INSTALL_PREFIX}
+   INSTALL_DIR \${CMAKE_INSTALL_PREFIX}
+)"
 )
 
 _cpp_add_test(
@@ -38,10 +40,10 @@ TITLE "Build module"
 "_cpp_assert_does_not_exist(${install_dir}/include)"
 "_cpp_build_recipe_dispatch("
 "   ${install_dir}"
-"   ${src_dir}/dummy"
+"   ${prefix_dir}/src"
 "   ${CMAKE_TOOLCHAIN_FILE}"
 "   \"\""
-"   ${src_dir}/Builddummy.cmake"
+"   ${prefix_dir}/Builddummy.cmake"
 ")"
 "_cpp_assert_exists(${install_dir}/include)"
 )

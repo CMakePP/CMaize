@@ -26,6 +26,7 @@ function(_cpp_user_build _cub_install _cub_src _cub_tc _cub_recipe)
     _cpp_run_sub_build(
         ${_cub_src}
         NAME external_dependency
+        NO_INSTALL
         INSTALL_DIR ${_cub_install}
         TOOLCHAIN   ${_cub_tc}
         CONTENTS    "${_cub_contents}"
