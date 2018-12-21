@@ -69,6 +69,11 @@ function(cpp_find_dependency)
         set(_cfd_optional "OPTIONAL")
     endif()
 
+    if(_cfd_FIND_MODULE)
+        file(READ )
+        _cpp_cache_add_find_module(${_cfd_CPP_CACHE} ${_cfd_NAME} $)
+    endif()
+
     _cpp_record_find(
         "cpp_find_dependency"
         NAME "${_cfd_NAME}"
@@ -96,6 +101,22 @@ function(cpp_find_dependency)
         return()
     endif()
 
+    include(${_cfd_recipe})
+
+    #Try CMAKE_PREFIX_PATH
+    _cpp_is_not_empty(_cfd_prx_path CMAKE_PREFIX_PATH)
+    if(_cfd_prx_path)
+        _cpp_find_recipe(
+            _cfd_found
+            "${_cfd_VERSION}"
+            "${_cfd_COMPONENTS}"
+            "${CMAKE_PREFIX_PATH}"
+        )
+        if(_cfd_found)
+            return()
+        endif()
+    endif()
+
     _cpp_cache_install_path(
         _cfd_path
         ${_cfd_CPP_CACHE}
@@ -107,15 +128,16 @@ function(cpp_find_dependency)
     _cpp_does_not_contain(_cfd_have_path "NOTFOUND" "${_cfd_path}")
 
     if(_cfd_have_path)
-        include(${_cfd_recipe})
         _cpp_find_recipe(
             _cfd_found "${_cfd_VERSION}" "${_cfd_COMPONENTS}" "${_cfd_path}"
         )
+        if(_cfd_found)
+            return()
+        endif()
     endif()
 
-    if(_cfd_found)
-        return()
-    elseif(_cfd_OPTIONAL)
+
+    if(_cfd_OPTIONAL)
         set(${_cfd_RESULT} FALSE PARENT_SCOPE)
         return()
     endif()
