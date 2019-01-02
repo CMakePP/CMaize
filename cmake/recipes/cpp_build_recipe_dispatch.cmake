@@ -38,7 +38,11 @@ function(_cpp_build_recipe_dispatch _cbrd_install _cbrd_src _cbrd_tc _cbrd_args
     _cpp_is_not_empty(_cbrd_user_recipe _cbrd_module)
     if(_cbrd_user_recipe)
         _cpp_user_build(
-            ${_cbrd_install} ${_cbrd_src} ${_cbrd_tc} ${_cbrd_module}
+            ${_cbrd_install}
+            ${_cbrd_src}
+            ${_cbrd_tc}
+            ${_cbrd_module}
+            "${_cbrd_args}"
         )
     else()
         _cpp_configure_dispatch(
