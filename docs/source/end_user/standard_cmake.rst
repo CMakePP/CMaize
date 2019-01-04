@@ -63,7 +63,9 @@ Many of the old ``FindXXX.cmake`` modules used such variables as hints for
 where a dependency ``XXX`` is installed.  CMake has now adopted such variables
 as part of the standard and ``find_package`` automatically considers such
 variables as hints, regardless of whether the module recognizes the variable or
-not.
+not. CMake only strictly honors ``XXX_ROOT`` where ``XXX`` matches the case of
+the dependency's name; however, since determining the case can be annoying, CPP
+additionally will honor the all uppercase and all lowercase variants.
 
 CPP Specific Variables
 ----------------------
