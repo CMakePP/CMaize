@@ -29,7 +29,7 @@ following should suffice to obtain, configure, build, and install CPP:
 Obviously you will need to replace ``<build_dir>`` with the name of a directory
 to be used as the build directory and ``<Option1>`` and ``<value>`` with the
 option and value you want to set. Note that you only need to install CPP once.
-So if you've previously completed Step 1 skip to Step 2.  O
+So if you've previously completed Step 1 skip to Step 2.
 
 Step 2: Build the Project
 -------------------------
@@ -47,7 +47,12 @@ is done analogous to how it was done for CPP:
 
 There are a lot of possible options for configuring both CPP and the package,
 thus we strongly suggest you check out :ref:`standard_cmake-label` for a list
-of the more important considerations.
+of the more important considerations. If you are setting more than
+``CMAKE_PREFIX_PATH`` and/or ``CMAKE_INSTALL_PREFIX`` it is strongly recommended
+that you use a toolchain file to ensure that all of your options get forwarded
+to each dependency (generally speaking, `-D` options are only seen by the
+top-level `cmake` project). More details on using a toolchain file can be found
+at :ref:`toolchains-label`.
 
 Troubleshooting
 ---------------
