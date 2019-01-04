@@ -59,3 +59,21 @@ cpp_install(TARGETS <program_name>)
 ```
 
 For more details consult [the documentation](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest).
+
+Building CPP
+------------
+
+Full instructions for building CPP can be found in the  [the documentation](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest).
+For convenience, in a Unix-like setting, the following will suffice to build and
+install CPP:
+
+```.bash
+git clone https://github.com/CMakePackagingProject/CMakePackagingProject.git
+cd CMakePackagingProject
+cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=<where/to/install>
+cd build
+#May need to run the following with admin privileges depending on where you said
+#to install
+cmake --build . --target install
+```
+
