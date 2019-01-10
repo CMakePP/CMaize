@@ -51,7 +51,7 @@ function(_cpp_find_from_module _cffm_found _cffm_name _cffm_version _cffm_comps
     _cpp_sanitize_version(_cffm_temp "${_ccfm_version}")
     find_package(${_cffm_name} ${_cffm_temp} ${_cffm_comps} MODULE QUIET)
     _cpp_handle_found_var(_cffm_was_found ${_cffm_name})
-    if(${_cffm_was_found})
+    if(_cffm_was_found)
         _cpp_handle_find_module_vars(${_cffm_name})
         set(_cffm_helper_target _cpp_${_cffm_name}_External)
         _cpp_is_target(_cffm_is_target ${_cffm_helper_target})
