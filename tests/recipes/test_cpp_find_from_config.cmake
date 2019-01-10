@@ -27,6 +27,6 @@ TITLE "Saves config file to helper target"
 "_cpp_assert_true(found)"
 "get_target_property(file _cpp_dummy_External INTERFACE_INCLUDE_DIRECTORIES)"
 "_cpp_assert_equal("
-"   \"\${file}\" \"set(dummy_DIR ${src_dir}/install/share/cmake/dummy)\""
+"   \"\${file}\" \"dummy_DIR ${src_dir}/install/share/cmake/dummy\""
 ")"
 )

@@ -59,7 +59,7 @@ function(_cpp_find_from_module _cffm_found _cffm_name _cffm_version _cffm_comps
             set_target_properties(
                 ${_cffm_helper_target}
                 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
-                "set(${_cffm_name}_ROOT \"${CMAKE_PREFIX_PATH}\")"
+                "${_cffm_name}_ROOT \"${CMAKE_PREFIX_PATH}\""
             )
         endif()
     endif()

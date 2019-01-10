@@ -180,7 +180,7 @@ function(cpp_install)
                 get_target_property(
                     _ci_dir ${_ci_helper_target} INTERFACE_INCLUDE_DIRECTORIES
                 )
-                set(_ci_find_depends "${_ci_find_depends}${_ci_dir}\n")
+                set(_ci_find_depends "${_ci_find_depends}set(${_ci_dir})\n")
             endif()
             get_target_property(
                 _ci_cmd_i ${_ci_helper_target} INTERFACE_VERSION

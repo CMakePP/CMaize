@@ -19,7 +19,7 @@ function(_cpp_record_find _crf_cmd)
     set(_crf_T_kwargs OPTIONAL PRIVATE)
     set(_crf_O_kwargs NAME VERSION BRANCH SOURCE_DIR URL FIND_MODULE
         BUILD_MODULE)
-    set(_crf_M_kwargs COMPONENTS CMAKE_ARGS VIRTUAL)
+    set(_crf_M_kwargs COMPONENTS CMAKE_ARGS VIRTUAL DEPENDS)
     cpp_parse_arguments(
         _crf "${ARGN}"
         TOGGLES ${_crf_T_kwargs}

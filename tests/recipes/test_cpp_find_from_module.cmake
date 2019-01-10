@@ -45,6 +45,6 @@ TITLE "Writes to target"
 "list(APPEND CMAKE_PREFIX_PATH ${install_dir}/install)"
 "_cpp_assert_equal("
 "   \"\${file}\""
-"   \"set(dummy_ROOT \\\"\${CMAKE_PREFIX_PATH}\\\")\""
+"   \"dummy_ROOT \\\"\${CMAKE_PREFIX_PATH}\\\"\""
 ")"
 )

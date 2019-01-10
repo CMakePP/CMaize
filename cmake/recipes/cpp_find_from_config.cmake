@@ -44,6 +44,10 @@ function(_cpp_find_from_config _cffc_found _cffc_name _cffc_version _cffc_comps
     )
     _cpp_debug_print("CMAKE_PREFIX_PATH is: ${CMAKE_PREFIX_PATH}")
     _cpp_debug_print("Additional search path: ${_cffc_path}")
+    #CMake doesn't append the additional search path onto prefix path so
+    #dependencies relying on prefix_path to find their dependencies won't find
+    #them without this next line
+    list(APPEND CMAKE_PREFIX_PATH ${_cffc_path})
     find_package(
         ${_cffc_name}
         ${_cffc_temp}
@@ -71,7 +75,7 @@ function(_cpp_find_from_config _cffc_found _cffc_name _cffc_version _cffc_comps
             set_target_properties(
                 ${_cffc_helper_target}
                 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
-                "set(${_cffc_dir} ${_cffc_value})"
+                "${_cffc_dir} ${_cffc_value}"
             )
         endif()
     endif()
