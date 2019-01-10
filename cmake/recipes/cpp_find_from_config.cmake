@@ -16,6 +16,7 @@
 include_guard()
 include(dependency/cpp_sanitize_version)
 include(recipes/cpp_handle_found_var)
+include(dependency/cpp_handle_find_module_vars)
 
 ## Function that attempts to locate a dependency through config files.
 #
@@ -44,6 +45,10 @@ function(_cpp_find_from_config _cffc_found _cffc_name _cffc_version _cffc_comps
     )
     _cpp_debug_print("CMAKE_PREFIX_PATH is: ${CMAKE_PREFIX_PATH}")
     _cpp_debug_print("Additional search path: ${_cffc_path}")
+    #CMake doesn't append the additional search path onto prefix path so
+    #dependencies relying on prefix_path to find their dependencies won't find
+    #them without this next line
+    list(APPEND CMAKE_PREFIX_PATH ${_cffc_path})
     find_package(
         ${_cffc_name}
         ${_cffc_temp}
@@ -71,10 +76,17 @@ function(_cpp_find_from_config _cffc_found _cffc_name _cffc_version _cffc_comps
             set_target_properties(
                 ${_cffc_helper_target}
                 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
-                "set(${_cffc_dir} ${_cffc_value})"
+                "${_cffc_dir} ${_cffc_value}"
             )
         endif()
     endif()
     _cpp_handle_found_var(_cffc_was_found ${_cffc_name})
+    if(_cffc_was_found)
+        #Make sure it made a target
+        _cpp_is_not_target(_cffc_no_target ${_cffc_name})
+        if(_cffc_no_target)
+            _cpp_handle_find_module_vars(${_cffc_name})
+        endif()
+    endif()
     set(${_cffc_found} ${_cffc_was_found} PARENT_SCOPE)
 endfunction()

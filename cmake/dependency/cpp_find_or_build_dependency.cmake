@@ -17,7 +17,7 @@ include_guard()
 include(cache/cache_add_dependency)
 include(cache/cache_build_dependency)
 include(dependency/cpp_find_dependency)
-
+include(dependency/cpp_write_dependency_toolchain)
 
 ## Function for building a dependency if we can not locate it.
 #
@@ -63,7 +63,7 @@ function(cpp_find_or_build_dependency)
         TOGGLES PRIVATE
         OPTIONS NAME VERSION TOOLCHAIN CPP_CACHE FIND_MODULE BINARY_DIR
                 URL BRANCH SOURCE_DIR BUILD_MODULE
-        LISTS COMPONENTS CMAKE_ARGS
+        LISTS COMPONENTS CMAKE_ARGS DEPENDS
         MUST_SET NAME
     )
     cpp_option(_cfobd_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
@@ -89,11 +89,11 @@ function(cpp_find_or_build_dependency)
 
     set(_cfobd_src_path ${_cfobd_BINARY_DIR}/${_cfobd_NAME})
     set(_cfobd_toolchain ${_cfobd_src_path}/toolchain.cmake)
-    file(READ ${_cfobd_TOOLCHAIN} _cfobd_contents)
-    file(WRITE ${_cfobd_toolchain} "${_cfobd_contents}")
-    _cpp_change_toolchain(
-        TOOLCHAIN ${_cfobd_toolchain}
-        CMAKE_ARGS "${_cfobd_CMAKE_ARGS}"
+    _cpp_write_dependency_toolchain(
+            ${_cfobd_toolchain}
+            ${_cfobd_TOOLCHAIN}
+            "${_cfobd_CMAKE_ARGS}"
+            "${_cfobd_DEPENDS}"
     )
 
     cpp_find_dependency(
