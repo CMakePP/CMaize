@@ -77,6 +77,7 @@ function(_cpp_find_from_config _cffc_found _cffc_name _cffc_version _cffc_comps
                 ${_cffc_helper_target}
                 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES
                 "${_cffc_dir} ${_cffc_value}"
+                "${_cffc_}
             )
         endif()
     endif()

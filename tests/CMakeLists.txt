@@ -20,7 +20,8 @@ function(cpp_cmake_unit_test _ccut_name)
     _cpp_debug_print("  File: ${_ccut_test_file}")
 endfunction()
 
-foreach(subdir_i cache checks cmake_helpers compression dependency
-                 object options recipes string target toolchain use_cases)
+foreach(subdir_i cache cmake_helpers compression dependency logic
+                 object options recipes serialization string target toolchain
+                 use_cases)
     add_subdirectory(${subdir_i})
 endforeach()

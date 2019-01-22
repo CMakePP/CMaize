@@ -33,10 +33,10 @@ our strategy is to associate each object instance with a unique target and to
 store the object's state in CPP-unique properties. Each CPP-defined object type
 must define a constructor and it is this constructor that will associate the
 instance with its target and specify what members that type has. By convention
-the constructor for an object of type ``A`` is the function ``_cpp_A_construct``
-which is used to create an instance ``a`` like ``_cpp_A_construct(a)``. The
-resulting instance behave like Python objects. This is best expressed with a
-code example:
+the constructor for an object of type ``A`` is the function
+``_cpp_A_constructor`` which is used to create an instance ``a`` like
+``_cpp_A_constructor(a)``. The resulting instance behave like Python objects.
+ This is best expressed with a code example:
 
 .. code-block::cmake
 
@@ -44,7 +44,7 @@ code example:
        # set the_instance's member X to 1
    endfunction()
 
-   _cpp_A_construct(a)
+   _cpp_A_constructor(a)
    #set a's member X to 0
    fxn_taking_an_object(${a})
    #a's member X is now 1
@@ -67,11 +67,11 @@ identifier:
 .. code-block::
 
     function(fxn1)
-        _cpp_A_construct(a)
+        _cpp_A_constructor(a)
     endfunction()
 
     function(fxn2)
-        _cpp_A_construct(a)
+        _cpp_A_constructor(a)
     endfunction()
 
 Here the intent is to create two separate instances of type ``A`` (each
@@ -96,8 +96,6 @@ from CMake. This design supports 62^5 instances of each object type, *i.e*
 roughly a billion, so the lack of memory is likely to be a problem before
 the lack of an untaken identifier.
 
-
-
 Creating a New Object Type
 --------------------------
 
@@ -106,13 +104,54 @@ guidance on creating a new object type. To that end the first step is to
 implement your object's constructor. Typically this looks like:
 
 .. code-block::cmake
+
     include_guard()
     include(object/new_target)
 
     function(_cpp_A_construct instance)
-        _cpp_Object_new_target(_cAc_handle A)
-        _cpp_Object_add_member_value(_cAc_handle member1 member2)
+        _cpp_Object_constructor(_cAc_handle A member1 member2)
         set(${instance} ${_cAc_handle} PARENT_SCOPE)
     endfunction()
 
-The first line obtains a fresh
+The first line gets a handle to a new object of type ``A`` that has members:
+``member1`` and ``member2``. The second line then forwards the handle back to
+the user. The point of this constructor is to encapsulate the fields that are
+associated with an object.
+
+Note on Inheritance
+-------------------
+
+While the use of the ``_cpp_Object_constructor`` function in a new object's
+constructor is reminiscent of the constructor chaining in C++ classes, one
+should view this as inheritance with caution. The reality is that CPP objects
+are nothing more than state, that is they have no member functions (implementing
+member functions requires callbacks, which CMake only supports with heavy
+overhead), and in turn inheritance simply aggregates members. In practice CPP
+objects are used subject to "duck typing", that is you make a call like:
+
+.. code-block:: cmake
+
+   _cpp_Object_get_value(value ${handle} member_name)
+
+that never checks the type of ``handle``. This call succeeds if the object the
+handle points to has a member named ``member_name`` regardless of what class
+the handle got that member from.
+
+
+
+Limitations
+-----------
+
+CPP's objects are a bit limited compared to objects in other languages like
+Python or C++. This section attempts to provide a list of things you can and
+can't do with CPP objects.
+
+Things you can do:
+
+* Have objects as members. Objects are just handles so this is fine.
+
+Things you can't do:
+
+* Member functions. Requires callbacks, which in CMake are quite expensive.
+
+

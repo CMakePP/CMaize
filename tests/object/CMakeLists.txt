@@ -1,5 +1,10 @@
 set(
-    OBJECT_TESTS new_target
+    OBJECT_TESTS get_type
+                 is_object
+                 object
+                 mangle_member
+                 new_handle
+                 serialize
 )
 
 foreach(test_i ${OBJECT_TESTS})
