@@ -27,7 +27,7 @@ include(object/mangle_member)
 # :param return: The identifier to assign the result to.
 # :param input: The thing to consider for being a handle to an object
 function(_cpp_is_object _cio_return _cio_input)
-    _cpp_is_not_target(_cio_is_not_target ${_cio_input})
+    _cpp_is_not_target(_cio_is_not_target "${_cio_input}")
     if(_cio_is_not_target)
         set(${_cio_return} 0 PARENT_SCOPE)
         return()

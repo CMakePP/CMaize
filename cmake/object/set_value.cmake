@@ -19,6 +19,10 @@ include(object/mangle_member)
 
 ## Sets the member of a class to a given value
 #
+# This function will set the specified member to the provided value. The
+# function will error if the specified handle is not an object or if the object
+# does not have the specified member.
+#
 # :param handle: The handle of the object to set
 # :param member: The name of the member to set
 # :param value: The value to set the member to
@@ -29,6 +33,6 @@ function(_cpp_Object_set_value _cOsv_handle _cOsv_member _cOsv_value)
     endif()
     _cpp_Object_mangle_member(_cOsv_member_name ${_cOsv_member})
     set_target_properties(
-            ${_cOsv_handle} PROPERTIES ${_cOsv_member_name} ${_cOsv_value}
+            ${_cOsv_handle} PROPERTIES ${_cOsv_member_name} "${_cOsv_value}"
     )
 endfunction()

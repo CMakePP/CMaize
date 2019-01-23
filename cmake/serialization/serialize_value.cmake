@@ -16,14 +16,19 @@
 include_guard()
 include(serialization/serialize_string)
 include(serialization/serialize_list)
+include(serialization/serialize_object)
+include(object/is_object)
 
 ## Dispatches to the appropriate serialization function
 #
 # This function dispatches
 function(_cpp_serialize_value _csv_return _csv_value)
     _cpp_is_list(_csv_is_list "${_csv_value}")
+    _cpp_is_object(_csv_is_obj "${_csv_value}")
     if(_csv_is_list)
         _cpp_serialize_list(_csv_val "${_csv_value}")
+    elseif(_csv_is_obj)
+        _cpp_serialize_object(_csv_val "${_csv_value}")
     else()
         _cpp_serialize_string(_csv_val "${_csv_value}")
     endif()

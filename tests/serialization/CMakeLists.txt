@@ -1,5 +1,6 @@
 set(
     CEREAL_TESTS  serialize_list
+                  serialize_object
                   serialize_string
                   serialize_value
 )

@@ -14,28 +14,17 @@
 ################################################################################
 
 include_guard()
-include(object/is_not_object)
-include(object/mangle_member)
+include(object/is_object)
+include(logic/negate)
 
-## Returns the list of all members an object possess
+## Determines if the input is not a handle to a valid CPP object
 #
-# This function is largely intended for use by other Object functions. It is
-# used to retrieve a list of an object's members. It does not retrieve those
-# members' values. The resulting set of names is demangled so that they can be
-# used through the public API of the object and will not include the internal
-# members used by the Object class. This function will error if the provided
-# handle is not a handle to a valid object.
+# This function is implemented by negating :ref:`cpp_is_object-label`.
 #
-# :param result: The instance to hold the resulting list.
-# :param handle: The object whose members we want.
-#
-function(_cpp_Object_get_members _cOgm_result _cOgm_handle)
-    _cpp_is_not_object(_cOgm_not_object ${_cOgm_handle})
-    if(_cOgm_not_object)
-        _cpp_error("${_cOgm_handle} is not a handle to an object")
-    endif()
-    #Is object so guaranteed to have a member list
-    _cpp_Object_mangle_member(_cOgm_member _cpp_member_list)
-    get_target_property(_cOgm_value ${_cOgm_handle} ${_cOgm_member})
-    set(${_cOgm_result} ${_cOgm_value} PARENT_SCOPE)
+# :param return: The identifier to assign the result to.
+# :param input: The thing to consider for being a handle to an object
+function(_cpp_is_not_object _cino_return _cino_input)
+    _cpp_is_object(_cino_temp "${_cino_input}")
+    _cpp_negate(_cino_temp ${_cino_temp})
+    set(${_cino_return} ${_cino_temp} PARENT_SCOPE)
 endfunction()

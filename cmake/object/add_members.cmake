@@ -21,11 +21,11 @@ include(object/mangle_member)
 ## Adds a list of members to an object
 #
 #  This function takes a handle to an object and arbitrary number of member
-#  names (passed via ``ARGN``) and creates fields on the object for each of the
-#  members.
+#  names (passed via ``ARGN``). For each member name a corresponding field will
+#  be created on the object. This function fails if you
 #
 # :param handle: The object to add the members to
-#
+# :param args: The identifiers of the members.
 function(_cpp_Object_add_members _cOam_handle)
     _cpp_Object_get_members(_cOam_members ${_cOam_handle})
     foreach(_cOam_member_i ${ARGN})
@@ -36,13 +36,13 @@ function(_cpp_Object_add_members _cOam_handle)
             )
         endif()
         list(APPEND _cOam_members ${_cOam_member_i})
+        _cpp_Object_mangle_member(_cOam_temp _cpp_member_list)
+        set_target_properties(
+            ${_cOam_handle} PROPERTIES ${_cOam_temp} "${_cOam_members}"
+        )
         _cpp_Object_mangle_member(_cOam_member_name "${_cOam_member_i}")
         set_target_properties(
-            ${_cOam_handle}
-            PROPERTIES _cpp_Object_member_list "${_cOam_members}"
-        )
-        set_target_properties(
-                ${_cOam_handle} PROPERTIES ${_cOam_member_name} NULL
+                ${_cOam_handle} PROPERTIES ${_cOam_member_name} ""
         )
     endforeach()
 endfunction()
