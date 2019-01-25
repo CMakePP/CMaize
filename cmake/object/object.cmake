@@ -15,8 +15,9 @@
 
 include_guard()
 include(object/add_members)
+include(object/are_equal)
+include(object/are_not_equal)
 include(object/get_members)
-include(object/get_type)
 include(object/get_value)
 include(object/has_member)
 include(object/is_not_object)

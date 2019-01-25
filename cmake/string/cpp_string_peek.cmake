@@ -15,16 +15,11 @@
 
 include_guard()
 
-## Given a handle to an object returns the type of the object
+## Returns the first character from a string without advancing it.
 #
-# This function assumes the handle is of the form ``_cpp_<gibberish>_<type>``
-# where gibberish is a 5 character long random string, hence everything from the
-# 12-th character on is the type
-#
-# :param result: An identifier to store the result in.
-# :param handle: The object we want the type of.
-#
-function(_cpp_Object_get_type _cOgt_result _cOgt_handle)
-    string(SUBSTRING ${_cOgt_handle} 11 -1 _cOgt_type)
-    set(${_cOgt_result} "${_cOgt_type}" PARENT_SCOPE)
+# :param return: An identifier to which the 1st character will be assigned.
+# :param str: An identifier whose value is a string
+function(_cpp_string_peek _csp_return _csp_str)
+    string(SUBSTRING "${${_csp_str}}" 0 1 _csp_1st_char)
+    set(${_csp_return} "${_csp_1st_char}" PARENT_SCOPE)
 endfunction()

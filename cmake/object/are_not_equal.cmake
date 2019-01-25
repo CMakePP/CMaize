@@ -14,23 +14,20 @@
 ################################################################################
 
 include_guard()
+include(object/are_equal)
+include(logic/negate)
+include(utility/set_return)
 
-## Determines if the values held by two identifiers are the same
+## Determines if two objects are different
 #
-# For all intents and purposes this function implements ``lhs == rhs``. Since
-# pretty much everything in CMake is a string this just compares the values as
-# strings. In turn lists will be demoted to semicolon separated strings. This
-# function only works with CMake native objects.
+# This function simply negates :ref:`cpp_Object_are_equal-label`.
 #
-# :param return: An identifier to hold the result.
-# :param lhs: The identifier holding the value for the left side of the equality
-#             comparison.
-# :param rhs: The identifier holding the value for the right side of the
-#             equality comparison.
-function(_cpp_are_equal _cae_return _cae_lhs _cae_rhs)
-    if("${_cae_lhs}" STREQUAL "${_cae_rhs}")
-        set(${_cae_return} 1 PARENT_SCOPE)
-    else()
-        set(${_cae_return} 0 PARENT_SCOPE)
-    endif()
+# :param return: An identifier to hold whether or not the two objects are
+#                different
+# :param lhs: The handle for the object that goes on the left of ``!=``
+# :param rhs: The handle for the object that goes on the right of ``!=``
+function(_cpp_Object_are_not_equal _cOane_return _cOane_lhs _cOane_rhs)
+    _cpp_Object_are_equal(_cOane_rv "${_cOane_lhs}" "${_cOane_rhs}")
+    _cpp_negate(_cOane_rv "${_cOane_rv}")
+    _cpp_set_return(${_cOane_return} ${_cOane_rv})
 endfunction()

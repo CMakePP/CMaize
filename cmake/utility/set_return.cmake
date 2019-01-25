@@ -15,22 +15,18 @@
 
 include_guard()
 
-## Determines if the values held by two identifiers are the same
+## Macro that wraps returning a value from a function
 #
-# For all intents and purposes this function implements ``lhs == rhs``. Since
-# pretty much everything in CMake is a string this just compares the values as
-# strings. In turn lists will be demoted to semicolon separated strings. This
-# function only works with CMake native objects.
+# While the syntax to return a value from a function in CMake is not superhard
+# (it's just ``set(return_identifier return_value PARENT_SCOPE)``) it's easy to
+# forget the ``PARENT_SCOPE`` (plus the fact that it's all caps makes it
+# slightly annoying to type repeatedly) which leads to subtle errors. The syntax
+# is also not super descriptive of what is going on. This macro wraps the CMake
+# ``set`` function call in a more descriptive call that doesn't require you to
+# remember the ``PARENT_SCOPE``.
 #
-# :param return: An identifier to hold the result.
-# :param lhs: The identifier holding the value for the left side of the equality
-#             comparison.
-# :param rhs: The identifier holding the value for the right side of the
-#             equality comparison.
-function(_cpp_are_equal _cae_return _cae_lhs _cae_rhs)
-    if("${_cae_lhs}" STREQUAL "${_cae_rhs}")
-        set(${_cae_return} 1 PARENT_SCOPE)
-    else()
-        set(${_cae_return} 0 PARENT_SCOPE)
-    endif()
-endfunction()
+# :param identifier: The identifier we are setting the value of.
+# :param value: The value to set the identifier to.
+macro(_cpp_set_return _csr_identifier _csr_value)
+    set(${_csr_identifier} "${_csr_value}" PARENT_SCOPE)
+endmacro()

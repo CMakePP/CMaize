@@ -1,5 +1,8 @@
 set(
-    CEREAL_TESTS  serialize_list
+    CEREAL_TESTS  deserialize_object
+                  deserialize_string
+                  deserialize_value
+                  serialize_list
                   serialize_object
                   serialize_string
                   serialize_value

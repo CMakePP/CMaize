@@ -36,9 +36,9 @@ instance with its target and specify what members that type has. By convention
 the constructor for an object of type ``A`` is the function
 ``_cpp_A_constructor`` which is used to create an instance ``a`` like
 ``_cpp_A_constructor(a)``. The resulting instance behave like Python objects.
- This is best expressed with a code example:
+This is best expressed with a code example:
 
-.. code-block::cmake
+.. code-block:: cmake
 
    function(fxn_taking_an_object the_instance)
        # set the_instance's member X to 1
@@ -64,7 +64,7 @@ string. This design hopefully prevents collisions with any legitimate target
 also should prevent collisions with other instances of ``A`` given the same
 identifier:
 
-.. code-block::
+.. code-block:: cmake
 
     function(fxn1)
         _cpp_A_constructor(a)
@@ -103,7 +103,7 @@ The previous section detailed how CPP implements objects. This section provides
 guidance on creating a new object type. To that end the first step is to
 implement your object's constructor. Typically this looks like:
 
-.. code-block::cmake
+.. code-block:: cmake
 
     include_guard()
     include(object/new_target)

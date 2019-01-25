@@ -14,23 +14,28 @@
 ################################################################################
 
 include_guard()
+include(string/cpp_string_peek)
 
-## Determines if the values held by two identifiers are the same
+## Takes the first character off of a string and returns it.
 #
-# For all intents and purposes this function implements ``lhs == rhs``. Since
-# pretty much everything in CMake is a string this just compares the values as
-# strings. In turn lists will be demoted to semicolon separated strings. This
-# function only works with CMake native objects.
+# This function is particularly useful for when you are manually parsing a
+# string character by character. This function will copy the first character
+# from the string into the return and then advance the string one character
+# (thinking of the string as a stream).
 #
-# :param return: An identifier to hold the result.
-# :param lhs: The identifier holding the value for the left side of the equality
-#             comparison.
-# :param rhs: The identifier holding the value for the right side of the
-#             equality comparison.
-function(_cpp_are_equal _cae_return _cae_lhs _cae_rhs)
-    if("${_cae_lhs}" STREQUAL "${_cae_rhs}")
-        set(${_cae_return} 1 PARENT_SCOPE)
-    else()
-        set(${_cae_return} 0 PARENT_SCOPE)
+# :param return: An identifier to hold the first character of the string.
+# :param str: An identifier whose value is a string. After the call the first
+#             character will have been removed from str.
+function(_cpp_string_pop _csp_return _csp_str)
+    set(_csp_value "${${_csp_str}}")
+    _cpp_is_empty(_csp_is_empty _csp_value)
+
+    if(_csp_is_empty)
+        set(${_csp_return} "" PARENT_SCOPE)
+        return()
     endif()
+    _cpp_string_peek(_csp_1st_char _csp_value)
+    string(SUBSTRING "${_csp_value}" 1 -1 _csp_value)
+    set(${_csp_return} "${_csp_1st_char}" PARENT_SCOPE)
+    set(${_csp_str} "${_csp_value}" PARENT_SCOPE)
 endfunction()

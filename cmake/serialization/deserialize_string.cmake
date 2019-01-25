@@ -14,23 +14,31 @@
 ################################################################################
 
 include_guard()
+include(serialization/json_error)
+include(utility/set_return)
 
-## Determines if the values held by two identifiers are the same
+## Deserializes a string according to the JSON standard.
 #
-# For all intents and purposes this function implements ``lhs == rhs``. Since
-# pretty much everything in CMake is a string this just compares the values as
-# strings. In turn lists will be demoted to semicolon separated strings. This
-# function only works with CMake native objects.
+# This function takes the buffer and strips off all characters until the closing
+# ``"`` is found. The stripped off characters are put into a CMake string, which
+# is then returned along with the modified buffer.
 #
-# :param return: An identifier to hold the result.
-# :param lhs: The identifier holding the value for the left side of the equality
-#             comparison.
-# :param rhs: The identifier holding the value for the right side of the
-#             equality comparison.
-function(_cpp_are_equal _cae_return _cae_lhs _cae_rhs)
-    if("${_cae_lhs}" STREQUAL "${_cae_rhs}")
-        set(${_cae_return} 1 PARENT_SCOPE)
-    else()
-        set(${_cae_return} 0 PARENT_SCOPE)
+# :param return: An identifier to hold the deserialized string.
+# :param buffer: The JSON remaining to be deserialized.
+function(_cpp_deserialize_string _cds_return _cds_buffer)
+    set(_cds_value "${${_cds_buffer}}")
+    #WARNING do not strip the whitespace off, it's part of the string
+
+    #Find the closing double quote and set the return
+    string(FIND "${_cds_value}" "\"" _cds_end)
+    if("${_cds_end}" STREQUAL "-1")
+        _cpp_json_error("${_cds_buffer}")
     endif()
+    string(SUBSTRING "${_cds_value}" 0 ${_cds_end} _cds_rv)
+    set(${_cds_return} "${_cds_rv}" PARENT_SCOPE)
+
+    #Advance and return the buffer
+    math(EXPR _cds_endp1 "${_cds_end} + 1")
+    string(SUBSTRING "${_cds_value}" ${_cds_endp1} -1 _cds_value)
+    _cpp_set_return(${_cds_buffer} "${_cds_value}")
 endfunction()

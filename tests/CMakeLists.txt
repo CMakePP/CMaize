@@ -22,6 +22,6 @@ endfunction()
 
 foreach(subdir_i cache cmake_helpers compression dependency logic
                  object options recipes serialization string target toolchain
-                 use_cases)
+                 use_cases utility)
     add_subdirectory(${subdir_i})
 endforeach()
