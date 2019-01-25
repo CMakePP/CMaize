@@ -22,12 +22,12 @@ include(utility/set_return)
 #
 # This function simply negates :ref:`cpp_Object_are_equal-label`.
 #
+# :param lhs: The handle for the object that goes on the left of ``!=``
 # :param return: An identifier to hold whether or not the two objects are
 #                different
-# :param lhs: The handle for the object that goes on the left of ``!=``
 # :param rhs: The handle for the object that goes on the right of ``!=``
-function(_cpp_Object_are_not_equal _cOane_return _cOane_lhs _cOane_rhs)
-    _cpp_Object_are_equal(_cOane_rv "${_cOane_lhs}" "${_cOane_rhs}")
+function(_cpp_Object_are_not_equal _cOane_lhs _cOane_return _cOane_rhs)
+    _cpp_Object_are_equal("${_cOane_lhs}" _cOane_rv "${_cOane_rhs}")
     _cpp_negate(_cOane_rv "${_cOane_rv}")
     _cpp_set_return(${_cOane_return} ${_cOane_rv})
 endfunction()

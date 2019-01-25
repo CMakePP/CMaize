@@ -29,17 +29,17 @@ include(utility/set_return)
 #                same.
 # :param lhs: The handle for the object that goes on the left of ``==``
 # :param rhs: The handle for the object that goes on the right of ``==``
-function(_cpp_Object_are_equal _cOae_return _cOae_lhs _cOae_rhs)
-    _cpp_Object_get_members(_cOae_lmembers ${_cOae_lhs})
-    _cpp_Object_get_members(_cOae_rmembers ${_cOae_rhs})
+function(_cpp_Object_are_equal _cOae_lhs _cOae_return _cOae_rhs)
+    _cpp_Object_get_members(${_cOae_lhs} _cOae_lmembers)
+    _cpp_Object_get_members(${_cOae_rhs} _cOae_rmembers)
     _cpp_are_not_equal(_cOae_diff "${_cOae_lmembers}" "${_cOae_rmembers}")
     if(_cOae_diff)
         _cpp_set_return(${_cOae_return} 0)
         return()
     endif()
     foreach(_cOae_member_i ${_cOae_lmembers})
-        _cpp_Object_get_value(_cOae_lvalue ${_cOae_lhs} ${_cOae_member_i})
-        _cpp_Object_get_value(_cOae_rvalue ${_cOae_rhs} ${_cOae_member_i})
+        _cpp_Object_get_value(${_cOae_lhs} _cOae_lvalue ${_cOae_member_i})
+        _cpp_Object_get_value(${_cOae_rhs} _cOae_rvalue ${_cOae_member_i})
         _cpp_is_object(_cOae_lobject "${_cOae_lvalue}")
         _cpp_is_object(_cOae_robject "${_cOae_rvalue}")
         _cpp_are_not_equal(
@@ -50,7 +50,7 @@ function(_cpp_Object_are_equal _cOae_return _cOae_lhs _cOae_rhs)
             return()
         elseif(_cOae_lobject)
             _cpp_Object_are_not_equal(
-                _cOae_diff "${_cOae_lvalue}" "${_cOae_rvalue}"
+                "${_cOae_lvalue}" _cOae_diff "${_cOae_rvalue}"
             )
         else()
             _cpp_are_not_equal(_cOae_diff "${_cOae_lvalue}" "${_cOae_rvalue}")

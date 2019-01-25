@@ -11,23 +11,23 @@ SHOULD_FAIL REASON "not_an_object is not a handle to an object"
 
 _cpp_add_test(
 TITLE "Can add a member"
-"include(object/object_class)"
+"include(object/ctor)"
 "include(object/add_members)"
 "include(object/get_members)"
-"_cpp_Object_constructor(t)"
+"_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member)"
-"_cpp_Object_get_members(test \${t})"
+"_cpp_Object_get_members(\${t} test)"
 "_cpp_assert_equal(\"\${test}\" \"member\")"
 )
 
 _cpp_add_test(
 TITLE "Can add multiple members"
-"include(object/object_class)"
+"include(object/ctor)"
 "include(object/add_members)"
 "include(object/get_members)"
-"_cpp_Object_constructor(t)"
+"_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member1 member2)"
-"_cpp_Object_get_members(test \${t})"
+"_cpp_Object_get_members(\${t} test)"
 "set(corr member1 member2)"
 "_cpp_assert_equal(\"\${test}\" \"\${corr}\")"
 )
@@ -35,8 +35,8 @@ TITLE "Can add multiple members"
 _cpp_add_test(
 TITLE "Can't add member twice"
 SHOULD_FAIL REASON "Failed to add member member1.  Already present."
-"include(object/object_class)"
+"include(object/ctor)"
 "include(object/add_members)"
-"_cpp_Object_constructor(t)"
+"_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member1 member1)"
 )

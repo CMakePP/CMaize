@@ -16,6 +16,7 @@
 include_guard()
 include(object/is_not_object)
 include(object/mangle_member)
+include(utility/set_return)
 
 ## Returns the list of all members an object possess
 #
@@ -26,10 +27,10 @@ include(object/mangle_member)
 # members used by the Object class. This function will error if the provided
 # handle is not a handle to a valid object.
 #
-# :param result: The instance to hold the resulting list.
 # :param handle: The object whose members we want.
+# :param result: The instance to hold the resulting list.
 #
-function(_cpp_Object_get_members _cOgm_result _cOgm_handle)
+function(_cpp_Object_get_members _cOgm_handle _cOgm_result)
     _cpp_is_not_object(_cOgm_not_object ${_cOgm_handle})
     if(_cOgm_not_object)
         _cpp_error("${_cOgm_handle} is not a handle to an object")
@@ -37,5 +38,5 @@ function(_cpp_Object_get_members _cOgm_result _cOgm_handle)
     #Is object so guaranteed to have a member list
     _cpp_Object_mangle_member(_cOgm_member _cpp_member_list)
     get_target_property(_cOgm_value ${_cOgm_handle} ${_cOgm_member})
-    set(${_cOgm_result} ${_cOgm_value} PARENT_SCOPE)
+    _cpp_set_return(${_cOgm_result} "${_cOgm_value}")
 endfunction()

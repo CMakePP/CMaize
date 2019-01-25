@@ -14,25 +14,39 @@
 ################################################################################
 
 include_guard()
-include(object/has_member)
-include(object/mangle_member)
+include(logic/xor)
+include(logic/negate)
+include(get_recipe/get_from_github/ctor)
 
-## Sets the member of a class to a given value
-#
-# This function will set the specified member to the provided value. The
-# function will error if the specified handle is not an object or if the object
-# does not have the specified member.
-#
-# :param handle: The handle of the object to set
-# :param member: The name of the member to set
-# :param value: The value to set the member to
-function(_cpp_Object_set_value _cOsv_handle _cOsv_member _cOsv_value)
-    _cpp_Object_has_member(${_cOsv_handle} _cOsv_present ${_cOsv_member})
-    if(NOT ${_cOsv_present})
-        _cpp_error("Object has no member ${_cOsv_member}")
-    endif()
-    _cpp_Object_mangle_member(_cOsv_member_name ${_cOsv_member})
-    set_target_properties(
-            ${_cOsv_handle} PROPERTIES ${_cOsv_member_name} "${_cOsv_value}"
+function(_cpp_GetRecipe_factory _cGf_handle)
+    cpp_parse_arguments(
+       _cGf "${ARGN}"
+       TOGGLES PRIVATE
+       OPTIONS VERSION BRANCH URL SOURCE_DIR
     )
+    _cpp_xor(_cGf_dir_or_url _cGf_URL _cGf_SOURCE_DIR)
+    _cpp_negate(_cGf_dir_or_url "${_cgf_dir_or_url}")
+    if(_cGf_dir_or_url)
+        _cpp_error("Please specify one (and only one) of SOURCE_DIR or URL")
+    endif()
+
+    _cpp_is_not_empty(_cGf_is_url _cGf_URL)
+    if(_cGf_is_url)
+        cpp_option(_cGf_BRANCH  "master")
+        _cpp_contains(_cGf_is_gh "${_cGf_URL}" "github.com")
+        if(_cGf_is_gh)
+            _cpp_GetFromGithub_ctor(
+                ${_cGf_handle}
+                "${_cGf_URL}"
+                "${_cGf_BRANCH}"
+                "${_cGf_VERSION}"
+                ${_cGf_PRIVATE}
+            )
+        endif()
+    else()
+        _cpp_GetFromDisk_ctor(
+
+        )
+    endif()
+    _cpp_set_return(${_cGf_handle} "${${_cGf_handle}}")
 endfunction()

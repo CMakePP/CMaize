@@ -16,6 +16,7 @@
 include_guard()
 include(object/has_member)
 include(object/mangle_member)
+include(utility/set_return)
 
 ## Reads the value of an object's member
 #
@@ -23,15 +24,15 @@ include(object/mangle_member)
 # will crash if the provdied handle is not a target or if the object does not
 # possess the requested member.
 #
-# :param value: An identifier to save the value to
 # :param handle: The handle to the object we are reading
+# :param value: An identifier to save the value to
 # :param member: The member whose value we are reading
-function(_cpp_Object_get_value _cOgv_value _cOgv_handle _cOgv_member)
-    _cpp_Object_has_member(_cOgv_present ${_cOgv_handle} ${_cOgv_member})
+function(_cpp_Object_get_value _cOgv_handle _cOgv_value _cOgv_member)
+    _cpp_Object_has_member(${_cOgv_handle} _cOgv_present ${_cOgv_member})
     if(NOT ${_cOgv_present})
         _cpp_error("Object has no member ${_cOgv_member}")
     endif()
     _cpp_Object_mangle_member(_cOgv_member_name ${_cOgv_member})
     get_target_property(_cOgv_temp ${_cOgv_handle} ${_cOgv_member_name})
-    set(${_cOgv_value} ${_cOgv_temp} PARENT_SCOPE)
+    _cpp_set_return(${_cOgv_value} "${_cOgv_temp}")
 endfunction()

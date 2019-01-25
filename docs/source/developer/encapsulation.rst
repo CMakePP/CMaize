@@ -12,10 +12,9 @@ functions that take an "instance" (quotes explained in a second) of the object
 as well as any arguments required by the function. CMake does not support the
 creation of struct/classes, which means we have to somehow map the object's
 state onto something CMake does support. CMake provides two reasonable choices
-for that "something": strings or targets. Of those two the latter is a bit
-easier as the former requires implementing a parser in CMake (basically you'd
-store the state in JSON or XML and then the parser would extract the relevant
-information). The remainder of this page details how we map objects to targets.
+for that "something": strings or targets. Of those two the latter is a better
+option since the former requires a lot of regex. The remainder of this page
+details how we map objects to targets.
 
 As a matter of convention for this page, we will use uppercase letters, ``A``,
 ``B``, ``C``, *etc.*, to denote arbitrary object types. Lowercase letters,
@@ -26,17 +25,25 @@ type are needed we will append numbers to the instance names.
 Implementation
 --------------
 
-CMake targets have a plethora of properties (basically member variables). We can
-add our own properties to the target without consequence, so long as the names
-of the properties do not conflict with property names defined by CMake. Thus
-our strategy is to associate each object instance with a unique target and to
-store the object's state in CPP-unique properties. Each CPP-defined object type
-must define a constructor and it is this constructor that will associate the
-instance with its target and specify what members that type has. By convention
-the constructor for an object of type ``A`` is the function
-``_cpp_A_constructor`` which is used to create an instance ``a`` like
-``_cpp_A_constructor(a)``. The resulting instance behave like Python objects.
-This is best expressed with a code example:
+CMake targets have a plethora of properties (basically member variables). As
+long as we use unique names (*i.e.*, the names do not collide with CMake's
+properties) we can add our own properties to the target without consequence.
+Thus our strategy is to associate each object instance with a unique target
+and to store the object's state in CPP-unique properties. Following other
+object-oriented languages, each object type must define a constructor and it
+is this constructor that will associate the instance with its CMake target and
+specify what members that type has. By convention the constructor for an object
+of type ``A`` is the function ``_cpp_A_constructor`` which is used to create
+an instance ``a`` like ``_cpp_A_constructor(a ...)``, where the ellipses are
+other arguments required for construction. Since CMake does not support function
+overloading there can only be one constructor. In practice, the easiest way
+around this is to use kwargs and let the ctor worry about defaults.
+
+After construction the value of ``a``, ``${a}``, is set to the name of the
+target storing the state. Passing the name of that target to a function makes
+that function manipulate the same target that was passed. The result is that CPP
+objects behave like a Python objects. This is best expressed with a code
+example:
 
 .. code-block:: cmake
 
@@ -55,14 +62,11 @@ This is best expressed with a code example:
    #a's member X is now 2 (as is a2's member X)
 
 
-In terms of the above code example ``${a}`` can be thought of as the "value of
-the instance ``a`` points to". In reality ``${a}`` is actually the name of the
-target that holds ``a``'s state. The target's name is something like
-``_cpp_<gibberish>_A`` where the ``<gibberish>`` part is actually a random
-string. This design hopefully prevents collisions with any legitimate target
-(*i.e.*, targets meant for consumption by CMake) created by a dependency. It
-also should prevent collisions with other instances of ``A`` given the same
-identifier:
+As a slight aside, the target's name is something like ``_cpp_<gibberish>``
+where the ``<gibberish>`` part is actually a random string. This design
+prevents collisions with any legitimate target (*i.e.*, targets meant for
+consumption by CMake) barring malicious intent. It also prevents collisions
+with other instances of ``A`` given the same identifier:
 
 .. code-block:: cmake
 
@@ -75,26 +79,8 @@ identifier:
     endfunction()
 
 Here the intent is to create two separate instances of type ``A`` (each
-constructor makes a new instance), but if we used a name like ``_cpp_a_A`` for
+constructor makes a new instance), but if we used a name like ``_cpp_a`` for
 the target we'd end up colliding the states.
-
-The actual target that gets created is an interface library to avoid having
-to associate dummy source code with the library. All properties CPP adds to the
-target are prefixed with ``_cpp``. For introspectiion purposes CPP stores some
-metadata on the target. This metadata includes:
-
-- ``_cpp_Object_member_list``: A list of all members
-
-When we add a member ``xxx`` to the object it creates the property ``_cpp_xxx``.
-Since these properties are set on a per target basis the member ``xxx`` can be
-interpreted differently on another target of another type without consequence.
-
-One caveat with this design is that there is no deletion. Even when all
-variables containing the handle to an object instance go out of scope the actual
-target will still exist. As far as I know there is no way to delete a target
-from CMake. This design supports 62^5 instances of each object type, *i.e*
-roughly a billion, so the lack of memory is likely to be a problem before
-the lack of an untaken identifier.
 
 Creating a New Object Type
 --------------------------
@@ -106,52 +92,83 @@ implement your object's constructor. Typically this looks like:
 .. code-block:: cmake
 
     include_guard()
-    include(object/new_target)
+    include(object/object) #Convenience header pulling the Object base class in
+    include(utility/set_return) #For prettier returns
 
-    function(_cpp_A_construct instance)
-        _cpp_Object_constructor(_cAc_handle A member1 member2)
-        set(${instance} ${_cAc_handle} PARENT_SCOPE)
+    function(_cpp_A_construct _cAc_return ...)
+        _cpp_Object_constructor(_cAc_handle)
+        _cpp_Object_add_members(${_cAc_handle} member1 member2)
+        _cpp_set_return(${_cAc_return} ${_cAc_handle})
     endfunction()
 
-The first line gets a handle to a new object of type ``A`` that has members:
-``member1`` and ``member2``. The second line then forwards the handle back to
-the user. The point of this constructor is to encapsulate the fields that are
-associated with an object.
-
-Note on Inheritance
--------------------
-
-While the use of the ``_cpp_Object_constructor`` function in a new object's
-constructor is reminiscent of the constructor chaining in C++ classes, one
-should view this as inheritance with caution. The reality is that CPP objects
-are nothing more than state, that is they have no member functions (implementing
-member functions requires callbacks, which CMake only supports with heavy
-overhead), and in turn inheritance simply aggregates members. In practice CPP
-objects are used subject to "duck typing", that is you make a call like:
+The first line gets a handle to a new object of type ``Object``. For all intents
+and purposes you can think of this as an inheritance mechanism which makes your
+type inherit from ``Object``. The ``Object`` type defines the minimum API for a
+type to work as a class with CPP and all types must ultimately inherit from it.
+Note that for a type ``B`` that inherits from a type ``A``, ensuring ``B``
+inherits from ``Object`` is trivially satisfied by:
 
 .. code-block:: cmake
 
-   _cpp_Object_get_value(value ${handle} member_name)
+   include_guard()
+   include(object/object)
+   include(utility/set_return)
+   include(A/a)
 
-that never checks the type of ``handle``. This call succeeds if the object the
-handle points to has a member named ``member_name`` regardless of what class
-the handle got that member from.
+   function(_cpp_B_construct _cBc_return ...)
+       _cpp_A_construct(_cBc_handle ${input_to_A_ctor})
+       #Finish setting up B class
+       _cpp_set_return(${_cBc_return} ${_cBc_handle})
+   endfunction()
 
+since ``A`` is responsible for inheriting from ``Object`` as well. The
+convention for coding up ``B`` is to make a directory ``a/b`` and in
+that directory write a file ``b.cmake`` that includes the constructor
+(by convention the file ``ctor.cmake``) as well as each of the scripts
+implementing member functions (by convention the member ``_cpp_B_member`` is
+implemented in the file ``member.cmake``). Documentation for each member should
+be included as part of the member implementations and documentation for the
+class as a whole should be part of the constructor's documentation.
 
-
-Limitations
+Inheritance
 -----------
 
-CPP's objects are a bit limited compared to objects in other languages like
-Python or C++. This section attempts to provide a list of things you can and
-can't do with CPP objects.
-
-Things you can do:
-
-* Have objects as members. Objects are just handles so this is fine.
-
-Things you can't do:
-
-* Member functions. Requires callbacks, which in CMake are quite expensive.
+As noted in the last section, CPP objects support single inheritance natively.
+If need be, multiple inheritance can be implemented as well, but it is not
+supported at the moment. Since CPP objects simply store state, inheritance
+simply aggregates the derived class's state with the base class's state, *i.e.*,
+the members of the resulting class are the union of the members of the base
+class plus those of the type. CPP does not support shadowing of members
+(assuming ``B`` derives from ``A`` and ``A`` has a member ``member``, ``B`` must
+use ``A``'s member ``member`` and not define its own). Since there really aren't
+member functions (*vide infra*) CPP does not support virtual functions.
 
 
+Member Functions
+----------------
+
+Implementing member functions requires a callback mechanism. The only way to
+implement callbacks in CMake is to write out a CMake script on-the-fly and run
+it with CMake's ``execute_process`` command. This makes callbacks relatively
+expensive because one has to write and read a file to disk (although modern
+operating systems likely will also cache the file making this much faster) and
+execute a subprocess. For this reason member functions are implemented C-style,
+*i.e.*, as free functions. By convention the member function ``member`` of the
+``A`` type is mangled to ``_cpp_A_member`` and must take an ``A`` instance
+before any other arguments, including returns. When implementing ``member`` you
+are responsible for declaring it in this manner, *e.g.*, an implementation may
+look something like:
+
+.. code-block:: cmake
+
+    include_guard()
+
+    function(_cpp_A_member _cAc_handle _cAc_return ...)
+        #Do stuff to the provided instance
+        _cpp_set_return(${_cAc_return} ${a_value}
+    endfunction()
+
+Following this convention makes it possible to implement member functions at a
+later time by storing a class's full type hierarchy and current type in
+``Object``'s metadata and then defining a function like
+``_cpp_call_member(member_name HANDLE handle RETURNS ... ARGS ...)``.

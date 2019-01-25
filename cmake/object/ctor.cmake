@@ -14,25 +14,29 @@
 ################################################################################
 
 include_guard()
-include(object/has_member)
+include(object/new_handle)
 include(object/mangle_member)
 
-## Sets the member of a class to a given value
+## Constructor for the Object base class common to all objects
 #
-# This function will set the specified member to the provided value. The
-# function will error if the specified handle is not an object or if the object
-# does not have the specified member.
+#  The Object class gives each object some bare bones intraspection members.
+#  These members include:
 #
-# :param handle: The handle of the object to set
-# :param member: The name of the member to set
-# :param value: The value to set the member to
-function(_cpp_Object_set_value _cOsv_handle _cOsv_member _cOsv_value)
-    _cpp_Object_has_member(${_cOsv_handle} _cOsv_present ${_cOsv_member})
-    if(NOT ${_cOsv_present})
-        _cpp_error("Object has no member ${_cOsv_member}")
-    endif()
-    _cpp_Object_mangle_member(_cOsv_member_name ${_cOsv_member})
-    set_target_properties(
-            ${_cOsv_handle} PROPERTIES ${_cOsv_member_name} "${_cOsv_value}"
-    )
+#  * _cpp_member_list - A list of all members added after the Object base class.
+#
+#  .. note::
+#
+#     All members of the Object class need to be added manually and can not go
+#     through :ref:`_cpp_Object_add_member` because that function
+#     relies on those members being present already.
+#
+#  :param result: The handle to the newly created object
+#  :param type: The type to create
+function(_cpp_Object_ctor _cOc_handle)
+    _cpp_Object_new_handle(_cOc_temp)
+    _cpp_Object_mangle_member(_cOc_member _cpp_member_list)
+    set_target_properties(${_cOc_temp} PROPERTIES ${_cOc_member} "")
+    _cpp_Object_add_members(${_cOc_temp} type)
+    _cpp_Object_set_value(${_cOc_temp} type Object)
+    set(${_cOc_handle} ${_cOc_temp} PARENT_SCOPE)
 endfunction()

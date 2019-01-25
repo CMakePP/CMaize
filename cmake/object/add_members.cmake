@@ -27,9 +27,9 @@ include(object/mangle_member)
 # :param handle: The object to add the members to
 # :param args: The identifiers of the members.
 function(_cpp_Object_add_members _cOam_handle)
-    _cpp_Object_get_members(_cOam_members ${_cOam_handle})
+    _cpp_Object_get_members(${_cOam_handle} _cOam_members)
     foreach(_cOam_member_i ${ARGN})
-        _cpp_Object_has_member(_cOam_present ${_cOam_handle} ${_cOam_member_i})
+        _cpp_Object_has_member(${_cOam_handle} _cOam_present ${_cOam_member_i})
         if(_cOam_present)
             _cpp_error(
                     "Failed to add member ${_cOam_member_i}. Already present."

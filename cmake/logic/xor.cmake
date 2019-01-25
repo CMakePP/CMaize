@@ -14,29 +14,25 @@
 ################################################################################
 
 include_guard()
-include(object/new_handle)
-include(object/mangle_member)
+include(utility/set_return)
 
-## Constructor for the Object base class common to all objects
+## Ensures that only one of the provided identifiers is set to a true value
 #
-#  The Object class gives each object some bare bones intraspection members.
-#  These members include:
+# Logic in CMake is a pain. This function implements xor on an arbitrary number
+# of inputs and will return true if one, and only one, of them is true. The
+# return will be false in all other instances.
 #
-#  * _cpp_member_list - A list of all members added after the Object base class.
-#
-#  .. note::
-#
-#     All members of the Object class need to be added manually and can not go
-#     through :ref:`_cpp_Object_add_member` because that function
-#     relies on those members being present already.
-#
-#  :param result: The handle to the newly created object
-#  :param type: The type to create
-function(_cpp_Object_constructor _cOc_handle)
-    _cpp_Object_new_handle(_cOc_temp)
-    foreach(_cOc_member_i _cpp_member_list)
-        _cpp_Object_mangle_member(_cOc_member ${_cOc_member_i})
-        set_target_properties(${_cOc_temp} PROPERTIES ${_cOc_member} "")
+# :param return: True if only one of the identifiers is true.
+# :param args: A variadic list of identifiers to check for truth-ness.
+function(_cpp_xor _cx_return)
+    set(_cx_found_true FALSE)
+    foreach(_cx_item ${ARGN})
+        if(${_cx_item} AND _cx_found_true)
+            _cpp_set_return(${_cx_return} FALSE)
+            return()
+        elseif(${_cx_item})
+            set(_cx_found_true TRUE)
+        endif()
     endforeach()
-    set(${_cOc_handle} ${_cOc_temp} PARENT_SCOPE)
+    _cpp_set_return(${_cx_return} ${_cx_found_true})
 endfunction()

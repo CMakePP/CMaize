@@ -15,5 +15,5 @@ set(
 )
 
 foreach(test_i ${CHECKS_TESTS})
-    cpp_cmake_unit_test(${test_i})
+    cpp_cmake_unit_test(${test_i} logic)
 endforeach()

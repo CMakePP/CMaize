@@ -16,6 +16,7 @@
 include_guard()
 include(object/get_members)
 include(object/mangle_member)
+include(utility/set_return)
 
 ## Determines if an object has a particular member
 #
@@ -23,13 +24,13 @@ include(object/mangle_member)
 # member with a particular name. It will fail if the provided handle is not
 # actually a handle to an object.
 #
-# :param result: True if the object has the member and false otherwise
 # :param handle: The object to search for the member
+# :param result: True if the object has the member and false otherwise
 # :param member: The member to look for
 #
-function(_cpp_Object_has_member _cOhm_result _cOhm_handle _cOhm_member)
-    _cpp_Object_get_members(_cOhm_members ${_cOhm_handle})
+function(_cpp_Object_has_member _cOhm_handle _cOhm_result _cOhm_member)
+    _cpp_Object_get_members(${_cOhm_handle} _cOhm_members)
     list(FIND _cOhm_members ${_cOhm_member} _cOhm_position)
     _cpp_are_not_equal(_cOhm_present "${_cOhm_position}" "-1")
-    set(${_cOhm_result} ${_cOhm_present} PARENT_SCOPE)
+    _cpp_set_return(${_cOhm_result} ${_cOhm_present})
 endfunction()

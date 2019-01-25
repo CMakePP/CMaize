@@ -23,7 +23,7 @@ include(logic/negate)
 #
 # :param return: The identifier to assign the result to.
 # :param input: The thing to consider for being a handle to an object
-function(_cpp_is_not_object _cino_return _cino_input)
+function(_cpp_is_not_object _cino_return  _cino_input)
     _cpp_is_object(_cino_temp "${_cino_input}")
     _cpp_negate(_cino_temp ${_cino_temp})
     set(${_cino_return} ${_cino_temp} PARENT_SCOPE)

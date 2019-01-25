@@ -14,6 +14,7 @@
 ################################################################################
 
 include_guard()
+include(utility/set_return)
 
 ## Mangles a member name for storage as a property
 #
@@ -26,5 +27,5 @@ include_guard()
 # :param name: The name this function will mangle
 function(_cpp_Object_mangle_member _cOmm_result _cOmm_name)
     string(TOLOWER ${_cOmm_name} _cOmm_lc)
-    set(${_cOmm_result} _cpp_${_cOmm_lc} PARENT_SCOPE)
+    _cpp_set_return(${_cOmm_result} _cpp_${_cOmm_lc})
 endfunction()

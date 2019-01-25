@@ -36,15 +36,11 @@ include(object/object)
 #
 #
 function(_cpp_Dependency_constructor _cDc_instance)
-    _cpp_Object_constructor(
-        _cDc_handle Dependency
-        name
-        version
-        root
-        search_paths
-        get_recipe
-        build_recipe
-        find_recipe
+    _cpp_Object_constructor(_cDc_handle)
+    _cpp_Object_add_members(
+        ${_cDc_handle}
+        name version root search_paths
+        get_recipe build_recipe find_recipe
     )
     set(${_cDc_instance} ${_cDc_handle} PARENT_SCOPE)
 endfunction()

@@ -6,6 +6,7 @@ Contents
 
     Cache: Methods for modifying CPP's cache's contents <cache/index.rst>
     Dependency: Methods for finding/building dependencies <dependency/index.rst>
+    GetRecipe: Documentation for the GetRecipe class <get_recipe/index.rst>
     Logic: Aid in control flow <logic/index.rst>
     Object: Methods for creating CMake objects <object/index.rst>
     Options: Methods for parsing CMake and function inputs <options/index.rst>

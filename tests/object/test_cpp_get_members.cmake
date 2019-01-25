@@ -6,25 +6,25 @@ _cpp_add_test(
 TITLE "Fails if not an object"
 SHOULD_FAIL REASON "not_an_object is not a handle to an object"
 "include(object/get_members)"
-"_cpp_Object_get_members(test not_an_object)"
+"_cpp_Object_get_members(not_an_object test)"
 )
 
 _cpp_add_test(
 TITLE "Can get default empty member list"
-"include(object/object_class)"
+"include(object/ctor)"
 "include(object/get_members)"
-"_cpp_Object_constructor(t)"
-"_cpp_Object_get_members(test \${t})"
+"_cpp_Object_ctor(t)"
+"_cpp_Object_get_members(\${t} test)"
 "_cpp_assert_equal(\"\${test}\" \"\")"
 )
 
 _cpp_add_test(
 TITLE "Can get an added member"
-"include(object/object_class)"
+"include(object/ctor)"
 "include(object/add_members)"
 "include(object/has_member)"
-"_cpp_Object_constructor(t)"
+"_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member)"
-"_cpp_Object_get_members(test \${t} member)"
+"_cpp_Object_get_members(\${t} test member)"
 "_cpp_assert_equal(\"\${test}\" \"member\")"
 )

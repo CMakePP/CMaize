@@ -28,7 +28,7 @@ include(utility/set_return)
 # :param buffer: The buffer to read the JSON from
 function(_cpp_deserialize_object _cdo_return _cdo_buffer)
     set(_cdo_value "${${_cdo_buffer}}")
-    _cpp_Object_constructor(_cdo_rv)
+    _cpp_Object_ctor(_cdo_rv)
     while(TRUE)
         string(STRIP "${_cdo_value}" _cdo_value)
 
