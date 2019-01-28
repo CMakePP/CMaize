@@ -10,12 +10,12 @@ SHOULD_FAIL REASON "not_an_object is not a handle to an object"
 )
 
 _cpp_add_test(
-TITLE "Can get default empty member list"
+TITLE "Can get default member list"
 "include(object/ctor)"
 "include(object/get_members)"
 "_cpp_Object_ctor(t)"
 "_cpp_Object_get_members(\${t} test)"
-"_cpp_assert_equal(\"\${test}\" \"\")"
+"_cpp_assert_equal(\"\${test}\" \"_cpp_type\")"
 )
 
 _cpp_add_test(
@@ -26,5 +26,6 @@ TITLE "Can get an added member"
 "_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member)"
 "_cpp_Object_get_members(\${t} test member)"
-"_cpp_assert_equal(\"\${test}\" \"member\")"
+"set(corr _cpp_type member)"
+"_cpp_assert_equal(\"\${test}\" \"\${corr}\")"
 )

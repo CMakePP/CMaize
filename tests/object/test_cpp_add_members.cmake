@@ -17,7 +17,8 @@ TITLE "Can add a member"
 "_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member)"
 "_cpp_Object_get_members(\${t} test)"
-"_cpp_assert_equal(\"\${test}\" \"member\")"
+"set(corr _cpp_type member)"
+"_cpp_assert_equal(\"\${test}\" \"\${corr}\")"
 )
 
 _cpp_add_test(
@@ -28,7 +29,7 @@ TITLE "Can add multiple members"
 "_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member1 member2)"
 "_cpp_Object_get_members(\${t} test)"
-"set(corr member1 member2)"
+"set(corr _cpp_type member1 member2)"
 "_cpp_assert_equal(\"\${test}\" \"\${corr}\")"
 )
 

@@ -14,33 +14,19 @@
 ################################################################################
 
 include_guard()
-include(object/object)
+include(logic/contains)
+include(logic/negate)
+include(utility/set_return)
 
-## Constructor for the Dependency class
+## Determines if a substring is not contained in a string.
 #
-# An instance of the Dependency class tracks everything we know about a
-# dependency. This includes:
+# This function works by negating :ref:`cpp_has_contains-label`.
 #
-# * name         - The name of the dependency
-# * version      - The version of the dependency
-# * root         - The path to the root of the dependency's install directory
-# * search_paths - List of include paths.
-# * get_recipe   - Handle to an object of type GetRecipe
-# * build_recipe - Handle to an object of type BuildRecipe
-# * find_recipe  - Handle to an object of type FindRecipe
-#
-# The ``search_paths`` member stores a list of all paths that were in play
-# when a dependency was found. Generally speaking this will be any paths
-# included via ``CMAKE_PREFIX_PATH`` as well as paths stemming from computed
-# hints (such as the cache).
-#
-#
-function(_cpp_Dependency_constructor _cDc_instance)
-    _cpp_Object_constructor(_cDc_handle)
-    _cpp_Object_add_members(
-        ${_cDc_handle}
-        name version root search_paths
-        get_recipe build_recipe find_recipe
-    )
-    set(${_cDc_instance} ${_cDc_handle} PARENT_SCOPE)
+# :param return: The identifier to hold the returned value.
+# :param substring: The string we are looking for.
+# :param string: The string we are searching through.
+function(_cpp_does_not_contain _cdnc_return _cdnc_substring _cdnc_string)
+    _cpp_contains(_cdnc_temp "${_cdnc_substring}" "${_cdnc_string}")
+    _cpp_negate(_cdnc_temp ${_cdnc_temp})
+    _cpp_set_return(${_cdnc_return} ${_cdnc_temp})
 endfunction()

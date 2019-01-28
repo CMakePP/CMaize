@@ -24,12 +24,16 @@ include(object/object)
 #
 # Members:
 #
-# * url - If non-empty, a url to download the source from
-# * dir - If non-empty, a directory to copy the source from
+# * version - The version of the dependency this recipe is for.
 #
-#
-function(_cpp_GetRecipe_constructor _cGc_instance)
-    _cpp_Object_constructor(_cGc_handle)
-    _cpp_Object_set_type(${_cGc_handle} GetRecipe)
-    _cpp_Object_add_members(${_cGc_handle} url dir)
+# :param handle: The identifier that will hold the newly created object
+# :param version: The version of the dependency this recipe is for. If blank the
+#                 version will be set to "latest"
+function(_cpp_GetRecipe_ctor _cGc_handle _cGc_version)
+    _cpp_Object_ctor(_cGc_temp)
+    _cpp_Object_set_type(${_cGc_temp} GetRecipe)
+    _cpp_Object_add_members(${_cGc_temp} version)
+    cpp_option(_cGc_version "latest")
+    _cpp_Object_set_value(${_cGc_temp} version ${_cGc_version})
+    _cpp_set_return(${_cGc_handle} ${_cGc_temp})
 endfunction()

@@ -3,12 +3,14 @@ set(
                  are_equal
                  are_not_equal
                  get_members
+                 get_type
                  get_value
                  has_member
                  is_not_object
                  is_object
                  mangle_member
                  new_handle
+                 set_type
                  set_value
 )
 
