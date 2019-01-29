@@ -1,4 +1,5 @@
 set(TESTS find_from_module_ctor
+          find_from_module_find_dependency
 )
 
 foreach(test_i ${TESTS})

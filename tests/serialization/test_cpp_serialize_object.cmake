@@ -8,7 +8,7 @@ TITLE "Empty object"
 "include(object/object)"
 "_cpp_Object_ctor(t)"
 "_cpp_serialize_object(test \${t})"
-"_cpp_assert_equal(\"\${test}\" \"{ }\")"
+"_cpp_assert_equal(\"\${test}\" \"{ \\\"_cpp_type\\\" : \\\"Object\\\" }\")"
 )
 
 _cpp_add_test(
@@ -20,7 +20,7 @@ TITLE "Object with member set to empty value"
 "_cpp_serialize_object(test \${t})"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \\\"member\\\" : \\\"\\\" }\""
+"   \"{ \\\"_cpp_type\\\" : \\\"Object\\\" , \\\"member\\\" : \\\"\\\" }\""
 ")"
 )
 
@@ -34,7 +34,7 @@ TITLE "Object with member set to string"
 "_cpp_serialize_object(test \${t})"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \\\"member\\\" : \\\"value\\\" }\""
+"   \"{ \\\"_cpp_type\\\" : \\\"Object\\\" , \\\"member\\\" : \\\"value\\\" }\""
 ")"
 )
 
@@ -47,9 +47,10 @@ TITLE "Object with member set to list"
 "set(a_list one two)"
 "_cpp_Object_set_value(\${t} member \"\${a_list}\")"
 "_cpp_serialize_object(test \${t})"
+"set(elem1 \"\\\"_cpp_type\\\" : \\\"Object\\\"\")"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \\\"member\\\" : [ \\\"one\\\" , \\\"two\\\" ] }\""
+"   \"{ \${elem1} , \\\"member\\\" : [ \\\"one\\\" , \\\"two\\\" ] }\""
 ")"
 )
 
@@ -62,8 +63,9 @@ TITLE "Object with member set to object"
 "_cpp_Object_add_members(\${t} member)"
 "_cpp_Object_set_value(\${t} member \"\${u}\")"
 "_cpp_serialize_object(test \${t})"
+        "set(elem1 \"\\\"_cpp_type\\\" : \\\"Object\\\"\")"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \\\"member\\\" : { } }\""
+"   \"{ \${elem1} , \\\"member\\\" : { \${elem1} } }\""
 ")"
 )

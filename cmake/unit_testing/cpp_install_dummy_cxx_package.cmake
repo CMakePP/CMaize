@@ -14,6 +14,7 @@
 ################################################################################
 
 include_guard()
+include(utility/set_return)
 
 ## Function for creating and installing a dummy C++ package.
 #
@@ -25,11 +26,11 @@ include_guard()
 # consider :ref:`cpp_install_naive_cxx_package`.
 #
 # :param prefix: The directory in which the package should be generated.
-#
+# :param install: The directory where the package is installed.
 # :kwargs:
 #
 #     * *NAME* - The name of the package. Defaults to "dummy".
-function(_cpp_install_dummy_cxx_package _cidcp_prefix)
+function(_cpp_install_dummy_cxx_package _cidcp_install _cidcp_prefix)
     cmake_parse_arguments(_cidcp "" "NAME" "" ${ARGN})
     cpp_option(_cidcp_NAME dummy)
     set(_cidcp_root ${_cidcp_prefix}/${_cidcp_NAME})
@@ -39,4 +40,5 @@ function(_cpp_install_dummy_cxx_package _cidcp_prefix)
         INSTALL_DIR ${_cidcp_prefix}/install
         NAME ${_cidcp_NAME}
     )
+    _cpp_set_return(${_cidcp_install} ${_cidcp_prefix}/install)
 endfunction()

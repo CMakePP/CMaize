@@ -14,6 +14,7 @@
 ################################################################################
 
 include_guard()
+include(string/cpp_string_cases)
 
 ## Function for turning the usual ``find_package`` variables into a target
 #
@@ -47,13 +48,12 @@ function(_cpp_handle_target_vars _chtv_name)
         return()
     endif()
 
-    #Make the capitialization variations
-    string(TOUPPER ${_chtv_name} _chtv_uc_name)
-    string(TOLOWER ${_chtv_name} _chtv_lc_name)
+    _cpp_string_cases(_chtv_cases "${_chtv_name}")
 
     #Skim variables onto target
     add_library(${_chtv_name} INTERFACE IMPORTED)
-    foreach(_chtv_var ${_chtv_name} ${_chtv_uc_name} ${_chtv_lc_name})
+    foreach(_chtv_var ${_chtv_cases})
+
         set(_chtv_include ${_chtv_var}_INCLUDE_DIRS)
         _cpp_is_not_empty(_chtv_has_incs ${_chtv_include})
         if(_chtv_has_incs)
@@ -61,10 +61,12 @@ function(_cpp_handle_target_vars _chtv_name)
                 ${_chtv_name} INTERFACE ${${_chtv_include}}
             )
         endif()
+
         set(_chtv_lib ${_chtv_var}_LIBRARIES)
         _cpp_is_not_empty(_chtv_has_libs ${_chtv_lib})
         if(_chtv_has_libs)
             target_link_libraries(${_chtv_name} INTERFACE ${${_chtv_lib}})
         endif()
     endforeach()
+
 endfunction()

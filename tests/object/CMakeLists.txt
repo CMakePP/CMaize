@@ -5,6 +5,7 @@ set(
                  get_members
                  get_type
                  get_value
+                 has_base
                  has_member
                  is_not_object
                  is_object

@@ -1,3 +1,4 @@
+include_guard()
 include(find_recipe/find_from_config/find_from_config)
 include(find_recipe/find_from_module/find_from_module)
 include(utility/set_return)

@@ -6,8 +6,13 @@ include(find_recipe/find_from_config/handle_dir)
 function(_cpp_FindFromConfig_find_dependency _cFfd_handle _cFfd_version
                                              _cFfd_comps _cFfd_paths)
     _cpp_Object_get_value(${_cFfd_handle} _cFfd_name name)
+    _cpp_Object_get_value(${_cFfd_handle} _cFfd_dir config_path)
+    _cpp_is_not_empty(_cFfd_has_dir _cFfd_dir)
+    if(_cFfd_has_dir) #Prepend the dir so it gets used first
+        set(CMAKE_PREFIX_PATH "${_cFfd_dir}" "${CMAKE_PREFIX_PATH}")
+    endif()
 
-    #CMake doesn't append the additional search path onto prefix path so
+        #CMake doesn't append the additional search path onto prefix path so
     #dependencies relying on prefix_path to find their dependencies won't find
     #them without this next line
     list(APPEND CMAKE_PREFIX_PATH ${_cFfd_paths})
@@ -29,5 +34,9 @@ function(_cpp_FindFromConfig_find_dependency _cFfd_handle _cFfd_version
     _cpp_Object_get_value(${_cFfd_handle} _cFfd_found found)
     if("${_cFfd_found}")
         _cpp_handle_target_vars(${_cFfd_name})
+        _cpp_Object_set_value(${_cFfd_handle} paths "${CMAKE_PREFIX_PATH}")
+    elseif(_cFfd_has_dir)
+        _cpp_error("${_cFfd_name}_DIR was set to ${_cFfd_dir}, "
+                   "but ${_CFfd_name} was not found.")
     endif()
 endfunction()

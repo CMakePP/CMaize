@@ -1,7 +1,6 @@
 set(
     CHECKS_TESTS contains
                  does_not_contain
-                 has_property
                  is_defined
                  is_empty
                  is_list

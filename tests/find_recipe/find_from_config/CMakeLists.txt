@@ -1,4 +1,5 @@
 set(TESTS find_from_config_ctor
+          find_from_config_find_dependency
           handle_dir
 )
 

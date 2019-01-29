@@ -33,15 +33,15 @@ and to store the object's state in CPP-unique properties. Following other
 object-oriented languages, each object type must define a constructor and it
 is this constructor that will associate the instance with its CMake target and
 specify what members that type has. By convention the constructor for an object
-of type ``A`` is the function ``_cpp_A_constructor`` which is used to create
-an instance ``a`` like ``_cpp_A_constructor(a ...)``, where the ellipses are
+of type ``A`` is the function ``_cpp_A_ctor`` which is used to create
+an instance ``a`` like ``_cpp_A_ctor(a ...)``, where the ellipses are
 other arguments required for construction. Since CMake does not support function
-overloading there can only be one constructor. In practice, the easiest way
-around this is to use kwargs and let the ctor worry about defaults.
+overloading there can only be one constructor.
 
 After construction the value of ``a``, ``${a}``, is set to the name of the
-target storing the state. Passing the name of that target to a function makes
-that function manipulate the same target that was passed. The result is that CPP
+target storing the state. You can think of the target's name as a handle and
+thus passing the name of that target to a function causes that function to
+manipulate read the same instance that was passed. The result is that CPP
 objects behave like a Python objects. This is best expressed with a code
 example:
 
@@ -51,7 +51,7 @@ example:
        # set the_instance's member X to 1
    endfunction()
 
-   _cpp_A_constructor(a)
+   _cpp_A_ctor(a)
    #set a's member X to 0
    fxn_taking_an_object(${a})
    #a's member X is now 1
@@ -71,11 +71,11 @@ with other instances of ``A`` given the same identifier:
 .. code-block:: cmake
 
     function(fxn1)
-        _cpp_A_constructor(a)
+        _cpp_A_ctor(a)
     endfunction()
 
     function(fxn2)
-        _cpp_A_constructor(a)
+        _cpp_A_ctor(a)
     endfunction()
 
 Here the intent is to create two separate instances of type ``A`` (each
@@ -95,9 +95,10 @@ implement your object's constructor. Typically this looks like:
     include(object/object) #Convenience header pulling the Object base class in
     include(utility/set_return) #For prettier returns
 
-    function(_cpp_A_construct _cAc_return ...)
-        _cpp_Object_constructor(_cAc_handle)
+    function(_cpp_A_ctor _cAc_return ...)
+        _cpp_Object_ctor(_cAc_handle)
         _cpp_Object_add_members(${_cAc_handle} member1 member2)
+        _cpp_Object_set_type(${_cAc_handle} A)
         _cpp_set_return(${_cAc_return} ${_cAc_handle})
     endfunction()
 
@@ -113,35 +114,27 @@ inherits from ``Object`` is trivially satisfied by:
    include_guard()
    include(object/object)
    include(utility/set_return)
-   include(A/a)
+   include(a/a)
 
-   function(_cpp_B_construct _cBc_return ...)
-       _cpp_A_construct(_cBc_handle ${input_to_A_ctor})
+   function(_cpp_B_ctor _cBc_return ...)
+       _cpp_A_ctor(_cBc_handle ${input_to_A_ctor})
        #Finish setting up B class
        _cpp_set_return(${_cBc_return} ${_cBc_handle})
    endfunction()
 
-since ``A`` is responsible for inheriting from ``Object`` as well. The
-convention for coding up ``B`` is to make a directory ``a/b`` and in
-that directory write a file ``b.cmake`` that includes the constructor
-(by convention the file ``ctor.cmake``) as well as each of the scripts
-implementing member functions (by convention the member ``_cpp_B_member`` is
-implemented in the file ``member.cmake``). Documentation for each member should
-be included as part of the member implementations and documentation for the
-class as a whole should be part of the constructor's documentation.
+since ``A`` is responsible for inheriting from ``Object`` as well.
 
 Inheritance
 -----------
 
 As noted in the last section, CPP objects support single inheritance natively.
-If need be, multiple inheritance can be implemented as well, but it is not
-supported at the moment. Since CPP objects simply store state, inheritance
-simply aggregates the derived class's state with the base class's state, *i.e.*,
-the members of the resulting class are the union of the members of the base
-class plus those of the type. CPP does not support shadowing of members
-(assuming ``B`` derives from ``A`` and ``A`` has a member ``member``, ``B`` must
-use ``A``'s member ``member`` and not define its own). Since there really aren't
-member functions (*vide infra*) CPP does not support virtual functions.
+Since CPP objects simply store state, inheritance simply aggregates the derived
+class's state with the base class's state, *i.e.*, the members of the resulting
+class are the union of the members of the base class plus those of the type.
+CPP does not support shadowing of members (assuming ``B`` derives from ``A`` and
+``A`` has a member ``member``, ``B`` must use ``A``'s member ``member`` and not
+define its own). Since there really aren't member functions (*vide infra*) CPP
+does not support virtual functions.
 
 
 Member Functions
@@ -153,22 +146,46 @@ it with CMake's ``execute_process`` command. This makes callbacks relatively
 expensive because one has to write and read a file to disk (although modern
 operating systems likely will also cache the file making this much faster) and
 execute a subprocess. For this reason member functions are implemented C-style,
-*i.e.*, as free functions. By convention the member function ``member`` of the
-``A`` type is mangled to ``_cpp_A_member`` and must take an ``A`` instance
-before any other arguments, including returns. When implementing ``member`` you
-are responsible for declaring it in this manner, *e.g.*, an implementation may
-look something like:
+*i.e.*, as free functions. "Virtual" functions can then be implemented by
+dispatching in the base class's member function like:
 
 .. code-block:: cmake
 
-    include_guard()
-
-    function(_cpp_A_member _cAc_handle _cAc_return ...)
-        #Do stuff to the provided instance
-        _cpp_set_return(${_cAc_return} ${a_value}
+    function(_cpp_A_member_fxn _cAmf_handle ...)
+        #Assume B and C are classes derived from A
+        _cpp_Object_has_base(${_cAmf_handle} _cAmf_is_B B)
+        _cpp_Object_has_base(${_cAmf_handle} _cAmf_is_C C)
+        if(_cAmf_is_B) #dispatch to B's member
+            _cpp_B_member_fxn(${_cAmf_handle} ...)
+        elseif(_cAmf_is_C) #dispatch to C's member
+            _cpp_C_member_fxn(${_cAmf_handle} ...)
+        else()
+            # Base class implementation
+        endif()
     endfunction()
 
-Following this convention makes it possible to implement member functions at a
-later time by storing a class's full type hierarchy and current type in
-``Object``'s metadata and then defining a function like
-``_cpp_call_member(member_name HANDLE handle RETURNS ... ARGS ...)``.
+Admittedly this is a lot of boiler plate, but it's the best I can do without
+callbacks.
+
+.. note::
+
+    The good news is that we have here is on the right track to being able to
+    implement virtual functions. If we use call backs, and assume that ``C``
+    inherits from ``B``, which inherits from ``A``, virtual function resolution
+    works by going backwards through the type hierarchy until a member function
+    with that type is found. For example, assume we're trying to call a function
+    named ``member_fxn``. We start by looking for a function called
+    ``_cpp_C_member_fxn`` if it's not found we'd fall back a class to ``B`` and
+     repeat looking for ``_cpp_B_member_function``. If not found we then fall
+     back to the base and look for ``_cpp_A_member_function``.
+
+Conventions
+-----------
+
+* The implementation for a class ``A`` should reside in a directory ``a``
+* If ``B`` inherits from ``A``, ``B``'s implemenation should reside in ``a/b``
+* The constructor of the ``A`` class should reside in a file ``a/ctor.cmake``
+* For a class ``A``, a member function ``member_fxn``, should be implemented in
+  a function ``_cpp_A_member_fxn``, which should be defined in a file
+  ``a/member_fxn.cmake``
+* The first argument to a member function is always a handle
