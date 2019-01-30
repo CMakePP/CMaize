@@ -33,8 +33,7 @@ include(utility/set_return)
 function(_cpp_install_dummy_cxx_package _cidcp_install _cidcp_prefix)
     cmake_parse_arguments(_cidcp "" "NAME" "" ${ARGN})
     cpp_option(_cidcp_NAME dummy)
-    set(_cidcp_root ${_cidcp_prefix}/${_cidcp_NAME})
-    _cpp_dummy_cxx_package(${_cidcp_prefix} NAME ${_cidcp_NAME})
+    _cpp_dummy_cxx_package(_cidcp_root ${_cidcp_prefix} NAME ${_cidcp_NAME})
     _cpp_run_sub_build(
         ${_cidcp_root}
         INSTALL_DIR ${_cidcp_prefix}/install

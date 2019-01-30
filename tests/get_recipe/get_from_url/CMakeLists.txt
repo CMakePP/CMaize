@@ -1,6 +1,7 @@
 add_subdirectory(get_from_github)
 set(TESTS get_from_url_ctor
           get_from_url_factory
+          get_from_url_get_source
 )
 
 foreach(test_i ${TESTS})

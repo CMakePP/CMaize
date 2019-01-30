@@ -70,62 +70,63 @@ function(cpp_find_or_build_dependency)
     cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
     cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
 
-    _cpp_cache_write_get_recipe(
-        ${_cfobd_CPP_CACHE}
-        ${_cfobd_NAME}
-        "${_cfobd_URL}"
-        "${_cfobd_PRIVATE}"
-        "${_cfobd_BRANCH}"
-        "${_cfobd_SOURCE_DIR}"
-    )
-    _cpp_cache_write_build_recipe(
-        ${_cfobd_CPP_CACHE}
-        ${_cfobd_NAME}
-        "${_cfobd_CMAKE_ARGS}"
-        "${_cfobd_BUILD_MODULE}"
-    )
+    #Make install path
 
-    _cpp_record_find("cpp_find_or_build_dependency" ${ARGN})
-
-    set(_cfobd_src_path ${_cfobd_BINARY_DIR}/${_cfobd_NAME})
-    set(_cfobd_toolchain ${_cfobd_src_path}/toolchain.cmake)
-    _cpp_write_dependency_toolchain(
-            ${_cfobd_toolchain}
-            ${_cfobd_TOOLCHAIN}
-            "${_cfobd_CMAKE_ARGS}"
-            "${_cfobd_DEPENDS}"
+    #First part of install path is the version of the source
+    _cpp_GetRecipe_factory(_cfobd_get_recipe ${ARGN})
+    _cpp_Object_get_value(${_cfobd_get_recipe} _cfobd_version version)
+    set(_cfobd_name_ver "${_cfobd_NAME}/${_cfobd_version}")
+    set(_cfobd_bin_root ${_cfobd_BINARY_DIR}/${_cfobd_name_ver})
+    file(MAKE_DIRECTORU ${_cfobd_bin_root})
+    set(_cfobd_tar ${_cfobd_bind_root}/${_cfobd_NAME}.${_cfobd_verson}.tar.gz)
+    _cpp_GetRecipe_get_source(${_cfobd_get_recipe} ${_cfobd_tar})
+    file(SHA1 ${_cfobd_tar} _cfobd_version_hash)
+    set(
+         _cfobd_install
+         ${_cfobd_CPP_CACHE}/${_cfobd_name_ver}/${_cfobd_version_hash}
     )
 
+    #Second part is the build configuration
+    _cpp_untar_directory(${_cfobd_tar} ${_cfobd_bin_root}/src)
+    _cpp_BuildRecipe_factory(
+        _cfobd_build_recipe
+        ${_cfobd_bin_root}/src
+        BUILD_MODULE "${_cfobd_BUILD_MODULE}"
+        TOOLCHAIN "${_cfobd_TOOLCHAIN}"
+        ARGS "${_cfobd_CMAKE_ARGS}"
+    )
+
+    _cpp_BuildRecipe_hash(${_cfobd_build_recipe} _cfobd_build_hash)
+
+    #Dant, dant, dant, dant, dant, daaaa the install path
+    set(_cfobd_install "${_cfobd_install}/${_cfobd_src_hash}")
+
+    #Look for dependency
     cpp_find_dependency(
-        NAME ${_cfobd_NAME}
         OPTIONAL
-        RESULT _cfobd_found
+        NAME ${_cfobd_NAME}
         VERSION "${_cfobd_VERSION}"
-        COMPONENTS "${_cfobd_COMPONENTS}"
-        CPP_CACHE ${_cfobd_CPP_CACHE}
-        TOOLCHAIN ${_cfobd_toolchain}
         FIND_MODULE "${_cfobd_FIND_MODULE}"
+        RESULT _cfobd_found
+        PATHS "${_cfobd_install}"
+        COMPONENTS "${_cfobd_COMPONENTS}"
     )
-
-    if(${_cfobd_found})
+    if("${_cfobd_found}")
         return()
     endif()
 
-    _cpp_cache_build_dependency(
-        ${_cfobd_CPP_CACHE}
-        ${_cfobd_NAME}
-        "${_cfobd_VERSION}"
-        ${_cfobd_toolchain}
-    )
+    #Not found, build it
 
-    #Look again, (find-recipe better be valid now)
+    message("Building ${_cfobd_NAME} from source. This may take awhile.")
+    _cpp_BuildRecipe_build_dependency(${_cfobd_build_recipe} ${_cfobd_install})
+
+    #Find the built one
     cpp_find_dependency(
         NAME ${_cfobd_NAME}
         VERSION "${_cfobd_VERSION}"
-        COMPONENTS "${_cfobd_COMPONENTS}"
-        CPP_CACHE ${_cfobd_CPP_CACHE}
-        TOOLCHAIN ${_cfobd_toolchain}
         FIND_MODULE "${_cfobd_FIND_MODULE}"
+        PATHS "${_cfobd_install}"
+        COMPONENTS "${_cfobd_COMPONENTS}"
     )
 endfunction()
 

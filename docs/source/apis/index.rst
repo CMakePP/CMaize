@@ -4,8 +4,10 @@ Contents
 .. toctree::
     :maxdepth: 1
 
+    BuildRecipe: APIs for the BuildRecipe class <build_recipe/index.rst>
     Cache: Methods for modifying CPP's cache's contents <cache/index.rst>
     Dependency: Methods for finding/building dependencies <dependency/index.rst>
+    FindRecipe: Documentation for the FindRecipe class <find_recipe/index.rst>
     GetRecipe: Documentation for the GetRecipe class <get_recipe/index.rst>
     Logic: Aid in control flow <logic/index.rst>
     Object: Methods for creating CMake objects <object/index.rst>
@@ -16,6 +18,5 @@ Contents
     Target: Functions for manipulating CMake targets <target/index.rst>
     Testing: Functions for unit testing CMake functions <unit_testing/index.rst>
     Toolchain: Functions for manipulating the toolchain <toolchain/index.rst>
-    Testing: Functions for unit testing CMake functions <unit_testing/index.rst>
     Utility: One off, quality of life functions <utility/index.rst>
 

@@ -1,0 +1,10 @@
+function(_cpp_GetRecipe_get_source _cGgs_handle _cGgs_tar)
+    _cpp_Object_has_base(${_cGgs_handle} _cGgs_is_disk GetFromDisk)
+    _cpp_Object_has_base(${_cGgs_handle} _cGgs_is_url GetFromURL)
+
+    if(_cGgs_is_disk)
+        _cpp_GetFromDisk_get_source(${_cGgs_handle} ${_cGgs_tar})
+    elseif(_cGgs_is_url)
+        _cpp_GetFromURL_get_source(${_cGgs_handle} ${_cGgs_tar})
+    endif()
+endfunction()

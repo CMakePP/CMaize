@@ -14,6 +14,7 @@
 ################################################################################
 
 include_guard()
+include(utility/set_return)
 
 ## Function for creating a C++ package for testing purposes.
 #
@@ -24,6 +25,8 @@ include_guard()
 # create config files for finding the dependency upon installation. For testing
 # less well written CMake projects use :ref:`cpp_naive_cxx_package-label`.
 #
+# :param dir: An identifier which upon return will contain the path to the
+#             package's root directory.
 # :param prefix: The directory where the package will be created. The source for
 #     the resulting package will reside at ``<prefix>/<name>``.
 #
@@ -31,7 +34,7 @@ include_guard()
 #
 #     * *NAME* (``option``) - The name of the package we are creating. Defaults
 #       to dummy.
-function(_cpp_dummy_cxx_package _cdcp_prefix)
+function(_cpp_dummy_cxx_package _cdcp_dir _cdcp_prefix)
     set(_cdcp_O_kwargs NAME)
     cmake_parse_arguments(_cdcp "" "NAME" "" ${ARGN})
     cpp_option(_cdcp_NAME dummy)
@@ -48,4 +51,5 @@ function(_cpp_dummy_cxx_package _cdcp_prefix)
             ")"
             "cpp_install(TARGETS ${_cdcp_NAME})"
     )
+    _cpp_set_return(${_cdcp_dir} ${_cdcp_prefix}/${_cdcp_NAME})
 endfunction()

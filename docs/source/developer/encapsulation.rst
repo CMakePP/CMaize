@@ -140,14 +140,29 @@ does not support virtual functions.
 Member Functions
 ----------------
 
-Implementing member functions requires a callback mechanism. The only way to
+Implementing member functions requires a callback mechanism. The usual way to
 implement callbacks in CMake is to write out a CMake script on-the-fly and run
 it with CMake's ``execute_process`` command. This makes callbacks relatively
 expensive because one has to write and read a file to disk (although modern
 operating systems likely will also cache the file making this much faster) and
-execute a subprocess. For this reason member functions are implemented C-style,
-*i.e.*, as free functions. "Virtual" functions can then be implemented by
-dispatching in the base class's member function like:
+execute a subprocess. Another way to do callbacks that only requires reading a
+file is to use duck typing. This relies on CMake's ``include`` command.
+Basically needs a function that looks like:
+
+.. code-block:: cmake
+
+    include(${path_to_file})
+    _call_fxn_brought_into_scope_by_file(${ARGN})
+
+This works because CMake allows the path to the include file to be read from a
+variable. However, it requires us to know the name of the function ahead of time
+or else we have to do a callback of the first kind. A function ``call_member``
+has been started using this method, but has not been finished (it resides in
+``object/call_member.cmake``).
+
+Regardless, at the moment, member functions are implemented C-style, *i.e.*, as
+free functions. "Virtual" functions can then be implemented by dispatching in
+the base class's member function like:
 
 .. code-block:: cmake
 
@@ -164,20 +179,14 @@ dispatching in the base class's member function like:
         endif()
     endfunction()
 
-Admittedly this is a lot of boiler plate, but it's the best I can do without
-callbacks.
+Admittedly this is a lot of boiler plate.
 
-.. note::
+.. warning::
 
-    The good news is that we have here is on the right track to being able to
-    implement virtual functions. If we use call backs, and assume that ``C``
-    inherits from ``B``, which inherits from ``A``, virtual function resolution
-    works by going backwards through the type hierarchy until a member function
-    with that type is found. For example, assume we're trying to call a function
-    named ``member_fxn``. We start by looking for a function called
-    ``_cpp_C_member_fxn`` if it's not found we'd fall back a class to ``B`` and
-     repeat looking for ``_cpp_B_member_function``. If not found we then fall
-     back to the base and look for ``_cpp_A_member_function``.
+    Like C++ you should avoid using "virtual" member functions in a constructor.
+    In theory, each class will see it's version of the member function (or that
+    of the most recent base to override it); however, this behavior is not
+    guaranteed or tested for at this time.
 
 Conventions
 -----------
