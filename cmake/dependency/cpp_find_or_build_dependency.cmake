@@ -14,9 +14,6 @@
 ################################################################################
 
 include_guard()
-include(cache/cache_add_dependency)
-include(cache/cache_build_dependency)
-include(dependency/cpp_find_dependency)
 include(dependency/cpp_write_dependency_toolchain)
 
 ## Function for building a dependency if we can not locate it.
@@ -77,7 +74,7 @@ function(cpp_find_or_build_dependency)
     _cpp_Object_get_value(${_cfobd_get_recipe} _cfobd_version version)
     set(_cfobd_name_ver "${_cfobd_NAME}/${_cfobd_version}")
     set(_cfobd_bin_root ${_cfobd_BINARY_DIR}/${_cfobd_name_ver})
-    file(MAKE_DIRECTORU ${_cfobd_bin_root})
+    file(MAKE_DIRECTORY ${_cfobd_bin_root})
     set(_cfobd_tar ${_cfobd_bind_root}/${_cfobd_NAME}.${_cfobd_verson}.tar.gz)
     _cpp_GetRecipe_get_source(${_cfobd_get_recipe} ${_cfobd_tar})
     file(SHA1 ${_cfobd_tar} _cfobd_version_hash)

@@ -3,7 +3,7 @@
 cpp_install_dummy_cxx_package
 #############################
 
-.. function:: _cpp_install_dummy_cxx_package(<prefix>)
+.. function:: _cpp_install_dummy_cxx_package(<install> <prefix>)
 
     Function for creating and installing a dummy C++ package.
     
@@ -15,7 +15,7 @@ cpp_install_dummy_cxx_package
     consider :ref:`cpp_install_naive_cxx_package`.
     
     :param prefix: The directory in which the package should be generated.
-    
+    :param install: The directory where the package is installed.
     :kwargs:
     
         * *NAME* - The name of the package. Defaults to "dummy".

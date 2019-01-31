@@ -100,7 +100,7 @@ def main():
         relative_dir = os.path.dirname(k)
         full_path = os.path.join(output_dir, relative_dir)
         if not os.path.isdir(full_path):
-            os.mkdir(full_path)
+            os.makedirs(full_path)
         with open(os.path.join(output_dir,k), "w") as f:
             f.write(v)
 

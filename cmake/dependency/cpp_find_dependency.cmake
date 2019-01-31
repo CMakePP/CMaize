@@ -17,13 +17,14 @@ include_guard()
 include(find_recipe/find_recipe)
 include(dependency/helper_target_made)
 include(dependency/set_helper_target)
+include(utility/set_return)
 
 ## Function for finding a dependency.
 #
 # This function is the public API for users who want CPP to find a dependency
 # that the end-user is responsible for building (*i.e.*, this function is the
 # public API for finding a dependency that CPP can not build). This function is
-# also used internally in :ref:`cpp_find_or_build_dependency` to handle the
+# also used internally in :ref:`cpp_find_or_build_dependency-label` to handle the
 # "finding" part.
 #
 # :kwargs:

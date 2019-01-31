@@ -20,7 +20,7 @@ include(utility/set_return)
 
 ## Determines if a substring is not contained in a string.
 #
-# This function works by negating :ref:`cpp_has_contains-label`.
+# This function works by negating :ref:`cpp_contains-label`.
 #
 # :param return: The identifier to hold the returned value.
 # :param substring: The string we are looking for.
