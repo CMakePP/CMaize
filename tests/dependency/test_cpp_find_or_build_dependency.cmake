@@ -4,14 +4,13 @@ _cpp_setup_test_env("find_or_build_dependency")
 
 _cpp_add_test(
 TITLE "Crashes if NAME not set"
-SHOULD_FAIL REASON "Required option _cfobd_NAME is not set"
+SHOULD_FAIL REASON "Required option _cKpa_NAME is not set"
 "include(dependency/cpp_find_or_build_dependency)"
 "cpp_find_or_build_dependency()"
 )
 
 set(src_dir ${test_prefix}/${test_number})
-_cpp_dummy_cxx_package(${src_dir})
-set(src_dir ${src_dir}/dummy)
+_cpp_dummy_cxx_package(src_dir ${src_dir})
 
 _cpp_add_test(
 TITLE "Build from local source dir."

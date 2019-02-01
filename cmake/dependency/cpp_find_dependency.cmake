@@ -18,6 +18,7 @@ include(find_recipe/find_recipe)
 include(dependency/helper_target_made)
 include(dependency/set_helper_target)
 include(utility/set_return)
+include(serialization/serialization)
 
 ## Function for finding a dependency.
 #
@@ -41,16 +42,16 @@ include(utility/set_return)
 #       **NOT** an error.
 #
 function(cpp_find_dependency)
-    cpp_parse_arguments(
-        _cfd "${ARGN}"
+    _cpp_Kwargs_ctor(
+        _cfd_kwargs "${ARGN}"
         TOGGLES OPTIONAL
         OPTIONS NAME VERSION FIND_MODULE RESULT PATHS COMPONENTS
         MUST_SET NAME
     )
-    cpp_option(_cfd_RESULT CPP_DEV_NULL)
-    _cpp_set_return(${_cfd_RESULT} TRUE) #Will change if not the case
-
-
+    _cpp_Kwargs_set_default(${_cfd_kwargs} RESULT CPP_DEV_NULL)
+    _cpp_Kwargs_kwarg_value(${_cfd_kwargs} _cfd_RESULT RESULT)
+    set(${_cfd_RESULT} TRUE) #Will change if not the case
+    _cpp_Kwargs_kwarg_value(${_cfd_kwargs} _cfd_NAME NAME)
     _cpp_helper_target_made(_cfd_been_found ${_cfd_NAME})
 
     if(_cfd_been_found)
@@ -58,9 +59,13 @@ function(cpp_find_dependency)
     endif()
 
     _cpp_FindRecipe_factory(_cfd_find_recipe ${ARGN})
+    _cpp_serialize_value(_cfd_recipe ${_cfd_find_recipe})
+    message("${_cfd_recipe}")
+    _cpp_Kwargs_kwarg_value(${_cfd_kwargs} _cfd_PATHS PATHS)
     _cpp_FindRecipe_find_dependency(${_cfd_find_recipe} "${_cfd_PATHS}")
 
     _cpp_Object_get_value(${_cfd_find_recipe} _cfd_found found)
+    _cpp_Kwargs_kwarg_value(${_cfd_kwargs} _cfd_OPTIONAL OPTIONAL)
     if("${_cfd_found}")
         _cpp_set_helper_target(${_cfd_NAME} ${_cfd_find_recipe})
         return()

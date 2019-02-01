@@ -23,10 +23,11 @@ include(utility/set_return)
 #
 # :param url: The GitHub URL to download the source from
 # :param branch: The branch to use. If blank defaults to master.
+# :param name: The name of the dependency.
 # :param private: If true a token will be used to download the repo. Defaults to
 #                 false.
-function(_cpp_GetFromGithub_ctor _cGc_handle _cGc_url _cGc_branch _cGc_version
-                                 _cGc_private)
+function(_cpp_GetFromGithub_ctor _cGc_handle _cGc_url _cGc_branch _cGc_name
+                                 _cGc_version _cGc_private)
     _cpp_does_not_contain(_cGc_is_not_gh "github" "${_cGc_url}")
     if(_cGc_is_not_gh)
         _cpp_error("URL: ${_cGc_url} does not appear to be a GitHub URL.")
@@ -42,7 +43,9 @@ function(_cpp_GetFromGithub_ctor _cGc_handle _cGc_url _cGc_branch _cGc_version
         "${_cGc_branch}"
         "${_cGc_version}"
     )
-    _cpp_GetFromURL_ctor(_cGc_temp "${_cGc_url}" "${_cGc_version}")
+    _cpp_GetFromURL_ctor(
+        _cGc_temp "${_cGc_url}" "${_cGc_name}" "${_cGc_version}"
+    )
     _cpp_Object_set_type(${_cGc_temp} GetFromGithub)
     _cpp_set_return(${_cGc_handle} ${_cGc_temp})
 endfunction()

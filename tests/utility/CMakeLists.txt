@@ -1,7 +1,9 @@
-set(
-    UTILITY_TESTS set_return
+set(TESTS assert_no_extra_args
+          mkdir_if_dne
+          random_dir
+          set_return
 )
 
-foreach(test_i ${UTILITY_TESTS})
-    cpp_cmake_unit_test(${test_i})
+foreach(test_i ${TESTS})
+    cpp_cmake_unit_test(${test_i} utility)
 endforeach()

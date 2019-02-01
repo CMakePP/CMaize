@@ -4,23 +4,23 @@ _cpp_setup_test_env("is_not_empty")
 
 _cpp_add_test(
 TITLE "Not defined"
-CONTENTS
-    "_cpp_is_not_empty(output NOT_A_DEFINED_VARIABLE)"
-    "_cpp_assert_false(output)"
+"include(logic/is_not_empty)"
+"_cpp_is_not_empty(output NOT_A_DEFINED_VARIABLE)"
+"_cpp_assert_false(output)"
 )
 
 _cpp_add_test(
 TITLE "Set to empty string"
-CONTENTS
-    "set(A_VARIABLE \"\")"
-    "_cpp_is_not_empty(output A_VARIABLE)"
-    "_cpp_assert_false(output)"
+"include(logic/is_not_empty)"
+"set(A_VARIABLE \"\")"
+"_cpp_is_not_empty(output A_VARIABLE)"
+"_cpp_assert_false(output)"
 )
 
 _cpp_add_test(
-        TITLE "Set to real contents"
-        CONTENTS
-        "set(A_VARIABLE \"Hi there\")"
-        "_cpp_is_not_empty(output A_VARIABLE)"
-        "_cpp_assert_true(output)"
+TITLE "Set to real contents"
+"include(logic/is_not_empty)"
+"set(A_VARIABLE \"Hi there\")"
+"_cpp_is_not_empty(output A_VARIABLE)"
+"_cpp_assert_true(output)"
 )

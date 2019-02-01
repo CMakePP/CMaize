@@ -14,14 +14,16 @@
 ################################################################################
 
 include_guard()
-include(options/cpp_kwargs_handle_unparsed)
-include(options/cpp_kwargs_unique)
+include(object/object)
+include(kwargs/handle_unparsed)
+include(kwargs/unique)
+include(utility/set_return)
 
 ## Function for parsing the kwargs given to a CPP function.
 #
 # This function wraps the CMake function ``cmake_parse_arguments`` and makes it
-# more user-friendly. The biggest addition is more error checking. This
-# includes erroring if:
+# into a more user-friendly object. Other than being an object, the biggest
+# addition is more error checking. This includes erroring if:
 #
 # - one of our kwargs appears more than once.
 # - the user provided us with an unrecognized kwargs
@@ -33,7 +35,7 @@ include(options/cpp_kwargs_unique)
 # - one of the user's kwargs appears more than once.
 # - if a required kwarg is not set
 #
-# Our wrapper function also guarantees that toggles that are not set are set to
+# The Kwargs object also guarantees that toggles that are not set are set to
 # false and that it is possible to set an option/list to an empty string. The
 # latter enables forwarding of arguments like:
 #
@@ -66,52 +68,59 @@ include(options/cpp_kwargs_unique)
 #       lists.
 #     * *MUST_SET* (``list``) - Denotes a list of kwargs that must contain a
 #       value.
-function(cpp_parse_arguments _cpa_prefix _cpa_argn)
-    set(_cpa_M_kwargs TOGGLES OPTIONS LISTS MUST_SET)
+function(_cpp_Kwargs_ctor _cKpa_handle _cKpa_argn)
+    _cpp_Object_ctor(_cKpa_temp)
+    _cpp_Object_set_type(${_cKpa_temp} Kwargs)
+    _cpp_Object_add_members(${_cKpa_temp} keys)
+
+    set(_cKpa_M_kwargs TOGGLES OPTIONS LISTS MUST_SET)
     #Make sure the user didn't specify our kwargs multiple times
-    _cpp_kwargs_unique("${_cpa_M_kwargs}" "${ARGN}")
+    _cpp_kwargs_unique("${_cKpa_M_kwargs}" "${ARGN}")
 
     #Get the keywords the user wants us to parse, error if user provided a kwarg
     #we don't recognize
-    cmake_parse_arguments(_cpa "" "" "${_cpa_M_kwargs}" "${ARGN}")
-    _cpp_kwargs_handle_unparsed("${_cpa_UNPARSED_ARGUMENTS}")
+    cmake_parse_arguments(_cKpa "" "" "${_cKpa_M_kwargs}" "${ARGN}")
+    _cpp_kwargs_handle_unparsed("${_cKpa_UNPARSED_ARGUMENTS}")
 
     #Now that we have the user's kwargs make sure they weren't specified 2x
-    foreach(_cpa_kwarg_set ${_cpa_M_kwargs}) #Loop over the types of kwargs
+    foreach(_cKpa_kwarg_set ${_cKpa_M_kwargs}) #Loop over the types of kwargs
         #This identifier holds the set of user provided kwargs for this type
-        set(_cpa_variable _cpa_${_cpa_kwarg_set})
-        set(_cpa_value "${${_cpa_variable}}") #This is the list of user kwargs
+        set(_cKpa_variable _cKpa_${_cKpa_kwarg_set})
+        set(_cKpa_value "${${_cKpa_variable}}") #This is the list of user kwargs
         #_cpp_kwargs_unique("${_cpa_value}" "${_cpa_argn}")
     endforeach()
 
     #Parse the argn given to us using the user's kwargs
     cmake_parse_arguments(
-       ${_cpa_prefix}
-       "${_cpa_TOGGLES}"
-       "${_cpa_OPTIONS}"
-       "${_cpa_LISTS}"
-       "${_cpa_argn}"
+        _cKpa
+       "${_cKpa_TOGGLES}"
+       "${_cKpa_OPTIONS}"
+       "${_cKpa_LISTS}"
+       "${_cKpa_argn}"
     )
 
     #Ensure required variables are set
-    foreach(_cpa_option_i ${_cpa_MUST_SET})
-        set(_cpa_var ${_cpa_prefix}_${_cpa_option_i})
-        _cpp_is_empty(_cpa_not_set ${_cpa_var})
-        if(_cpa_not_set)
-            _cpp_error("Required option ${_cpa_var} is not set")
+    foreach(_cKpa_option_i ${_cKpa_MUST_SET})
+        set(_cKpa_var _cKpa_${_cKpa_option_i})
+        _cpp_is_empty(_cKpa_not_set ${_cKpa_var})
+        if(_cKpa_not_set)
+            _cpp_error("Required option ${_cKpa_var} is not set")
         endif()
     endforeach()
 
-    #Forward the results
-    foreach(_cpa_category TOGGLES OPTIONS LISTS)
-        foreach(_cpa_option_i ${_cpa_${_cpa_category}})
-            set(_cpa_var ${_cpa_prefix}_${_cpa_option_i})
-            set(${_cpa_var} "${${_cpa_var}}" PARENT_SCOPE)
+    #Add them to the object
+    set(_cKpa_keys "")
+    foreach(_cKpa_category TOGGLES OPTIONS LISTS)
+        foreach(_cKpa_option_i ${_cKpa_${_cKpa_category}})
+            list(APPEND _cKpa_keys "${_cKpa_option_i}")
+            set(_cKpa_value "${_cKpa_${_cKpa_option_i}}")
+            set(_cKpa_member kwargs_${_cKpa_option_i})
+            _cpp_Object_add_members(${_cKpa_temp} ${_cKpa_member})
+            _cpp_Object_set_value(
+                ${_cKpa_temp} ${_cKpa_member} "${_cKpa_value}"
+            )
         endforeach()
     endforeach()
-    set(
-        ${_cpa_prefix}_UNPARSED_ARGUMENTS
-        ${${_cpa_prefix}_UNPARSED_ARGUMENTS}
-        PARENT_SCOPE
-    )
+    _cpp_set_return(CPP_UNPARSED_ARGUMENTS "${_cKpa_UNPARSED_ARGUMENTS}")
+    _cpp_set_return("${_cKpa_handle}" "${_cKpa_temp}")
 endfunction()

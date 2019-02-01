@@ -1,6 +1,8 @@
 set(
     CHECKS_TESTS contains
                  does_not_contain
+                 does_not_exist
+                 exists
                  is_defined
                  is_empty
                  is_list

@@ -15,19 +15,23 @@
 
 include(cpp_checks) #For _cpp_is_valid
 include(cpp_options) #For cpp_option
+include(kwargs/kwargs)
 include(toolchain/cpp_toolchain_get_vars)
 
 function(_cpp_change_toolchain)
-    cpp_parse_arguments(
-        _cct "${ARGN}"
+    _cpp_Kwargs_ctor(
+        _cct_kwargs "${ARGN}"
         OPTIONS TOOLCHAIN
         LISTS CMAKE_ARGS
     )
-    cpp_option(_cct_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
-    if(EXISTS ${_cct_TOOLCHAIN})
-        file(READ "${_cct_TOOLCHAIN}" _cct_contents)
+    _cpp_Kwargs_set_default(${_cct_kwargs} TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
+    _cpp_Kwargs_kwarg_value(${_cct_kwargs} _cct_tc TOOLCHAIN)
+    _cpp_exists(_cct_is_file "${_cct_tc}")
+    if(_cct_is_file)
+        file(READ "${_cct_tc}" _cct_contents)
     endif()
-    foreach(_cct_cmake_arg ${_cct_CMAKE_ARGS})
+    _cpp_Kwargs_kwarg_value(${_cct_kwargs} _cct_args CMAKE_ARGS)
+    foreach(_cct_cmake_arg ${_cct_args})
         string(REGEX MATCH "([^=]*)=(.*)" _cct_found "${_cct_cmake_arg}")
         set(_cct_var "${CMAKE_MATCH_1}")
         set(_cct_val "${CMAKE_MATCH_2}")
@@ -46,16 +50,15 @@ function(_cpp_change_toolchain)
         endif()
     endforeach()
     _cpp_unpack_list(_cct_unpacked "${_cct_contents}")
-    file(WRITE "${_cct_TOOLCHAIN}" "${_cct_unpacked}")
+    file(WRITE "${_cct_tc}" "${_cct_unpacked}")
 endfunction()
 
 function(_cpp_write_toolchain_file)
-    cpp_parse_arguments(
-        _cwtf "${ARGN}"
-        OPTIONS DESTINATION
-    )
-    cpp_option(_cwtf_DESTINATION "${CMAKE_BINARY_DIR}")
-    set(_cwtf_file ${_cwtf_DESTINATION}/toolchain.cmake)
+    _cpp_Kwargs_ctor(_cwtf_kwargs "${ARGN}" OPTIONS DESTINATION)
+    _cpp_Kwargs_set_default(${_cwtf_kwargs} DESTINATION ${CMAKE_BINARY_DIR})
+    _cpp_Kwargs_kwarg_value(${_cwtf_kwargs} _cwtf_dest DESTINATION)
+
+    set(_cwtf_file ${_cwtf_dest}/toolchain.cmake)
     _cpp_toolchain_get_vars(_cwtf_vars)
     foreach(_cwtf_var ${_cwtf_vars})
         _cpp_is_not_empty(_cwtf_non_empty ${_cwtf_var})

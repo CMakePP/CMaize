@@ -19,12 +19,8 @@ include(find_recipe/find_from_module/find_from_module)
 include(utility/set_return)
 
 function(_cpp_FindRecipe_factory _cFf_handle)
-    cpp_parse_arguments(
-        _cFf "${ARGN}"
-        OPTIONS NAME VERSION FIND_MODULE
-        LISTS COMPONENTS
-        MUST_SET NAME
-    )
+    set(_cFf_O_kwargs NAME VERSION FIND_MODULE)
+    cmake_parse_arguments(_cFf "" "${_cFf_O_kwargs}" "COMPONENTS" ${ARGN})
     _cpp_is_not_empty(_cFf_has_module _cFf_FIND_MODULE)
     if(_cFf_has_module)
         _cpp_FindFromModule_ctor(

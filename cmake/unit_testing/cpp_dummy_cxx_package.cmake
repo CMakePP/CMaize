@@ -49,7 +49,7 @@ function(_cpp_dummy_cxx_package _cdcp_dir _cdcp_prefix)
             "  SOURCES  a.cpp"
             "  INCLUDES a.hpp"
             ")"
-            "cpp_install(TARGETS ${_cdcp_NAME})"
+            "cpp_install(TARGETS ${_cdcp_NAME})\n"
     )
     _cpp_set_return(${_cdcp_dir} ${_cdcp_prefix}/${_cdcp_NAME})
 endfunction()

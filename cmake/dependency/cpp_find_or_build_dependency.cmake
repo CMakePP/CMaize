@@ -14,7 +14,9 @@
 ################################################################################
 
 include_guard()
-include(dependency/cpp_write_dependency_toolchain)
+include(cache/cache)
+include(get_recipe/get_recipe)
+include(build_recipe/build_recipe)
 
 ## Function for building a dependency if we can not locate it.
 #
@@ -55,51 +57,51 @@ include(dependency/cpp_write_dependency_toolchain)
 #     * *CPP_GITHUB_TOKEN* - Used to retrieve the user's token if GitHub
 #       authentication is needed.
 function(cpp_find_or_build_dependency)
-    cpp_parse_arguments(
-        _cfobd "${ARGN}"
+    _cpp_Kwargs_ctor(
+        _cfobd_kwargs "${ARGN}"
         TOGGLES PRIVATE
         OPTIONS NAME VERSION TOOLCHAIN CPP_CACHE FIND_MODULE BINARY_DIR
                 URL BRANCH SOURCE_DIR BUILD_MODULE
         LISTS COMPONENTS CMAKE_ARGS DEPENDS
         MUST_SET NAME
     )
-    cpp_option(_cfobd_TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
-    cpp_option(_cfobd_BINARY_DIR "${CMAKE_BINARY_DIR}")
-    cpp_option(_cfobd_CPP_CACHE "${CPP_INSTALL_CACHE}")
+    _cpp_Kwargs_set_default(${_cfobd_kwargs} TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_TOOLCHAIN TOOLCHAIN)
+    _cpp_Kwargs_set_default(${_cfobd_kwargs} BINARY_DIR ${CMAKE_BINARY_DIR})
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_BINARY_DIR BINARY_DIR)
+    _cpp_Kwargs_set_default(${_cfobd_kwargs} CPP_CACHE ${CPP_INSTALL_CACHE})
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_CPP_CACHE CPP_CACHE)
 
-    #Make install path
-
-    #First part of install path is the version of the source
+    _cpp_Cache_ctor(_cfobd_cache ${_cfobd_CPP_CACHE})
     _cpp_GetRecipe_factory(_cfobd_get_recipe ${ARGN})
-    _cpp_Object_get_value(${_cfobd_get_recipe} _cfobd_version version)
-    set(_cfobd_name_ver "${_cfobd_NAME}/${_cfobd_version}")
-    set(_cfobd_bin_root ${_cfobd_BINARY_DIR}/${_cfobd_name_ver})
-    file(MAKE_DIRECTORY ${_cfobd_bin_root})
-    set(_cfobd_tar ${_cfobd_bind_root}/${_cfobd_NAME}.${_cfobd_verson}.tar.gz)
-    _cpp_GetRecipe_get_source(${_cfobd_get_recipe} ${_cfobd_tar})
-    file(SHA1 ${_cfobd_tar} _cfobd_version_hash)
-    set(
-         _cfobd_install
-         ${_cfobd_CPP_CACHE}/${_cfobd_name_ver}/${_cfobd_version_hash}
-    )
+    _cpp_Cache_save_source(${_cfobd_cache} _cfobd_src ${_cfobd_get_recipe})
 
-    #Second part is the build configuration
-    _cpp_untar_directory(${_cfobd_tar} ${_cfobd_bin_root}/src)
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_NAME NAME)
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_VERSION VERSION)
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_BUILD_MODULE BUILD_MODULE)
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_CMAKE_ARGS CMAKE_ARGS)
+
     _cpp_BuildRecipe_factory(
         _cfobd_build_recipe
-        ${_cfobd_bin_root}/src
+        ${_cfobd_src}
+        NAME "${_cfobd_NAME}"
+        VERSION "${_cfobd_VERSION}"
         BUILD_MODULE "${_cfobd_BUILD_MODULE}"
         TOOLCHAIN "${_cfobd_TOOLCHAIN}"
         ARGS "${_cfobd_CMAKE_ARGS}"
     )
 
-    _cpp_BuildRecipe_hash(${_cfobd_build_recipe} _cfobd_build_hash)
-
-    #Dant, dant, dant, dant, dant, daaaa the install path
-    set(_cfobd_install "${_cfobd_install}/${_cfobd_src_hash}")
+    _cpp_Cache_install_dir(
+       ${_cfobd_cache}
+       _cfobd_install
+       ${_cfobd_get_recipe}
+       ${_cfobd_build_recipe}
+    )
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_FIND_MODULE FIND_MODULE)
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_COMPONENTS COMPONENTS)
 
     #Look for dependency
-    cpp_find_dependency(
+        cpp_find_dependency(
         OPTIONAL
         NAME ${_cfobd_NAME}
         VERSION "${_cfobd_VERSION}"

@@ -22,11 +22,7 @@ function(cpp_cmake_unit_test _ccut_name _ccut_label)
     _cpp_debug_print("  File: ${_ccut_test_file}")
 endfunction()
 
-foreach(subdir_i build_recipe dependency get_recipe find_recipe logic object serialization string)
-
-
-        #cache cmake_helpers compression dependency logic
-        #         object options recipes serialization string target toolchain
-        #         use_cases utility)
+foreach(subdir_i build_recipe cache dependency get_recipe find_recipe kwargs
+                 logic object serialization string utility)
     add_subdirectory(${subdir_i})
 endforeach()

@@ -17,7 +17,8 @@ include(build_recipe/build_with_cmake/ctor)
 include(build_recipe/build_with_module/ctor)
 
 function(_cpp_BuildRecipe_factory _cBf_handle _cBf_src)
-    cpp_parse_arguments(_cBf "${ARGN}" OPTIONS BUILD_MODULE TOOLCHAIN ARGS)
+    set(_cBf_O_kwargs NAME VERSION BUILD_MODULE TOOLCHAIN ARGS)
+    cmake_parse_arguments(_cBf "" "${_cBf_O_kwargs}" "" ${ARGN})
     cpp_option(_cBf_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
     _cpp_is_not_empty(_cBf_module _cBf_BUILD_MODULE)
     _cpp_exists(_cBf_has_lists "${_cBf_src}/CMakeLists.txt")
@@ -26,13 +27,20 @@ function(_cpp_BuildRecipe_factory _cBf_handle _cBf_src)
         _cpp_BuildWithModule_ctor(
             _cBf_temp
             "${_cBf_BUILD_MODULE}"
+            "${_cBf_NAME}"
+            "${_cBf_VERSION}"
             "${_cBf_src}"
             "${_cBf_TOOLCHAIN}"
             "${_cBf_ARGS}"
         )
     elseif(_cBf_has_lists)
         _cpp_BuildWithCMake_ctor(
-           _cBf_temp "${_cBf_src}" "${_cBf_TOOLCHAIN}" "${_cBf_ARGS}"
+           _cBf_temp
+           "${_cBf_NAME}"
+           "${_cBf_VERSION}"
+           "${_cBf_src}"
+           "${_cBf_TOOLCHAIN}"
+           "${_cBf_ARGS}"
         )
     elseif(_cBf_has_conf)
         _cpp_error("Autotools is not enabled yet")
