@@ -14,8 +14,8 @@
 ################################################################################
 
 include_guard()
-
 include(find_recipe/ctor)
+include(find_recipe/find_from_config/ctor_add_kwargs)
 
 ## Class holding information for finding a dependency from a CMake config module
 #
@@ -23,13 +23,13 @@ include(find_recipe/ctor)
 # * config_path - The path to the directoy containing the config file.
 #
 # :param handle: The identifier that will contain the object.
-# :param name: The name of the dependency.
-# :param version: The version of the dependency we are looking for.
-# :param comps: A list of components that the dependency must have.
-function(_cpp_FindFromConfig_ctor _cFc_handle _cFc_name _cFc_version _cFc_comps)
-    _cpp_FindRecipe_ctor(
-        _cFc_temp "${_cFc_name}" "${_cFc_version}" "${_cFc_components}"
-    )
+# :param kwargs: A handle to the ``Kwargs`` instance
+function(_cpp_FindFromConfig_ctor _cFc_handle _cFc_kwargs)
+    _cpp_FindFromConfig_ctor_add_kwargs(${_cFc_kwargs})
+    _cpp_Kwargs_parse_argn(${_cFc_kwargs} ${ARGN})
+    _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_name NAME)
+
+    _cpp_FindRecipe_ctor(_cFc_temp ${_cFc_kwargs})
     _cpp_Object_set_type(${_cFc_temp} FindFromConfig)
     _cpp_Object_add_members(${_cFc_temp} config_path)
 

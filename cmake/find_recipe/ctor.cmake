@@ -14,6 +14,7 @@
 ################################################################################
 
 include_guard()
+include(find_recipe/ctor_add_kwargs)
 include(object/object)
 include(string/cpp_string_cases)
 include(utility/set_return)
@@ -41,9 +42,7 @@ include(utility/set_return)
 #     dependency again.
 #
 # :param handle: An identifier to store the handle to the created object
-# :param name: The name of the dependency
-# :param version: The version of the dependency we are looking for.
-# :param comps: A list of components of the dependency that we must find.
+# :param kwags: A handle to the kwargs the ctor should use
 #
 # :CMake Variables:
 #
@@ -53,7 +52,13 @@ include(utility/set_return)
 #     all capital letters.
 #   * *<name>_ROOT* - Here ``<name>`` is the value of the ``name`` variable in
 #     all lowercase letters.
-function(_cpp_FindRecipe_ctor _cFc_handle _cFc_name _cFc_version _cFc_comps)
+function(_cpp_FindRecipe_ctor _cFc_handle _cFc_kwargs)
+    _cpp_FindRecipe_ctor_add_kwargs(${_cFc_kwargs})
+    _cpp_Kwargs_parse_argn(${_cFc_kwargs} ${ARGN})
+    _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_name NAME)
+    _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_version VERSION)
+    _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_comps COMPONENTS)
+
     _cpp_is_empty(_cFc_name_not_set _cFc_name)
     if(_cFc_name_not_set)
         _cpp_error("Dependency name must be set.")

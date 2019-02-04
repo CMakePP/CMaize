@@ -15,4 +15,5 @@
 
 include_guard()
 include(find_recipe/find_from_module/ctor)
+include(find_recipe/find_from_module/ctor_add_kwargs)
 include(find_recipe/find_from_module/find_dependency)
