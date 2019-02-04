@@ -41,7 +41,7 @@ function(_cpp_assemble_gh_url _cagu_url _cagu_org _cagu_repo _cagu_private
             _cagu_prefix
             "https://api.github.com/repos/${_cagu_org}/${_cagu_repo}/tarball"
     )
-    _cpp_is_not_empty(_cagu_have_version _cagu_version)
+    _cpp_are_not_equal(_cagu_have_version "${_cagu_version}" "latest")
 
     if(_cagu_have_version)
         set(_cagu_tar "${_cagu_version}")

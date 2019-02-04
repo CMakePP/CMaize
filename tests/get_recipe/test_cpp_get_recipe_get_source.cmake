@@ -8,8 +8,9 @@ set(tar_file ${test_prefix}/${test_number}/test.tar)
 _cpp_add_test(
 TITLE "Correctly dispatches to GetFromURL"
 "include(get_recipe/get_from_url/get_from_url)"
-"include(get_recipe/get_recipe)"
-"_cpp_GetFromURL_ctor(handle ${url} depend \"\")"
+"include(get_recipe/get_source)"
+"_cpp_Kwargs_ctor(kwargs)"
+"_cpp_GetFromURL_ctor(handle ${url} \${kwargs} NAME depend)"
 "_cpp_exists(test ${tar_file})"
 "_cpp_assert_false(test)"
 "_cpp_GetRecipe_get_source(\${handle} ${tar_file})"
@@ -25,8 +26,9 @@ set(tar_file ${test_prefix}/${test_number}/test.tar)
 _cpp_add_test(
 TITLE "Correctly dispatches to GetFromDisk"
 "include(get_recipe/get_from_disk/get_from_disk)"
-"include(get_recipe/get_recipe)"
-"_cpp_GetFromDisk_ctor(handle ${test_dir} depend \"\")"
+"include(get_recipe/get_source)"
+"_cpp_Kwargs_ctor(kwargs)"
+"_cpp_GetFromDisk_ctor(handle ${test_dir} \${kwargs} NAME depend)"
 "_cpp_exists(test ${tar_file})"
 "_cpp_assert_false(test)"
 "_cpp_GetRecipe_get_source(\${handle} ${tar_file})"

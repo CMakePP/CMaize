@@ -14,8 +14,10 @@
 ################################################################################
 
 include_guard()
-include(object/object)
 include(get_recipe/ctor)
+include(get_recipe/get_from_url/ctor_add_kwargs)
+include(kwargs/kwargs)
+include(object/object)
 include(utility/set_return)
 
 ## Constructs an instance of the derived GetRecipe type GetFromURL
@@ -26,15 +28,16 @@ include(utility/set_return)
 #
 # :param handle: An identifier to hold the handle to the returned object.
 # :param url: The URL to download the source from
-# :param name: The name of the dependency this recipe is for.
-# :param version: The version of the dependency this get recipe fetches.
-function(_cpp_GetFromURL_ctor _cGc_handle _cGc_url _cGc_name _cGc_version)
+# :param kwargs: A kwargs instance with input options
+function(_cpp_GetFromURL_ctor _cGc_handle _cGc_url _cGc_kwargs)
+    _cpp_GetFromURL_ctor_add_kwargs(${_cGc_kwargs})
+    _cpp_Kwargs_parse_argn(${_cGc_kwargs} ${ARGN})
+
     _cpp_is_empty(_cGc_no_url _cGc_url)
     if(_cGc_no_url)
         _cpp_error("No URL was specified.")
     endif()
-
-    _cpp_GetRecipe_ctor(_cGc_temp "${_cGc_name}" "${_cGc_version}")
+    _cpp_GetRecipe_ctor(_cGc_temp ${_cGc_kwargs})
     _cpp_Object_add_members(${_cGc_temp} url)
     _cpp_Object_set_value(${_cGc_temp} url "${_cGc_url}")
     _cpp_Object_set_type(${_cGc_temp} GetFromURL)

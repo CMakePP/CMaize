@@ -73,7 +73,7 @@ function(cpp_find_or_build_dependency)
     _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_CPP_CACHE CPP_CACHE)
 
     _cpp_Cache_ctor(_cfobd_cache ${_cfobd_CPP_CACHE})
-    _cpp_GetRecipe_factory(_cfobd_get_recipe ${ARGN})
+    _cpp_GetRecipe_factory(_cfobd_get_recipe ${_cfobd_kwargs})
     _cpp_Cache_save_source(${_cfobd_cache} _cfobd_src ${_cfobd_get_recipe})
 
     _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_NAME NAME)

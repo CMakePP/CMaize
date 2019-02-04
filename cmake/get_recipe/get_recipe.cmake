@@ -16,6 +16,8 @@
 include_guard()
 
 include(get_recipe/ctor)
+include(get_recipe/ctor_add_kwargs)
 include(get_recipe/factory)
+include(get_recipe/factory_add_kwargs)
 include(get_recipe/get_source)
 

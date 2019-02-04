@@ -1,5 +1,6 @@
-set(TESTS kwargs_ctor
-          kwargs_unique
+set(TESTS kwargs_add_keywords
+          kwargs_ctor
+          kwargs_parse_argn
           option
 )
 
