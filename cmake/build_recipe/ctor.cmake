@@ -14,6 +14,7 @@
 ################################################################################
 
 include_guard()
+include(build_recipe/ctor_add_kwargs)
 include(object/object)
 include(utility/set_return)
 
@@ -27,10 +28,16 @@ include(utility/set_return)
 #     * args - A list of build options
 #
 # :param handle: An identifier to store the resulting object's handle in.
-# :param src: The path to the root of the source tree.
-# :param args: A list of build options for the dependency.
-function(_cpp_BuildRecipe_ctor _cBc_handle _cBc_name _cBc_version _cBc_src
-                               _cBc_toolchain _cBc_args)
+# :param kwargs: A handle to the kwargs instance to use.
+function(_cpp_BuildRecipe_ctor _cBc_handle _cBc_kwargs)
+    _cpp_BuildRecipe_ctor_add_kwargs(${_cBc_kwargs})
+    _cpp_Kwargs_parse_argn(${_cBc_kwargs} ${ARGN})
+    _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_src SOURCE_DIR)
+    _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_name NAME)
+    _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_version VERSION)
+    _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_toolchain TOOLCHAIN)
+    _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_args CMAKE_ARGS)
+
     _cpp_does_not_exist(_cBc_dne "${_cBc_src}")
     if(_cBc_dne)
         _cpp_error("The source directory: ${_cBc_src} does not exist.")

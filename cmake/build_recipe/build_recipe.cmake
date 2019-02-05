@@ -17,4 +17,6 @@ include_guard()
 
 include(build_recipe/build_dependency)
 include(build_recipe/ctor)
+include(build_recipe/ctor_add_kwargs)
 include(build_recipe/factory)
+include(build_recipe/factory_add_kwargs)

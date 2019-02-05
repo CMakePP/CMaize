@@ -35,11 +35,11 @@ include(utility/set_return)
 #     * *CPP_GITHUB_TOKEN* - Used to get the user's GitHub access token if we
 #       are cloning a private repository.
 function(_cpp_assemble_gh_url _cagu_url _cagu_org _cagu_repo _cagu_private
-         _cagu_branch _cagu_version)
+                               _cagu_branch _cagu_version)
 
     set(
-            _cagu_prefix
-            "https://api.github.com/repos/${_cagu_org}/${_cagu_repo}/tarball"
+        _cagu_prefix
+        "https://api.github.com/repos/${_cagu_org}/${_cagu_repo}/tarball"
     )
     _cpp_are_not_equal(_cagu_have_version "${_cagu_version}" "latest")
 

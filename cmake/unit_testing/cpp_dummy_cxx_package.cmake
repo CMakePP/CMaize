@@ -43,7 +43,7 @@ function(_cpp_dummy_cxx_package _cdcp_dir _cdcp_prefix)
     _cpp_write_list(
             ${_cdcp_root}
             NAME ${_cdcp_NAME}
-            CONTENTS "include(cpp_targets)"
+            CONTENTS "include(user_api/cpp_add_library)"
             "cpp_add_library("
             "  ${_cdcp_NAME}"
             "  SOURCES  a.cpp"

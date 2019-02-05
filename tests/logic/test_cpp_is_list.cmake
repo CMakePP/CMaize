@@ -33,7 +33,7 @@ TITLE "Empty string plus item is a list"
 "_cpp_assert_true(test)"
 )
 
-set(escape "\\\\\\\\\\\\\\\\\\\\;")
+set(escape "\\\\\\\\\\\\\\\\\\\\\\;")
 _cpp_add_test(
 TITLE "Escaped semicolon is not a list"
 "include(logic/is_list)"

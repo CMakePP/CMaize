@@ -24,8 +24,8 @@ TITLE "Normal list"
 "_cpp_assert_equal(\"\${test}\" \"[ \\\"one\\\" , \\\"two\\\" ]\")"
 )
 
-set(escape1 "\\\\\\\\\\\\\\\\;")
-set(escape2 "\\\\\\\\\\\\\\\\\\\\;")
+set(escape1 "\\\\\\\\\\\\\\\\\\\\;")
+set(escape2 "\\\\\\\\\\\\\\\\\\\\\\\;")
 _cpp_add_test(
 TITLE "Nested list"
 "include(serialization/serialize_value)"

@@ -7,8 +7,9 @@ _cpp_dummy_build_module(module ${test_prefix})
 _cpp_add_test(
 TITLE "Basic usage"
 "include(build_recipe/build_with_module/build_with_module)"
+"_cpp_Kwargs_ctor(kwargs)"
 "_cpp_BuildWithModule_ctor("
-"   handle \"${module}\" \"${path}\" \"${CMAKE_TOOLCHAIN_FILE}\" \"\""
+"   handle \"${module}\" \${kwargs} NAME dummy SOURCE_DIR \"${path}\""
 ")"
 "_cpp_assert_does_not_exist(${path}/install)"
 "_cpp_BuildWithModule_build_dependency(\${handle} ${path}/install)"

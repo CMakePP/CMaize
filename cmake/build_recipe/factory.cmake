@@ -13,38 +13,29 @@
 #                        limitations under the License.                        #
 ################################################################################
 
+include_guard()
 include(build_recipe/build_with_cmake/ctor)
 include(build_recipe/build_with_module/ctor)
+include(build_recipe/factory_add_kwargs)
 
-function(_cpp_BuildRecipe_factory _cBf_handle _cBf_src)
-    set(_cBf_O_kwargs NAME VERSION BUILD_MODULE TOOLCHAIN ARGS)
-    cmake_parse_arguments(_cBf "" "${_cBf_O_kwargs}" "" ${ARGN})
-    cpp_option(_cBf_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
-    _cpp_is_not_empty(_cBf_module _cBf_BUILD_MODULE)
+function(_cpp_BuildRecipe_factory _cBf_handle _cBf_kwargs)
+    _cpp_BuildRecipe_factory_add_kwargs(${_cBf_kwargs})
+    _cpp_Kwargs_parse_argn(${_cBf_kwargs} ${ARGN})
+    _cpp_Kwargs_kwarg_value(${_cBf_kwargs} _cBf_build_module BUILD_MODULE)
+    _cpp_Kwargs_kwarg_value(${_cBf_kwargs} _cBf_src SOURCE_DIR)
+
+    _cpp_is_not_empty(_cBf_module _cBf_build_module)
     _cpp_exists(_cBf_has_lists "${_cBf_src}/CMakeLists.txt")
     _cpp_exists(_cBf_has_conf  "${_cBf_src}/configure")
     if(_cBf_module)
         _cpp_BuildWithModule_ctor(
-            _cBf_temp
-            "${_cBf_BUILD_MODULE}"
-            "${_cBf_NAME}"
-            "${_cBf_VERSION}"
-            "${_cBf_src}"
-            "${_cBf_TOOLCHAIN}"
-            "${_cBf_ARGS}"
+                _cBf_temp "${_cBf_build_module}" ${_cBf_kwargs}
         )
     elseif(_cBf_has_lists)
-        _cpp_BuildWithCMake_ctor(
-           _cBf_temp
-           "${_cBf_NAME}"
-           "${_cBf_VERSION}"
-           "${_cBf_src}"
-           "${_cBf_TOOLCHAIN}"
-           "${_cBf_ARGS}"
-        )
+        _cpp_BuildWithCMake_ctor(_cBf_temp ${_cBf_kwargs})
     elseif(_cBf_has_conf)
         _cpp_error("Autotools is not enabled yet")
-        _cpp_BuildWithAutotools_ctor(_cBf_temp "${_cBf_src}" "${_cBf_ARGS}")
+        _cpp_BuildWithAutotools_ctor(_cBf_temp ${_cBf_kwargs})
     else()
         _cpp_error("Not sure how to build dependency.")
     endif()

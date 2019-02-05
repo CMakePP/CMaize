@@ -160,11 +160,16 @@ does not pass the kwargs to any subfunctions. The relevant code is:
 
 
 The first eight lines define a function that encapsulates adding the keywords to
-the ``Kwargs`` object.  The next five lines are the implementation of our
-function. The first line of our function piggybacks off of the ``add_kwargs``
-function to setup the ``Kwargs`` instance before parsing ``ARGN`` on the next
-line. If our function called a function ``fxn_2`` that also used kwargs we'd
-need to modify ``_cpp_our_fxn_add_kwargs`` as follows:
+the ``Kwargs`` object.  If we wanted to set defaults for the kwargs, or mark a
+kwarg as required, this is where we'd do it. The next five lines are the
+implementation of our function. The first line of our function piggybacks off
+of the ``add_kwargs`` function to setup the ``Kwargs`` instance before
+parsing ``ARGN`` on the next line. With this pattern it is always possible to
+call our function with CMake native kwargs (*i.e.*, like the last line) or to
+pass a ``Kwargs`` instance to our function.
+
+If our function called a function ``fxn_2`` that also used kwargs we'd need to
+modify ``_cpp_our_fxn_add_kwargs`` as follows:
 
 .. code-block:: cmake
 
@@ -178,4 +183,8 @@ need to modify ``_cpp_our_fxn_add_kwargs`` as follows:
         )
     endfunction()
 
-Our actual function remains the same.
+Our actual function remains the same. Note that with this single adjustment the
+``Kwargs`` instance now knows about all keywords needed by ``fxn_2`` (and its
+subfunctions) without us having to explicitly list them. The only coupling we
+pick up is to the name of the subfunction. Furthermore, this coupling is
+encapsulated to functions that call ``our_fxn``.

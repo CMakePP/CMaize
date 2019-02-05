@@ -7,15 +7,8 @@ _cpp_add_test(
 TITLE "Fails if module does not exist"
 SHOULD_FAIL REASON "Build module: not/a/path does not exist."
 "include(build_recipe/build_with_module/ctor)"
-"_cpp_BuildWithModule_ctor("
-"   handle"
-"   \"not/a/path\""
-"   dummy"
-"   \"\""
-"   \"${path}\""
-"   \"${CMAKE_TOOLCHAIN_FILE}\""
-"   \"\""
-")"
+"_cpp_Kwargs_ctor(kwargs)"
+"_cpp_BuildWithModule_ctor(handle \"not/a/path\" \${kwargs} NAME dummy)"
 )
 
 _cpp_dummy_cxx_package(path ${test_prefix}/${test_number})
@@ -24,8 +17,9 @@ _cpp_dummy_build_module(module ${path})
 _cpp_add_test(
 TITLE "Basic usage"
 "include(build_recipe/build_with_module/ctor)"
+"_cpp_Kwargs_ctor(kwargs)"
 "_cpp_BuildWithModule_ctor("
-"   handle \"${module}\" dummy \"\" \"${path}\" \"${CMAKE_TOOLCHAIN_FILE}\"\"\""
+"   handle \"${module}\" \${kwargs} NAME dummy SOURCE_DIR \"${path}\""
 ")"
 "_cpp_Object_get_value(\${handle} test module_path)"
 "_cpp_assert_equal(\"\${test}\" \"${module}\")"

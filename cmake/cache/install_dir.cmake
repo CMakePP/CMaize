@@ -18,7 +18,7 @@ function(_cpp_Cache_install_dir _cCid_handle _cCid_dir _cCid_get_recipe
 
     file(SHA1 ${_cCid_src} _cCid_hash)
     file(SHA1 ${_cCid_tc} _cCid_tc_hash)
-    set(_cCid_temp ${_cCid_root}/install/${_cCid_hash}/${_cCid_tc_hash}/)
+    set(_cCid_temp ${_cCid_root}/install/${_cCid_hash}/${_cCid_tc_hash})
     set(_cCid_arg_file ${_cCid_temp}/args.cmake)
     file(WRITE ${_cCid_arg_file} "${_cCid_args}")
     file(SHA1 ${_cCid_arg_file} _cCid_arg_hash)

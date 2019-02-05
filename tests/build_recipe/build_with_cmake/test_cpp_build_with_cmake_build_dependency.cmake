@@ -6,7 +6,8 @@ _cpp_dummy_cxx_package(path ${test_prefix}/${test_number})
 _cpp_add_test(
 TITLE "Basic usage"
 "include(build_recipe/build_with_cmake/build_with_cmake)"
-"_cpp_BuildWithCMake_ctor(handle \"${path}\" \"${CMAKE_TOOLCHAIN_FILE}\" \"\")"
+"_cpp_Kwargs_ctor(kwargs)"
+"_cpp_BuildWithCMake_ctor(handle \${kwargs} NAME dummy SOURCE_DIR \"${path}\")"
 "_cpp_assert_does_not_exist(${path}/install)"
 "_cpp_BuildWithCMake_build_dependency(\${handle} ${path}/install)"
 "_cpp_assert_exists(${path}/install)"

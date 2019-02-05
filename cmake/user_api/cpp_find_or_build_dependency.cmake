@@ -17,6 +17,7 @@ include_guard()
 include(cache/cache)
 include(get_recipe/get_recipe)
 include(build_recipe/build_recipe)
+include(user_api/find_or_build_dependency_add_kwargs)
 
 ## Function for building a dependency if we can not locate it.
 #
@@ -57,58 +58,30 @@ include(build_recipe/build_recipe)
 #     * *CPP_GITHUB_TOKEN* - Used to retrieve the user's token if GitHub
 #       authentication is needed.
 function(cpp_find_or_build_dependency)
-    _cpp_Kwargs_ctor(
-        _cfobd_kwargs "${ARGN}"
-        TOGGLES PRIVATE
-        OPTIONS NAME VERSION TOOLCHAIN CPP_CACHE FIND_MODULE BINARY_DIR
-                URL BRANCH SOURCE_DIR BUILD_MODULE
-        LISTS COMPONENTS CMAKE_ARGS DEPENDS
-        MUST_SET NAME
-    )
-    _cpp_Kwargs_set_default(${_cfobd_kwargs} TOOLCHAIN ${CMAKE_TOOLCHAIN_FILE})
+    _cpp_Kwargs_ctor(_cfobd_kwargs)
+    _cpp_find_or_build_dependency_add_kwargs(${_cfobd_kwargs})
+    _cpp_Kwargs_parse_argn(${_cfobd_kwargs} ${ARGN})
     _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_TOOLCHAIN TOOLCHAIN)
-    _cpp_Kwargs_set_default(${_cfobd_kwargs} BINARY_DIR ${CMAKE_BINARY_DIR})
     _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_BINARY_DIR BINARY_DIR)
-    _cpp_Kwargs_set_default(${_cfobd_kwargs} CPP_CACHE ${CPP_INSTALL_CACHE})
-    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_CPP_CACHE CPP_CACHE)
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_cpp_cache CPP_CACHE)
+    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_name NAME)
 
-    _cpp_Cache_ctor(_cfobd_cache ${_cfobd_CPP_CACHE})
-    _cpp_GetRecipe_factory(_cfobd_get_recipe ${_cfobd_kwargs})
-    _cpp_Cache_save_source(${_cfobd_cache} _cfobd_src ${_cfobd_get_recipe})
+    _cpp_Cache_ctor(_cfobd_cache ${_cfobd_cpp_cache})
+    _cpp_GetRecipe_factory(_cfobd_grecipe ${_cfobd_kwargs})
+    _cpp_Cache_save_source(${_cfobd_cache} _cfobd_src ${_cfobd_grecipe})
 
-    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_NAME NAME)
-    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_VERSION VERSION)
-    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_BUILD_MODULE BUILD_MODULE)
-    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_CMAKE_ARGS CMAKE_ARGS)
 
     _cpp_BuildRecipe_factory(
-        _cfobd_build_recipe
-        ${_cfobd_src}
-        NAME "${_cfobd_NAME}"
-        VERSION "${_cfobd_VERSION}"
-        BUILD_MODULE "${_cfobd_BUILD_MODULE}"
-        TOOLCHAIN "${_cfobd_TOOLCHAIN}"
-        ARGS "${_cfobd_CMAKE_ARGS}"
+        _cfobd_brecipe ${_cfobd_kwargs} SOURCE_DIR ${_cfobd_src}
     )
 
     _cpp_Cache_install_dir(
-       ${_cfobd_cache}
-       _cfobd_install
-       ${_cfobd_get_recipe}
-       ${_cfobd_build_recipe}
+        ${_cfobd_cache} _cfobd_install ${_cfobd_grecipe} ${_cfobd_brecipe}
     )
-    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_FIND_MODULE FIND_MODULE)
-    _cpp_Kwargs_kwarg_value(${_cfobd_kwargs} _cfobd_COMPONENTS COMPONENTS)
 
     #Look for dependency
-        cpp_find_dependency(
-        OPTIONAL
-        NAME ${_cfobd_NAME}
-        VERSION "${_cfobd_VERSION}"
-        FIND_MODULE "${_cfobd_FIND_MODULE}"
-        RESULT _cfobd_found
-        PATHS "${_cfobd_install}"
-        COMPONENTS "${_cfobd_COMPONENTS}"
+    _cpp_find_dependency_guts(
+        ${_cfobd_kwargs} OPTIONAL RESULT _cfobd_found PATHS "${_cfobd_install}"
     )
     if("${_cfobd_found}")
         return()
@@ -116,16 +89,10 @@ function(cpp_find_or_build_dependency)
 
     #Not found, build it
 
-    message("Building ${_cfobd_NAME} from source. This may take awhile.")
-    _cpp_BuildRecipe_build_dependency(${_cfobd_build_recipe} ${_cfobd_install})
+    message("Building ${_cfobd_name} from source. This may take awhile.")
+    _cpp_BuildRecipe_build_dependency(${_cfobd_brecipe} ${_cfobd_install})
 
     #Find the built one
-    cpp_find_dependency(
-        NAME ${_cfobd_NAME}
-        VERSION "${_cfobd_VERSION}"
-        FIND_MODULE "${_cfobd_FIND_MODULE}"
-        PATHS "${_cfobd_install}"
-        COMPONENTS "${_cfobd_COMPONENTS}"
-    )
+    _cpp_find_dependency_guts(${_cfobd_kwargs} PATHS "${_cfobd_install}")
 endfunction()
 

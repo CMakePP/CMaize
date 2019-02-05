@@ -42,8 +42,8 @@ TITLE "Normal list"
 "_cpp_assert_equal(\"\${buffer}\" \"\")"
 )
 
-set(escape1 "\\\\\\\\\\\\\\\\;")
-set(escape2 "\\\\\\\\\\\\\\\\\\\\;")
+set(escape1 "\\\\\\\\\\\\\\\\\\\\;")
+set(escape2 "\\\\\\\\\\\\\\\\\\\\\\\;")
 _cpp_add_test(
 TITLE "Nested list"
 "include(serialization/deserialize_value)"

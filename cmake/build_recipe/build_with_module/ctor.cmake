@@ -16,23 +16,23 @@
 include_guard()
 
 include(build_recipe/ctor)
+include(build_recipe/ctor_add_kwargs)
 include(utility/set_return)
 
-function(_cpp_BuildWithModule_ctor _cBc_handle _cBc_module _cBc_name
-                                   _cBc_version _cBc_src _cBc_tc _cBc_args)
+## Class responsible for building a dependency using a build module
+#
+# :param handle: An identifier whose value will be the returned object
+# :param modlue: The path to the build module
+# :param kwargs: A ``Kwargs`` instance with the input kwargs
+function(_cpp_BuildWithModule_ctor _cBc_handle _cBc_module _cBc_kwargs)
+    _cpp_BuildRecipe_ctor_add_kwargs(${_cBc_kwargs})
+    _cpp_Kwargs_parse_argn(${_cBc_kwargs} ${ARGN})
     _cpp_does_not_exist(_cBc_dne "${_cBc_module}")
     if(_cBc_dne)
         _cpp_error("Build module: ${_cBc_module} does not exist.")
     endif()
 
-    _cpp_BuildRecipe_ctor(
-        _cBc_temp
-        "${_cBc_name}"
-        "${_cBc_version}"
-        "${_cBc_src}"
-        "${_cBc_tc}"
-        "${_cBc_args}"
-    )
+    _cpp_BuildRecipe_ctor(_cBc_temp ${_cBc_kwargs})
     _cpp_Object_set_type(${_cBc_temp} BuildWithModule)
     _cpp_Object_add_members(${_cBc_temp} module_path)
     _cpp_Object_set_value(${_cBc_temp} module_path ${_cBc_module})

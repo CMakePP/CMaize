@@ -47,6 +47,7 @@ function(_cpp_FindFromConfig_find_dependency _cFfd_handle _cFfd_version
     _cpp_FindFromConfig_handle_dir(${_cFfd_handle})
     _cpp_FindRecipe_handle_found_var(${_cFfd_handle})
     _cpp_Object_get_value(${_cFfd_handle} _cFfd_found found)
+    message("${_cFfd_name}_FOUND: ${_cFfd_found}")
     if("${_cFfd_found}")
         _cpp_handle_target_vars(${_cFfd_name})
         _cpp_Object_set_value(${_cFfd_handle} paths "${CMAKE_PREFIX_PATH}")

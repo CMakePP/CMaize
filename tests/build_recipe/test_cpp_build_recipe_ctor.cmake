@@ -6,18 +6,16 @@ _cpp_add_test(
 TITLE "Fails if source DNE"
 SHOULD_FAIL REASON "The source directory: not/a/path does not exist."
 "include(build_recipe/ctor)"
-"_cpp_BuildRecipe_ctor("
-"   handle dummy \"\" \"not/a/path\" \"${CMAKE_TOOLCHAIN_FILE}\" \"\""
-")"
+"_cpp_Kwargs_ctor(kwargs)"
+"_cpp_BuildRecipe_ctor(handle \${kwargs} NAME dummy SOURCE_DIR \"not/a/path\")"
 )
 
 _cpp_dummy_cxx_package(path ${test_prefix}/${test_number})
 _cpp_add_test(
 TITLE "Basic usage"
 "include(build_recipe/ctor)"
-"_cpp_BuildRecipe_ctor("
-"   handle dummy \"\" \"${path}\" \"${CMAKE_TOOLCHAIN_FILE}\" \"\""
-")"
+"_cpp_Kwargs_ctor(kwargs)"
+"_cpp_BuildRecipe_ctor(handle \${kwargs} NAME dummy SOURCE_DIR \"${path}\")"
 "_cpp_Object_get_value(\${handle} test src)"
 "_cpp_assert_equal(\"\${test}\" \"${path}\")"
 "_cpp_Object_get_value(\${handle} test args)"
