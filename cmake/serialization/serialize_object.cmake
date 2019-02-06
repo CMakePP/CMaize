@@ -20,7 +20,7 @@ include(object/object)
 ## Serializes a CPP object into JSON format
 #
 # This function ultimately loops over every member of the object and then passes
-# that element to :ref:`serialize_value-label`.
+# that element to :ref:`cpp_serialize_value-label`.
 #
 # :param return: An identifier to hold the returned object
 # :param handle: A handle to an object

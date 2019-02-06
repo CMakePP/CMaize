@@ -28,6 +28,7 @@ include(string/cpp_string_cases)
 #
 # * ``<XXX>_INCLUDE_DIRS`` for the directories containing header files
 # * ``<XXX>_LIBRARIES`` for the libraries to link against
+# * ``<XXX>_DEFINITIONS`` for constants that are defined at compile-time
 #
 # In all cases ``XXX`` is the name of the dependency assuming it adheres to one
 # of the following capitalization schemes:
@@ -66,6 +67,12 @@ function(_cpp_handle_target_vars _chtv_name)
         _cpp_is_not_empty(_chtv_has_libs ${_chtv_lib})
         if(_chtv_has_libs)
             target_link_libraries(${_chtv_name} INTERFACE ${${_chtv_lib}})
+        endif()
+
+        set(_chtv_defs ${_chtv_var}_DEFINITIONS)
+        _cpp_is_not_empty(_chtv_has_defs ${_chtv_defs})
+        if(_chtv_has_defs)
+            target_compile_definitions(${_chtv_name} INTERFACE ${${_chtv_defs}})
         endif()
     endforeach()
 

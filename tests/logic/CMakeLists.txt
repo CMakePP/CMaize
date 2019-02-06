@@ -1,5 +1,7 @@
 set(
-    CHECKS_TESTS contains
+    CHECKS_TESTS are_equal
+                 are_not_equal
+                 contains
                  does_not_contain
                  does_not_exist
                  exists

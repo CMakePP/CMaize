@@ -53,3 +53,20 @@ TITLE "Providing a list kwarg and then another kwarg results in empty string"
 "_cpp_is_empty(test_output test)"
 "_cpp_assert_true(test_output)"
 )
+
+_cpp_add_test(
+TITLE "Leaves set toggles alone"
+"include(kwargs/kwargs)"
+"_cpp_Kwargs_ctor(kwargs)"
+"_cpp_Kwargs_add_keywords(\${kwargs} TOGGLES toggle_a toggle_b)"
+"_cpp_Kwargs_set_kwarg(\${kwargs} toggle_a TRUE)"
+"_cpp_Kwargs_kwarg_value(\${kwargs} test toggle_a)"
+"_cpp_assert_true(test)"
+"_cpp_Kwargs_kwarg_value(\${kwargs} test toggle_b)"
+"_cpp_assert_false(test)"
+"_cpp_Kwargs_parse_argn(\${kwargs} toggle_b)"
+"_cpp_Kwargs_kwarg_value(\${kwargs} test toggle_a)"
+"_cpp_assert_true(test)"
+"_cpp_Kwargs_kwarg_value(\${kwargs} test toggle_b)"
+"_cpp_assert_true(test)"
+)

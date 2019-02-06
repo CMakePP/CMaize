@@ -44,6 +44,7 @@ function(_cpp_GetFromGithub_ctor _cGc_handle _cGc_url _cGc_kwargs)
     if(_cGc_is_not_gh)
         _cpp_error("URL: ${_cGc_url} does not appear to be a GitHub URL.")
     endif()
+
     _cpp_parse_gh_url(_cGc_org _cGc_repo "${_cGc_url}")
     _cpp_assemble_gh_url(
         _cGc_url

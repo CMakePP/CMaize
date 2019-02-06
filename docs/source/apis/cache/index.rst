@@ -9,4 +9,7 @@ Contents
     :maxdepth: 2
 
     cpp_Cache_ctor
-    cpp_cache_write_find_recipe
+    cpp_Cache_add_version
+    cpp_Cache_save_source
+    cpp_Cache_add_dependency
+    cpp_Cache_save_tarball

@@ -1,3 +1,18 @@
+################################################################################
+#                        Copyright 2018 Ryan M. Richard                        #
+#       Licensed under the Apache License, Version 2.0 (the "License");        #
+#       you may not use this file except in compliance with the License.       #
+#                   You may obtain a copy of the License at                    #
+#                                                                              #
+#                  http://www.apache.org/licenses/LICENSE-2.0                  #
+#                                                                              #
+#     Unless required by applicable law or agreed to in writing, software      #
+#      distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
+#     See the License for the specific language governing permissions and      #
+#                        limitations under the License.                        #
+################################################################################
+
 include_guard()
 include(dependency/read_helper_targets)
 include(object/object)
@@ -13,14 +28,25 @@ function(cpp_install)
     _cpp_option(_ci_PREFIX_TO_STRIP ${PROJECT_SOURCE_DIR}/${CPP_NAMESPACE})
 
     #Skim the dependencies off each target
-    _cpp_read_helper_targets(_ci_find_recipes "${_ci_TARGETS}")
+    foreach(_ci_target ${_ci_TARGETS})
+        get_property(
+            _ci_depends TARGET ${_ci_target} PROPERTY INTERFACE_LINK_LIBRARIES
+        )
+        list(APPEND _ci_depend_list "${_ci_depends}")
+    endforeach()
+
+    _cpp_read_helper_targets(_ci_find_recipes "${_ci_depend_list}")
+
+    if(_ci_find_recipes)
+        list(REMOVE_DUPLICATES _ci_find_recipes)
+    endif()
 
     foreach(_ci_fr_i ${_ci_find_recipes})
         _cpp_Object_get_value(${_ci_fr_i} _ci_paths paths)
         _cpp_Object_get_value(${_ci_fr_i} _ci_name name)
         set(_ci_line "cpp_find_dependency(\n")
-        set(_ci_line "${_ci_line}    NAME ${_ci_name}\n")
-        set(_ci_line "${_ci_line}    PATHS ${_ci_paths}\n")
+        set(_ci_line "${_ci_line}    NAME \"${_ci_name}\"\n")
+        set(_ci_line "${_ci_line}    PATHS \"${_ci_paths}\"\n")
         set(_ci_line "${_ci_line})\n")
         set(_ci_find_depends "${_ci_find_depends}${_ci_line}")
     endforeach()

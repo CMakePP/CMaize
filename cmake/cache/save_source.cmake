@@ -1,3 +1,18 @@
+################################################################################
+#                        Copyright 2018 Ryan M. Richard                        #
+#       Licensed under the Apache License, Version 2.0 (the "License");        #
+#       you may not use this file except in compliance with the License.       #
+#                   You may obtain a copy of the License at                    #
+#                                                                              #
+#                  http://www.apache.org/licenses/LICENSE-2.0                  #
+#                                                                              #
+#     Unless required by applicable law or agreed to in writing, software      #
+#      distributed under the License is distributed on an "AS IS" BASIS,       #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
+#     See the License for the specific language governing permissions and      #
+#                        limitations under the License.                        #
+################################################################################
+
 include_guard()
 include(cache/add_version)
 include(cache/save_tarball)
@@ -21,6 +36,9 @@ function(_cpp_Cache_save_source _cCss_handle _cCss_path _cCss_get_recipe)
     _cpp_Cache_save_tarball(${_cCss_handle} _cCss_tar ${_cCss_get_recipe})
     file(SHA1 "${_cCss_tar}" _cCss_hash)
     set(_cCss_src_dir ${_cCss_root}/src/${_cCss_hash})
-    _cpp_untar_directory(${_cCss_tar} ${_cCss_src_dir})
+    _cpp_does_not_exist(_cCss_dne ${_cCss_src_dir})
+    if(_cCss_dne)
+        _cpp_untar_directory(${_cCss_tar} ${_cCss_src_dir})
+    endif()
     _cpp_set_return(${_cCss_path} ${_cCss_src_dir})
 endfunction()

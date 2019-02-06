@@ -14,6 +14,7 @@
 ################################################################################
 
 include_guard()
+include(dependency/read_helper_targets)
 include(logic/negate)
 include(object/object)
 include(find_recipe/find_from_module/find_from_module)
@@ -51,6 +52,14 @@ function(_cpp_FindRecipe_find_dependency _cFfd_handle _cFfd_hints)
     if(_cFfd_root_set)
         set(_cFfd_hints "${_cFfd_root}" "${_cFfd_hints}")
     endif()
+
+    #Add the dependency's paths to the hints so they can be found too
+    _cpp_Object_get_value(${_cFfd_handle} _cFfd_depends depends)
+    _cpp_read_helper_targets(_cFfd_fr "${_cFfd_depends}")
+    foreach(_cFfd_depend_i ${_cFfd_fr})
+        _cpp_Object_get_value(${_cFfd_depend_i} _cFfd_path paths)
+        list(APPEND _cFfd_hints "${_cFfd_path}")
+    endforeach()
 
     #Dispatch to derived class
     _cpp_Object_has_base(${_cFfd_handle} _cFfd_is_config FindFromConfig)

@@ -37,6 +37,7 @@ function(_cpp_BuildRecipe_ctor _cBc_handle _cBc_kwargs)
     _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_version VERSION)
     _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_toolchain TOOLCHAIN)
     _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_args CMAKE_ARGS)
+    _cpp_Kwargs_kwarg_value(${_cBc_kwargs} _cBc_depends DEPENDS)
 
     _cpp_does_not_exist(_cBc_dne "${_cBc_src}")
     if(_cBc_dne)
@@ -44,8 +45,10 @@ function(_cpp_BuildRecipe_ctor _cBc_handle _cBc_kwargs)
     endif()
     _cpp_Object_ctor(_cBc_temp)
     _cpp_Object_set_type(${_cBc_temp} BuildRecipe)
-    _cpp_Object_add_members(${_cBc_temp} name version src args toolchain)
-    foreach(_cBc_mem_i name version src toolchain args)
+    _cpp_Object_add_members(
+        ${_cBc_temp} name version src args depends toolchain
+    )
+    foreach(_cBc_mem_i name version src toolchain args depends)
         _cpp_Object_set_value(
             ${_cBc_temp} ${_cBc_mem_i} "${_cBc_${_cBc_mem_i}}"
         )

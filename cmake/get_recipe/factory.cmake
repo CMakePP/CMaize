@@ -20,7 +20,6 @@ include(logic/negate)
 include(get_recipe/factory_add_kwargs)
 include(get_recipe/get_from_disk/get_from_disk)
 include(get_recipe/get_from_url/get_from_url)
-
 ## Function for encapsulating the logic surrounding how to get a dependency
 #
 # This top-level factory is responsible for dispatching based on the mechanism

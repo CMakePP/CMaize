@@ -58,6 +58,7 @@ function(_cpp_FindRecipe_ctor _cFc_handle _cFc_kwargs)
     _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_name NAME)
     _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_version VERSION)
     _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_comps COMPONENTS)
+    _cpp_Kwargs_kwarg_value(${_cFc_kwargs} _cFc_depends DEPENDS)
 
     _cpp_is_empty(_cFc_name_not_set _cFc_name)
     if(_cFc_name_not_set)
@@ -67,11 +68,13 @@ function(_cpp_FindRecipe_ctor _cFc_handle _cFc_kwargs)
 
     _cpp_Object_ctor(_cFc_temp)
     _cpp_Object_set_type(${_cFc_temp} FindRecipe)
-    _cpp_Object_add_members(${_cFc_temp} name version components root paths
-                            found)
+    _cpp_Object_add_members(
+        ${_cFc_temp} name version components root paths depends found
+    )
     _cpp_Object_set_value(${_cFc_temp} name "${_cFc_name}")
     _cpp_Object_set_value(${_cFc_temp} version "${_cFc_version}")
     _cpp_Object_set_value(${_cFc_temp} components "${_cFc_comps}")
+    _cpp_Object_set_value(${_cFc_temp} depends "${_cFc_depends}")
     _cpp_Object_set_value(${_cFc_temp} found FALSE)
 
     #Look for xxx_ROOT

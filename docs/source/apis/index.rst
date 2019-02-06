@@ -10,9 +10,9 @@ Contents
     FindRecipe: Documentation for the FindRecipe class <find_recipe/index.rst>
     GetRecipe: Documentation for the GetRecipe class <get_recipe/index.rst>
     Logic: Aid in control flow <logic/index.rst>
+    Kwargs: The keyword arguments class <kwargs/index.rst>
     Object: Methods for creating CMake objects <object/index.rst>
     Options: Methods for parsing CMake and function inputs <options/index.rst>
-    Recipes: Methods for creating recipes <recipes/index.rst>
     Serialization: Serializes CMake objects <serialization/index.rst>
     String: Extensions for manipulating strings <string/index.rst>
     Target: Functions for manipulating CMake targets <target/index.rst>
