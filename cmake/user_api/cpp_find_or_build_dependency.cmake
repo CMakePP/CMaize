@@ -83,7 +83,7 @@ function(cpp_find_or_build_dependency)
     _cpp_find_dependency_guts(
         ${_cfobd_kwargs} OPTIONAL RESULT _cfobd_found PATHS "${_cfobd_install}"
     )
-    message("Did we find it: ${_cfobd_found}")
+
     if("${_cfobd_found}")
         return()
     endif()
