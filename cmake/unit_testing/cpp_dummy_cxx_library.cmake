@@ -46,12 +46,12 @@ function(_cpp_dummy_cxx_library _cdcl_prefix)
     #Write the header file
     set(_cdcl_header_contents "${_cdcl_fxn_sig};")
     set(_cdcl_header_file ${_cdcl_prefix}/${_cdcl_NAME}.hpp)
-    file(WRITE ${_cdcl_header_file} "${_cdcl_header_contents}")
+    file(WRITE ${_cdcl_header_file} "${_cdcl_header_contents}\n")
 
     #Write the source file
     set(_cdcl_src_file ${_cdcl_prefix}/${_cdcl_NAME}.cpp)
     set(_cdcl_fxn_def "${_cdcl_fxn_sig}{return 2;}")
     set(_cdcl_src_inc "#include \"${_cdcl_NAME}.hpp\"")
     set(_cdcl_src_contents "${_cdcl_src_inc}\n${_cdcl_fxn_def}")
-    file(WRITE ${_cdcl_src_file} "${_cdcl_src}")
+    file(WRITE ${_cdcl_src_file} "${_cdcl_src_contents}\n")
 endfunction()

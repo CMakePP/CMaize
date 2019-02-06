@@ -15,6 +15,7 @@
 
 include_guard()
 include(unit_testing/cpp_naive_cxx_package)
+
 ## Writes and installs a C++ package that uses CMake naively.
 #
 # This function is a thin wrapper around :ref:`cpp_naive_cxx_package-label` that
@@ -33,5 +34,5 @@ function(_cpp_install_naive_cxx_package _cincp_install _cincp_prefix)
     _cpp_run_sub_build(
         ${_cincp_src} INSTALL_DIR ${_cincp_prefix}/install NAME install_naive
     )
-    set(${_cincp_install} ${_cincp_prefix} PARENT_SCOPE)
+    set(${_cincp_install} ${_cincp_prefix}/install PARENT_SCOPE)
 endfunction()

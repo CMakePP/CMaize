@@ -21,9 +21,7 @@ include(cpp_options) #For cpp_option
 include(cpp_toolchain) #For writing the toolchain file
 
 #These are included for the user's convenience
-include(cpp_targets)
-include(dependency/cpp_find_dependency)
-include(dependency/cpp_find_or_build_dependency)
+include(user_api/user_api)
 include(cpp_compression)
 set(CPP_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 

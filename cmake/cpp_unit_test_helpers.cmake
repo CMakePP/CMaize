@@ -20,6 +20,7 @@ include(unit_testing/cpp_add_test)
 include(unit_testing/cpp_setup_test_env)
 
 include(unit_testing/cpp_dummy_cxx_library)
+include(unit_testing/cpp_dummy_build_module)
 include(unit_testing/cpp_dummy_cxx_executable)
 
 include(unit_testing/cpp_dummy_cxx_package)

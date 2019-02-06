@@ -34,8 +34,11 @@ function(_cpp_tar_directory _ctd_output _ctd_dir2tar)
         file(MAKE_DIRECTORY ${_ctd_dest_dir})
     endif()
     _cpp_debug_print("Tarring ${_ctd_dir2tar} into ${_ctd_output}.")
+
+    #Note do not put the "z" in there or else it goes to gzip which puts the
+    #time in it and changes the hash
     execute_process(
-        COMMAND ${CMAKE_COMMAND} -E tar "cfz" "${_ctd_output}" "${_ctd_dir}"
+        COMMAND ${CMAKE_COMMAND} -E tar "cf" "${_ctd_output}" "${_ctd_dir}"
         WORKING_DIRECTORY ${_ctd_work_dir}
     )
 endfunction()

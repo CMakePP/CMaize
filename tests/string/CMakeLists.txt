@@ -1,7 +1,8 @@
-set(
-    STRING_TESTS string_count
+set(TESTS  string_cases
+           string_count
+           string_split
 )
 
-foreach(test_i ${STRING_TESTS})
-    cpp_cmake_unit_test(${test_i})
+foreach(test_i ${TESTS})
+    cpp_cmake_unit_test(${test_i} string)
 endforeach()

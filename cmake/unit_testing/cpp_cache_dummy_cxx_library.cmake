@@ -14,7 +14,6 @@
 ################################################################################
 
 include_guard()
-include(cache/cache_add_dependency)
 
 ## Wrapper function for writing the recipes for a dummy C++ library
 #

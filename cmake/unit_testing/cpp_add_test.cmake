@@ -49,15 +49,10 @@ set(test_number 1)
 #       check. The value will be updated after the call to this function.
 #
 function(_cpp_add_test)
-    cpp_parse_arguments(
-        _cat "${ARGN}"
-        TOGGLES SHOULD_FAIL
-        OPTIONS REASON TITLE
-        LISTS CONTENTS
-        MUST_SET TITLE
-    )
-    list(APPEND _cat_CONTENTS ${_cat_UNPARSED_ARGUMENTS})
-
+    set(_cat_T_kwargs SHOULD_FAIL)
+    set(_cat_O_kwargs REASON TITLE)
+    cmake_parse_arguments(_cat "SHOULD_FAIL" "${_cat_O_kwargs}" "" ${ARGN})
+    set(_cat_CONTENTS ${_cat_UNPARSED_ARGUMENTS})
     if(_cat_SHOULD_FAIL)
         set(_cat_can_fail CAN_FAIL)
     endif()
@@ -68,7 +63,7 @@ function(_cpp_add_test)
         ${test_prefix}/${test_number}
         NAME ${test_number}
         NO_INSTALL
-        ${_cat_can_fail}
+        CAN_FAIL
         RESULT _cat_result
         OUTPUT _cat_output
         CONTENTS "set(CPP_DEBUG_MODE ON)\n${_cat_commands}"
@@ -88,6 +83,8 @@ function(_cpp_add_test)
         else() #Passed, but it wasn't supposed to
             set(_cat_passed FALSE)
         endif()
+    elseif(_cat_result)
+        set(_cat_passed FALSE)
     endif()
 
     #Print the result

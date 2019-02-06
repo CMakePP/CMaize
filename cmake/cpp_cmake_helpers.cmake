@@ -18,12 +18,12 @@ include(cpp_print) #For _cpp_debug_print
 include(cpp_options) #For _cpp_option
 
 function(_cpp_write_list _cwl_directory)
-    cpp_parse_arguments(
-        _cwl "${ARGN}"
-        OPTIONS NAME
-        LISTS CONTENTS
-        MUST_SET NAME
-    )
+    cmake_parse_arguments(_cwl "" "NAME" "CONTENTS" ${ARGN})
+    _cpp_is_empty(_cwl_no_name _cwl_NAME)
+    if(_cwl_no_name)
+        _cpp_error("Must specify NAME")
+    endif()
+
     cpp_option(CMAKE_PROJECT_VERSION "0.0.0")
     #This is the boilerplate header
     set(_cwl_contents "cmake_minimum_required(VERSION ${CMAKE_VERSION})")
@@ -43,12 +43,8 @@ function(_cpp_write_list _cwl_directory)
 endfunction()
 
 function(_cpp_run_sub_make)
-    cpp_parse_arguments(
-        _crsm "${ARGN}"
-        OPTIONS BINARY_DIR COMMAND OUTPUT RESULT TARGET
-        MUST_SET BINARY_DIR
-    )
-
+    set(_crsm_O_kwargs BINARY_DIR COMMAND OUTPUT RESULT TARGET)
+    cmake_parse_arguments(_crsm "" "${_crsm_O_kwargs}" "" ${ARGN})
     if(_crsm_TARGET)
         execute_process(
                 COMMAND ${CMAKE_COMMAND}
@@ -78,12 +74,15 @@ function(_cpp_run_sub_make)
 endfunction()
 
 function(_cpp_run_sub_build _crsb_dir)
-    cpp_parse_arguments(
-        _crsb "${ARGN}"
-        TOGGLES NO_BUILD NO_INSTALL CAN_FAIL
-        OPTIONS NAME OUTPUT RESULT BINARY_DIR INSTALL_DIR TOOLCHAIN
-        LISTS CONTENTS CMAKE_ARGS
-        MUST_SET NAME
+    set(_crsb_T_kwargs NO_BUILD NO_INSTALL CAN_FAIL)
+    set(_crsb_O_kwargs NAME OUTPUT RESULT BINARY_DIR INSTALL_DIR TOOLCHAIN)
+    set(_crsb_M_kwargs CONTENTS CMAKE_ARGS)
+    cmake_parse_arguments(
+        _crsb
+        "${_crsb_T_kwargs}"
+        "${_crsb_O_kwargs}"
+        "${_crsb_M_kwargs}"
+        ${ARGN}
     )
     cpp_option(_crsb_BINARY_DIR "${_crsb_dir}/build")
     cpp_option(_crsb_INSTALL_DIR "${_crsb_dir}/install")

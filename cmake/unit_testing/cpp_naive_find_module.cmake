@@ -31,7 +31,7 @@ include_guard()
 #     * *NAME* (``option``) - The name of the dependency. Defaults to "dummy".
 #
 function(_cpp_naive_find_module _cnfm_module _cnfm_prefix)
-    cpp_parse_arguments(_cnfm "${ARGN}" OPTIONS NAME)
+    cmake_parse_arguments(_cnfm "" "NAME" "" ${ARGN})
     if("${_cnfm_NAME}" STREQUAL "")
         set(_cnfm_NAME dummy)
     endif()

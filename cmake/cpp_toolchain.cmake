@@ -15,16 +15,14 @@
 
 include(cpp_checks) #For _cpp_is_valid
 include(cpp_options) #For cpp_option
+include(kwargs/kwargs)
 include(toolchain/cpp_toolchain_get_vars)
 
 function(_cpp_change_toolchain)
-    cpp_parse_arguments(
-        _cct "${ARGN}"
-        OPTIONS TOOLCHAIN
-        LISTS CMAKE_ARGS
-    )
+    cmake_parse_arguments(_cct "" "TOOLCHAIN" "CMAKE_ARGS" ${ARGN})
     cpp_option(_cct_TOOLCHAIN "${CMAKE_TOOLCHAIN_FILE}")
-    if(EXISTS ${_cct_TOOLCHAIN})
+    _cpp_exists(_cct_is_file "${_cct_TOOLCHAIN}")
+    if(_cct_is_file)
         file(READ "${_cct_TOOLCHAIN}" _cct_contents)
     endif()
     foreach(_cct_cmake_arg ${_cct_CMAKE_ARGS})
@@ -50,11 +48,8 @@ function(_cpp_change_toolchain)
 endfunction()
 
 function(_cpp_write_toolchain_file)
-    cpp_parse_arguments(
-        _cwtf "${ARGN}"
-        OPTIONS DESTINATION
-    )
-    cpp_option(_cwtf_DESTINATION "${CMAKE_BINARY_DIR}")
+    cmake_parse_arguments(_cwtf "" "DESTINATION" "" ${ARGN})
+    cpp_option(_cwtf_DESTINATION ${CMAKE_BINARY_DIR})
     set(_cwtf_file ${_cwtf_DESTINATION}/toolchain.cmake)
     _cpp_toolchain_get_vars(_cwtf_vars)
     foreach(_cwtf_var ${_cwtf_vars})

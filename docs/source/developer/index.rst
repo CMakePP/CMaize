@@ -14,6 +14,8 @@ Contents
 
    getting_started
    conventions
+   encapsulation
+   kwargs
    dependencies
    lists
    unit_testing

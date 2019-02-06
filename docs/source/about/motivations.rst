@@ -146,6 +146,10 @@ Build, Link, Triumph (BLT)
 
 BLT's home is `here <https://github.com/llnl/blt>`_.
 
+* Focus is on simplifying writing cross-platform CMake scripts
+* Wrappers around common CMake functions like ``add_library``.
+* No support for building external dependencies.
+
 Autocmake
 ^^^^^^^^^
 
