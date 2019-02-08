@@ -42,7 +42,6 @@ function(_cpp_write_dependency_toolchain _cwdt_tc_out _cwdt_tc_in _cwdt_args
         list(APPEND _cwdt_hints "${_cwdt_path}")
     endforeach()
     string(REPLACE ";" "\\\\\\;" _cwdt_hints "${_cwdt_hints}" )
-    list(APPEND _cwdt_args "CMAKE_PREFIX_PATH=${_cwdt_hints}")
-    message("Writing TC: ${_cwdt_args} ${_cwdt_depends} ${_cwdt_fr}")
+    list(APPEND _cwdt_args "CMAKE_PREFIX_PATH=\"${_cwdt_hints}\"")
     _cpp_change_toolchain(TOOLCHAIN ${_cwdt_tc_out} CMAKE_ARGS "${_cwdt_args}")
 endfunction()
