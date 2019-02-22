@@ -27,14 +27,23 @@ include(utility/set_return)
 # :param org: The GitLab organization which owns the repository.
 # :param repo: The repository to access.
 # :param version: The version of the source
-function(_cpp_assemble_gl_url _cagu_url _cagu_org _cagu_repo _cagu_version)
-    set(_cagu_base "http://gitlab.com/${_cagu_org}/${_cagu_repo}")
+# :param branch: The branch of the source code
+function(_cpp_assemble_gl_url _cagu_url _cagu_org _cagu_repo _cagu_version
+                              _cagu_branch
+        )
+    set(
+        _cagu_base
+        "https://gitlab.com/${_cagu_org}/${_cagu_repo}/repository"
+    )
 
     _cpp_are_not_equal(_cagu_not_latest "${_cagu_version}" "latest")
+    _cpp_are_not_equal(_cagu_has_branch "${_cagu_branch}" "master")
     if(_cagu_not_latest)
         set(_cagu_base "${_cagu_base}/${_cagu_version}")
+    elseif(_cagu_has_branch)
+        set(_cagu_base "${_cagu_base}/${_cagu_branch}")
     endif()
 
     set(_cagu_base "${_cagu_base}/archive.tar.gz")
-    _cpp_set_return(_cagu_url ${_cagu_base})
+    _cpp_set_return(${_cagu_url} ${_cagu_base})
 endfunction()

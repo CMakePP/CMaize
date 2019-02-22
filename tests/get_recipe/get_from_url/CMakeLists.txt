@@ -1,4 +1,5 @@
 add_subdirectory(get_from_github)
+add_subdirectory(get_from_gitlab)
 set(TESTS get_from_url_ctor
           get_from_url_factory
           get_from_url_get_source

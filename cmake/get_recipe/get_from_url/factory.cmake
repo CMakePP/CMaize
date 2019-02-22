@@ -15,7 +15,7 @@
 
 include_guard()
 include(get_recipe/get_from_url/get_from_github/get_from_github)
-include(get_recipe/get_from_url/get_from_gitlab/ctor)
+include(get_recipe/get_from_url/get_from_gitlab/get_from_gitlab)
 include(get_recipe/get_from_url/ctor)
 include(get_recipe/get_from_url/factory_add_kwargs)
 include(kwargs/kwargs)

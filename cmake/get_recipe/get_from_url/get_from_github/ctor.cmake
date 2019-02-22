@@ -17,6 +17,7 @@ include_guard()
 include(get_recipe/get_from_url/ctor)
 include(get_recipe/get_from_url/url_parser)
 include(get_recipe/get_from_url/get_from_github/ctor_add_kwargs)
+include(get_recipe/get_from_url/get_from_github/assemble_gh_url)
 include(kwargs/kwargs)
 include(utility/set_return)
 
