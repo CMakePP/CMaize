@@ -1,6 +1,5 @@
 set(TESTS assemble_gh_url
           get_from_github_ctor
-          parse_gh_url
 )
 
 foreach(test_i ${TESTS})

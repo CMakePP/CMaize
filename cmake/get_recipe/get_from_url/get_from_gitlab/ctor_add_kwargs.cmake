@@ -13,12 +13,14 @@
 #                        limitations under the License.                        #
 ################################################################################
 
-function(_cpp_GetRecipe_get_source _cGgs_handle _cGgs_tar)
-    _cpp_Object_has_base(${_cGgs_handle} _cGgs_is_disk GetFromDisk)
-    _cpp_Object_has_base(${_cGgs_handle} _cGgs_is_url GetFromURL)
-    if(_cGgs_is_disk)
-        _cpp_GetFromDisk_get_source(${_cGgs_handle} ${_cGgs_tar})
-    elseif(_cGgs_is_url)
-        _cpp_GetFromURL_get_source(${_cGgs_handle} ${_cGgs_tar})
-    endif()
+include_guard()
+include(get_recipe/get_from_url/ctor_add_kwargs)
+
+## Adds ``GetFromGitLab``'s ctor's kwargs to a ``Kwargs`` instance.
+#
+# :param kwargs: The ``Kwargs`` instance to populate.
+function(_cpp_GetFromGitLab_ctor_add_kwargs _cGcak_kwargs)
+    _cpp_GetFromURL_ctor_add_kwargs(${_cGcak_kwargs})
+    _cpp_Kwargs_add_keywords(${_cGcak_kwargs} OPTIONS BRANCH)
+    _cpp_Kwargs_set_default(${_cGcak_kwargs} BRANCH master)
 endfunction()

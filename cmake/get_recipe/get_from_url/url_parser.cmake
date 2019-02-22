@@ -13,42 +13,39 @@
 #                        limitations under the License.                        #
 ################################################################################
 
-include_guard()
-include(utility/set_return)
-
-## Function which parses the organization and repository out of a GitHub URL
+## Parses the organization and repository out of a GitHub/GitLab URL
 #
-# This function will take a GitHub URL of the form ``github.com/org/repo`` and
-# parse out the organization and repository. The actual parsing is insensitive
-# to whether or not generic prefixes like ``www.`` and ``https://`` are present.
-# The function will raise errors if an organization or a repository is not
-# present.
+# This function will take a GitHub/GitLab URL of the form 
+# ``gitxxx.com/org/repo`` and parse out the organization and repository. The 
+# actual parsing is insensitive to whether or not generic prefixes like ``www.``
+# and ``https://`` are present. The function will raise errors if an 
+# organization or a repository is not present.
 #
 # :param org: The identifier to store the organization's name under.
 # :param repo: The identifier to store the repository's name under.
 # :param url: The URL that we are parsing.
-function(_cpp_parse_gh_url _cpgu_org _cpgu_repo _cpgu_url)
-    string(REGEX MATCH "github\\.com/([^/]*)/([^/]*)" "" "${_cpgu_url}")
-    set(${_cpgu_org} "${CMAKE_MATCH_1}")
-    set(${_cpgu_repo} "${CMAKE_MATCH_2}")
+function(_cpp_url_parser _cup_org _cup_repo _cup_url)
+    string(REGEX MATCH "git...\\.com/([^/]*)/([^/]*)" "" "${_cup_url}")
+    set(${_cup_org} "${CMAKE_MATCH_1}")
+    set(${_cup_repo} "${CMAKE_MATCH_2}")
 
-    _cpp_is_empty(_cpgu_dont_have_org ${_cpgu_org})
-    if(_cpgu_dont_have_org)
+    _cpp_is_empty(_cup_dont_have_org ${_cup_org})
+    if(_cup_dont_have_org)
         _cpp_error(
-                "URL: ${_cpgu_url} does not appear to contain an organization or "
+                "URL: ${_cup_url} does not appear to contain an organization or "
                 "user. Troubleshooting: ensure URL is of the form "
-                "github.com/<organization>/<repo>."
+                "gitxxx.com/<organization>/<repo>."
         )
     endif()
-    _cpp_is_empty(_cpgu_dont_have_repo ${_cpgu_repo})
-    if(_cpgu_dont_have_repo)
+    _cpp_is_empty(_cup_dont_have_repo ${_cup_repo})
+    if(_cup_dont_have_repo)
         _cpp_error(
-                "URL: ${_cpgu_url} does not appear to contain a repository. "
+                "URL: ${_cup_url} does not appear to contain a repository. "
                 "Troubleshooting: ensure URL is of the form "
                 "github.com/<organization>/<repo>."
         )
     endif()
 
-    _cpp_set_return(${_cpgu_org} ${${_cpgu_org}})
-    _cpp_set_return(${_cpgu_repo} ${${_cpgu_repo}})
+    _cpp_set_return(${_cup_org} ${${_cup_org}})
+    _cpp_set_return(${_cup_repo} ${${_cup_repo}})
 endfunction()
