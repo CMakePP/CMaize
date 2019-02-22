@@ -15,9 +15,8 @@
 
 include_guard()
 include(get_recipe/get_from_url/ctor)
-include(get_recipe/get_from_url/get_from_github/assemble_gh_url)
+include(get_recipe/get_from_url/url_parser)
 include(get_recipe/get_from_url/get_from_github/ctor_add_kwargs)
-include(get_recipe/get_from_url/get_from_github/parse_gh_url)
 include(kwargs/kwargs)
 include(utility/set_return)
 
@@ -45,7 +44,7 @@ function(_cpp_GetFromGithub_ctor _cGc_handle _cGc_url _cGc_kwargs)
         _cpp_error("URL: ${_cGc_url} does not appear to be a GitHub URL.")
     endif()
 
-    _cpp_parse_gh_url(_cGc_org _cGc_repo "${_cGc_url}")
+    _cpp_url_parser(_cGc_org _cGc_repo "${_cGc_url}")
     _cpp_assemble_gh_url(
         _cGc_url
         "${_cGc_org}"
