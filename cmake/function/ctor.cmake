@@ -18,14 +18,12 @@ include(kwargs/kwargs)
 # :Members:
 #
 #    * *returns*  - List of identifiers that will be returned by the function.
-#    * *member*   - Boolean indicating wheither this is a member function.
 #    * *kwargs*   - Kwargs object
-#
+#    * *this*     - The handle of the object this function belongs to
 # :kwargs:
 #     * *NO_KWARGS* - A toggle that signals the function takes no kwarg-based
 #                     input.
-#     * *MEMBER*    - A toggle that signals that this is a member function of a
-#                     class. Makes the first argument to ``run`` a handle.
+#     * *THIS*      - The handle of the object this function belongs to
 #     * *TOGGLES*   - A list of input parameters to the function that should be
 #                     treated as toggles.
 #     * *OPTIONS*   - A list of inputs that should take a single value.
@@ -49,12 +47,15 @@ function(_cpp_Function_ctor _cFc_handle _cFc_file)
     #---------------------------------------------------------------------------
 
     _cpp_Object_ctor(_cFc_temp)
-    set(_cFc_toggles MEMBER NO_KWARGS)
+    set(_cFc_toggles NO_KWARGS)
+    set(_cFc_options THIS)
     set(_cFc_lists TOGGLES OPTIONS LISTS RETURNS)
-    cmake_parse_arguments(_cFc "${_cFc_toggles}" "" "${_cFc_lists}" ${ARGN})
-    _cpp_Object_add_members(${_cFc_temp} returns member file kwargs)
+    cmake_parse_arguments(
+        _cFc "${_cFc_toggles}" "${_cFc_options}" "${_cFc_lists}" ${ARGN}
+    )
+    _cpp_Object_add_members(${_cFc_temp} returns this file kwargs)
     _cpp_Object_set_value(${_cFc_temp} returns "${_cFc_RETURNS}")
-    _cpp_Object_set_value(${_cFc_temp} member ${_cFc_MEMBER})
+    _cpp_Object_set_value(${_cFc_temp} this "${_cFc_THIS}")
     _cpp_Object_set_value(${_cFc_temp} file ${_cFc_file})
 
     #---------------------------------------------------------------------------

@@ -15,7 +15,8 @@ TITLE "Can get default member list"
 "include(object/get_members)"
 "_cpp_Object_ctor(t)"
 "_cpp_Object_get_members(\${t} test)"
-"_cpp_assert_equal(\"\${test}\" \"_cpp_type\")"
+"set(corr _cpp_type _cpp_member_fxn_list)"
+"_cpp_assert_equal(\"\${test}\" \"\${corr}\")"
 )
 
 _cpp_add_test(
@@ -26,6 +27,6 @@ TITLE "Can get an added member"
 "_cpp_Object_ctor(t)"
 "_cpp_Object_add_members(\${t} member)"
 "_cpp_Object_get_members(\${t} test member)"
-"set(corr _cpp_type member)"
+"set(corr _cpp_type _cpp_member_fxn_list member)"
 "_cpp_assert_equal(\"\${test}\" \"\${corr}\")"
 )

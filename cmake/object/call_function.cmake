@@ -14,50 +14,35 @@
 ################################################################################
 
 include_guard()
+include(function/run)
+include(object/get_value)
 include(object/impl/mangle_function_name)
+include(utility/set_return)
 
-## This function does not work, but starts a function for member dispatching.
+##
 #
 # :param handle: The object whose member function is being called
 #
 #
-function(_cpp_Object_call_function _cOcf_handle _cOcf_prefix _cOcf_fxn)
-    #Get a list of types that starts with the most derived and ends with Object
-    _cpp_Object_get_value(${_cOcf_handle} _cOcf_types _cpp_type)
-    list(REVERSE _cOcf_types)
-
-    #Loop over type list looking for member function file, break when found
-    set(_cOcf_inc_file "")
-    foreach(_cOcf_type_i ${_cOcf_types})
-        _cpp_mangle_function_name(_cOcf_mn ${_cOcf_type_i} ${_cOcf_fxn})
-        _cpp_Object_has_member(${_cOcf_handle} _cOcf_has_fxn ${_cOcf_mn})
-        if(_cOcf_has_fxn)
-            _cpp_Object_get_value(${_cOcf_handle} _cOcf_inc_file ${_cOcf_mn})
-            _cpp_Object_get_value(
-                ${_cOcf_handle} _cOcf_returns ${_cOcf_mn}_returns
-            )
-            break()
-        endif()
-    endforeach()
-
-    #Ensure we found a function
-    _cpp_is_empty(_cOcf_no_fxn _cOcm_inc_file)
-    if(_cOcf_no_fxn)
-        _cpp_error("Class does not have a member function ${_cOcf_fxn}")
+function(_cpp_Object_call _cOc_handle _cOc_prefix _cOc_fxn)
+    _cpp_is_empty(_cOc_empty_name _cOc_fxn)
+    if(_cOc_empty_name)
+        _cpp_error("Function name can't be empty.")
     endif()
 
-    #Include and call the function
-    include(${_cOcm_inc_file})
-    _member_fxn(${_cOcf_handle} ${ARGN})
+    _cpp_mangle_function_name(_cOc_mn "" "${_cOc_fxn}")
+    _cpp_Object_get_value(${_cOc_handle} _cOc_vtable ${_cOc_mn})
+    list(GET _cOc_vtable -1 _cOc_fxn_ptr)
+    _cpp_Object_get_value(${_cOc_handle} _cOc_fxn_obj ${_cOc_fxn_ptr})
 
-    #Loop over returns and return them from this function
-    foreach(_cOcf_return ${_cOcf_returns})
-        _cpp_is_not_defined(_cOcf_not_def ${_cOcf_return})
-        if(_cOcf_not_def)
-            _cpp_error(
-                "Function ${_cOcf_fxn} did not set return ${_cOcf_return}"
-            )
-        endif()
-        _cpp_set_return(${_cOcf_prefix}_${_cOcf_return} "${${_cOcf_return}}")
+    _cpp_Function_run(${_cOc_fxn_obj} "${_cOc_prefix}" ${ARGN})
+
+    #---------------------------------------------------------------------------
+    #---------------------------Forward the returns-----------------------------
+    #---------------------------------------------------------------------------
+    _cpp_Object_get_value(${_cOc_fxn_obj} _cOc_returns returns)
+    foreach(_cOc_return ${_cOc_returns})
+        set(_cOc_var ${_cOc_prefix}_${_cOc_return})
+        _cpp_set_return(${_cOc_var} "${${_cOc_var}}")
     endforeach()
 endfunction()

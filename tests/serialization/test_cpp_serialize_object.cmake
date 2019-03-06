@@ -2,13 +2,17 @@ include(${CMAKE_TOOLCHAIN_FILE})
 include(cpp_unit_test_helpers)
 _cpp_setup_test_env("serialize_object")
 
+set(q "\\\"")
+set(common "${q}_cpp_type${q} : ${q}Object${q} , ")
+set(common "${common}${q}_cpp_member_fxn_list${q} : ${q}${q}")
+
 _cpp_add_test(
 TITLE "Empty object"
 "include(serialization/serialize_object)"
 "include(object/object)"
 "_cpp_Object_ctor(t)"
 "_cpp_serialize_object(test \${t})"
-"_cpp_assert_equal(\"\${test}\" \"{ \\\"_cpp_type\\\" : \\\"Object\\\" }\")"
+"_cpp_assert_equal(\"\${test}\" \"{ ${common} }\")"
 )
 
 _cpp_add_test(
@@ -20,7 +24,7 @@ TITLE "Object with member set to empty value"
 "_cpp_serialize_object(test \${t})"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \\\"_cpp_type\\\" : \\\"Object\\\" , \\\"member\\\" : \\\"\\\" }\""
+"   \"{ ${common} , \\\"member\\\" : \\\"\\\" }\""
 ")"
 )
 
@@ -34,7 +38,7 @@ TITLE "Object with member set to string"
 "_cpp_serialize_object(test \${t})"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \\\"_cpp_type\\\" : \\\"Object\\\" , \\\"member\\\" : \\\"value\\\" }\""
+"   \"{ ${common} , \\\"member\\\" : \\\"value\\\" }\""
 ")"
 )
 
@@ -47,10 +51,9 @@ TITLE "Object with member set to list"
 "set(a_list one two)"
 "_cpp_Object_set_value(\${t} member \"\${a_list}\")"
 "_cpp_serialize_object(test \${t})"
-"set(elem1 \"\\\"_cpp_type\\\" : \\\"Object\\\"\")"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \${elem1} , \\\"member\\\" : [ \\\"one\\\" , \\\"two\\\" ] }\""
+"   \"{ ${common} , \\\"member\\\" : [ \\\"one\\\" , \\\"two\\\" ] }\""
 ")"
 )
 
@@ -63,9 +66,8 @@ TITLE "Object with member set to object"
 "_cpp_Object_add_members(\${t} member)"
 "_cpp_Object_set_value(\${t} member \"\${u}\")"
 "_cpp_serialize_object(test \${t})"
-        "set(elem1 \"\\\"_cpp_type\\\" : \\\"Object\\\"\")"
 "_cpp_assert_equal("
 "   \"\${test}\""
-"   \"{ \${elem1} , \\\"member\\\" : { \${elem1} } }\""
+"   \"{ ${common} , \\\"member\\\" : { ${common} } }\""
 ")"
 )
