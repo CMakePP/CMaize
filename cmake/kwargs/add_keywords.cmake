@@ -24,9 +24,9 @@ include(kwargs/kwarg_value)
 #
 # :kwargs:
 #
-#   * *TOGGLES* - A list of keywords to treat a toggles
-#   * *OPTIONS* - A list of keywords to treat as options
-#   * *LISTS*   - A list of keywords to treat as lists
+#   * *TOGGLES*  - A list of keywords to treat a toggles
+#   * *OPTIONS*  - A list of keywords to treat as options
+#   * *LISTS*    - A list of keywords to treat as lists
 function(_cpp_Kwargs_add_keywords _cKak_handle)
     set(_cKak_M_kwargs TOGGLES OPTIONS LISTS)
     cmake_parse_arguments(_cKak "" "" "${_cKak_M_kwargs}" ${ARGN})

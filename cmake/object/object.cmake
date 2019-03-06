@@ -15,6 +15,7 @@
 
 include_guard()
 include(object/add_members)
+include(object/add_function)
 include(object/are_equal)
 include(object/are_not_equal)
 include(object/ctor)

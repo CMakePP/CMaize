@@ -24,11 +24,17 @@ include(object/set_type)
 #  The Object class gives each object some bare bones intraspection members.
 #  These members include:
 #
-#  * _cpp_member_list - A list of all members added after the Object base class.
-#  * _cpp_type        - The class hierachy going from Object to most derived.
+#  * _cpp_member_list     - A list of all members added after the Object base class.
+#  * _cpp_member_fxn_list - List of all member functions
+#  * _cpp_type            - The class hierachy going from Object to most derived.
 #
 #  :param result: The handle to the newly created object
-#  :param type: The type to create
+#
+# .. warning::
+#
+#     This class is the base class of every class and can not use any of those
+#     classes in its ctor or else infinite recursion will occur. The result is
+#     that member functions of this class require special dispatch.
 function(_cpp_Object_ctor _cOc_handle)
     _cpp_Object_new_handle(_cOc_temp)
 
@@ -37,8 +43,9 @@ function(_cpp_Object_ctor _cOc_handle)
     set_target_properties(${_cOc_temp} PROPERTIES ${_cOc_member} "")
 
     #Can add the remaining members in the usual way
-    _cpp_Object_add_members(${_cOc_temp} _cpp_type)
+    _cpp_Object_add_members(${_cOc_temp} _cpp_type _cpp_member_fxn_list)
 
     _cpp_Object_set_type(${_cOc_temp} Object)
+
     set(${_cOc_handle} ${_cOc_temp} PARENT_SCOPE)
 endfunction()

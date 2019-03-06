@@ -3,7 +3,8 @@ CMakePackagingProject
 
 [![Documentation Status](https://readthedocs.org/projects/cmakepackagingproject/badge/?version=latest)](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest)
 
-Welcome to the CMakePackagingProject (CPP) repository.
+Welcome to the CMakePackagingProject (CMakePP; or CPP when confusion with C++ is
+unlikely) repository.
 
 CMake is a meta build system, in that it is a tool for generating cross-platform 
 build systems. To do this, CMake provides a powerful scripting language which 

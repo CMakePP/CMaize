@@ -25,9 +25,17 @@ include(utility/set_return)
 #    * options  - List of keywords taking one argument
 #    * lists    - List of keywords taking one or more arguments
 #    * unparsed - The contents of ``ARGN`` that were not parsed
+#
+# .. warning::
+#
+#     The Function class uses the Kwargs class in its ctor unless the
+#     ``NO_KWARGS`` flag is provided to the Function ctor. Hence, in order for
+#     the Kwargs class to register its member functions, each member function
+#     can not take kwargs.
 function(_cpp_Kwargs_ctor _cKpa_handle)
     _cpp_Object_ctor(_cKpa_temp)
     _cpp_Object_set_type(${_cKpa_temp} Kwargs)
-    _cpp_Object_add_members(${_cKpa_temp} toggles options lists unparsed)
+    _cpp_Object_add_members(${_cKpa_temp} toggles options lists unparsed
+                                          required)
     _cpp_set_return("${_cKpa_handle}" "${_cKpa_temp}")
 endfunction()

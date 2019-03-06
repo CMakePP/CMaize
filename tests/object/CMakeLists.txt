@@ -1,7 +1,10 @@
+add_subdirectory(impl)
 set(
-    OBJECT_TESTS add_members
+    OBJECT_TESTS add_function
+                 add_members
                  are_equal
                  are_not_equal
+                 call_function
                  get_members
                  get_type
                  get_value

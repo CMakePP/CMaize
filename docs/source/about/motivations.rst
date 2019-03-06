@@ -144,7 +144,7 @@ and seemed to fit our needs, but then a number of problems began to manifest
 Build, Link, Triumph (BLT)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-BLT's home is `here <https://github.com/llnl/blt>`_.
+`BLT's home<https://github.com/llnl/blt>`_.
 
 * Focus is on simplifying writing cross-platform CMake scripts
 * Wrappers around common CMake functions like ``add_library``.
@@ -153,14 +153,24 @@ BLT's home is `here <https://github.com/llnl/blt>`_.
 Autocmake
 ^^^^^^^^^
 
-Autocmake's home is `here <https://github.com/dev-cafe/autocmake>`_.
+`Autocmake's home<https://github.com/dev-cafe/autocmake>`_.
 
 Cinch
 ^^^^^
 
-Cinch's home is `here <https://github.com/laristra/cinch>`_.
+`Cinch's home<https://github.com/laristra/cinch>`_.
 
 Just A Working Setup (JAWS)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-JAWS's home is `here <https://github.com/DevSolar/jaws>`_.
+`JAWS's home<https://github.com/DevSolar/jaws>`_.
+
+Izzy's eXtension Modules (IXM)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+`IXM's home<https://github.com/slurps-mad-rips/ixm>`_.
+
+CMake++
+^^^^^^^
+
+`CMake++'s home<https://github.com/toeb/cmakepp>`_.
