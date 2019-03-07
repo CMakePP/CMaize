@@ -3,55 +3,107 @@
 Motivations
 ===========
 
-This page details why we wrote CPP.  In particular we explain the overall
-problem and why the other solutions didn't meet our needs.  If you don't care
-why we wrote CPP the way we did we recommend jumping to the next page
-:ref:`assumptions-label`.
+This page motivates the need for a package like CPP. The `other_projects-label`_
+page discusses the alternatives to CPP and why we still felt that devleoping CPP
+was justified.
 
-After using CMake for a while an overall pattern becomes apparent:
+Why CMake?
+----------
 
-1. Find suitable dependencies
-2. Build missing dependencies
-3. Build project.
-4. Test project.
-5. Package project.
+Since CPP extends CMake, it makes sense to start with a motivation for why one
+should even consider using CMake with their package. For that matter, why even
+use a build system? After all the final compilation just looks something like:
 
-Strictly speaking one could argue that step 2 shouldn't be done by the build
-system (it's really the job of a package manager); however, there's a bazillion
-possible dependencies out there and expecting every possible package manager to
-know about every possible package is unrealistic.  Furthermore asking the user
-to build your project's dependencies decreases the user-friendliness (and thus
-the adoption) of your project.  This is why we have chosen to include it.
+.. image:: manually_compile.*
 
-Anyways, of the above list, steps 1 and 2 are the hardest. This is because
-CMake's ``find_package`` and ``ExternalProject_Add`` commands are designed to be
-quite general. If the dependency you are trying to use was packaged using CMake,
-then these two functions will work without too much hassle; unfortunately, a
-vanishingly small number of actual projects do this. The result is your
-project's build system is typically tightly coupled to the manner in which your
-dependencies were packaged. Such coupling is problematic when it occurs in
-source code, and unsurprisingly, leads to similar problems in the build system.
+While it's true that the actual compilation amounts to nothing more than calling
+the compiler on a mound of source files, archiving sets of the resulting objects
+into libraries, and then linking the results together, what the above image
+fails to capture is the complicated web of dependencies among those source files
+as well as the myriad of compiler/linker options that are available for each of
+these calls. This is what most build systems bring to the table, a way to easily
+track dependencies among the various pieces of your project.
 
-This leads to CPP, namely, we need a set of CMake extensions that facilitates
-incorporating non-ideal dependencies into a project.
+.. sidebar:: On-The-Fly Build System
 
-Additional Considerations
--------------------------
+    .. image:: OnTheFly.png
 
-While not the primary motivation for writing CPP these were additional
-considerations that were part of its design.
+The problem with most build systems is that they were designed with a rather
+static picture of the software stack in mind. Modern development practices have
+led to packages with fluid builds. It is now common place for a build  to
+support multiple configurations, optional dependencies, and (shudder) multiple
+architectures. While it is possible to bend existing build systems to your will,
+it is far easier to generate the build system on-the-fly. The result is what are
+sometimes called "meta-build systems". For all practical purposes one can treat
+the fact that meta-build systems generate build systems as an implementation
+detail and simply think of meta-build systems as "modern" build systems.
 
-* Written in CMake
-   CMake isn't the prettiest or easiest language to use, but it's the *de facto*
-   standard for generating C/C++ build systems.  We choose to write CPP in CMake
-   in order to avoid introducing additional dependencies into the project and to
-   ensure that CPP integrates well with existing package managers.
-* Capable of supporting virtual dependencies
-   Virtual dependencies, dependencies focused more on an API than a particular
-   library (*e.g.*, BLAS and MPI), need to be supported both at the API level as
-   well as at the implementation level *e.g.*, need to be able specify that your
-   project depends on BLAS or it depends on MKL (Intel's implementation of
-   BLAS).
+CMake falls into the category of modern/meta-build systems. Users of CMake
+describe their package's configure, build, test, and install settings in the
+CMake language. The CMake language is designed to make common build concepts,
+like executables, libraries, and dependencies first-class citizens. Thanks to a
+syntax resembling shell-scripting more than a traditional build system, CMake
+greatly simplifies writing dynamic build systems for a package. Compared to its
+largest competitor, GNU's Autotools, CMake's nicer syntax and cross-platform
+nature (as a disclaimer it is fully possible to write cross-platform Autotools
+build systems, it's just a lot harder than doing it in CMake) has caused CMake
+to become the *de facto* build system for C/C++ projects.
+
+Why CPP?
+--------
+
+The last section makes CMake sound like the greatest thing since sliced bread,
+so why do we need CPP? In our opinion CMake represents the best of the available
+build options; however, CMake is still a bad option. By this we mean that CMake
+is loads better than trying to write one's own build system, or attempting to
+use a more traditional build system in place of CMake; however, CMake still
+fails to **natively** support several key build-system features:
+
+* Automated and reliable building of dependencies
+* Support for "virtual" dependencies (satisfied by many libraries ; think BLAS)
+* Reliable dependency detection
+* Automated packaging
+* Dependency cacheing
+
+In all fairness it is possible to do everything on the above list using CMake
+(if it were not, then CPP wouldn't be possible). The problem is that the
+mechanisms and patterns for doing so are boilerplate heavy, poorly documented,
+and fragile. Adding to the frustration is the fact that the CMake language
+feels quite antiquated compared to scripting languages like Python. Notably the
+CMake language lacks (native) support for:
+
+* Objects
+* Callbacks
+* Lambdas
+* Overloading
+* Associative arrays
+* Lists (that aren't super buggy because they're strings delimited by ``;``)
+* Serialization
+* Intraspection
+
+It is our opinion, that we have reached another point in software development
+warranting another layer on the build-system stack. It is perhaps time to stop
+bandaging the build-system stack and start over; however, inertia is the biggest
+opponent here. Many existing packages have developed relatively robust and
+reliable build systems based on CMake and/or Autotools and they are reluctant to
+adopt new build systems. Unfortunately, new build systems are also unlikely to
+be taken up by newer packages, since there is a propensity for these packages to
+ensure that they are consumable in a manner akin to more established packages.
+Thus we are in a situation where change is need, but it is unlikely.
+
+This brings us to CPP. Most of the actual source code of CPP implements a series
+of extensions to the CMake language causing it to be more friendly to modern
+developers. Notably this means introducing objects. Using modern object-oriented
+paradigms CPP then implements the features missing from CMake in a way that
+makes the features seem native. The result is that by using CPP you will invest
+minimal effort in your build system, while still appearing to the outside world
+as if your package maintainers have spent eons fine-tuning a traditional CMake
+build system.
+
+
+Design Points/Features
+----------------------
+
 * Support for continuous integration workflows
    A lot of projects are moving to some version of continuous integration where
    concepts such as commit hashes and branches have more meaning than a numeric
@@ -79,98 +131,7 @@ considerations that were part of its design.
    non-conforming package's source code.
 
 
-Other Relevant Projects
------------------------
 
-In order to put CPP in perspective this section describes some other relevant
-projects. Projects are considered relevant if they strive to simplify the
-writing of the CMake infrastructure for generating a build system.
-
-Hunter
-^^^^^^
-
-Hunter main page is available `here <https://github.com/ruslo/hunter>`_. As a
-disclaimer, this subsection may come off as harsh on the Hunter project, but
-that's just because we initially tried Hunter before deciding to write CPP.
-Hence, we have more experience with Hunter than other projects on this list.
-
-Like CPP, Hunter is written entirely in CMake and will locate and build
-dependencies for you automatically.  Admittedly, Hunter was great at first
-and seemed to fit our needs, but then a number of problems began to manifest
-(and in no small part influenced the above additional considerations section):
-
-* Documentation
-   Hunter's documentation is lacking particularly when it comes to more advanced
-   usage cases.  It's also hard to read.
-* No support for virtual dependencies
-   In all fairness, as of the time of writing, there were open issues on GitHub
-   regarding this.
-* Poor support for continuous integration
-   Hunter assumed from the start that projects would depend on a particular
-   version of a dependency.  With a lot of projects moving to a continuous
-   integration model, "releases" are not always available.  Hunter's solution to
-   the lack of releases is to use git submodules, but if you've ever tried using
-   git submodules you know that they are never the solution...
-* Difficult to control
-   Hunter is a package manager and thus it assumes that it knows about all of
-   the packages on your system. In turn if Hunter didn't build a dependency it
-   won't use it (or at least I could not figure out how to override this
-   behavior).
-* Coupling of Hunter to the build recipes (``hunter/cmake/projects`` directory)
-   The build recipes for dependencies are maintained by Hunter.  In order to
-   make sure Hunter can build a dependency one needs to modify Hunter's
-   source code. While having a centralized place for recipes benefits the
-   community, having that place be Hunter's source makes Hunter appear
-   unstable, clutters the GitHub issues, and places a lot of responsibility on
-   the maintainers of the Hunter repo.
-* Only supporting "official" recipes
-   Admittedly this is related to the above problem, but Hunter will only use
-   recipes that are stored in the centralized Hunter repo.  This makes it hard
-   (again git submodules) to rely on private dependencies and hard to use Hunter
-   until new dependencies are added to the repo.
-* Requires patching repos
-   Hunter requires projects to make config files and for those files to work
-   correctly.  The problem is what do you do if a repo doesn't do that?
-   Hunter's solution is that you should fork the offending repo, and then patch
-   it.  While this seems good at first, the problem is you introduce an
-   additional coupling.  Let's say the official repo adds a new feature and you
-   want to use it.  You're stuck waiting for the fork to patch the new version
-   (and like the recipes, forks are maintained by the Hunter organization so
-   you can't just use your fork).  The other problem is what happens when a
-   user is trying to make your project use their pre-built version of the
-   dependency?  Odds are they got that version from the official repo so it
-   won't work anyways.
-
-Build, Link, Triumph (BLT)
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-`BLT's home<https://github.com/llnl/blt>`_.
-
-* Focus is on simplifying writing cross-platform CMake scripts
-* Wrappers around common CMake functions like ``add_library``.
-* No support for building external dependencies.
-
-Autocmake
-^^^^^^^^^
-
-`Autocmake's home<https://github.com/dev-cafe/autocmake>`_.
-
-Cinch
-^^^^^
-
-`Cinch's home<https://github.com/laristra/cinch>`_.
-
-Just A Working Setup (JAWS)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-`JAWS's home<https://github.com/DevSolar/jaws>`_.
-
-Izzy's eXtension Modules (IXM)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-`IXM's home<https://github.com/slurps-mad-rips/ixm>`_.
-
-CMake++
-^^^^^^^
-
-`CMake++'s home<https://github.com/toeb/cmakepp>`_.
+Keep in mind that the software stack just described evolved somewhat organically
+over the last several decades. If the software stack had been written today it
+is likely that it would be very different.

@@ -14,3 +14,10 @@ cpp_Kwargs_ctor
        * lists    - List of keywords taking one or more arguments
        * unparsed - The contents of ``ARGN`` that were not parsed
     
+    .. warning::
+    
+        The Function class uses the Kwargs class in its ctor unless the
+        ``NO_KWARGS`` flag is provided to the Function ctor. Hence, in order for
+        the Kwargs class to register its member functions, each member function
+        can not take kwargs.
+    

@@ -11,7 +11,7 @@ cpp_Kwargs_add_keywords
     
     :kwargs:
     
-      * *TOGGLES* - A list of keywords to treat a toggles
-      * *OPTIONS* - A list of keywords to treat as options
-      * *LISTS*   - A list of keywords to treat as lists
+      * *TOGGLES*  - A list of keywords to treat a toggles
+      * *OPTIONS*  - A list of keywords to treat as options
+      * *LISTS*    - A list of keywords to treat as lists
     

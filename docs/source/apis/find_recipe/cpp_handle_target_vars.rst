@@ -17,6 +17,7 @@ cpp_handle_target_vars
     
     * ``<XXX>_INCLUDE_DIRS`` for the directories containing header files
     * ``<XXX>_LIBRARIES`` for the libraries to link against
+    * ``<XXX>_DEFINITIONS`` for constants that are defined at compile-time
     
     In all cases ``XXX`` is the name of the dependency assuming it adheres to one
     of the following capitalization schemes:

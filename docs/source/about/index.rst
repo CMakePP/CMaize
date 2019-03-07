@@ -7,4 +7,5 @@ About CPP
 
    description
    motivations
+   other_projects
    faqs
