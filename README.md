@@ -3,8 +3,8 @@ CMakePackagingProject
 
 [![Documentation Status](https://readthedocs.org/projects/cmakepackagingproject/badge/?version=latest)](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest)
 
-Welcome to the CMakePackagingProject (CMakePP; or CPP when confusion with C++ is
-unlikely) repository.
+Welcome to the CMakePackagingProject (CMakePP; or CPP when unlikely to collide
+with C++) repository.
 
 CMake is a meta build system, in that it is a tool for generating cross-platform 
 build systems. To do this, CMake provides a powerful scripting language which 
@@ -16,7 +16,7 @@ reproducibly built and consumed on arbitrary platforms. Generally speaking, with
 full knowledge of a project's dependencies, generating reliable and reusable 
 packages comes down to following established CMake best practices. 
 
-At its core, CPP is a dependency manager, written entirely within the CMake 
+At its core, CMakePP is a dependency manager, written entirely within the CMake
 scripting language. By leveraging its internal dependency manager, CPP makes 
 following CMake best practices as simple as filling in the following 
 boilerplate:
