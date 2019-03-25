@@ -66,3 +66,4 @@ Dependencies
 Modernize
 ---------
 
+Natively CMake supports two types of objects: strings and lists.

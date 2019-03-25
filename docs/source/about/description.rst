@@ -11,7 +11,7 @@ dependencies.  Since there is no uniform packaging mechanism for C/C++, CMake
 necessarily must provide very flexible interfaces for locating and consuming
 dependencies.  This flexibility comes at the cost of additional complexity and
 makes writing a reliable build system a time-consuming endeavor. CMake
-Packaging Project (CPP) is designed to simplify this procedure.
+Packaging Project (CMakePP) is designed to simplify this procedure.
 
 At its heart CPP is a dependency manager written entirely within CMake.  This
 means CPP knows how to:
@@ -62,6 +62,7 @@ Dependency Support
 
 * Dependencies with source explicitly included in the project (v1.0.0)
 * Dependencies hosted on public and private GitHub-based repositories (v1.0.0)
+* Dependencies hosted on public GitLab repositories (v1.0.0)
 * Virtual dependencies (*e.g.*, MPI and BLAS) supported (v1.0.0)
 * Multiple recipe repositories (v1.0.0)
 * Dependencies can be versioned by commit, branch, or version (v1.0.0)
@@ -76,4 +77,6 @@ Project Support
 Other
 ^^^^^
 
+* CMake documentation generator (v1.0.0)
+* Objects for developing CMakePP (v1.0.0)
 * Unit testing framework fo CMake functions (v1.0.0)

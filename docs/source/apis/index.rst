@@ -8,6 +8,7 @@ Contents
     Cache: Methods for modifying CPP's cache's contents <cache/index.rst>
     Dependency: Methods for finding/building dependencies <dependency/index.rst>
     FindRecipe: Documentation for the FindRecipe class <find_recipe/index.rst>
+    Function : Encapsulates callbacks and error-checking <function/index.rst>
     GetRecipe: Documentation for the GetRecipe class <get_recipe/index.rst>
     Logic: Aid in control flow <logic/index.rst>
     Kwargs: The keyword arguments class <kwargs/index.rst>
