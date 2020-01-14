@@ -10,10 +10,9 @@ include(cpp/fetch/fetch_and_available)
 #
 # - can be found by calling ``find_package`` in ``CONFIG`` mode
 # - added to the main project's build step via CMake's fetch command
-# - exports
+# - exports a CMake target
 #
 #]]
-cpp_class(Dependency)
 
     ###########################################################################
     #[[ ---------------------------- Attributes ---------------------------- ]]
@@ -22,14 +21,14 @@ cpp_class(Dependency)
     ## If we are building the dependency this will be the name of the target
     cpp_attr(Dependency build_target)
 
+    ## CMake variables that need to be set before building the dependency
+    cpp_attr(Dependency cmake_args)
+
     ## If we find the dependency this will be the name of the target
     cpp_attr(Dependency find_target)
 
     ## Did we find this dependency yet?
     cpp_attr(Dependency found FALSE)
-
-    ## Where the source for this dependency can be obtained from.
-    cpp_attr(Dependency location)
 
     ## Name of the dependency
     cpp_attr(Dependency name)
@@ -114,15 +113,7 @@ cpp_class(Dependency)
 
     cpp_member(build_dependency Dependency)
     function("${build_dependency}" _bd_this)
-
-        Dependency(GET "${_bd_this}" _bd_name name)
-        Dependency(GET "${_bd_this}" _bd_version version)
-        Dependency(GET "${_bd_this}" _bd_url location)
-
-        cpp_fetch_and_available("${_bd_name}" GIT_REPOSITORY "${_bd_url}")
-        _cpp_dependency_check_target("${_bd_this}" "build")
-        # It's now "found" since it's been added to our build system
-        Dependency(SET "${_bd_this}" found TRUE)
+        message(FATAL_ERROR "build_dependency(Dependency) not implemented.")
     endfunction()
 
 
