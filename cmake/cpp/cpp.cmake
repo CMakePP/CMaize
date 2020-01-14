@@ -11,13 +11,6 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "${_msg}")
 endif()
 
-# Include the fetch module and bring CMakePPCore into scope
-include(cpp/fetch/fetch)
-cpp_fetch_cmake_module(
-    cmakepp_core
-    GIT_REPOSITORY https://github.com/CMakePP/CMakePPCore
-)
-
 # Now bring the rest of our modules into scope (they now can use CMakePPCore)
 include(cpp/targets/targets)
 include(cpp/user_api/user_api)

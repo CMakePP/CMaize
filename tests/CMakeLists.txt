@@ -1,9 +1,14 @@
-include(cpp/fetch/cmake_module)
-cpp_fetch_cmake_module(
+include(cpp/fetch/fetch_and_available)
+
+set(build_testing_old "${BUILD_TESTING}")
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+cpp_fetch_and_available(
     cmake_test
     GIT_REPOSITORY https://github.com/CMakePP/CMakeTest
     GIT_TAG cmakedoc
 )
+list(APPEND CMAKE_MODULE_PATH "${cmake_test_SOURCE_DIR}")
+SET(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 
 # Define a function to make it easier to add tests to CTest
 function(add_cmake_unit_tests prefix)
