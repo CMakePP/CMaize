@@ -1,6 +1,5 @@
 include_guard()
-include(cpp/dependency/dependency)
-
+include(cpp/dependency/dependency_class)
 
 cpp_class(GitHubDependency Dependency)
 

@@ -11,6 +11,7 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "${_msg}")
 endif()
 
-# Now bring the rest of our modules into scope (they now can use CMakePPCore)
+include(cpp/dependency/dependency)
+include(cpp/fetch/fetch)
 include(cpp/targets/targets)
 include(cpp/user_api/user_api)

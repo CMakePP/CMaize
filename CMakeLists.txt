@@ -13,8 +13,6 @@ cpp_fetch_and_available(
         GIT_REPOSITORY https://github.com/CMakePP/CMakePPCore
 )
 set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
-list(APPEND CMAKE_MODULE_PATH "${cmakepp_core_SOURCE_DIR}/cmake")
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" CACHE STRING "" FORCE)
 
 if("${BUILD_TESTING}")
     include(CTest)
