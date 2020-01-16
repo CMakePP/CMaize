@@ -1,28 +1,26 @@
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-file(COPY ../cmake/cpp_unit_test_helpers.cmake DESTINATION ${CMAKE_BINARY_DIR}/tests)
+include(cpp/fetch/fetch_and_available)
 
-include(cpp_print) #For debug printing
+set(build_testing_old "${BUILD_TESTING}")
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+cpp_fetch_and_available(
+    cmake_test
+    GIT_REPOSITORY https://github.com/CMakePP/CMakeTest
+)
+list(APPEND CMAKE_MODULE_PATH "${cmake_test_SOURCE_DIR}")
+SET(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 
-function(cpp_cmake_unit_test _ccut_name _ccut_label)
-    get_filename_component(
-        _ccut_test_file
-        test_cpp_${_ccut_name}.cmake
-        REALPATH
-    )
-    add_test(
-        NAME ${_ccut_name}
-        COMMAND ${CMAKE_COMMAND}
-        "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
-        -P ${_ccut_test_file}
-    )
-    set(_ccut_labels all ${_ccut_label})
-    set_tests_properties(${_ccut_name} PROPERTIES LABELS "${_ccut_labels}")
-    _cpp_debug_print("Added CMake Unit Test:")
-    _cpp_debug_print("  Name: ${_ccut_name}")
-    _cpp_debug_print("  File: ${_ccut_test_file}")
+# Define a function to make it easier to add tests to CTest
+function(add_cmake_unit_tests prefix)
+    string(REGEX REPLACE ";" "\\\;" test_path "${CMAKE_MODULE_PATH}")
+    foreach(testi ${ARGN})
+        set(full_path ${CMAKE_CURRENT_LIST_DIR}/${testi}.cmake)
+        add_test(
+                NAME "${prefix}:${testi}"
+                COMMAND ${CMAKE_COMMAND}
+                -DCMAKE_MODULE_PATH=${test_path} -P ${full_path}
+        )
+    endforeach()
 endfunction()
 
-foreach(subdir_i build_recipe cache get_recipe find_recipe kwargs
-                 logic object serialization string user_api utility)
-    add_subdirectory(${subdir_i})
-endforeach()
+add_subdirectory(targets)
+add_subdirectory(user_api)

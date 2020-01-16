@@ -1,0 +1,5 @@
+include_guard()
+include(cpp/user_api/add_executable)
+include(cpp/user_api/add_library)
+include(cpp/user_api/add_tests)
+include(cpp/user_api/find_or_build_dependency)

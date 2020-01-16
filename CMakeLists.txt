@@ -1,40 +1,20 @@
-cmake_minimum_required(VERSION 3.12)
-project(CPP VERSION 0.0.0)
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include(CMakePackageConfigHelpers)
-include(CPPMain)
-include(cpp_options)
-CPPMain()
-cpp_option(BUILD_TESTS TRUE)
+cmake_minimum_required(VERSION 3.14) # b/c of FetchContent_MakeAvailable
+project(CMakePP VERSION 1.0.0)
 
-if(BUILD_TESTS)
-    enable_testing()
+option(BUILD_TESTING "Should we build and run the unit tests?" OFF)
+
+# Include the fetch module and bring CMakePPCore into scope
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(cpp/fetch/fetch_and_available)
+set(build_testing_old "${BUILD_TESTING}")
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+cpp_fetch_and_available(
+        cmakepp_core
+        GIT_REPOSITORY https://github.com/CMakePP/CMakePPCore
+)
+set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
+
+if("${BUILD_TESTING}")
+    include(CTest)
     add_subdirectory(tests)
 endif()
-
-
-#These are the names/paths for the generated config files pre-install
-set(cpp_config_file ${CMAKE_BINARY_DIR}/cpp-config.cmake)
-set(cpp_version_file ${CMAKE_BINARY_DIR}/cpp-config-version.cmake)
-
-#Configure the main config file
-configure_package_config_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/cpp-config.cmake.in
-        ${cpp_config_file}
-        INSTALL_DESTINATION ${CPP_SHAREDIR}
-)
-
-#Configure the version file
-write_basic_package_version_file(
-        ${cpp_version_file} COMPATIBILITY SameMajorVersion
-)
-
-#Install the submodules
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/cmake/"
-        DESTINATION ${CPP_SHAREDIR})
-
-#Install the config files
-install(
-    FILES "${cpp_config_file}" "${cpp_version_file}"
-    DESTINATION ${CPP_SHAREDIR}
-)
