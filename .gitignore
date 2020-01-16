@@ -1,0 +1,5 @@
+# Common CLion build directories
+cmake-build-*
+
+# CLion settings
+.idea/
