@@ -1,6 +1,8 @@
 CMakePackagingProject
 =====================
 
+[![Documentation Status](https://readthedocs.org/projects/cmakepackagingproject/badge/?version=latest)](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest)
+
 CMakePackagingProject is the top-level project of the CMakePP organization. It
 is this project which package maintainers should use to write their projects'
 build systems. Consequently, the CMakePackagingProject's documentation is the
