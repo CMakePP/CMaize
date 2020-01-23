@@ -3,3 +3,6 @@ cmake-build-*
 
 # CLion settings
 .idea/
+
+# Documentation build dir
+docs/build
