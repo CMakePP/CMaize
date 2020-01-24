@@ -21,10 +21,13 @@ function(cpp_find_or_build_dependency _fobd_name)
 
     Dependency(BUILD_DEPENDENCY "${_fobd_depend}")
 
-    Dependency(FIND_DEPENDENCY "${_fobd_depend}" _fobd_found)
-    if(NOT "${_fobd_found}")
-        message(
-            FATAL_ERROR "Still can't find ${_fobd_name}, even after building it"
-        )
+    # Alias the build target as the find_target to unify the API
+    Dependency(GET "${_fobd_depend}" _fobd_find_target "find_target")
+    Dependency(GET "${_fobd_depend}" _fobd_build_target "build_target")
+    if(NOT "${_fobd_find_target}" STREQUAL "${_fobd_build_target}")
+        if(TARGET "${_fobd_find_target}")
+            return()
+        endif()
+        add_library("${_fobd_find_target}" ALIAS "${_fobd_build_target}")
     endif()
 endfunction()
