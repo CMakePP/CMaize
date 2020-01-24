@@ -24,7 +24,7 @@ function(cpp_find_or_build_dependency _fobd_name)
     # Alias the build target as the find_target to unify the API
     Dependency(GET "${_fobd_depend}" _fobd_find_target "find_target")
     Dependency(GET "${_fobd_depend}" _fobd_build_target "build_target")
-    if(NOT "${_fobd_find_target}" "${_fobd_build_target}")
+    if(NOT "${_fobd_find_target}" STREQUAL "${_fobd_build_target}")
         if(TARGET "${_fobd_find_target}")
             message(FATAL_ERROR "Target ${_fobd_find_target} already exists.")
         endif()
