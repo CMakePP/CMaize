@@ -1,22 +1,32 @@
 Building the documentation
 ==========================
 
-Building is done by running:
+Assuming you have all of the documenation dependencies installed, building the
+documentation is done by running:
 
-```
+```.bash
 make html
 ```
 
-in the `${CMAKEPP_ROOT}/docs` directory, where `${CMAKEPP_ROOT}` is the full
-path to the top-level directory of this repository. If this runs successfully
-you will get an additional directory `build`. The actual documentation can be
-viewed by opening `${CMAKEPP_ROOT}/docs/build/html/index.html` in a web browser.
+in the this directory. If this runs successfully you will get an additional 
+directory `build`. The actual documentation can be viewed by opening 
+`${CMAKEPP_ROOT}/docs/build/html/index.html` in a web browser.
 
-If the build did not run successfully check that you have installed the
-following Python packages (all available in `pip`):
+The documentation depends on:
 
-- sphinx_rtd_theme (The Read-The-Docs theme for sphinx)
-- sphinx (The thing that makes the documenation)
+- `sphinx` (the program which actually turns the reST into HTML)
+- `sphinx_rtd_theme` (defines the HTML theme for the documentation)
 
+These are all common packages which are readily available in most package 
+managers. To obtain them we recommend using Python's `pip` module in conjunction 
+with the `venv` module. This is done by running:
+                         
+```.bash
+python3 -m venv <name_of_virtual_environment>
+source <name_of_virtual_environment>/bin/activate
+pip install -r requirements.txt
+```
+
+in this directory.
 
 
