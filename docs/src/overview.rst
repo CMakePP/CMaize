@@ -1,6 +1,6 @@
-**********************************
-Using CMakePP as your build system
-**********************************
+*****************************
+CMakePP Build System Overview
+*****************************
 
 With CMakePP the build system for a C++ library can be as easy as:
 
