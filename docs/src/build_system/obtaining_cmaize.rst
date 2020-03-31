@@ -27,7 +27,7 @@ to put the following CMake script in a file ``cmake/get_cpp.cmake``:
        include(FetchContent)
        FetchContent_Declare(
             cpp
-            GIT_REPOSITORY https://github.com/CMakePP/CMakePackagingProject
+            GIT_REPOSITORY https://github.com/CMakePP/CMaize
        )
        FetchContent_MakeAvailable(cpp)
 
