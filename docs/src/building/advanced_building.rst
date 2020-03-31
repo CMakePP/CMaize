@@ -2,7 +2,7 @@
 Advanced Building
 *****************
 
-While CMakePP strives to make building a project easy, power users and
+While CMaize strives to make building a project easy, power users and
 developers will likely want more control over the project they are building.
 This section highlights some advanced build system features.
 
@@ -25,16 +25,16 @@ users to facilitate building.
 Offline Builds
 ==============
 
-Ultimately when CMakePP can not locate a dependency it will retrieve that
+Ultimately when CMaize can not locate a dependency it will retrieve that
 dependency using CMake's ``FetchContent`` module. In turn, it is possible to
-pre-download dependencies and build a CMakePP project entirely offline. To do
+pre-download dependencies and build a CMaize project entirely offline. To do
 this you will need to set ``FETCHCONTENT_FULLY_DISCONNECTED`` to ``TRUE`` and
 tell CMake where to look for each dependency's source code. For a dependency
 *foo*, set the variable ``FETCHCONTENT_SOURCE_DIR_FOO`` to the path to
 *foo*'s source code.
 
-Developing Across Multiple CMakePP Projects
-===========================================
+Developing Across Multiple CMaize Projects
+==========================================
 
 Say you have two projects *A* and *B* such that *B* uses features in
 *A*. It often is the case that you need to add a feature to *A* to use in

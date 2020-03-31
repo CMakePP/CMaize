@@ -26,7 +26,7 @@ Obtaining CMake
 CMake's official website is `here <https://cmake.org/>`_ and contains links
 to download and install the CMake package. CMake is also readily available in
 most package managers.  Most modern packages that rely on CMake require at least
-CMake version 3.0, but you'll need at least version 3.14 to build CMakePP-based
+CMake version 3.0, but you'll need at least version 3.14 to build CMaize-based
 projects.
 
 Building CMake
@@ -56,7 +56,7 @@ Thus in that directory you minimally will need to run:
 
 The ``-H.`` tells CMake to start running in the current directory.  It is
 possible to run CMake from another directory and adjust the path to ``-H``, but
-unless the package maintainer is a CMake guru (or used CMakePP) doing so is
+unless the package maintainer is a CMake guru (or used CMaize) doing so is
 likely to break the build; hence, it is good practice to always run in the same
 directory as the top-level ``CMakeLists.txt`` and just consider the ``-H.`` as
 boilerplate.

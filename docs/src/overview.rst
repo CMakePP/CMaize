@@ -1,13 +1,13 @@
-*****************************
-CMakePP Build System Overview
-*****************************
+****************************
+CMaize Build System Overview
+****************************
 
-With CMakePP the build system for a C++ library can be as easy as:
+With CMaize the build system for a C++ library can be as easy as:
 
 .. code-block:: cmake
 
    cmake_minimum_required(VERSION 3.14)
-   project(your_first_cmakepp_project VERSION 1.0.0)
+   project(your_first_cmaize_project VERSION 1.0.0)
    include(cpp/cpp)
 
    cpp_add_library(
@@ -19,14 +19,14 @@ With CMakePP the build system for a C++ library can be as easy as:
 The above snippet will automatically find your library's header and source
 files, create and configure a CMake build target for your library, generate the
 packaging files for your library, and configure an install target. However, the
-real power of CMakePP is that it makes it easy to integrate dependencies into
+real power of CMaize is that it makes it easy to integrate dependencies into
 your project's build system. For example, if the library from the previous
 example depends on a dependency `name_of_dependency`:
 
 .. code-block:: cmake
 
    cmake_minimum_required(VERSION 3.14)
-   project(your_first_cmakepp_project VERSION 1.0.0)
+   project(your_first_cmaize_project VERSION 1.0.0)
    include(cpp/cpp)
 
    cpp_find_or_build_dependency(
@@ -44,5 +44,5 @@ example depends on a dependency `name_of_dependency`:
    )
 
 This relatively small snippet will properly look for the dependency using
-CMake's `find_package` command. If the dependency is not found, CMakePP will
+CMake's `find_package` command. If the dependency is not found, CMaize will
 then build it using CMake's `FetchContent` module.
