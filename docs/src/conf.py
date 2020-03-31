@@ -11,7 +11,7 @@ import os
 
 # -- Project information -----------------------------------------------------
 
-project = u'CMakePP'
+project = u'CMaize'
 copyright = u'2020, CMakePP Team'
 author = u'CMakePP Team'
 #src_dir = u'utilities'

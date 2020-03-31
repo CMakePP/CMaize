@@ -2,18 +2,18 @@
 Quick Start
 ***********
 
-Projects using CMakePP are encouraged to use this page as their build
+Projects using CMaize are encouraged to use this page as their build
 documentation, so if you're seeing this page odds are the package you're trying
-to build uses CMakePP for their build.  If you are a complete CMake newbie
+to build uses CMaize for their build.  If you are a complete CMake newbie
 (there's nothing wrong with that, we all were at some point) check out the
 :ref:`Two-Minute-Introduction-to-CMake` page to get acclimated.
 
-Step 0: Obtain CMakePP
-======================
+Step 0: Obtain CMaize
+=====================
 
-Packages which use CMakePP are encouraged to make their build system download
-CMakePP and include it. If the package you are using does not do this you will
-need to manually download CMakePP yourself and ensure that ``CMAKE_MODULE_PATH``
+Packages which use CMaize are encouraged to make their build system download
+CMaize and include it. If the package you are using does not do this you will
+need to manually download CMaize yourself and ensure that ``CMAKE_MODULE_PATH``
 points to the ``cmake`` directory in the downloaded repository.
 
 Step 1: Build the Project
@@ -21,7 +21,7 @@ Step 1: Build the Project
 
 We'll assume that the source code for the package you are trying to build is
 located in the directory ``package_dir``.  Configuring, building, and installing
-a package which uses CMakePP is done with the following commands:
+a package which uses CMaize is done with the following commands:
 
 .. code-block:: bash
 
@@ -41,7 +41,7 @@ if you need to rerun the `cmake` command.
 Troubleshooting
 ===============
 
-While we've striven to make CMakePP as foolproof as possible, the reality is
+While we've striven to make CMaize as foolproof as possible, the reality is
 bugs do occur and sometimes you build can get locked in a stale state.  Thus if
 a build fails we recommend you consider the following tips:
 
@@ -65,5 +65,5 @@ a build fails we recommend you consider the following tips:
 If your problem still persists check out our page
 :ref:`FAQs-and-Common-Build-Problems` to see if this a common problem.
 Finally, if you still can not resolve the problem consider opening an issue on
-CMakePP's GitHub repo (please look to see if an issue already exists before
+CMaize's GitHub repo (please look to see if an issue already exists before
 opening a new one).

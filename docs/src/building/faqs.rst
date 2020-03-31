@@ -10,8 +10,8 @@ For private repos CPP_GITHUB_TOKEN must be a valid token
 Cause
 ^^^^^
 
-CMakePP is trying to clone a private GitHub repository and you have not provided
-CMakePP with a valid GitHub authentication token.
+CMaize is trying to clone a private GitHub repository and you have not provided
+CMaize with a valid GitHub authentication token.
 
 Solution
 ^^^^^^^^
