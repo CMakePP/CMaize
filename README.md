@@ -1,7 +1,7 @@
 CMaize
 ======
 
-[![Documentation Status](https://readthedocs.org/projects/cmaize/badge/?version=latest)](https://cmaize.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/cmakepackagingproject/badge/?version=latest)](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest)
 
 CMaize is the top-level project of the CMakePP organization. It is this project
 which package maintainers should use to write their projects' build systems.
