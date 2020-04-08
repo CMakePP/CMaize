@@ -8,33 +8,33 @@ is common to CMake projects that uses CMaize as its build system.
 Project Overview
 ================
 
-``MyCMakeProject`` is a simple C++ project that consists of the following
+``ExampleCMakeProject`` is a simple C++ project that consists of the following
 components:
 
-* The ``TravelCostUtils`` library that contains some simple arithmetic
+* The ``travel_cost_utils`` library that contains some simple arithmetic
   calculations for use in calculating travel costs.
 
-* The ``TravelCostCalc`` executable that calculates travel cost for a set of
-  predefined values using functions in ``TravelCostUtils``.
+* The ``travel_cost_calc`` executable that calculates travel cost for a set of
+  predefined values using functions in ``travel_cost_utils``.
 
-* The ``Test`` directory contains some tests written using the Catch2 library
-  that test that ``TravelCostUtils`` works properly.
+* The ``test`` directory that contains some tests written using the Catch2
+  library that test that ``travel_cost_utils`` works properly.
 
 Here is the file structure of the project:
 
 ::
 
-    MyCMakeProject
+    ExampleCMakeProject
     ├── CMakeLists.txt
     ├── cmake
-    │   └── get_cpp.cmake
-    ├── TravelCostUtils
-    |   ├── TravelCostUtils.cpp
-    |   └── TravelCostUtils.hpp
-    ├── TravelCostCalc
-    |   └── TravelCostCalc.cpp
-    └── Test
-        └── test.cpp
+    │   └── get_cmaize.cmake
+    ├── travel_cost_utils
+    |   ├── travel_cost_utils.cpp
+    |   └── travel_cost_utils.hpp
+    ├── travel_cost_calc
+    |   └── travel_cost_calc.cpp
+    └── test
+        └── test_travel_cost_utils.cpp
 
 This structure is commonly found in CMake projects. A subdirectory is created
 for each executable and library. A subdirectory is also created the project's
@@ -50,8 +50,8 @@ The Basics
 ^^^^^^^^^^
 
 First we must start with the basics. We need to declare the minimum required
-version of CMake, the name and version of the project, and the C++ standard
-of the project.
+version of CMake, the name and version of the project, the language of the
+project, and the C++ standard of the project.
 
 .. code-block:: cmake
 
@@ -59,7 +59,10 @@ of the project.
     cmake_minimum_required(VERSION 3.13.4)
 
     # Declare project name and version
-    project(MyCMakeProject VERSION 1.0)
+    project(example_cmake_project VERSION 1.0)
+
+    # Set the project language
+    set(LANGUAGE CXX)
 
     # Set C++ standard
     set(CMAKE_CXX_STANDARD 14)
@@ -73,49 +76,61 @@ We also need to include CMaize. This is described more in
 .. code-block:: cmake
 
     # Include CMaize automatically
-    include("${PROJECT_SOURCE_DIR}/cmake/get_cpp.cmake")
+    include("${PROJECT_SOURCE_DIR}/cmake/get_cmaize.cmake")
 
 Adding the TravelCostUtils Library
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now we will add our ``TravelCostUtils`` library. We need to specify the target
+Now we will add our ``travel_cost_utils`` library. We need to specify the target
 name, its source directory, and its include directory:
 
 .. code-block:: cmake
 
-    # Add our TravelCostUtils library
+    # Add our travel_cost_utils library
     cpp_add_library(
-        TravelCostUtils
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/TravelCostUtils"
-        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/TravelCostUtils"
+        travel_cost_utils
+        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/travel_cost_utils"
+        INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/travel_cost_utils"
     )
 
 Adding the TravelCostCalc Executable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Here we add our ``TravelCostCalc`` executable. We simply need to specify
+Here we add our ``travel_cost_calc`` executable. We simply need to specify
 the target name, its source directory, and its dependencies:
 
 .. code-block:: cmake
 
-    # Add the executable
+    # Add the travel_cost_calc executable
     cpp_add_executable(
-        TravelCostCalc
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/TravelCostCalc"
-        DEPENDS TravelCostUtils
+        travel_cost_calc
+        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/travel_cost_calc"
+        DEPENDS travel_cost_utils
     )
 
-Getting the Catch2 Unit Test Framework
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adding Tests
+^^^^^^^^^^^^
 
-Now we will find and build the Catch2 unit testing framework. We need to do the
-following:
+Now we will add our tests. First, we'll create an ``if`` block so that our tests
+are only built if the ``BUILD_TESTING`` argument is set to ``ON`` (or some other
+"truthy" value):
+
+.. code-block:: cmake
+
+    if("${BUILD_TESTING}")
+
+        # Stuff for building tests will go here
+
+    endif()
+
+Next we will add a target for finding or building the Catch2 unit testing
+framework. We need to do the following:
 
 #. Create a target name for it (``Catch2`` in this case)
 #. Point to its GitHub repository URL using the ``URL`` keyword
 #. Specify the target we want to build in the repository using the
    ``BUILD_TARGET`` keyword
-#. Specify the target name we want to use to find this library using the
+#. Specify the name we want to use to find this library using the
    ``FIND_TARGET`` keyword
 #. Additionally we will pass in the ``BUILD_TESTING=OFF`` argument so that no
    tests are built for the library. Passing in arguments is accomplished by
@@ -123,41 +138,52 @@ following:
 
 .. code-block:: cmake
 
-    # Get the Catch2 unit testing framework
-    cpp_find_or_build_dependency(
-        Catch2
-        URL github.com/catchorg/Catch2
-        BUILD_TARGET Catch2
-        FIND_TARGET Catch2::Catch2
-        CMAKE_ARGS BUILD_TESTING=OFF
-    )
+    if("${BUILD_TESTING}")
 
-Adding Tests
-^^^^^^^^^^^^
+        # Get the Catch2 unit testing framework
+        cpp_find_or_build_dependency(
+            Catch2
+            URL github.com/catchorg/Catch2
+            BUILD_TARGET Catch2
+            FIND_TARGET Catch2::Catch2
+            CMAKE_ARGS BUILD_TESTING=OFF
+        )
 
-Now we can add our tests. We just need to specify the source directory and the
+    endif()
+
+Finally, to add our tests, we just need to specify the source directory and the
 tests dependencies (which in this case are our ``TravelCostUtils`` library and
-the ``Catch2`` testing framework).
+the ``Catch2`` testing framework). We will put our tests and their dependencies
+within an ``if`` block so that they are only built if users set the
+``BUILD_TESTING`` argument to ``ON`` (or some other "truthy" value).
 
 .. code-block:: cmake
 
-    # Add the tests
-    cpp_add_tests(
-        TravelCostUtilsTest
-        SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test"
-        DEPENDS TravelCostUtils Catch2::Catch2
-    )
+    # Build tests if build testing is enabled
+    if("${BUILD_TESTING}")
+
+        # Get the Catch2 unit testing framework
+        cpp_find_or_build_dependency(
+            Catch2
+            URL github.com/catchorg/Catch2
+            BUILD_TARGET Catch2
+            FIND_TARGET Catch2::Catch2
+            CMAKE_ARGS BUILD_TESTING=OFF
+        )
+
+        # Add the tests
+        cpp_add_tests(
+            travel_cost_utils_test
+            SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test"
+            DEPENDS travel_cost_utils Catch2::Catch2
+        )
+
+    endif()
 
 .. note::
 
-    Here we are using ``Catch2::Catch2`` to find the Catch2 library. This is
-    what we specified as the ``FIND_TARGET`` when finding and building Catch2.
-
-Final Project
-=============
-
-This final example project can be downloaded
-:download:`here <./MyCMakeProject.zip>`.
+    Here we use Catch2::Catch2 to find the Catch2 test framework as this is
+    the name of the target exported by Catch2.
 
 Building the Project
 ====================
@@ -172,3 +198,22 @@ project:
 
     # Build the project
     cmake --build build
+
+Running the Executable and Tests
+================================
+
+We can run our executable and our tests with the following commands:
+
+.. code-block:: bash
+
+    # Run the executable
+    ./build/travel_cost_calc
+
+    # Run the tests
+    ./build/travel_cost_utils_test
+
+Final Project Code
+==================
+
+This final example project can be viewed and downloaded
+`here <https://github.com/CMaizeExamples/ExampleCMakeProject>`_.
