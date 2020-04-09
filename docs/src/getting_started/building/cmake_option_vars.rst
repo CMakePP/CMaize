@@ -1,5 +1,3 @@
-.. _CMake-Option-Variables:
-
 **********************
 CMake Option Variables
 **********************

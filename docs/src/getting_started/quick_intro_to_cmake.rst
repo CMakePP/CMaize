@@ -1,8 +1,6 @@
-.. _Two-Minute-Introduction-to-CMake:
-
-********************************
-Two Minute Introduction to CMake
-********************************
+***************************
+Quick Introduction to CMake
+***************************
 
 This chapter is geared towards users who have not used CMake before. If you have
 used CMake previously feel free to skip this chapter.
@@ -88,9 +86,9 @@ Realistic Usage
 
 The usage in the previous section is somewhat idealized.  Generally speaking you
 will need to provide more information.  CMake defines a lot of options and we
-have collected them for you on the :ref:`standard_cmake-label` page.  Two of the
-more important options you should be aware of are ``CMAKE_INSTALL_PREFIX`` and
-``CMAKE_PREFIX_PATH``.  While they may sound similar they are used for two
+have collected them for you on the :ref:`CMake Option Variables` page.  Two of
+the more important options you should be aware of are ``CMAKE_INSTALL_PREFIX``
+and ``CMAKE_PREFIX_PATH``.  While they may sound similar they are used for two
 different purposes.  ``CMAKE_INSTALL_PREFIX`` tells CMake where to install the
 package after it is built.  On Unix-like machines, it defaults to something like
 ``/usr/local`` resulting in executables being installed to ``/usr/local/bin``,

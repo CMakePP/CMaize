@@ -6,7 +6,7 @@ Projects using CMaize are encouraged to use this page as their build
 documentation, so if you're seeing this page odds are the package you're trying
 to build uses CMaize for their build.  If you are a complete CMake newbie
 (there's nothing wrong with that, we all were at some point) check out the
-:ref:`Two-Minute-Introduction-to-CMake` page to get acclimated.
+:ref:`Quick Introduction to CMake` page to get acclimated.
 
 Step 0: Obtain CMaize
 =====================
@@ -31,12 +31,11 @@ a package which uses CMaize is done with the following commands:
    cmake --build <build_dir> --target install
 
 There are a lot of possible options for configuring the package, thus we
-strongly suggest you check out :ref:`CMake-Option-Variables` for
+strongly suggest you check out :ref:`CMake Option Variables` for
 a list of the more important considerations. If you are setting more than
 ``CMAKE_PREFIX_PATH`` and/or ``CMAKE_INSTALL_PREFIX`` it is strongly recommended
 that you use a toolchain file to record the options and save yourself time later
 if you need to rerun the `cmake` command.
-
 
 Troubleshooting
 ===============
@@ -63,7 +62,7 @@ a build fails we recommend you consider the following tips:
     for more information on generating tokens.
 
 If your problem still persists check out our page
-:ref:`FAQs-and-Common-Build-Problems` to see if this a common problem.
+:ref:`FAQs and Common Build Problems` to see if this a common problem.
 Finally, if you still can not resolve the problem consider opening an issue on
 CMaize's GitHub repo (please look to see if an issue already exists before
 opening a new one).
