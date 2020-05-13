@@ -14,3 +14,5 @@ that uses CMakePP.
 
    overview
    building/index
+   declaring_targets/index
+   dependencies/index
