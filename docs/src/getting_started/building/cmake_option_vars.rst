@@ -1,5 +1,3 @@
-.. _CMake-Option-Variables:
-
 **********************
 CMake Option Variables
 **********************
@@ -10,7 +8,7 @@ these variables when relevant and under no circumstance should a project
 override any of these variables (in rare circumstances appending to them may be
 needed, but you should never override them). The variables in this chapter are
 defined by CMake itself and therefore should be honored by all projects using
-CMake regardless of whether or not they used CMakePP. Note that the inopportune
+CMake regardless of whether or not they used CMaize. Note that the inopportune
 word there is **should**; you'll find a plethora of counterexamples (said
 counterexamples are bugs and should be reported).
 
@@ -57,7 +55,7 @@ as part of the standard and ``find_package`` automatically considers such
 variables as hints, regardless of whether the module recognizes the variable or
 not. CMake only strictly honors ``XXX_ROOT`` where ``XXX`` matches the case of
 the dependency's name; however, since determining the case can be annoying,
-CMakePP additionally will honor the all uppercase and all lowercase variants.
+CMaize additionally will honor the all uppercase and all lowercase variants.
 
 CMAKE_MODULE_PATH
 -----------------

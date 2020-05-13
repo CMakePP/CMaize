@@ -1,8 +1,6 @@
-.. _Two-Minute-Introduction-to-CMake:
-
-********************************
-Two Minute Introduction to CMake
-********************************
+***************************
+Quick Introduction to CMake
+***************************
 
 This chapter is geared towards users who have not used CMake before. If you have
 used CMake previously feel free to skip this chapter.
@@ -26,7 +24,7 @@ Obtaining CMake
 CMake's official website is `here <https://cmake.org/>`_ and contains links
 to download and install the CMake package. CMake is also readily available in
 most package managers.  Most modern packages that rely on CMake require at least
-CMake version 3.0, but you'll need at least version 3.14 to build CMakePP-based
+CMake version 3.0, but you'll need at least version 3.14 to build CMaize-based
 projects.
 
 Building CMake
@@ -56,7 +54,7 @@ Thus in that directory you minimally will need to run:
 
 The ``-H.`` tells CMake to start running in the current directory.  It is
 possible to run CMake from another directory and adjust the path to ``-H``, but
-unless the package maintainer is a CMake guru (or used CMakePP) doing so is
+unless the package maintainer is a CMake guru (or used CMaize) doing so is
 likely to break the build; hence, it is good practice to always run in the same
 directory as the top-level ``CMakeLists.txt`` and just consider the ``-H.`` as
 boilerplate.
@@ -88,9 +86,9 @@ Realistic Usage
 
 The usage in the previous section is somewhat idealized.  Generally speaking you
 will need to provide more information.  CMake defines a lot of options and we
-have collected them for you on the :ref:`standard_cmake-label` page.  Two of the
-more important options you should be aware of are ``CMAKE_INSTALL_PREFIX`` and
-``CMAKE_PREFIX_PATH``.  While they may sound similar they are used for two
+have collected them for you on the :ref:`CMake Option Variables` page.  Two of
+the more important options you should be aware of are ``CMAKE_INSTALL_PREFIX``
+and ``CMAKE_PREFIX_PATH``.  While they may sound similar they are used for two
 different purposes.  ``CMAKE_INSTALL_PREFIX`` tells CMake where to install the
 package after it is built.  On Unix-like machines, it defaults to something like
 ``/usr/local`` resulting in executables being installed to ``/usr/local/bin``,

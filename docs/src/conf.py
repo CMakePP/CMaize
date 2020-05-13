@@ -11,7 +11,7 @@ import os
 
 # -- Project information -----------------------------------------------------
 
-project = u'CMakePP'
+project = u'CMaize'
 copyright = u'2020, CMakePP Team'
 author = u'CMakePP Team'
 #src_dir = u'utilities'
@@ -35,6 +35,7 @@ release = u'1.0.0alpha'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.autosectionlabel',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
