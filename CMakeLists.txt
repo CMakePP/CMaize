@@ -15,6 +15,9 @@ cpp_fetch_and_available(
 
 list(APPEND CMAKE_MODULE_PATH "${cmakepp_core_SOURCE_DIR}/cmake")
 
+if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE) #For projects including CMaize
+endif()
 set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 
 if("${BUILD_TESTING}")
