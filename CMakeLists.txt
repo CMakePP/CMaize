@@ -13,9 +13,10 @@ cpp_fetch_and_available(
         GIT_REPOSITORY https://github.com/CMakePP/CMakePPCore
 )
 
-list(APPEND CMAKE_MODULE_PATH "${cmakepp_core_SOURCE_DIR}/cmake")
+
 
 if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE) #For projects including CMaize
 endif()
 set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
