@@ -10,7 +10,8 @@ set(build_testing_old "${BUILD_TESTING}")
 set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
 cpp_fetch_and_available(
         cmakepp_core
-        GIT_REPOSITORY https://github.com/CMakePP/CMakePPCore
+        GIT_REPOSITORY https://github.com/AutonomicPerfectionist/CMakePPCore
+        GIT_TAG module_path_fix
 )
 
 
