@@ -1,5 +1,5 @@
 include_guard()
-include(cmakepp_core/cmakepp_core)
+include(cmakepp_lang/cmakepp_lang)
 include(cpp/dependency/dependency)
 
 function(cpp_find_or_build_dependency _fobd_name)

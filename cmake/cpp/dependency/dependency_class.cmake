@@ -1,5 +1,5 @@
 include_guard()
-include(cmakepp_core/cmakepp_core)
+include(cmakepp_lang/cmakepp_lang)
 include(cpp/dependency/detail_/check_target)
 include(cpp/fetch/fetch_and_available)
 
