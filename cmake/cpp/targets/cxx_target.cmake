@@ -1,5 +1,5 @@
 include_guard()
-include(cmakepp_core/cmakepp_core)
+include(cmakepp_lang/cmakepp_lang)
 
 cpp_class(CXXTarget)
 
