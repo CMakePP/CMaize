@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example Project using GNU Style Structure &mdash; CMaize 1.0.0alpha documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API" href="../../api/index.html" />
+    <link rel="prev" title="Example Project using CMake Style Structure" href="cmake_like_project.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> CMaize
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../quick_intro_to_cmake.html">Quick Introduction to CMake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../building/index.html">Building a Project That Uses CMaize</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Using CMaize as Your Build System</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="obtaining_cmaize.html">Obtaining CMaize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmake_like_project.html">Example Project using CMake Style Structure</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Example Project using GNU Style Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#project-overview">Project Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-the-cmakelists-txt-file">Creating the CMakeLists.txt File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-the-project">Building the Project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-executable-and-tests">Running the Executable and Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#final-project-code">Final Project Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer/index.html">Developing CMaize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dependencies/index.html">Declaring Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Getting Started</a> &raquo;</li>
+          <li><a href="index.html">Using CMaize as Your Build System</a> &raquo;</li>
+      <li>Example Project using GNU Style Structure</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/getting_started/using_cmaize_as_build_system/gnu_like_project.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="example-project-using-gnu-style-structure">
+<h1>Example Project using GNU Style Structure<a class="headerlink" href="#example-project-using-gnu-style-structure" title="Permalink to this headline"></a></h1>
+<p>This chapter provides an overview of a project using the GNU style structure
+that uses CMaize as its build system.</p>
+<section id="project-overview">
+<h2>Project Overview<a class="headerlink" href="#project-overview" title="Permalink to this headline"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ExampleGNUProject</span></code> is a simple C++ project that consists of the following
+components:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">travel_cost_utils</span></code> library that contains some simple arithmetic
+calculations for use in calculating travel costs.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">travel_cost_calc</span></code> executable that calculates travel cost for a set of
+predefined values using functions in <code class="docutils literal notranslate"><span class="pre">travel_cost_utils</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">test</span></code> directory that contains some tests written using the Catch2
+library that test that <code class="docutils literal notranslate"><span class="pre">travel_cost_utils</span></code> works properly.</p></li>
+</ul>
+<p>Here is the directory structure of the project:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ExampleGNUProject
+├── CMakeLists.txt
+├── cmake
+│   └── get_cmaize.cmake
+├── include
+|   └── example_gnu_project
+|       └── travel_cost_utils
+|           └── travel_cost_utils.hpp
+├── src
+│   ├── travel_cost_utils
+|   |   └── travel_cost_utils.cpp
+│   └── travel_cost_calc
+│       └── travel_cost_calc.cpp
+└── test
+    └── travel_cost_utils
+        └── test_travel_cost_utils.cpp
+</pre></div>
+</div>
+<p>This structure breaks the project down in the following way:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">include/example_gnu_project</span></code> contains the public headers for the projects
+libraries, separated into directories for each library.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code> contains the source code for the project, separated into
+subdirectories for each executable and library.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test</span></code> contains the tests for the project, broken down into subdirectories</p></li>
+</ul>
+<p>The advantage to using this type of structure over the CMake style structure
+is that this structure explicitly separates public and private header files.
+The CMake style structure requires the user to handle the public/private-ness
+of header files.</p>
+</section>
+<section id="creating-the-cmakelists-txt-file">
+<h2>Creating the CMakeLists.txt File<a class="headerlink" href="#creating-the-cmakelists-txt-file" title="Permalink to this headline"></a></h2>
+<p>Here we will cover the contents of the <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file at the root of
+the project.</p>
+<section id="the-basics">
+<h3>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline"></a></h3>
+<p>First we must start with the basics. We need to declare the minimum required
+version of CMake, the name and version of the project, the language of the
+project, and the C++ standard of the project.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Declare minimum version required</span>
+<span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.13.4</span><span class="p">)</span>
+
+<span class="c"># Declare project name and version</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">example_gnu_project</span><span class="w"> </span><span class="s">VERSION</span><span class="w"> </span><span class="s">1.0</span><span class="p">)</span>
+
+<span class="c"># Set the project language</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">LANGUAGE</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+
+<span class="c"># Set C++ standard</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span><span class="w"> </span><span class="s">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="including-cmaize">
+<h3>Including CMaize<a class="headerlink" href="#including-cmaize" title="Permalink to this headline"></a></h3>
+<p>We also need to include CMaize. This is described more in
+<a class="reference internal" href="obtaining_cmaize.html#automatically-downloading-and-including-cmaize"><span class="std std-ref">Automatically Downloading and Including CMaize</span></a>.</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Include CMaize automatically</span>
+<span class="nb">include</span><span class="p">(</span><span class="s2">&quot;${PROJECT_SOURCE_DIR}/cmake/get_cmaize.cmake&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-the-travelcostutils-library">
+<h3>Adding the TravelCostUtils Library<a class="headerlink" href="#adding-the-travelcostutils-library" title="Permalink to this headline"></a></h3>
+<p>Now we will add our <code class="docutils literal notranslate"><span class="pre">travel_cost_utils</span></code> library. We need to specify the target
+name, its source directory, and its include directory:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Add our travel_cost_utils library</span>
+<span class="nb">cpp_add_library</span><span class="p">(</span>
+<span class="w">    </span><span class="s">travel_cost_utils</span>
+<span class="w">    </span><span class="s">SOURCE_DIR</span><span class="w"> </span><span class="s2">&quot;${CMAKE_CURRENT_LIST_DIR}/src/travel_cost_utils&quot;</span>
+<span class="w">    </span><span class="s">INCLUDE_DIR</span><span class="w"> </span><span class="s2">&quot;${CMAKE_CURRENT_LIST_DIR}/include/example_gnu_project/travel_cost_utils&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-the-travelcostcalc-executable">
+<h3>Adding the TravelCostCalc Executable<a class="headerlink" href="#adding-the-travelcostcalc-executable" title="Permalink to this headline"></a></h3>
+<p>Here we add our <code class="docutils literal notranslate"><span class="pre">travel_cost_calc</span></code> executable. We simply need to specify
+the target name, its source directory, and its dependencies:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Add the travel_cost_calc executable</span>
+<span class="nb">cpp_add_executable</span><span class="p">(</span>
+<span class="w">    </span><span class="s">travel_cost_calc</span>
+<span class="w">    </span><span class="s">SOURCE_DIR</span><span class="w"> </span><span class="s2">&quot;${CMAKE_CURRENT_LIST_DIR}/src/travel_cost_calc&quot;</span>
+<span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s">travel_cost_utils</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-tests">
+<h3>Adding Tests<a class="headerlink" href="#adding-tests" title="Permalink to this headline"></a></h3>
+<p>Now we will add our tests. First, we’ll create an <code class="docutils literal notranslate"><span class="pre">if</span></code> block so that our tests
+are only built if the <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> argument is set to <code class="docutils literal notranslate"><span class="pre">ON</span></code> (or some other
+“truthy” value):</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="p">(</span><span class="s2">&quot;${BUILD_TESTING}&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c"># Stuff for building tests will go here</span>
+
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next we will add a target for finding or building the Catch2 unit testing
+framework. We need to do the following:</p>
+<ol class="arabic simple">
+<li><p>Create a target name for it (<code class="docutils literal notranslate"><span class="pre">Catch2</span></code> in this case)</p></li>
+<li><p>Point to its GitHub repository URL using the <code class="docutils literal notranslate"><span class="pre">URL</span></code> keyword</p></li>
+<li><p>Specify the target we want to build in the repository using the
+<code class="docutils literal notranslate"><span class="pre">BUILD_TARGET</span></code> keyword</p></li>
+<li><p>Specify the name we want to use to find this library using the
+<code class="docutils literal notranslate"><span class="pre">FIND_TARGET</span></code> keyword</p></li>
+<li><p>Additionally we will pass in the <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING=OFF</span></code> argument so that no
+tests are built for the library. Passing in arguments is accomplished by
+using the <code class="docutils literal notranslate"><span class="pre">CMAKE_ARGS</span></code> keyword.</p></li>
+</ol>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">if</span><span class="p">(</span><span class="s2">&quot;${BUILD_TESTING}&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c"># Get the Catch2 unit testing framework</span>
+<span class="w">    </span><span class="nb">cpp_find_or_build_dependency</span><span class="p">(</span>
+<span class="w">        </span><span class="s">Catch2</span>
+<span class="w">        </span><span class="s">URL</span><span class="w"> </span><span class="s">github.com/catchorg/Catch2</span>
+<span class="w">        </span><span class="s">BUILD_TARGET</span><span class="w"> </span><span class="s">Catch2</span>
+<span class="w">        </span><span class="s">FIND_TARGET</span><span class="w"> </span><span class="s">Catch2::Catch2</span>
+<span class="w">        </span><span class="s">CMAKE_ARGS</span><span class="w"> </span><span class="s">BUILD_TESTING=OFF</span>
+<span class="w">    </span><span class="p">)</span>
+
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Finally, to add our tests, we just need to specify the source directory and the
+tests dependencies (which in this case are our <code class="docutils literal notranslate"><span class="pre">TravelCostUtils</span></code> library and
+the <code class="docutils literal notranslate"><span class="pre">Catch2</span></code> testing framework). We will put our tests and their dependencies
+within an <code class="docutils literal notranslate"><span class="pre">if</span></code> block so that they are only built if users set the
+<code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> argument to <code class="docutils literal notranslate"><span class="pre">ON</span></code> (or some other “truthy” value).</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Build tests if build testing is enabled</span>
+<span class="nb">if</span><span class="p">(</span><span class="s2">&quot;${BUILD_TESTING}&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c"># Get the Catch2 unit testing framework</span>
+<span class="w">    </span><span class="nb">cpp_find_or_build_dependency</span><span class="p">(</span>
+<span class="w">        </span><span class="s">Catch2</span>
+<span class="w">        </span><span class="s">URL</span><span class="w"> </span><span class="s">github.com/catchorg/Catch2</span>
+<span class="w">        </span><span class="s">BUILD_TARGET</span><span class="w"> </span><span class="s">Catch2</span>
+<span class="w">        </span><span class="s">FIND_TARGET</span><span class="w"> </span><span class="s">Catch2::Catch2</span>
+<span class="w">        </span><span class="s">CMAKE_ARGS</span><span class="w"> </span><span class="s">BUILD_TESTING=OFF</span>
+<span class="w">    </span><span class="p">)</span>
+
+<span class="w">    </span><span class="c"># Add the tests</span>
+<span class="w">    </span><span class="nb">cpp_add_tests</span><span class="p">(</span>
+<span class="w">        </span><span class="s">travel_cost_utils_test</span>
+<span class="w">        </span><span class="s">SOURCE_DIR</span><span class="w"> </span><span class="s2">&quot;${CMAKE_CURRENT_LIST_DIR}/test&quot;</span>
+<span class="w">        </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s">travel_cost_utils</span><span class="w"> </span><span class="s">Catch2::Catch2</span>
+<span class="w">    </span><span class="p">)</span>
+
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here we use Catch2::Catch2 to find the Catch2 test framework as this is
+the name of the target exported by Catch2.</p>
+</div>
+</section>
+</section>
+<section id="building-the-project">
+<h2>Building the Project<a class="headerlink" href="#building-the-project" title="Permalink to this headline"></a></h2>
+<p>The project can be built by running the following commands at the root of the
+project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the build system</span>
+cmake -B build
+
+<span class="c1"># Build the project</span>
+cmake --build build
+</pre></div>
+</div>
+</section>
+<section id="running-the-executable-and-tests">
+<h2>Running the Executable and Tests<a class="headerlink" href="#running-the-executable-and-tests" title="Permalink to this headline"></a></h2>
+<p>We can run our executable and our tests with the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the executable</span>
+./build/travel_cost_calc
+
+<span class="c1"># Run the tests</span>
+./build/travel_cost_utils_test
+</pre></div>
+</div>
+</section>
+<section id="final-project-code">
+<h2>Final Project Code<a class="headerlink" href="#final-project-code" title="Permalink to this headline"></a></h2>
+<p>This final example project can be viewed and downloaded
+<a class="reference external" href="https://github.com/CMaizeExamples/ExampleGNUProject">here</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cmake_like_project.html" class="btn btn-neutral float-left" title="Example Project using CMake Style Structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../api/index.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

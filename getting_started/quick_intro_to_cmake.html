@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Introduction to CMake &mdash; CMaize 1.0.0alpha documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Building a Project That Uses CMaize" href="building/index.html" />
+    <link rel="prev" title="Getting Started" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> CMaize
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Quick Introduction to CMake</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#about-cmake">About CMake</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-cmake">What is CMake?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#obtaining-cmake">Obtaining CMake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-cmake">Building CMake</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#using-cmake">Using CMake</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#basic-cmake-usage">Basic CMake Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#realistic-usage">Realistic Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#building-and-installing">Building and Installing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="building/index.html">Building a Project That Uses CMaize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_cmaize_as_build_system/index.html">Using CMaize as Your Build System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developing CMaize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies/index.html">Declaring Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Getting Started</a> &raquo;</li>
+      <li>Quick Introduction to CMake</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/quick_intro_to_cmake.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-introduction-to-cmake">
+<h1>Quick Introduction to CMake<a class="headerlink" href="#quick-introduction-to-cmake" title="Permalink to this headline"></a></h1>
+<p>This chapter is geared towards users who have not used CMake before. If you have
+used CMake previously feel free to skip this chapter.</p>
+<section id="about-cmake">
+<h2>About CMake<a class="headerlink" href="#about-cmake" title="Permalink to this headline"></a></h2>
+<p>Let’s start with some basic background on CMake.</p>
+<section id="what-is-cmake">
+<h3>What is CMake?<a class="headerlink" href="#what-is-cmake" title="Permalink to this headline"></a></h3>
+<p>CMake stands for “Cross platform Make” and is a tool to facilitate building
+packages on a variety of platforms.  The CMake suite of programs contains a
+number of programs, but for our present purposes the only one you need to be
+aware of is the literal CMake program, <code class="docutils literal notranslate"><span class="pre">cmake</span></code>.</p>
+</section>
+<section id="obtaining-cmake">
+<h3>Obtaining CMake<a class="headerlink" href="#obtaining-cmake" title="Permalink to this headline"></a></h3>
+<p>CMake’s official website is <a class="reference external" href="https://cmake.org/">here</a> and contains links
+to download and install the CMake package. CMake is also readily available in
+most package managers.  Most modern packages that rely on CMake require at least
+CMake version 3.0, but you’ll need at least version 3.14 to build CMaize-based
+projects.</p>
+</section>
+<section id="building-cmake">
+<h3>Building CMake<a class="headerlink" href="#building-cmake" title="Permalink to this headline"></a></h3>
+<p>For now follow CMake’s instructions as I’m too lazy to write my own.</p>
+</section>
+</section>
+<section id="using-cmake">
+<h2>Using CMake<a class="headerlink" href="#using-cmake" title="Permalink to this headline"></a></h2>
+<section id="basic-cmake-usage">
+<h3>Basic CMake Usage<a class="headerlink" href="#basic-cmake-usage" title="Permalink to this headline"></a></h3>
+<p>Now that you have the CMake package installed on your system you can run the
+<code class="docutils literal notranslate"><span class="pre">cmake</span></code> command.  Let’s say you just downloaded some package
+<code class="docutils literal notranslate"><span class="pre">an_awesome_package</span></code>.  If you look at the file structure of
+<code class="docutils literal notranslate"><span class="pre">an_awesome_package</span></code> you should see one or more files called
+<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>.  These files are written by the package maintainer and tell
+CMake how to build the package.  Conventional usage will have you run the
+<code class="docutils literal notranslate"><span class="pre">cmake</span></code> command in the directory that contains <code class="docutils literal notranslate"><span class="pre">an_awesome_package</span></code>’s
+top-level <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> (and this tutorial assumes that this is the case).
+Thus in that directory you minimally will need to run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake -H. -B&lt;scratch_dir&gt;
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-H.</span></code> tells CMake to start running in the current directory.  It is
+possible to run CMake from another directory and adjust the path to <code class="docutils literal notranslate"><span class="pre">-H</span></code>, but
+unless the package maintainer is a CMake guru (or used CMaize) doing so is
+likely to break the build; hence, it is good practice to always run in the same
+directory as the top-level <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> and just consider the <code class="docutils literal notranslate"><span class="pre">-H.</span></code> as
+boilerplate.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-B&lt;scratch_dir&gt;</span></code> tells CMake where it can put autogenerated files as well
+as any intermediate object files.  You should replace <code class="docutils literal notranslate"><span class="pre">&lt;scratch_dir&gt;</span></code> with a
+descriptive name such as <code class="docutils literal notranslate"><span class="pre">build-debug</span></code> to signal that this is the build
+directory for a debug build (assuming of course that you are building a debug
+version of the package).</p>
+<p>After running the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command a plethora of text output usually ensues
+ending with something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">Configuring</span> <span class="n">done</span>
+<span class="o">--</span> <span class="n">Generating</span> <span class="n">done</span>
+<span class="o">--</span> <span class="n">Build</span> <span class="n">files</span> <span class="n">have</span> <span class="n">been</span> <span class="n">written</span> <span class="n">to</span><span class="p">:</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">the</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="n">you</span><span class="o">/</span><span class="nb">set</span>
+
+<span class="p">[</span><span class="n">Finished</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This signals that the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command has run successfully.  It has not built
+your project yet, rather it has generated the files required to build the
+project.  That said, typically you are home free once the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command has
+completed.</p>
+</section>
+<section id="realistic-usage">
+<h3>Realistic Usage<a class="headerlink" href="#realistic-usage" title="Permalink to this headline"></a></h3>
+<p>The usage in the previous section is somewhat idealized.  Generally speaking you
+will need to provide more information.  CMake defines a lot of options and we
+have collected them for you on the <a class="reference internal" href="building/cmake_option_vars.html#cmake-option-variables"><span class="std std-ref">CMake Option Variables</span></a> page.  Two of
+the more important options you should be aware of are <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code>
+and <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code>.  While they may sound similar they are used for two
+different purposes.  <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code> tells CMake where to install the
+package after it is built.  On Unix-like machines, it defaults to something like
+<code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> resulting in executables being installed to <code class="docutils literal notranslate"><span class="pre">/usr/local/bin</span></code>,
+header files to <code class="docutils literal notranslate"><span class="pre">/usr/local/include</span></code>, <em>etc</em>.  <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> tells
+CMake where to look for dependencies.</p>
+<p>Now that you know about options, how do we set them?  The answer is like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake -H. -B&lt;scratch_dir&gt; -DOPTION1<span class="o">=</span>VALUE1 -DOPTION2<span class="o">=</span>VALUE2...
+</pre></div>
+</div>
+<p>That is to say they are appended to the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command in the format
+<code class="docutils literal notranslate"><span class="pre">-D&lt;option&gt;=&lt;value&gt;</span></code>.  Say we wanted to install the package to <code class="docutils literal notranslate"><span class="pre">/foo/bar</span></code>
+the command to do this is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake -H. -B&lt;scratch_dir&gt; -DCMAKE_INSTALL_PREFIX<span class="o">=</span>/foo/bar
+</pre></div>
+</div>
+<p>Some CMake variables, like <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code>, take lists.  Lists are passed
+to CMake by placing the contents in double quotes and separating items with
+semicolons.  For example, to tell CMake to look in <code class="docutils literal notranslate"><span class="pre">/foo</span></code> and <code class="docutils literal notranslate"><span class="pre">/bar</span></code> for
+dependencies the command is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake -H. -B&lt;scratch_dir&gt; -DCMAKE_PREFIX_PATH<span class="o">=</span><span class="s2">&quot;/foo;/bar&quot;</span>
+</pre></div>
+</div>
+<p>It is important to note that packages may also define their own options, in
+addition to those provided by CMake.  Hence you should consult the package’s
+build documentation for any package specific options that are available.</p>
+</section>
+</section>
+<section id="building-and-installing">
+<h2>Building and Installing<a class="headerlink" href="#building-and-installing" title="Permalink to this headline"></a></h2>
+<p>With the package configured, all that remains is to actually build it and to
+install it.  The commands to do this are similar and both are executed in the
+same directory as the top-level <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>.  Building is done by:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake --build &lt;scratch_dir&gt;
+</pre></div>
+</div>
+<p>and installing is done by:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake --build &lt;scratch_dir&gt; --target install
+</pre></div>
+</div>
+<p>The install command may need to be run with administrator privileges if the
+current user does not have sufficient permissions to write to the installation
+destination.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="building/index.html" class="btn btn-neutral float-right" title="Building a Project That Uses CMaize" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
