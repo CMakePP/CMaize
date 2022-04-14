@@ -11,8 +11,9 @@ include(cmake_test/cmake_test)
 
 set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 
-ct_add_dir("cpp/targets")
-ct_add_dir("cpp/user_api")
+ct_add_dir("cpp")
+# ct_add_dir("cpp/targets")
+# ct_add_dir("cpp/user_api")
 
 # include(cpp/fetch/fetch_and_available)
 
