@@ -9,11 +9,9 @@ include(cpp/fetch/fetch_and_available)
 set(build_testing_old "${BUILD_TESTING}")
 set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
 cpp_fetch_and_available(
-        cmakepp_lang
-        GIT_REPOSITORY https://github.com/CMakePP/CMakePPLang
+    cmakepp_lang
+    GIT_REPOSITORY https://github.com/CMakePP/CMakePPLang
 )
-
-
 
 if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE) #For projects including CMaize
