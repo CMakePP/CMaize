@@ -108,6 +108,8 @@ cpp_class(Toolchain)
         # Autopopulate some values from the CMake environment
         cpp_map(SET "${auto_opt_map}" "CMAKE_C_COMPILER" "${CMAKE_C_COMPILER}")
         cpp_map(SET "${auto_opt_map}" "CMAKE_CXX_COMPILER" "${CMAKE_CXX_COMPILER}")
+        # cpp_map(SET "${auto_opt_map}" "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS}")
+        # cpp_map(SET "${auto_opt_map}" "CMAKE_PREFIX_PATH" "${CMAKE_PREFIX_PATH}")
 
         # Copy autopopulated options to the user map
         cpp_map(COPY "${auto_opt_map}" user_opt_map)
@@ -125,19 +127,44 @@ cpp_class(Toolchain)
         # Get the autopopulated map
         Toolchain(GET "${self}" user_opt_map toolchain_options)
 
-        # Create list of lines in the file
         string(REPLACE "\n" ";" lines "${file_contents}")
 
-        # Get the variables that are set using `set()` in the toolchain
+        set(in_block OFF)
         foreach(line ${lines})
-            message("-- line: ${line}") # DEBUG
-            string(REGEX MATCH "^set\\((.+) (.+)\\)" _full_line "${line}")
-            message("-- match: ${CMAKE_MATCH_1}") # DEBUG
-            if(NOT "${CMAKE_MATCH_1}" STREQUAL "")
-                list(APPEND var_names "${CMAKE_MATCH_1}")
-                list(APPEND values "${CMAKE_MATCH_2}")
+            string(STRIP "${line}" line)
 
-                cpp_map(SET "${user_opt_map}" "${CMAKE_MATCH_1}" "${CMAKE_MATCH_2}")
+            # Check if it is the start of a block
+            if(NOT in_block AND line MATCHES "^[ ]*([a-zA-Z0-9_]+)\\(")
+                set(in_block ON)
+            endif()
+
+            # Append to the current command block
+            if(in_block)
+                string(APPEND current_block " ${line}")
+            endif()
+
+            # End of block, parse out the arguments
+            if(in_block AND line MATCHES "\\)")
+                # Notes on the regex used:
+                # "[A-Za-z0-9_]" matches any single "word" character in the C locale
+                #     - used for variable name extraction
+                # ".+" matches any character one or more times
+                #     - used to get values being stored in variables
+
+                if(current_block MATCHES "set\\([ ]*([a-zA-Z0-9_]+)[ ]+(.+)[ ]*\\)")
+                    cpp_map(SET "${user_opt_map}" "${CMAKE_MATCH_1}" "${CMAKE_MATCH_2}")
+                elseif(current_block MATCHES "list\\(APPEND[ ]+([a-zA-Z0-9_]+)[ ]+(.+)[ ]*\\)")
+                    cpp_map(APPEND "${user_opt_map}" "${CMAKE_MATCH_1}" "${CMAKE_MATCH_2}")
+                elseif(current_block MATCHES "string\\(APPEND[ ]+([a-zA-Z0-9_]+)[ ]+\"(.+)\"[ ]*\\)")
+                    cpp_map(GET "${user_opt_map}" value "${CMAKE_MATCH_1}")
+                    string(APPEND value "${CMAKE_MATCH_2}")
+                    cpp_map(SET "${user_opt_map}" "${CMAKE_MATCH_1}" "${value}")
+                else()
+                    cpp_raise(InvalidToolchainBlock "Unsupported command in toolchain: ${current_block}")
+                endif()
+
+                set(in_block OFF)
+                set(current_block "")
             endif()
         endforeach()
 
