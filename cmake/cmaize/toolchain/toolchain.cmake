@@ -67,7 +67,6 @@ cpp_class(Toolchain)
 
         # Parse the user toolchain into a list of lines
         file(READ "${toolchain_path}" file_contents)
-        # string(REPLACE "\"" "\\\"" file_contents "${file_contents}")
         
         # Parse user options
         Toolchain(_parse_toolchain "${self}" "${file_contents}")
@@ -148,8 +147,6 @@ cpp_class(Toolchain)
         # Autopopulate some values from the CMake environment
         cpp_map(SET "${auto_opt_map}" "CMAKE_C_COMPILER" "${CMAKE_C_COMPILER}")
         cpp_map(SET "${auto_opt_map}" "CMAKE_CXX_COMPILER" "${CMAKE_CXX_COMPILER}")
-        # cpp_map(SET "${auto_opt_map}" "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS}")
-        # cpp_map(SET "${auto_opt_map}" "CMAKE_PREFIX_PATH" "${CMAKE_PREFIX_PATH}")
 
         # Copy autopopulated options to the user map
         cpp_map(COPY "${auto_opt_map}" user_opt_map)
@@ -193,19 +190,27 @@ cpp_class(Toolchain)
 
                 set(var_name "")
                 set(var_value "")
+                
+                # set()
                 if(current_block MATCHES "set\\([ ]*([a-zA-Z0-9_]+)[ ]+(.+)[ ]*\\)")
                     set(var_name "${CMAKE_MATCH_1}")
                     set(var_value "${CMAKE_MATCH_2}")
+
+                # list(APPEND
                 elseif(current_block MATCHES "list\\(APPEND[ ]+([a-zA-Z0-9_]+)[ ]+(.+)[ ]*\\)")
                     set(var_name "${CMAKE_MATCH_1}")
 
                     cpp_map(GET "${user_opt_map}" var_value "${CMAKE_MATCH_1}")
                     list(APPEND var_value "${CMAKE_MATCH_2}")
+
+                # string(APPEND
                 elseif(current_block MATCHES "string\\(APPEND[ ]+([a-zA-Z0-9_]+)[ ]+\"(.+)\"[ ]*\\)")
                     set(var_name "${CMAKE_MATCH_1}")
 
                     cpp_map(GET "${user_opt_map}" var_value "${CMAKE_MATCH_1}")
                     string(APPEND var_value "${CMAKE_MATCH_2}")
+
+                # Unsupported
                 else()
                     cpp_raise(InvalidToolchainBlock "Unsupported command in toolchain: ${current_block}")
                 endif()
