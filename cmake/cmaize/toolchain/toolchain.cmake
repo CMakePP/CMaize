@@ -1,8 +1,8 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
-list(APPEND _CMAIZE_Toolchain_autopopulated_variable_names "CMAKE_C_COMPILER")
-list(APPEND _CMAIZE_Toolchain_autopopulated_variable_names "CMAKE_CXX_COMPILER")
+list(APPEND _cmaize_Toolchain_autopopulated_variable_names "CMAKE_C_COMPILER")
+list(APPEND _cmaize_Toolchain_autopopulated_variable_names "CMAKE_CXX_COMPILER")
 
 #[[[
 # The Toolchain class is a source code representation of the toolchain file
