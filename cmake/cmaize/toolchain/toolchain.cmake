@@ -1,8 +1,8 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
-list(APPEND Toolchain_autopopulated_variable_names "CMAKE_C_COMPILER")
-list(APPEND Toolchain_autopopulated_variable_names "CMAKE_CXX_COMPILER")
+list(APPEND _CMAIZE_Toolchain_autopopulated_variable_names "CMAKE_C_COMPILER")
+list(APPEND _CMAIZE_Toolchain_autopopulated_variable_names "CMAKE_CXX_COMPILER")
 
 #[[[
 # The Toolchain class is a source code representation of the toolchain file
@@ -95,6 +95,46 @@ cpp_class(Toolchain)
 
     endfunction()
 
+    #[[[
+    # Creates a string of the toolchain values formatted to pass to the
+    # CMAKE_ARGS keyword of something like ``ExternalProject_Add`` or
+    # ``FetchContent``.
+    #
+    # .. note::
+    #    Special characters are encoded using
+    #    ``cmakepp_lang::utilities::cpp_encode_special_chars``
+    #
+    # :param toolchain_contents: Contents of the toolchain file.
+    # :type toolchain_contents: str
+    #]]
+    cpp_member(as_cmake_args Toolchain str)
+    function("${as_cmake_args}" self return_id)
+
+        # Get the toolchain option map
+        Toolchain(GET "${self}" toolchain_options toolchain_options)
+
+        cpp_map(KEYS "${toolchain_options}" variables)
+
+        # Collect the variables and values
+        set(values "")
+        foreach(var_name ${variables})
+            cpp_map(GET "${toolchain_options}" value "${var_name}")
+            string(APPEND values "-D${var_name}=\"${value}\" ")
+            message("-- Values: ${values}")
+        endforeach()
+
+        # Replace the list semicolon with a text semicolon to
+        # protect the list
+        # string(REPLACE ";" "\;" values "${values}")
+        message("-- Values: ${values}")
+        cpp_encode_special_chars("${values}" encoded_values)
+
+        message("-- Final Values: ${encoded_values}")
+
+        set("${return_id}" "${encoded_values}" PARENT_SCOPE)
+
+    endfunction()
+
     # [[[
     # Autopopulates certain toolchain variables as default values to be used
     # if not specified by the user toolchain file.
@@ -124,7 +164,7 @@ cpp_class(Toolchain)
     cpp_member(_parse_toolchain Toolchain str)
     function("${_parse_toolchain}" self file_contents)
 
-        # Get the autopopulated map
+        # Get the toolchain option map (user options)
         Toolchain(GET "${self}" user_opt_map toolchain_options)
 
         string(REPLACE "\n" ";" lines "${file_contents}")
@@ -151,17 +191,30 @@ cpp_class(Toolchain)
                 # ".+" matches any character one or more times
                 #     - used to get values being stored in variables
 
+                set(var_name "")
+                set(var_value "")
                 if(current_block MATCHES "set\\([ ]*([a-zA-Z0-9_]+)[ ]+(.+)[ ]*\\)")
-                    cpp_map(SET "${user_opt_map}" "${CMAKE_MATCH_1}" "${CMAKE_MATCH_2}")
+                    set(var_name "${CMAKE_MATCH_1}")
+                    set(var_value "${CMAKE_MATCH_2}")
                 elseif(current_block MATCHES "list\\(APPEND[ ]+([a-zA-Z0-9_]+)[ ]+(.+)[ ]*\\)")
-                    cpp_map(APPEND "${user_opt_map}" "${CMAKE_MATCH_1}" "${CMAKE_MATCH_2}")
+                    set(var_name "${CMAKE_MATCH_1}")
+
+                    cpp_map(GET "${user_opt_map}" var_value "${CMAKE_MATCH_1}")
+                    list(APPEND var_value "${CMAKE_MATCH_2}")
                 elseif(current_block MATCHES "string\\(APPEND[ ]+([a-zA-Z0-9_]+)[ ]+\"(.+)\"[ ]*\\)")
-                    cpp_map(GET "${user_opt_map}" value "${CMAKE_MATCH_1}")
-                    string(APPEND value "${CMAKE_MATCH_2}")
-                    cpp_map(SET "${user_opt_map}" "${CMAKE_MATCH_1}" "${value}")
+                    set(var_name "${CMAKE_MATCH_1}")
+
+                    cpp_map(GET "${user_opt_map}" var_value "${CMAKE_MATCH_1}")
+                    string(APPEND var_value "${CMAKE_MATCH_2}")
                 else()
                     cpp_raise(InvalidToolchainBlock "Unsupported command in toolchain: ${current_block}")
                 endif()
+
+                # Strip any excess spaces from the value
+                string(STRIP "${var_value}" var_value)
+
+                # Store/overwrite the value to the map
+                cpp_map(SET "${user_opt_map}" "${var_name}" "${var_value}")
 
                 set(in_block OFF)
                 set(current_block "")
