@@ -4,5 +4,5 @@ cmake-build-*
 # CLion settings
 .idea/
 
-# Documentation build dir
-docs/build
+# Build directories
+**/build
