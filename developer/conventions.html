@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Developing CMaize &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>CMaize Conventions &mdash; CMaize 1.0.0alpha documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,8 +18,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="CMaize Conventions" href="conventions.html" />
-    <link rel="prev" title="API" href="../api/index.html" /> 
+    <link rel="next" title="Declaring Build Targets" href="../declaring_targets/index.html" />
+    <link rel="prev" title="Developing CMaize" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,8 +45,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Developing CMaize</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developing CMaize</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CMaize Conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#namespaces">Namespaces</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
@@ -67,9 +70,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Developing CMaize</li>
+          <li><a href="index.html">Developing CMaize</a> &raquo;</li>
+      <li>CMaize Conventions</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/developer/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/developer/conventions.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -77,25 +81,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="developing-cmaize">
-<h1>Developing CMaize<a class="headerlink" href="#developing-cmaize" title="Permalink to this headline"></a></h1>
-<p>This part is for developers of CMaize.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="conventions.html">CMaize Conventions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="conventions.html#namespaces">Namespaces</a></li>
-</ul>
-</li>
-</ul>
-</div>
+  <section id="cmaize-conventions">
+<h1>CMaize Conventions<a class="headerlink" href="#cmaize-conventions" title="Permalink to this headline"></a></h1>
+<p>This section describes the conventions to be followed when developing
+for CMaize. Since CMaize is based on CMakePPLang, an object-oriented
+extension to the CMake language, CMaize developers should follow the same
+conventions set forth by <a class="reference external" href="https://cmakepp.github.io/CMakePPLang/conventions.html">the CMakePPLang conventions</a>, unless otherwise
+specified here.</p>
+<section id="namespaces">
+<h2>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this headline"></a></h2>
+<p>The CMakePPLang uses the prefixes <code class="docutils literal notranslate"><span class="pre">cpp_</span></code>, <code class="docutils literal notranslate"><span class="pre">_cpp_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__cpp_</span></code> to
+specify namespaces to specify public API, protected, and private commands,
+as well as <code class="docutils literal notranslate"><span class="pre">CMAKEPP_LANG_</span></code>, <code class="docutils literal notranslate"><span class="pre">_CMAKEPP_LANG_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__CMAKEPP_LANG_</span></code> for
+for variables in the same scopes. CMaize adopts a similar convention, using
+the prefixes <code class="docutils literal notranslate"><span class="pre">cmaize_</span></code>, <code class="docutils literal notranslate"><span class="pre">_cmaize_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__cmaize_</span></code> for commands and
+<code class="docutils literal notranslate"><span class="pre">CMAIZE_</span></code>, <code class="docutils literal notranslate"><span class="pre">_CMAIZE_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__CMAIZE_</span></code> for variables.</p>
+<p>Note that commands in native CMake (as well as CMakePPLang) are
+case-insensitive, so the <code class="docutils literal notranslate"><span class="pre">CMAIZE_</span></code> prefix on a command is still the same
+namespace as <code class="docutils literal notranslate"><span class="pre">cmaize_</span></code>. However, variables are case-sensitive, so care needs
+to be taken not to overlap variables and commands with the same names.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../api/index.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="conventions.html" class="btn btn-neutral float-right" title="CMaize Conventions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Developing CMaize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../declaring_targets/index.html" class="btn btn-neutral float-right" title="Declaring Build Targets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
