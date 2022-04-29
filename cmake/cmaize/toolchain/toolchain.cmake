@@ -5,9 +5,9 @@ include(cmakepp_lang/cmakepp_lang)
 # Variables that CMaize will autopopulate in its ``Toolchain`` object.
 # This variable is a list of strings representing variable names.
 #]]
-set(_cmaize_Toolchain_autopopulated_variable_names "")
-list(APPEND _cmaize_Toolchain_autopopulated_variable_names "CMAKE_C_COMPILER")
-list(APPEND _cmaize_Toolchain_autopopulated_variable_names "CMAKE_CXX_COMPILER")
+set(_CMAIZE_TOOLCHAIN_AUTOPOPULATED_VARIABLE_NAMES "")
+list(APPEND _CMAIZE_TOOLCHAIN_AUTOPOPULATED_VARIABLE_NAMES "CMAKE_C_COMPILER")
+list(APPEND _CMAIZE_TOOLCHAIN_AUTOPOPULATED_VARIABLE_NAMES "CMAKE_CXX_COMPILER")
 
 #[[[
 # The ``Toolchain`` class is a source code representation of the toolchain
@@ -206,7 +206,7 @@ cpp_class(Toolchain)
         Toolchain(GET "${self}" auto_opt_map auto_options)
 
         # Autopopulate some values from the CMake environment
-        foreach(var_name ${_cmaize_Toolchain_autopopulated_variable_names})
+        foreach(var_name ${_CMAIZE_TOOLCHAIN_AUTOPOPULATED_VARIABLE_NAMES})
             cpp_map(SET "${auto_opt_map}" "${var_name}" "${${var_name}}")
         endforeach()
 
