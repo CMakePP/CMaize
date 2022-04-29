@@ -1,21 +1,25 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
+#[[[
+# Variables that CMaize will autopopulate in its ``Toolchain`` object.
+# This variable is a list of strings representing variable names.
+#]]
+set(_cmaize_Toolchain_autopopulated_variable_names "")
 list(APPEND _cmaize_Toolchain_autopopulated_variable_names "CMAKE_C_COMPILER")
 list(APPEND _cmaize_Toolchain_autopopulated_variable_names "CMAKE_CXX_COMPILER")
 
 #[[[
-# The Toolchain class is a source code representation of the toolchain file
-# that can be provided by users to specify options sent to every dependency.
+# The ``Toolchain`` class is a source code representation of the toolchain
+# file that can be provided by users to specify options sent to every
+# dependency.
 # 
 # Users need a way to specify options which should be passed to every 
 # dependency. By convention this is done by setting the options in a 
 # toolchain file. The Toolchain class is the source code representation of 
-# this file and provides CMaize a way to interact with the toolchain file 
-# the user provided. Two sets of values will be in the Toolchain instance: 
-# those set by the user in the actual file, and those CMaize autopopulates 
-# (autopopulated variables will be things like the compiler which we 
-# explicitly pass to ensure consistent builds).
+# this file, containing values autopopulated by CMaize, as well as
+# user-specified options. User options take precidence over autopopulated
+# values.
 #]]
 cpp_class(Toolchain)
     
@@ -30,6 +34,12 @@ cpp_class(Toolchain)
     #[[[
     # Default constructor for Toolchain object with only autopopulated
     # options available.
+    #
+    # :param self: Toolchain object constructed.
+    # :type self: Toolchain
+    # :returns: ``self`` will be set to the newly constructed ``Toolchain``
+    #           object.
+    # :rtype: Toolchain
     #]]
     cpp_constructor(CTOR Toolchain)
     function("${CTOR}" self)
@@ -45,8 +55,13 @@ cpp_class(Toolchain)
     #[[[
     # Constructor for Toolchain object with a path to a toolchain file.
     #
+    # :param self: Toolchain object constructed.
+    # :type self: Toolchain
     # :param toolchain_path: Path to the toolchain file to load.
     # :type toolchain_path: path
+    # :returns: ``self`` will be set to the newly constructed ``Toolchain``
+    #           object.
+    # :rtype: Toolchain
     #]]
     cpp_constructor(CTOR Toolchain path)
     function("${CTOR}" self toolchain_path)
@@ -73,8 +88,13 @@ cpp_class(Toolchain)
     # Constructor for Toolchain object with a string assumed to be the
     # contents of an already opened toolchain file.
     #
+    # :param self: Toolchain object constructed.
+    # :type self: Toolchain
     # :param file_contents: Contents of the toolchain file.
     # :type file_contents: str
+    # :returns: ``self`` will be set to the newly constructed ``Toolchain``
+    #           object.
+    # :rtype: Toolchain
     #]]
     cpp_constructor(CTOR Toolchain str)
     function("${CTOR}" self file_contents)
@@ -88,6 +108,25 @@ cpp_class(Toolchain)
 
     endfunction()
 
+    #[[[ Generate the contents of a toolchain file.
+    #
+    # Generates a string with valid toolchain file contents based on the
+    # state of the toolchain object. The generated contents will contain
+    # the autopopulated options first, followed by the user-specified
+    # toolchain file, verbatim. By putting the user-specified toolchain
+    # file after the autopopulated options, the user-specified options
+    # will override any autopopulated options.
+    #
+    # If you need to write the toolchain contents to a file, use the
+    # ``write_file`` member function instead of ``generate_file_contents``.
+    # 
+    # :param self: Toolchain object to generate toolchain file from.
+    # :type self: Toolchain
+    # :param return_value: Return value with toolchain file contents.
+    # :type return_value: str
+    # :returns: Toolchain file content string.
+    # :rtype: str
+    #]]
     cpp_member(generate_file_contents Toolchain str)
     function("${generate_file_contents}" self return_value)
 
@@ -123,6 +162,18 @@ cpp_class(Toolchain)
 
     endfunction()
 
+    #[[[ Writes the toolchain object contents to a toolchain file.
+    #
+    # If the contents of this toolchain file are needed, they can be
+    # generated directly with the ``generate_file_contents`` member
+    # function.
+    #
+    # :param self: Toolchain object to create toolchain file from.
+    # :type self: Toolchain
+    # :param toolchain_path: Location to write toolchain file. This should
+    #                        include the toolchain file name as well.
+    # :type toolchain_path: path
+    #]]
     cpp_member(write_toolchain Toolchain path)
     function("${write_toolchain}" self toolchain_path)
 
@@ -134,10 +185,13 @@ cpp_class(Toolchain)
 
     endfunction()
 
-    # [[[
+    #[[[
     # Autopopulates certain toolchain variables as default values to be used
     # if not specified by the user toolchain file.
-    # ]]
+    #
+    # :param self: Toolchain object to autopopulate.
+    # :type self: Toolchain
+    #]]
     cpp_member(_autopopulate_options Toolchain)
     function("${_autopopulate_options}" self)
 
@@ -152,7 +206,11 @@ cpp_class(Toolchain)
     endfunction()
 
     #[[[
-    # Initialize empty option maps of the Toolchain object.
+    # Initialize empty option maps of the Toolchain object and autopopulates
+    # some options.
+    #
+    # :param self: Toolchain object to initialize.
+    # :type self: Toolchain
     #]]
     cpp_member(__initialize Toolchain)
     function("${__initialize}" self)
