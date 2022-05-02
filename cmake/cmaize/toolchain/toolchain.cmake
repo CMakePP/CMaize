@@ -163,9 +163,9 @@ cpp_class(Toolchain)
         Toolchain(GET "${self}" file_contents encoded_toolchain_contents)
         string(APPEND file_string "${file_contents}")
 
-        cpp_decode_special_chars("${file_string}" file_string)
+        cpp_decode_special_chars("${file_string}" "${return_value}")
 
-        set("${return_value}" "${file_string}" PARENT_SCOPE)
+        cpp_return("${return_value}")
 
     endfunction()
 
