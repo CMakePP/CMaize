@@ -26,7 +26,8 @@ jobs:
           cmake_prefix=cmake-${cmake_version}-${os}
           cmake_script=${cmake_prefix}.sh
           wget "${url_prefix}/v${cmake_version}/${cmake_script}"
-          /bin/sh "${cmake_script}" --prefix=./${cmake_prefix} --include-subdir
+          mkdir -p ./${cmake_prefix}
+          /bin/sh "${cmake_script}" --prefix=./${cmake_prefix} --exclude-subdir
 
       - name: configure
         run: |
