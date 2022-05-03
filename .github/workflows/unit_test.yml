@@ -23,9 +23,10 @@ jobs:
         env:
           url_prefix: https://github.com/Kitware/CMake/releases/download
         run: |
-          cmake_script=cmake-${cmake_version}-${os}.sh
+          cmake_prefix=cmake-${cmake_version}-${os}
+          cmake_script=${cmake_prefix}.sh
           wget "${url_prefix}/v${cmake_version}/${cmake_script}"
-          yes | /bin/sh "${cmake_script}"
+          yes | /bin/sh "${cmake_script}" --prefix=${cmake-prefix} --exclude-subdir
 
       - name: configure
         run: |
