@@ -14,7 +14,7 @@ jobs:
 
     env:
       cmake_version: ${{ matrix.cmake }}
-      os: Linux-x86_64
+      os: linux-x86_64
 
     steps:
       - uses: actions/checkout@v1
