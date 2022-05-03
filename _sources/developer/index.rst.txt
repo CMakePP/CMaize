@@ -5,6 +5,7 @@ Developing CMaize
 This part is for developers of CMaize.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    conventions
+   design_notes/index
