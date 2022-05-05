@@ -27,7 +27,7 @@ function("${test_project_specification}")
             # The file content should be blank
             ProjectSpecification(GET "${ps_obj}" _ps name version build_type)
             ct_assert_equal(_ps_name "${PROJECT_NAME}")
-            ct_assert_equal(_ps_version "")
+            ct_assert_equal(_ps_version "${PROJECT_VERSION}")
             ct_assert_equal(_ps_build_type "${CMAKE_BUILD_TYPE}")
 
         endfunction()
