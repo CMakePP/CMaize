@@ -1,6 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/toolchain/toolchain)
+include(cmaize/utilities/split_version)
 
 #[[[
 # The ``ProjectSpecification`` class is envisioned as holding all of the
@@ -22,6 +23,26 @@ cpp_class(ProjectSpecification)
     # Version of project or dependency as a string.
     #]]
     cpp_attr(ProjectSpecification version)
+
+    #[[[
+    # First version number component of the ``version`` attribute.
+    #]]
+    cpp_attr(ProjectSpecification major_version)
+
+    #[[[
+    # Second version number component of the ``version`` attribute.
+    #]]
+    cpp_attr(ProjectSpecification minor_version)
+
+    #[[[
+    # Third version number component of the ``version`` attribute.
+    #]]
+    cpp_attr(ProjectSpecification patch_version)
+
+    #[[[
+    # Fourth version number component of the ``version`` attribute.
+    #]]
+    cpp_attr(ProjectSpecification tweak_version)
 
     #[[[
     # Specifies the build type.
@@ -88,6 +109,41 @@ cpp_class(ProjectSpecification)
     endfunction()
 
     #[[[
+    # Override to ``set_version()`` method to catch when the project version
+    # string is blank.
+    #]]
+    cpp_member(set_version ProjectSpecification)
+    function("${set_version}" self)
+
+        ProjectSpecification(SET "${self}" version "")
+        ProjectSpecification(SET "${self}" major_version "")
+        ProjectSpecification(SET "${self}" minor_version "")
+        ProjectSpecification(SET "${self}" patch_version "")
+        ProjectSpecification(SET "${self}" tweak_version "")
+
+    endfunction()
+
+    #[[[
+    # Set the project version variable and splits the version into 
+    # major, minor, patch, and tweak components.
+    #
+    # :param project_version: Full project version string.
+    # :type project_version: str
+    #]]
+    cpp_member(set_version ProjectSpecification str)
+    function("${set_version}" self project_version)
+
+        cmaize_split_version(major minor patch tweak "${project_version}")
+
+        ProjectSpecification(SET "${self}" version "${project_version}")
+        ProjectSpecification(SET "${self}" major_version "${major}")
+        ProjectSpecification(SET "${self}" minor_version "${minor}")
+        ProjectSpecification(SET "${self}" patch_version "${patch}")
+        ProjectSpecification(SET "${self}" tweak_version "${tweak}")
+
+    endfunction()
+
+    #[[[
     # Initialize project attributes with default values.
     #
     # :param self: ``ProjectSpecification`` object to initialize.
@@ -96,8 +152,11 @@ cpp_class(ProjectSpecification)
     cpp_member(__initialize ProjectSpecification)
     function("${__initialize}" self)
 
-        ProjectSpecification(SET "${self}" name "${CMAKE_PROJECT_NAME}")
-        ProjectSpecification(SET "${self}" version "${CMAKE_PROJECT_VERSION}")
+        # Get the name from the most recent ``project()`` call
+        ProjectSpecification(SET "${self}" name "${PROJECT_NAME}")
+        
+        # Get the version from the most recent ``project()`` call
+        ProjectSpecification(set_version "${self}" "${PROJECT_VERSION}")
 
         ProjectSpecification(SET "${self}" build_type "${CMAKE_BUILD_TYPE}")
 
