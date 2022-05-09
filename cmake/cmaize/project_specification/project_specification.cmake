@@ -1,7 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/toolchain/toolchain)
-include(cmaize/utilities/split_version)
+include(cmaize/utilities/utilities)
 
 #[[[
 # The ``ProjectSpecification`` class is envisioned as holding all of the
@@ -16,31 +16,53 @@ cpp_class(ProjectSpecification)
     
     #[[[
     # Name of project or dependency as a string.
+    #
+    # :var name: Name of project or dependency as a string.
+    # :vartype name: str
     #]]
     cpp_attr(ProjectSpecification name)
 
     #[[[
     # Version of project or dependency as a string.
+    #
+    # :var version: Version of project or dependency as a string.
+    # :vartype version: str
     #]]
     cpp_attr(ProjectSpecification version)
 
     #[[[
     # First version number component of the ``version`` attribute.
+    #
+    # :var major_version: First version number component of the ``version``
+    #                     attribute.
+    # :vartype major_version: str
     #]]
     cpp_attr(ProjectSpecification major_version)
 
     #[[[
     # Second version number component of the ``version`` attribute.
+    #
+    # :var minor_version: Second version number component of the ``version``
+    #                     attribute.
+    # :vartype minor_version: str
     #]]
     cpp_attr(ProjectSpecification minor_version)
 
     #[[[
     # Third version number component of the ``version`` attribute.
+    #
+    # :var patch_version: Third version number component of the ``version``
+    #                     attribute.
+    # :vartype patch_version: str
     #]]
     cpp_attr(ProjectSpecification patch_version)
 
     #[[[
     # Fourth version number component of the ``version`` attribute.
+    #
+    # :var tweak_version: Fourth version number component of the ``version``
+    #                     attribute.
+    # :vartype tweak_version: str
     #]]
     cpp_attr(ProjectSpecification tweak_version)
 
@@ -62,15 +84,34 @@ cpp_class(ProjectSpecification)
     #    and `CMake Build Configurations 
     #    <https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#build-configurations>`__
     #    for more information on the details of making this switch.
+    #
+    # :var build_type: Specifies the build type.
+    # :vartype build_type: str
     #]]
     cpp_attr(ProjectSpecification build_type)
 
     #[[[
-    # CMaize ``Toolchain`` object.
+    # User-specified and autopopulated toolchain file values.
+    #
+    # :var toolchain: User-specified and autopopulated toolchain file values.
+    # :vartype toolchain: ``Toolchain``
     #]]
     cpp_attr(ProjectSpecification toolchain)
 
+    #[[[
+    # Project configure options.
+    #
+    # :var configure_options: Project configure options.
+    # :vartype configure_options: ``cpp_map``
+    #]]
     cpp_attr(ProjectSpecification configure_options)
+
+    #[[[
+    # Project compile options.
+    #
+    # :var compile_options: Project compile options.
+    # :vartype compile_options: ``cpp_map``
+    #]]
     cpp_attr(ProjectSpecification compile_options)
 
     #[[[
