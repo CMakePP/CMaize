@@ -12,7 +12,8 @@ rm -rf docs/src/api/developer
 mkdir -p build
 
 # Build the API docs with CMinx
-cminx "cmake/cmaize" -o "build/api_docs/" -r -p cmaize
+cminx "cmake/cmaize" -o "build/api_docs/cmaize" -r -p cmaize
+cminx "cmake/cpp" -o "build/api_docs/cpp" -r -p cpp
 
 # Move the api docs to the documentation directory
 mv build/api_docs docs/src/api/developer
