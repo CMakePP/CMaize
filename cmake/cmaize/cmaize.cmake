@@ -13,3 +13,4 @@ endif()
 
 include(cmaize/toolchain/toolchain)
 include(cmaize/project_specification/project_specification)
+include(cmaize/utilities/utilities)
