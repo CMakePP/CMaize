@@ -34,8 +34,9 @@ jobs:
         run: |
           python3 -m venv virt_env
           source virt_env/bin/activate
+          pip3 install -r docs/requirements.txt
+          ./.github/workflows/scripts/build_api_docs.sh
           cd docs
-          pip3 install -r requirements.txt
           make html
           deactivate
 
