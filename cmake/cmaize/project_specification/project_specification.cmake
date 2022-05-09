@@ -133,19 +133,30 @@ cpp_class(ProjectSpecification)
     endfunction()
 
     #[[[
-    # Placeholder for hash function.
+    # Hash the object using the provided hashing algorithm string.
+    #
+    # Supported hashing algorithms are specified by the CMake
+    # ``string(<HASH>`` function defined `here
+    # <https://cmake.org/cmake/help/latest/command/string.html#hashing>`__.
     #
     # :param self: ``ProjectSpecification`` object to hash.
     # :type self: ProjectSpecification
     # :param return_hash: Hashed ``ProjectSpecification``
     # :type return_hash: str
+    # :param hash_type: Hash algorithm to use
+    # :type hash_type: str
+    #
     # :returns: Hashed ``ProjectSpecification`` object
     # :rtype: str
     #]]
-    cpp_member(hash ProjectSpecification str)
-    function("${hash}" self return_hash)
+    cpp_member(hash ProjectSpecification str str)
+    function("${hash}" self return_hash hash_type)
 
-        message("-- Called ProjectSpecification.hash() member")
+        cpp_serialize(self_serialized "${self}")
+
+        string("${hash_type}" "${return_hash}" "${self_serialized}")
+
+        cpp_return("${return_hash}")
 
     endfunction()
 
