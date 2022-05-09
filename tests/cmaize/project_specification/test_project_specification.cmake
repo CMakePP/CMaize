@@ -97,7 +97,6 @@ function("${test_project_specification}")
 
             # Hash the object
             ProjectSpecification(hash "${ps_obj}" returned_hash "SHA1")
-            message("-- return_hash: ${return_hash}") # DEBUG
 
             # SHA1 produces hash strings of length 40
             string(LENGTH "${returned_hash}" hash_length)
