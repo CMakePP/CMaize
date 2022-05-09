@@ -16,7 +16,3 @@ cminx "cmake/cmaize" -o "build/api_docs/" -r -p cmaize
 
 # Move the api docs to the documentation directory
 mv build/api_docs docs/src/api/developer
-
-# Build the Sphinx docs
-cd docs
-make html
