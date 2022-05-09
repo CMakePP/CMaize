@@ -152,6 +152,9 @@ cpp_class(ProjectSpecification)
     #[[[
     # Override to ``set_version()`` method to catch when the project version
     # string is blank.
+    #
+    # :param self: ``ProjectSpecification`` object.
+    # :type self: ProjectSpecification
     #]]
     cpp_member(set_version ProjectSpecification)
     function("${set_version}" self)
@@ -168,6 +171,8 @@ cpp_class(ProjectSpecification)
     # Set the project version variable and splits the version into 
     # major, minor, patch, and tweak components.
     #
+    # :param self: ``ProjectSpecification`` object.
+    # :type self: ProjectSpecification
     # :param project_version: Full project version string.
     # :type project_version: str
     #]]
