@@ -5,68 +5,60 @@ include(cmaize/utilities/utilities)
 
 #[[[
 # The ``ProjectSpecification`` class is envisioned as holding all of the
-# details about how to build a project (project being a catchall for a
-# dependency or the project the CMaize build system is actually being written
+# details about how to build a project ("project" being a catchall for a
+# dependency or the project that the CMaize build system is being written
 # for). This includes things like where the source code lives, the version
-# to build, specific options for configuring, etc. ``ProjectSpecification``
-# instances will ultimately be used to request packages from the
-# ``PackageManager``.
+# to build, and specific options for configuring and compiling.
+# ``ProjectSpecification`` instances will ultimately be used to request
+# packages from the ``PackageManager``.
 #]]
 cpp_class(ProjectSpecification)
     
     #[[[
-    # Name of project or dependency as a string.
+    # :type: str
     #
-    # :var name: Name of project or dependency as a string.
-    # :vartype name: str
+    # Name of project or dependency as a string.
     #]]
     cpp_attr(ProjectSpecification name)
 
     #[[[
-    # Version of project or dependency as a string.
+    # :type: str
     #
-    # :var version: Version of project or dependency as a string.
-    # :vartype version: str
+    # Version of project or dependency as a string.
     #]]
     cpp_attr(ProjectSpecification version)
 
     #[[[
-    # First version number component of the ``version`` attribute.
+    # :type: str
     #
-    # :var major_version: First version number component of the ``version``
-    #                     attribute.
-    # :vartype major_version: str
+    # First version number component of the ``version`` attribute.
     #]]
     cpp_attr(ProjectSpecification major_version)
 
     #[[[
-    # Second version number component of the ``version`` attribute.
+    # :type: str
     #
-    # :var minor_version: Second version number component of the ``version``
-    #                     attribute.
-    # :vartype minor_version: str
+    # Second version number component of the ``version`` attribute.
     #]]
     cpp_attr(ProjectSpecification minor_version)
 
     #[[[
-    # Third version number component of the ``version`` attribute.
+    # :type: str
     #
-    # :var patch_version: Third version number component of the ``version``
-    #                     attribute.
-    # :vartype patch_version: str
+    # Third version number component of the ``version`` attribute.
     #]]
     cpp_attr(ProjectSpecification patch_version)
 
     #[[[
-    # Fourth version number component of the ``version`` attribute.
+    # :type: str
     #
-    # :var tweak_version: Fourth version number component of the ``version``
-    #                     attribute.
-    # :vartype tweak_version: str
+    # Fourth version number component of the ``version`` attribute.
     #]]
     cpp_attr(ProjectSpecification tweak_version)
 
     #[[[
+    # :type: str
+    #
     # Specifies the build type.
     # 
     # For the possible values provided by CMake and how to add custom build
@@ -84,33 +76,31 @@ cpp_class(ProjectSpecification)
     #    and `CMake Build Configurations 
     #    <https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#build-configurations>`__
     #    for more information on the details of making this switch.
-    #
-    # :var build_type: Specifies the build type.
-    # :vartype build_type: str
     #]]
     cpp_attr(ProjectSpecification build_type)
 
     #[[[
-    # User-specified and autopopulated toolchain file values.
+    # :type: Toolchain
     #
-    # :var toolchain: User-specified and autopopulated toolchain file values.
-    # :vartype toolchain: ``Toolchain``
+    # User-specified and autopopulated toolchain file values.
     #]]
     cpp_attr(ProjectSpecification toolchain)
 
     #[[[
+    # :type: cpp_map
+    #
     # Project configure options.
     #
-    # :var configure_options: Project configure options.
-    # :vartype configure_options: ``cpp_map``
+    # This is initialized to an empty map for users to fill.
     #]]
     cpp_attr(ProjectSpecification configure_options)
 
     #[[[
+    # :type: cpp_map
+    #
     # Project compile options.
     #
-    # :var compile_options: Project compile options.
-    # :vartype compile_options: ``cpp_map``
+    # This is initialized to an empty map for users to fill.
     #]]
     cpp_attr(ProjectSpecification compile_options)
 
