@@ -154,6 +154,17 @@ cpp_class(ProjectSpecification)
     # Override to ``set_version()`` method to catch when the project version
     # string is blank.
     #
+    # .. note::
+    #    
+    #    This override is required because of a bug in CMakePPLang.
+    #    Currently, CMakePPLang cannot differentiate between
+    #    ``ProjectSpecification(set_version "${ps_obj}")`` and 
+    #    ``ProjectSpecification(set_version "${ps_obj}" "")``. Sometimes the
+    #    ``PROJECT_VERSION`` variable used in ``__initialize`` to determine
+    #    a default project version is blank, so this ensures we do not get
+    #    an error about not including the version argument for
+    #    ``cpp_member(set_version ProjectSpecification str)`` calls.
+    #
     # :param self: ``ProjectSpecification`` object.
     # :type self: ProjectSpecification
     #]]
