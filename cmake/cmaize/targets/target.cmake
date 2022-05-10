@@ -56,6 +56,17 @@ cpp_class(Target)
 
     #[[[
     # Check if the target has the requested property.
+    #
+    # .. note::
+    #    
+    #    The signature is currently ``cpp_member(has_property Target desc str)``
+    #    instead of ``cpp_member(has_property Target bool str)`` due to a bug
+    #    in CMakePPLang that throws an overload error when a non-boolean is
+    #    passed into the ``bool`` parameter. Since this is a return value, we
+    #    always pass a non-boolean in and will always trigger the error. By
+    #    setting it to ``desc`` type instead, it will accept non-booleans
+    #    and the user will have to trust that a boolean string is being
+    #    returned from the docs.
     # 
     # :param self: Target object
     # :type self: Target
@@ -68,10 +79,13 @@ cpp_class(Target)
     #           requested property (True) or not (False).
     # :rtype: bool
     #]]
-    cpp_member(has_property Target bool str)
+    cpp_member(has_property Target desc str)
     function("${has_property}" self has_property property_name)
 
-        cpp_raise(NotImplemented "Target.has_property() needs to be implemented!")
+        Target(GET "${self}" my_properties _properties)
+        cpp_map(HAS_KEY "${my_properties}" "${has_property}" "${property_name}")
+
+        cpp_return("${has_property}")
 
     endfunction()
 
