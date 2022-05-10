@@ -17,14 +17,6 @@ include(cmakepp_lang/cmakepp_lang)
 # target types than native CMake does.
 #]]
 cpp_class(Target)
-    
-    # #[[[
-    # # :type: str
-    # #
-    # # Generated CMake target. To ensure you get the most up-to-date version
-    # # use the ``Target(target`` method to get the CMake target.
-    # #]]
-    # cpp_attr(Target target)
 
     #[[[
     # Default constructor for Target object.
@@ -60,10 +52,6 @@ cpp_class(Target)
 
         cpp_raise(NotImplemented "Target.target() needs to be implemented!")
 
-        # cpp_decode_special_chars("${file_string}" "${return_target}")
-
-        # cpp_return("${return_target}")
-
     endfunction()
 
     #[[[
@@ -84,10 +72,6 @@ cpp_class(Target)
     function("${has_property}" self has_property property_name)
 
         cpp_raise(NotImplemented "Target.has_property() needs to be implemented!")
-
-        # cpp_decode_special_chars("${file_string}" "${return_target}")
-
-        # cpp_return("${return_target}")
 
     endfunction()
 
@@ -111,10 +95,6 @@ cpp_class(Target)
 
         cpp_raise(NotImplemented "Target.get_property() needs to be implemented!")
 
-        # cpp_decode_special_chars("${file_string}" "${return_target}")
-
-        # cpp_return("${return_target}")
-
     endfunction()
 
     #[[[
@@ -124,24 +104,16 @@ cpp_class(Target)
     #]]
     cpp_attr(Target _properties)
 
-    # #[[[
-    # # Autopopulates certain Target attributes.
-    # #
-    # # :param self: Target object to autopopulate.
-    # # :type self: Target
-    # #]]
-    # cpp_member(_autopopulate_options Target)
-    # function("${_autopopulate_options}" self)
-
-    #     # Get the properties map
-    #     Target(GET "${self}" prop_map _properties)
-
-    #     # Autopopulate values here
-
-    # endfunction()
+    #[[[
+    # :type: str
+    #
+    # Generated CMake target. To ensure you get the most up-to-date version
+    # use the ``Target(target`` method to get the CMake target.
+    #]]
+    cpp_attr(Target _target)
 
     #[[[
-    # Initialize empty maps and autopopulates some options.
+    # Initialize the internals of the object.
     #
     # :param self: Target object to initialize.
     # :type self: Target
@@ -149,12 +121,9 @@ cpp_class(Target)
     cpp_member(__initialize Target)
     function("${__initialize}" self)
 
-        # Set the auto-populated map to an empty map
+        # Create an empty property map
         cpp_map(CTOR tmp_map)
         Target(SET "${self}" _properties "${tmp_map}")
-
-        # Autopopulate some options
-        Target(_autopopulate_options "${self}")
 
     endfunction()
 
