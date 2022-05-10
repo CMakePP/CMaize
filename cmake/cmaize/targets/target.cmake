@@ -107,7 +107,15 @@ cpp_class(Target)
     cpp_member(get_property Target str str)
     function("${get_property}" self property_value property_name)
 
-        cpp_raise(NotImplemented "Target.get_property() needs to be implemented!")
+        Target(has_property "${self}" prop_exists "${property_name}")
+        if(NOT prop_exists)
+            cpp_raise(PropertyNotFound "Property not found: ${property_name}")
+        endif()
+
+        Target(GET "${self}" prop_map _properties)
+        cpp_map(GET "${prop_map}" "${property_value}" "${property_name}")
+
+        cpp_return("${property_value}")
 
     endfunction()
 
