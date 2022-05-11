@@ -259,20 +259,5 @@ cpp_class(Target)
     #]]
     cpp_attr(Target _name)
 
-    #[[[
-    # Initialize the internals of the object.
-    #
-    # :param self: Target object to initialize.
-    # :type self: Target
-    #]]
-    cpp_member(__initialize Target)
-    function("${__initialize}" self)
-
-        # Create an empty property map
-        cpp_map(CTOR tmp_map)
-        Target(SET "${self}" _properties "${tmp_map}")
-
-    endfunction()
-
 cpp_end_class()
 
