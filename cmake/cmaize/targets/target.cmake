@@ -25,6 +25,37 @@ include(cmakepp_lang/cmakepp_lang)
 cpp_class(Target)
 
     #[[[
+    # Creates a ``Target`` object to manage a target of the given name.
+    # 
+    # .. note::
+    #    
+    #    This does not create a corresponding CMake target,
+    #    so any call that should interact with a target will fail if the
+    #    target does not already exist. As a base class with no concrete
+    #    analog, ``Target`` really shouldn't be instantiated aside from
+    #    testing purposes. Instead, create a child with a concrete target
+    #    analog and instantiate that.
+    #
+    # :param self: Target object constructed.
+    # :type self: Target
+    # :param tgt_name: Name of the target. This should not duplicate any other
+    #                  target name already in scope.
+    # :type tgt_name: str
+    # :returns: ``self`` will be set to the newly constructed ``Target``
+    #           object.
+    # :rtype: Target
+    #]]
+    cpp_constructor(CTOR Target str)
+    function("${CTOR}" self tgt_name)
+
+        Target(SET "${self}" _name "${tgt_name}")
+
+        # Initialize the Target object
+        Target(__initialize "${self}")
+
+    endfunction()
+
+    #[[[
     # Creates a ``Target`` object based on an existing CMake target.
     #
     # :param self: Target object constructed.
@@ -37,37 +68,6 @@ cpp_class(Target)
     # :rtype: Target
     #]]
     cpp_constructor(CTOR Target target)
-    function("${CTOR}" self tgt_name)
-
-        Target(SET "${self}" _name "${tgt_name}")
-
-        # Initialize the Target object
-        Target(__initialize "${self}")
-
-    endfunction()
-
-    #[[[
-    # Default constructor for Target object.
-    # 
-    # .. note::
-    #    
-    #    This does not create a corresponding CMake target if instantiated,
-    #    so any call that should interact with a target will fail if the
-    #    target does not already exist. As a base class with no concrete
-    #    analog, this really shouldn't be instantiated as from for testing
-    #    purposes. Instead, create a child with a concrete target analog
-    #    and instantiate that.
-    #
-    # :param self: Target object constructed.
-    # :type self: Target
-    # :param tgt_name: Name of the target. This should not duplicate any other
-    #                  target name already in scope.
-    # :type tgt_name: str
-    # :returns: ``self`` will be set to the newly constructed ``Target``
-    #           object.
-    # :rtype: Target
-    #]]
-    cpp_constructor(CTOR Target str)
     function("${CTOR}" self tgt_name)
 
         Target(SET "${self}" _name "${tgt_name}")
