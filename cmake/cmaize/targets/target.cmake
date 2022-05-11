@@ -50,9 +50,6 @@ cpp_class(Target)
 
         Target(SET "${self}" _name "${tgt_name}")
 
-        # Initialize the Target object
-        Target(__initialize "${self}")
-
     endfunction()
 
     #[[[
@@ -71,9 +68,6 @@ cpp_class(Target)
     function("${CTOR}" self tgt_name)
 
         Target(SET "${self}" _name "${tgt_name}")
-
-        # Initialize the Target object
-        Target(__initialize "${self}")
 
     endfunction()
 
