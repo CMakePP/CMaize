@@ -164,14 +164,10 @@ cpp_class(Target)
             cpp_raise(PropertyNotFound "Property not found: ${property_name}")
         endif()
 
-        Target(GET "${self}" my_name name)
+        Target(target "${self}" my_name)
 
-        # Call CMake's built-in `get_property()` method.
-        get_property(
-            "${property_value}"
-            TARGET "${my_name}"
-            PROPERTY "${property_name}"
-        )
+        # Call CMake's built-in `get_target_property()` method.
+        get_target_property("${property_value}" "${my_name}" "${property_name}")
 
         cpp_return("${property_value}")
 

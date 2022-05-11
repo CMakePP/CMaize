@@ -118,40 +118,45 @@ function("${test_tgt}")
 
     endfunction()
 
-    # #[[[
-    # # Test ``Target(get_property`` method.
-    # #]]
-    # ct_add_section(NAME "test_has_properties")
-    # function("${test_has_properties}")
+    #[[[
+    # Test ``Target(get_property`` method.
+    #]]
+    ct_add_section(NAME "test_get_property")
+    function("${test_get_property}")
 
-    #     ct_add_section(NAME "invalid_property" EXPECTFAIL)
-    #     function("${invalid_property}")
+        ct_add_section(NAME "invalid_property" EXPECTFAIL)
+        function("${invalid_property}")
 
-    #         Target(CTOR tgt_obj)
+            set(tgt_name "test_tgt_get_property_invalid_property")
+            add_custom_target("${tgt_name}")
 
-    #         # Should raise a PropertyNotFound
-    #         Target(get_property "${tgt_obj}" result "invalid_property")
+            Target(CTOR tgt_obj "${tgt_name}")
 
-    #     endfunction()
+            # Should raise a PropertyNotFound
+            Target(get_property "${tgt_obj}" result "invalid_property")
 
-    #     ct_add_section(NAME "valid_property")
-    #     function("${valid_property}")
+        endfunction()
 
-    #         set(corr_value "test_value")
+        ct_add_section(NAME "valid_property")
+        function("${valid_property}")
 
-    #         Target(CTOR tgt_obj)
+            set(tgt_name "test_tgt_get_property_valid_property")
+            set(prop_name "test_prop")
+            set(prop_value "test_value")
+            add_custom_target("${tgt_name}")
+            set_property(
+                TARGET "${tgt_name}"
+                PROPERTY "${prop_name}" "${prop_value}"
+            )
 
-    #         # Add a property to the target
-    #         Target(GET "${tgt_obj}" tgt_properties _properties)
-    #         cpp_map(APPEND "${tgt_properties}" "test_property" "${corr_value}")
-    #         Target(SET "${tgt_obj}" _properties "${tgt_properties}")
-            
-    #         Target(get_property "${tgt_obj}" result "test_property")
+            Target(CTOR tgt_obj "${tgt_name}")
 
-    #         ct_assert_equal(result "${corr_value}")
+            Target(get_property "${tgt_obj}" result "${prop_name}")
 
-    #     endfunction()
+            ct_assert_equal(result "${prop_value}")
 
-    # endfunction()
+        endfunction()
+
+    endfunction()
 
 endfunction()
