@@ -8,13 +8,19 @@ include(cmakepp_lang/cmakepp_lang)
 # 
 # Modern CMake is target-based, meaning for CMaize to be able to interact
 # with CMake effectively CMaize will need to be able to generate CMake
-# targets. The ``Target`` class provides an object-oriented API for interacting
-# with a CMake target. It also serves as code factorization for
+# targets. The ``Target`` class provides an object-oriented API for 
+# interacting with a CMake target. It also serves as code factorization for
 # functionality/APIs common to all target types. Native CMake only has one
 # type of target, which can be annoying since the target is interacted with
 # in different ways depending on what it describes. The classes which derive
-# from Target provide a more user-friendly means of interacting with specific
-# target types than native CMake does.
+# from Target provide a more user-friendly means of interacting with 
+# specific target types than native CMake does.
+#
+# For more information on target properties, see `Properties on Targets
+# <https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html
+# #properties-on-targets>`__ in the `cmake-properties
+# <https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html>`__
+# section of the CMake documentation.
 #]]
 cpp_class(Target)
 
@@ -174,17 +180,6 @@ cpp_class(Target)
     endfunction()
 
     # cpp_member(set_property Target str desc)
-
-    #[[[
-    # :type: cpp_map
-    #
-    # Properties of the CMake target. These properties correspond to those
-    # defined in the ``cmake-properties`` `section of the CMake documentation
-    # <https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html>`__,
-    # specifically `Properties on Targets <https://cmake.org/cmake/help/
-    # latest/manual/cmake-properties.7.html#properties-on-targets>`__.
-    #]]
-    cpp_attr(Target _properties)
 
     #[[[
     # :type: str
