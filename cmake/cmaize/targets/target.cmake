@@ -179,7 +179,78 @@ cpp_class(Target)
 
     endfunction()
 
-    # cpp_member(set_property Target str desc)
+    #[[[
+    # Sets a single property to the given value, creating the property if it
+    # does not exist.
+    #
+    # :param self: Target object
+    # :type self: Target
+    # :param property_name: Name of the property to set.
+    # :type property_name: str
+    # :param property_value: Value of the property.
+    # :type property_value: desc
+    #]]
+    cpp_member(set_property Target str desc)
+    function("${set_property}" self property_name property_value)
+
+        # Package the property into a map
+        cpp_map(CTOR prop_map "${property_name}" "${property_value}")
+
+        Target(set_properties "${self}" "${prop_map}")
+
+    endfunction()
+
+    #[[[
+    # Sets the given properties to the given values.
+    #
+    # .. note::
+    #    
+    #    Member functions in CMakePPLang cannot be variadic, so it is not
+    #    possible to match the API for ``set_target_properties()``. However,
+    #    using a ``cpp_map`` is close, so it was used. See the example usage
+    #    below for a concise way of using this function.
+    #
+    # :param self: Target object
+    # :type self: Target
+    # :param properties: Property names and values.
+    # :type properties: cpp_map
+    #
+    # **Example Usage**
+    #
+    # .. code-block:: cmake
+    #    
+    #    # Create a target so the property functions have something to act on
+    #    add_custom_target("example_target")
+    # 
+    #    # Create a Target object
+    #    Target(CTOR my_tgt "example_target")
+    #
+    #    # Assign properties using the cpp_map constructor with the optional
+    #    # key-value pairs in the CTOR call
+    #    cpp_map(CTOR
+    #        property_map
+    #        property_name_1 property_value_1
+    #        property_name_2 property_value_2
+    #        property_name_3 property_value_3
+    #        ...
+    #    )
+    #
+    #    # Set the properties on the target with this function
+    #    Target(set_properties "${property_map}")
+    #]]
+    cpp_member(set_properties Target map)
+    function("${set_properties}" self properties)
+
+        Target(target "${self}" my_name)
+
+        cpp_map(KEYS "${properties}" keys)
+
+        foreach(key ${keys})
+            cpp_map(GET "${properties}" value "${key}")
+            set_target_properties("${my_name}" PROPERTIES "${key}" "${value}")
+        endforeach()
+
+    endfunction()
 
     #[[[
     # :type: str
