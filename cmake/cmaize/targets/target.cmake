@@ -46,6 +46,9 @@ cpp_class(Target)
     # :returns: Sets ``return_target`` to the CMake target represented by
     #           this class.
     # :rtype: str
+    #
+    # :raises NotImplemented: This member function needs to be implemented by
+    #                         a child class.
     #]]
     cpp_member(target Target str)
     function("${target}" self return_target)
