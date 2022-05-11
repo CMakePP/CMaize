@@ -237,4 +237,71 @@ function("${test_tgt}")
 
     endfunction()
 
+    #[[[
+    # Test ``Target(set_properties`` method.
+    #]]
+    ct_add_section(NAME "test_set_properties")
+    function("${test_set_properties}")
+
+        ct_add_section(NAME "new_properties")
+        function("${new_properties}")
+
+            # Set property name and value to use
+            cpp_map(CTOR
+                property_map
+                test_name_1 "test_value_1"
+                test_name_2 "test_value_2"
+            )
+
+            # Create a target 
+            set(tgt_name "test_tgt_set_properties_new_properties")
+            add_custom_target("${tgt_name}")
+
+            # Set the property value on the target
+            Target(CTOR tgt_obj "${tgt_name}")
+            Target(set_properties "${tgt_obj}" "${property_map}")
+
+            # Check the property value on the target
+            get_target_property(result_1 "${tgt_name}" "test_name_1")
+            get_target_property(result_2 "${tgt_name}" "test_name_2")
+
+            ct_assert_equal(result_1 "test_value_1")
+            ct_assert_equal(result_2 "test_value_2")
+
+        endfunction()
+
+        ct_add_section(NAME "existing_properties")
+        function("${existing_properties}")
+
+            # Set property name and value to use
+            cpp_map(CTOR
+                property_map
+                test_name_1 "test_value_1"
+                test_name_2 "test_value_2"
+            )
+
+            # Create a target and add the properties
+            set(tgt_name "test_tgt_set_properties_existing_properties")
+            add_custom_target("${tgt_name}")
+            set_target_properties("${tgt_name}"
+                PROPERTIES
+                    test_name_1 "original_value_1"
+                    test_name_2 "original_value_2"
+            )
+
+            # Set the property value on the target
+            Target(CTOR tgt_obj "${tgt_name}")
+            Target(set_properties "${tgt_obj}" "${property_map}")
+
+            # Check the property value on the target
+            get_target_property(result_1 "${tgt_name}" "test_name_1")
+            get_target_property(result_2 "${tgt_name}" "test_name_2")
+
+            ct_assert_equal(result_1 "test_value_1")
+            ct_assert_equal(result_2 "test_value_2")
+
+        endfunction()
+
+    endfunction()
+
 endfunction()

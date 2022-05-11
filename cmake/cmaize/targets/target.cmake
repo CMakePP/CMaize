@@ -229,9 +229,9 @@ cpp_class(Target)
     #    # key-value pairs in the CTOR call
     #    cpp_map(CTOR
     #        property_map
-    #        property_name_1 property_value_1
-    #        property_name_2 property_value_2
-    #        property_name_3 property_value_3
+    #        <property_name_1> <property_value_1>
+    #        <property_name_2> <property_value_2>
+    #        <property_name_3> <property_value_3>
     #        ...
     #    )
     #
