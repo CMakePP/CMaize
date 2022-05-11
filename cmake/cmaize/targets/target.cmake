@@ -19,16 +19,21 @@ include(cmakepp_lang/cmakepp_lang)
 cpp_class(Target)
 
     #[[[
-    # Default constructor for Target object.
+    # Creates a ``Target`` object based on an existing CMake target.
     #
     # :param self: Target object constructed.
     # :type self: Target
+    # :param tgt_name: Name of the existing target.
+    # :type tgt_name: str
+    #
     # :returns: ``self`` will be set to the newly constructed ``Target``
     #           object.
     # :rtype: Target
     #]]
-    cpp_constructor(CTOR Target)
-    function("${CTOR}" self)
+    cpp_constructor(CTOR Target target)
+    function("${CTOR}" self tgt_name)
+
+        Target(SET "${self}" _name "${tgt_name}")
 
         # Initialize the Target object
         Target(__initialize "${self}")
@@ -36,24 +41,54 @@ cpp_class(Target)
     endfunction()
 
     #[[[
-    # Get the CMake target string that the ``Target`` class represents.
+    # Default constructor for Target object.
+    # 
+    # .. note::
+    #    
+    #    This does not create a corresponding CMake target if instantiated,
+    #    so any call that should interact with a target will fail if the
+    #    target does not already exist. As a base class with no concrete
+    #    analog, this really shouldn't be instantiated as from for testing
+    #    purposes. Instead, create a child with a concrete target analog
+    #    and instantiate that.
+    #
+    # :param self: Target object constructed.
+    # :type self: Target
+    # :param tgt_name: Name of the target. This should not duplicate any other
+    #                  target name already in scope.
+    # :type tgt_name: str
+    # :returns: ``self`` will be set to the newly constructed ``Target``
+    #           object.
+    # :rtype: Target
+    #]]
+    cpp_constructor(CTOR Target str)
+    function("${CTOR}" self tgt_name)
+
+        Target(SET "${self}" _name "${tgt_name}")
+
+        # Initialize the Target object
+        Target(__initialize "${self}")
+
+    endfunction()
+
+    #[[[
+    # Get the CMake target name that the ``Target`` class represents.
     # 
     # :param self: Target object
     # :type self: Target
-    # :param return_target: CMake target return variable.
+    # :param return_target: Name of the CMake target.
     # :type return_target: str
     #
-    # :returns: Sets ``return_target`` to the CMake target represented by
-    #           this class.
+    # :returns: Sets ``return_target`` to the name of the CMake target
+    #           represented by this class.
     # :rtype: str
-    #
-    # :raises NotImplemented: This member function needs to be implemented by
-    #                         a child class.
     #]]
     cpp_member(target Target str)
     function("${target}" self return_target)
 
-        cpp_raise(NotImplemented "Target.target() needs to be implemented!")
+        Target(GET "${self}" "${return_target}" _name)
+
+        cpp_return("${return_target}")
 
     endfunction()
 
@@ -85,8 +120,22 @@ cpp_class(Target)
     cpp_member(has_property Target desc str)
     function("${has_property}" self has_property property_name)
 
-        Target(GET "${self}" my_properties _properties)
-        cpp_map(HAS_KEY "${my_properties}" "${has_property}" "${property_name}")
+        Target(target "${self}" my_name)
+
+        # Call CMake's built-in `get_target_property()` method.
+        get_target_property(property_value "${my_name}" "${property_name}")
+
+        # 'get_target_property()' returns either an empty string or the given
+        # return variable name with "-NOTFOUND" appended when the property is
+        # not found.
+        # 
+        # See get_target_property docs for more info:
+        # https://cmake.org/cmake/help/latest/command/get_target_property.html#command:get_target_property
+        if("${property_value}" STREQUAL "" OR property_value MATCHES "NOTFOUND")
+            set("${has_property}" FALSE)
+        else()
+            set("${has_property}" TRUE)
+        endif()
 
         cpp_return("${has_property}")
 
@@ -115,27 +164,38 @@ cpp_class(Target)
             cpp_raise(PropertyNotFound "Property not found: ${property_name}")
         endif()
 
-        Target(GET "${self}" prop_map _properties)
-        cpp_map(GET "${prop_map}" "${property_value}" "${property_name}")
+        Target(GET "${self}" my_name name)
+
+        # Call CMake's built-in `get_property()` method.
+        get_property(
+            "${property_value}"
+            TARGET "${my_name}"
+            PROPERTY "${property_name}"
+        )
 
         cpp_return("${property_value}")
 
     endfunction()
 
+    # cpp_member(set_property Target str desc)
+
     #[[[
     # :type: cpp_map
     #
-    # Properties of the CMake target.
+    # Properties of the CMake target. These properties correspond to those
+    # defined in the ``cmake-properties`` `section of the CMake documentation
+    # <https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html>`__,
+    # specifically `Properties on Targets <https://cmake.org/cmake/help/
+    # latest/manual/cmake-properties.7.html#properties-on-targets>`__.
     #]]
     cpp_attr(Target _properties)
 
     #[[[
     # :type: str
     #
-    # Generated CMake target. To ensure you get the most up-to-date version
-    # use the ``Target(target`` method to get the CMake target.
+    # Name of the current target.
     #]]
-    cpp_attr(Target _target)
+    cpp_attr(Target _name)
 
     #[[[
     # Initialize the internals of the object.
