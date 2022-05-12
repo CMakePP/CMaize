@@ -17,6 +17,9 @@ on:
   push:
     branches:
       - master
+  
+  # Allows manual triggering with the "Run workflow" button
+  workflow_dispatch:
 
 jobs:
   Build-Documentation:
