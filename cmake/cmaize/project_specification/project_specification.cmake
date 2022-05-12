@@ -151,7 +151,11 @@ cpp_class(ProjectSpecification)
     endfunction()
 
     #[[[
+<<<<<<< HEAD
     # Override to ``set_version()`` method to catch when the project version
+=======
+    # Overload to ``set_version()`` method to catch when the project version
+>>>>>>> master
     # string is blank.
     #
     # .. note::
