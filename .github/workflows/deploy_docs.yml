@@ -37,10 +37,23 @@ jobs:
         run: |
           python3 -m venv virt_env
           source virt_env/bin/activate
+
+          # Install docs requirements
           pip3 install -r docs/requirements.txt
+
+          # Install CMinx
+          mkdir -p build
+          git clone https://github.com/CMakePP/CMinx.git build/cminx
+          pip install wheel
+          pip install build/cminx
+
+          # Build the API docs
           ./.github/workflows/scripts/build_api_docs.sh
+
+          # Build the full docs
           cd docs
           make html
+
           deactivate
 
       - name: Deploy to GitHub Pages
