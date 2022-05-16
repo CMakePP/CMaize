@@ -1,0 +1,13 @@
+
+##############
+cpp.dependency
+##############
+
+.. toctree:: 
+   :maxdepth: 2
+
+   dependency
+   dependency_class
+   github
+   detail_/index.rst
+

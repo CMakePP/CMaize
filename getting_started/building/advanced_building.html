@@ -1,37 +1,77 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>Advanced Building &mdash; CMaize 1.0.0alpha documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="CMake Option Variables" href="cmake_option_vars.html" />
     <link rel="prev" title="Quick Start" href="quick_start.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../../index.html" class="icon icon-home"> CMaize
+          
+
+          
           </a>
+
+          
+            
+            
               <div class="version">
                 1.0.0
               </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -39,8 +79,19 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started</a><ul class="current">
@@ -66,52 +117,95 @@
 <li class="toctree-l1"><a class="reference internal" href="../../dependencies/index.html">Declaring Dependencies</a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">CMaize</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="../index.html">Getting Started</a> &raquo;</li>
+        
           <li><a href="index.html">Building a Project That Uses CMaize</a> &raquo;</li>
+        
       <li>Advanced Building</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
+          
             <a href="../../_sources/getting_started/building/advanced_building.rst.txt" rel="nofollow"> View page source</a>
+          
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
-  <section id="advanced-building">
-<h1>Advanced Building<a class="headerlink" href="#advanced-building" title="Permalink to this headline"></a></h1>
+            
+  <div class="section" id="advanced-building">
+<h1>Advanced Building<a class="headerlink" href="#advanced-building" title="Permalink to this headline">¶</a></h1>
 <p>While CMaize strives to make building a project easy, power users and
 developers will likely want more control over the project they are building.
 This section highlights some advanced build system features.</p>
-<section id="toolchains">
-<h2>Toolchains<a class="headerlink" href="#toolchains" title="Permalink to this headline"></a></h2>
+<div class="section" id="toolchains">
+<h2>Toolchains<a class="headerlink" href="#toolchains" title="Permalink to this headline">¶</a></h2>
 <p>These files are forwarded to CMake via the <code class="docutils literal notranslate"><span class="pre">CMAKE_TOOLCHAIN_FILE</span></code> variable.
 Particularly when you are setting a lot of options for CMake these files can
 come in handy.  Basically they look like:</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">OPTION1</span><span class="w"> </span><span class="s">VALUE1</span><span class="p">)</span>
-<span class="nb">set</span><span class="p">(</span><span class="s">OPTION2</span><span class="w"> </span><span class="s">VALUE2</span><span class="p">)</span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">OPTION1</span> <span class="s">VALUE1</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">OPTION2</span> <span class="s">VALUE2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>That is they’re just a large number of CMake <code class="docutils literal notranslate"><span class="pre">set()</span></code> commands. It is common
 practice to assemble toolchain files per platform and share these files with
 users to facilitate building.</p>
-</section>
-<section id="offline-builds">
-<h2>Offline Builds<a class="headerlink" href="#offline-builds" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="offline-builds">
+<h2>Offline Builds<a class="headerlink" href="#offline-builds" title="Permalink to this headline">¶</a></h2>
 <p>Ultimately when CMaize can not locate a dependency it will retrieve that
 dependency using CMake’s <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module. In turn, it is possible to
 pre-download dependencies and build a CMaize project entirely offline. To do
@@ -119,9 +213,9 @@ this you will need to set <code class="docutils literal notranslate"><span class
 tell CMake where to look for each dependency’s source code. For a dependency
 <em>foo</em>, set the variable <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_SOURCE_DIR_FOO</span></code> to the path to
 <em>foo</em>’s source code.</p>
-</section>
-<section id="developing-across-multiple-cmaize-projects">
-<h2>Developing Across Multiple CMaize Projects<a class="headerlink" href="#developing-across-multiple-cmaize-projects" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="developing-across-multiple-cmaize-projects">
+<h2>Developing Across Multiple CMaize Projects<a class="headerlink" href="#developing-across-multiple-cmaize-projects" title="Permalink to this headline">¶</a></h2>
 <p>Say you have two projects <em>A</em> and <em>B</em> such that <em>B</em> uses features in
 <em>A</em>. It often is the case that you need to add a feature to <em>A</em> to use in
 <em>B</em> (or correct a bug in <em>A</em> so that <em>B</em> works). In a traditional workflow
@@ -131,38 +225,55 @@ this would require modifying <em>A</em>, pushing the changes, and then rebuildin
 <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> helps here too. Now you just set <code class="docutils literal notranslate"><span class="pre">FETCHCONTENT_SOURCE_DIR_A</span></code>
 to your local copy of <em>A</em> and rebuild <em>B</em>. CMake is smart enough to rebuild
 <em>B</em>’s version of <em>A</em> if you further modify <em>A</em>.</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
+           
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="quick_start.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="cmake_option_vars.html" class="btn btn-neutral float-right" title="CMake Option Variables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="quick_start.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, CMakePP Team.</p>
-  </div>
+    <p>
+        &#169; Copyright 2020, CMakePP Team.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

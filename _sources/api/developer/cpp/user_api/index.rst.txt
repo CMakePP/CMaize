@@ -1,0 +1,14 @@
+
+############
+cpp.user_api
+############
+
+.. toctree:: 
+   :maxdepth: 2
+
+   add_library
+   find_or_build_dependency
+   add_executable
+   user_api
+   add_tests
+

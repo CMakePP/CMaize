@@ -1,0 +1,11 @@
+
+################
+cmaize.utilities
+################
+
+.. toctree:: 
+   :maxdepth: 2
+
+   utilities
+   split_version
+

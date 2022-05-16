@@ -1,0 +1,7 @@
+
+###########################
+cpp.dependency/github.cmake
+###########################
+
+.. module:: cpp.dependency/github.cmake
+

@@ -1,0 +1,51 @@
+
+#####################################
+cpp.dependency/dependency_class.cmake
+#####################################
+
+.. module:: cpp.dependency/dependency_class.cmake
+
+
+.. function:: cpp_class(Dependency)
+
+
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+
+   Models a dependency of the main CMake Project.
+   
+   The base class is for dependencies which behave close to ideal (from the
+   standpoint of CMake). In particular we assume the dependency:
+   
+   - can be found by calling ``find_package`` in ``CONFIG`` mode
+   - added to the main project's build step via CMake's fetch command
+   - exports a CMake target
+   
+   
+
+
+.. function:: cpp_member(_search_paths Dependency desc)
+
+
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+
+   Computes a list of path prefixes which should be used when searching.
+   
+   This function encapsulates assembling a list of all the prefixes which
+   should be considered when looking for this dependency.
+   
+   :param _sp_this: The Dependency instance being used to assemble the paths.
+   :type _sp_this: Dependency
+   :param _sp_result: Name for variable which will hold the result.
+   :type _sp_result: desc
+   
+
+
+.. function:: cpp_member(find_dependency Dependency desc)
+
+
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+
+   Attempts to locate the dependency
+   
+   
+

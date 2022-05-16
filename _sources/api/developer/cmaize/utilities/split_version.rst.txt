@@ -1,0 +1,34 @@
+
+####################################
+cmaize.utilities/split_version.cmake
+####################################
+
+.. module:: cmaize.utilities/split_version.cmake
+
+
+.. function:: cmaize_split_version(major minor patch tweak version)
+
+   Split the given version string into its components. Some return values
+   may be blank.
+   
+   :param major: Returned first component of the version.
+   :type major: str
+   :param minor: Returned second component of the version.
+   :type minor: str
+   :param patch: Returned third component of the version.
+   :type patch: str
+   :param tweak: Returned fourth component of the version.
+   :type tweak: str
+   :param version: Version string to be separated into components.
+   :type version: str
+   
+   :returns: ``major`` will be set to the first component of ``version``.
+   :rtype: str
+   :returns: ``minor`` will be set to the second component of ``version``.
+   :rtype: str
+   :returns: ``patch`` will be set to the third component of ``version``.
+   :rtype: str
+   :returns: ``tweak`` will be set to the fourth component of ``version``.
+   :rtype: str
+   
+

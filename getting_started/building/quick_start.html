@@ -1,37 +1,77 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>Quick Start &mdash; CMaize 1.0.0alpha documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Advanced Building" href="advanced_building.html" />
     <link rel="prev" title="Building a Project That Uses CMaize" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../../index.html" class="icon icon-home"> CMaize
+          
+
+          
           </a>
+
+          
+            
+            
               <div class="version">
                 1.0.0
               </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -39,8 +79,19 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started</a><ul class="current">
@@ -66,48 +117,91 @@
 <li class="toctree-l1"><a class="reference internal" href="../../dependencies/index.html">Declaring Dependencies</a></li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">CMaize</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="../index.html">Getting Started</a> &raquo;</li>
+        
           <li><a href="index.html">Building a Project That Uses CMaize</a> &raquo;</li>
+        
       <li>Quick Start</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
+          
             <a href="../../_sources/getting_started/building/quick_start.rst.txt" rel="nofollow"> View page source</a>
+          
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
-  <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+            
+  <div class="section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
 <p>Projects using CMaize are encouraged to use this page as their build
 documentation, so if you’re seeing this page odds are the package you’re trying
 to build uses CMaize for their build.  If you are a complete CMake newbie
 (there’s nothing wrong with that, we all were at some point) check out the
 <a class="reference internal" href="../quick_intro_to_cmake.html#quick-introduction-to-cmake"><span class="std std-ref">Quick Introduction to CMake</span></a> page to get acclimated.</p>
-<section id="step-0-obtain-cmaize">
-<h2>Step 0: Obtain CMaize<a class="headerlink" href="#step-0-obtain-cmaize" title="Permalink to this headline"></a></h2>
+<div class="section" id="step-0-obtain-cmaize">
+<h2>Step 0: Obtain CMaize<a class="headerlink" href="#step-0-obtain-cmaize" title="Permalink to this headline">¶</a></h2>
 <p>Packages which use CMaize are encouraged to make their build system download
 CMaize and include it. If the package you are using does not do this you will
 need to manually download CMaize yourself and ensure that <code class="docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code>
 points to the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> directory in the downloaded repository.</p>
-</section>
-<section id="step-1-build-the-project">
-<h2>Step 1: Build the Project<a class="headerlink" href="#step-1-build-the-project" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="step-1-build-the-project">
+<h2>Step 1: Build the Project<a class="headerlink" href="#step-1-build-the-project" title="Permalink to this headline">¶</a></h2>
 <p>We’ll assume that the source code for the package you are trying to build is
 located in the directory <code class="docutils literal notranslate"><span class="pre">package_dir</span></code>.  Configuring, building, and installing
 a package which uses CMaize is done with the following commands:</p>
@@ -123,9 +217,9 @@ a list of the more important considerations. If you are setting more than
 <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> and/or <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code> it is strongly recommended
 that you use a toolchain file to record the options and save yourself time later
 if you need to rerun the <cite>cmake</cite> command.</p>
-</section>
-<section id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
 <p>While we’ve striven to make CMaize as foolproof as possible, the reality is
 bugs do occur and sometimes you build can get locked in a stale state.  Thus if
 a build fails we recommend you consider the following tips:</p>
@@ -156,38 +250,55 @@ for more information on generating tokens.</p></li>
 Finally, if you still can not resolve the problem consider opening an issue on
 CMaize’s GitHub repo (please look to see if an issue already exists before
 opening a new one).</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
+           
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Building a Project That Uses CMaize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="advanced_building.html" class="btn btn-neutral float-right" title="Advanced Building" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Building a Project That Uses CMaize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, CMakePP Team.</p>
-  </div>
+    <p>
+        &#169; Copyright 2020, CMakePP Team.
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
