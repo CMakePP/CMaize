@@ -8,4 +8,5 @@ This chapter describes the design of different classes that make up CMaize.
    :maxdepth: 1
 
    project_specification
+   target
    toolchain
