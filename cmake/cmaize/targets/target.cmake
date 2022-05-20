@@ -59,11 +59,11 @@ cpp_class(Target)
     # :param self: Target object
     # :type self: Target
     # :param return_target: Name of the CMake target.
-    # :type return_target: str
+    # :type return_target: str*
     #
     # :returns: Sets ``return_target`` to the name of the CMake target
     #           represented by this class.
-    # :rtype: str
+    # :rtype: str*
     #]]
     cpp_member(target Target str)
     function("${target}" self return_target)
@@ -80,13 +80,13 @@ cpp_class(Target)
     # :param self: Target object
     # :type self: Target
     # :param has_property: Return variable for if the target has the property.
-    # :type has_property: bool
+    # :type has_property: bool*
     # :param property_name: Name of the property to check for.
     # :type property_name: str
     #
     # :returns: Sets ``has_property`` according to if the target has the
     #           requested property (True) or not (False).
-    # :rtype: bool
+    # :rtype: bool*
     #]]
     cpp_member(has_property Target desc str)
     function("${has_property}" self has_property property_name)
@@ -118,12 +118,12 @@ cpp_class(Target)
     # :param self: Target object
     # :type self: Target
     # :param property_value: Return variable for the property value.
-    # :type property_value: str
+    # :type property_value: str*
     # :param property_name: Name of the property to check for.
     # :type property_name: str
     #
     # :returns: Sets ``property_value`` to the value of the property.
-    # :rtype: str
+    # :rtype: str*
     #
     # :raises PropertyNotFound: Property does not exist in the target.
     #]]
