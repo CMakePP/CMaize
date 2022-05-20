@@ -11,6 +11,7 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "${_msg}")
 endif()
 
-include(cmaize/toolchain/toolchain)
 include(cmaize/project_specification/project_specification)
+include(cmaize/targets/targets)
+include(cmaize/toolchain/toolchain)
 include(cmaize/utilities/utilities)
