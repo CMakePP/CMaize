@@ -1,10 +1,11 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
+include(cmaize/targets/target)
 
 #[[[
 # Wraps a target that is already installed on the system.
 #]]
-cpp_class(InstalledTarget)
+cpp_class(InstalledTarget Target)
 
     #[[[
     # :type: path
