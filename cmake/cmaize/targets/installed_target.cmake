@@ -18,8 +18,8 @@ cpp_class(InstalledTarget)
     #
     # :param self: InstalledTarget object
     # :type self: InstalledTarget
-    # :param root_path: The top of the install location for the resource.
-    # :type root_path: path
+    # :param root: The top of the install location for the resource.
+    # :type root: path
     #
     # :returns: ``self`` will be set to the new instance of ``InstalledTarget``
     # :rtype: InstalledTarget
