@@ -19,16 +19,25 @@ cpp_class(InstalledTarget Target)
     #
     # :param self: InstalledTarget object
     # :type self: InstalledTarget
-    # :param root: The top of the install location for the resource.
+    # :param root: The top of the install location for the resource. Must
+    #              already exist.
     # :type root: path
     #
     # :returns: ``self`` will be set to the new instance of ``InstalledTarget``
     # :rtype: InstalledTarget
+    #
+    # :raises DirectoryNotFound: Root directory was not found.
     #]]
     cpp_constructor(CTOR InstalledTarget path)
     function("${CTOR}" self root)
 
-        # Maybe check if the root path exists here?
+        # Check if the root path exists
+        cpp_directory_exists(exists "${root}")
+        if(NOT exists)
+            set(msg "InstalledTarget root directory not found. ")
+            string(APPEND msg "Root given: ${root}")
+            cpp_raise(DirectoryNotFound "${msg}")
+        endif() 
 
         InstalledTarget(SET "${self}" root_path "${root}")
 
