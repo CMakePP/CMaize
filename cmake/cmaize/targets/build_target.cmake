@@ -8,14 +8,14 @@ include(cmaize/targets/target)
 cpp_class(BuildTarget Target)
 
     #[[[
-    # :type: list of path
+    # :type: List[path]
     #
     # Paths needed to compile or import.
     #]]
     cpp_attr(BuildTarget include_dirs)
 
     #[[[
-    # :type: list of path
+    # :type: List[path]
     #
     # Files needed to compile or import.
     #]]
@@ -29,14 +29,14 @@ cpp_class(BuildTarget Target)
     cpp_attr(BuildTarget project_specification)
 
     #[[[
-    # :type: list of BuildTarget
+    # :type: List[BuildTarget]
     #
     # Dependencies that need to be built.
     #]]
     cpp_attr(BuildTarget project_dependencies)
 
     #[[[
-    # :type: list of InstalledTarget
+    # :type: List[InstalledTarget]
     #
     # Dependencies that are already installed.
     #]]
