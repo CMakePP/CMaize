@@ -2,7 +2,8 @@
 BuildTarget Class
 *****************
 
-This class serves as an abstract base class for language-specific target
+This class represents a target which must be built as part of the build
+system. It serves as an abstract base class for language-specific target
 classes of supported languages that CMaize can build.
 
 ``BuildTarget`` includes the basic information needed to build a target,
