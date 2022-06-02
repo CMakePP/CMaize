@@ -21,7 +21,7 @@ function("${test_tgt}")
             InstalledTarget(GET "${tgt_obj}" result root_path)
 
             ct_assert_equal(result "${CMAKE_CURRENT_SOURCE_DIR}")
-        
+
         endfunction()
 
         ct_add_section(NAME "test_dir_nonexistant" EXPECTFAIL)
