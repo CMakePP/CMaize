@@ -11,9 +11,11 @@ cpp_class(CXXTarget BuildTarget)
     #[[[
     # :type: str
     #
-    # CXX standard to use.
+    # CXX standard to use. For a given C++ standard designation, denoted as
+    # ``cxx_std_xx`` or "C++ xx", only provide the number, "xx" of the 
+    # standard. Defaults to 17.
     #]]
-    cpp_attr(CXXTarget cxx_standard)
+    cpp_attr(CXXTarget cxx_standard 17)
 
     #[[[
     # :type: path
@@ -46,7 +48,7 @@ cpp_class(CXXTarget BuildTarget)
     function("${CTOR}" self tgt_name)
 
         # Call the parent ctor
-        Target(CTOR "${self}" "${tgt_name}")
+        BuildTarget(CTOR "${self}" "${tgt_name}")
 
         # Make sure the CXX language has been enabled
         check_language(CXX)
@@ -64,9 +66,19 @@ cpp_class(CXXTarget BuildTarget)
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
+    # :param result: Returned access level.
+    # :param result: str*
+    #
+    # :returns: CMake access level of the target.
+    # :rtype: str
     #]]
-    cpp_member(_access_level CXXTarget)
-    cpp_virtual_member(_access_level)
+    cpp_member(_access_level CXXTarget desc)
+    function("${_access_level}" self _al_access_level)
+
+        set("${_al_access_level}" PUBLIC)
+        cpp_return("${_al_access_level}")
+
+    endfunction()
 
     #[[[
     # Sets the CXX standard and other compiler features.
@@ -78,20 +90,29 @@ cpp_class(CXXTarget BuildTarget)
     function("${_set_compile_features}" self)
 
         Target(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" standard cxx_standard)
+        CXXTarget(GET "${self}" cxx_std cxx_standard)
 
         # Call CMake's 'target_compile_features()'
-        target_compile_features("${tgt_name}" PUBLIC "${standard}")
+        target_compile_features("${tgt_name}" PUBLIC "cxx_std_${cxx_std}")
 
     endfunction()
 
     #[[[
-    # Virtual member function to set the include directories for the target.
+    # Virtual member function to set the public headers for the target.
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
-    cpp_member(_set_include_directories CXXTarget)
-    cpp_virtual_member(_set_include_directories)
+    cpp_member(_set_public_headers CXXTarget)
+    cpp_virtual_member(_set_public_headers)
+
+    #[[[
+    # Virtual member function to set the link libraries for the target.
+    # 
+    # :param self: CXXTarget object
+    # :type self: CXXTarget
+    #]]
+    cpp_member(_set_link_libraries CXXTarget)
+    cpp_virtual_member(_set_link_libraries)
 
 cpp_end_class()

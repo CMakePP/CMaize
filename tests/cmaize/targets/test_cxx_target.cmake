@@ -7,8 +7,8 @@ ct_add_test(NAME "test_cxx_target")
 function("${test_cxx_target}")
     include(cmaize/targets/cxx_target)
 
-    ct_add_section(NAME "test_ctor")
-    function("${test_ctor}")
+    ct_add_section(NAME "creating_new_tgt")
+    function("${creating_new_tgt}")
 
         #[[[
         # Tests to make sure that the ctor enables the CXX language if
@@ -36,6 +36,17 @@ function("${test_cxx_target}")
             ct_assert_equal(cxx_enabled TRUE)
 
         endfunction()
+
+    endfunction()
+
+    ct_add_section(NAME "test__access_level")
+    function("${test__access_level}")
+
+        CXXTarget(CTOR tgt_obj "test_target")
+
+        CXXTarget(_access_level "${tgt_obj}" access_level)
+
+        ct_assert_equal(access_level PUBLIC)
 
     endfunction()
 
