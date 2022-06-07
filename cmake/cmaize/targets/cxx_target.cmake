@@ -162,7 +162,14 @@ cpp_class(CXXTarget BuildTarget)
     # :type self: CXXTarget
     #]]
     cpp_member(_set_public_headers CXXTarget)
-    cpp_virtual_member(_set_public_headers)
+    function("${_set_public_headers}" self)
+
+        CXXTarget(target "${self}" tgt_name)
+        CXXTarget(GET "${self}" include_files)
+
+        CXXTarget(set_property "${self}" PUBLIC_HEADER "${include_files}")
+
+    endfunction()
 
     #[[[
     # Virtual member function to set the sources for the target.
