@@ -107,7 +107,7 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(_set_compile_features CXXTarget)
     function("${_set_compile_features}" self)
 
-        Target(target "${self}" tgt_name)
+        CXXTarget(target "${self}" tgt_name)
         CXXTarget(GET "${self}" cxx_std cxx_standard)
 
         # The CXX std will always have PUBLIC access
@@ -116,13 +116,35 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Set the public headers on the target.
+    # Set the target include directories. This adds the value of
+    # ``include_directories`` as PUBLIC and ``source_dir`` as PRIVATE. This
+    # allows for both public and private headers to be found.
+    #
+    # .. note::
     # 
+    #    Implements ``BuildTarget(_set_include_directories``.
+    #
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
-    cpp_member(_set_public_headers CXXTarget)
-    cpp_virtual_member(_set_public_headers)
+    cpp_member(_set_include_directories CXXTarget)
+    function("${_set_include_directories}" self)
+
+        CXXTarget(target "${self}" tgt_name)
+        CXXTarget(GET "${self}" include_directories inc_dirs)
+        CXXTarget(GET "${self}" source_dir src_dir)
+
+        # Include all header files for the project, both from the public API
+        # and private headers
+        target_include_directories(
+            "${tgt_name}"
+            PUBLIC
+                ${inc_dirs}
+            PRIVATE
+                "${src_dir}"
+        )
+
+    endfunction()
 
     #[[[
     # Virtual member function to set the link libraries for the target.
@@ -132,6 +154,15 @@ cpp_class(CXXTarget BuildTarget)
     #]]
     cpp_member(_set_link_libraries CXXTarget)
     cpp_virtual_member(_set_link_libraries)
+
+    #[[[
+    # Set the public headers on the target.
+    # 
+    # :param self: CXXTarget object
+    # :type self: CXXTarget
+    #]]
+    cpp_member(_set_public_headers CXXTarget)
+    cpp_virtual_member(_set_public_headers)
 
     #[[[
     # Virtual member function to set the sources for the target.
