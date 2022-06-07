@@ -171,6 +171,18 @@ cpp_class(CXXTarget BuildTarget)
     # :type self: CXXTarget
     #]]
     cpp_member(_set_sources CXXTarget)
-    cpp_virtual_member(_set_sources)
+    function("${_set_sources}" self)
+
+        CXXTarget(target "${self}" tgt_name)
+        CXXTarget(GET "${self}" source_files src_files)
+
+        # Sources for a CXX target should be private
+        target_sources(
+            "${tgt_name}"
+            PRIVATE
+                ${src_files}
+        )
+
+    endfunction()
 
 cpp_end_class()
