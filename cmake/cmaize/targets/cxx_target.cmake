@@ -25,7 +25,7 @@ cpp_class(CXXTarget BuildTarget)
     cpp_attr(CXXTarget source_dir)
 
     #[[[
-    # :type: list of path
+    # :type: List[path]
     #
     # Source files.
     #]]
@@ -61,6 +61,24 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
+    # Create the target and configure its properties so it is ready to build.
+    #
+    # :param self: CXXTarget object
+    # :type self: CXXTarget
+    #]]
+    cpp_member(make_target CXXTarget)
+    function("${make_target}" self)
+
+        CXXTarget(_create_target "${self}")
+        CXXTarget(_set_compile_features "${self}")
+        CXXTarget(_set_include_dir "${self}")
+        CXXTarget(_set_link_libraries "${self}")
+        CXXTarget(_set_public_headers "${self}")
+        CXXTarget(_set_sources "${self}")
+
+    endfunction()
+
+    #[[[
     # Abstracts out CMake's access level concept (public, interface, or 
     # private).
     # 
@@ -81,7 +99,7 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Sets the CXX standard and other compiler features.
+    # Sets the CXX standard and other compiler features on the CMake target.
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
@@ -92,13 +110,13 @@ cpp_class(CXXTarget BuildTarget)
         Target(target "${self}" tgt_name)
         CXXTarget(GET "${self}" cxx_std cxx_standard)
 
-        # Call CMake's 'target_compile_features()'
+        # The CXX std will always have PUBLIC access
         target_compile_features("${tgt_name}" PUBLIC "cxx_std_${cxx_std}")
 
     endfunction()
 
     #[[[
-    # Virtual member function to set the public headers for the target.
+    # Set the public headers on the target.
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
@@ -114,5 +132,14 @@ cpp_class(CXXTarget BuildTarget)
     #]]
     cpp_member(_set_link_libraries CXXTarget)
     cpp_virtual_member(_set_link_libraries)
+
+    #[[[
+    # Virtual member function to set the sources for the target.
+    #
+    # :param self: CXX Target object
+    # :type self: CXXTarget
+    #]]
+    cpp_member(_set_sources CXXTarget)
+    cpp_virtual_member(_set_sources)
 
 cpp_end_class()
