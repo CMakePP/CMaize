@@ -131,8 +131,8 @@ cpp_class(CXXTarget BuildTarget)
     function("${_set_include_directories}" self)
 
         CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" include_directories inc_dirs)
-        CXXTarget(GET "${self}" source_dir src_dir)
+        CXXTarget(GET "${self}" inc_dirs include_dirs)
+        CXXTarget(GET "${self}" src_dir source_dir)
 
         # Include all header files for the project, both from the public API
         # and private headers
@@ -155,7 +155,7 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(_set_link_libraries CXXTarget)
     function("${_set_link_libraries}" self)
 
-        CXXTarget(GET "${self}" _sll_name name)
+        CXXTarget(target "${self}" _sll_name)
         CXXTarget(GET "${self}" _sll_proj_deps project_dependencies)
 
         foreach(_sll_proj_dep_i ${_sll_proj_deps})
@@ -177,9 +177,9 @@ cpp_class(CXXTarget BuildTarget)
     function("${_set_public_headers}" self)
 
         CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" include_files)
+        CXXTarget(GET "${self}" inc_files include_files)
 
-        CXXTarget(set_property "${self}" PUBLIC_HEADER "${include_files}")
+        CXXTarget(set_property "${self}" PUBLIC_HEADER "${inc_files}")
 
     endfunction()
 
@@ -193,7 +193,7 @@ cpp_class(CXXTarget BuildTarget)
     function("${_set_sources}" self)
 
         CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" source_files src_files)
+        CXXTarget(GET "${self}" src_files source_files)
 
         # Sources for a CXX target should be private
         target_sources(
