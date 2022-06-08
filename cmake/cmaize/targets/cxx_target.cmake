@@ -71,7 +71,7 @@ cpp_class(CXXTarget BuildTarget)
 
         CXXTarget(_create_target "${self}")
         CXXTarget(_set_compile_features "${self}")
-        CXXTarget(_set_include_dir "${self}")
+        CXXTarget(_set_include_directories "${self}")
         CXXTarget(_set_link_libraries "${self}")
         CXXTarget(_set_public_headers "${self}")
         CXXTarget(_set_sources "${self}")
@@ -147,13 +147,25 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Virtual member function to set the link libraries for the target.
+    # Set the link libraries for the target.
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
     cpp_member(_set_link_libraries CXXTarget)
-    cpp_virtual_member(_set_link_libraries)
+    function("${_set_link_libraries}" self)
+
+        CXXTarget(GET "${self}" _sll_name name)
+        CXXTarget(GET "${self}" _sll_proj_deps project_dependencies)
+
+        foreach(_sll_proj_dep_i ${_sll_proj_deps})
+            BuildTarget(target "${_sll_dep_i}" "${_sll_dep_name}")
+            target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_name}")
+        endforeach()
+
+        # Add system dependencies here somehow?
+
+    endfunction()
 
     #[[[
     # Set the public headers on the target.
