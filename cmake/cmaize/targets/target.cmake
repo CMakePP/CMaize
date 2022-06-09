@@ -151,11 +151,11 @@ cpp_class(Target)
     # :param self: Target object
     # :type self: Target
     # :param property_name: Name of the property to set.
-    # :type property_name: str
+    # :type property_name: desc
     # :param property_value: Value of the property.
-    # :type property_value: desc
+    # :type property_value: str
     #]]
-    cpp_member(set_property Target str desc)
+    cpp_member(set_property Target desc str)
     function("${set_property}" self property_name property_value)
 
         # Package the property into a map
