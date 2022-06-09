@@ -29,7 +29,7 @@ cpp_class(CXXTarget BuildTarget)
     #
     # Source files.
     #]]
-    cpp_attr(CXXTarget source_files)
+    cpp_attr(CXXTarget sources)
 
     #[[[
     # Construct a ``CXXTarget`` object. This ctor enables the CXX language
@@ -66,8 +66,23 @@ cpp_class(CXXTarget BuildTarget)
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
-    cpp_member(make_target CXXTarget)
+    cpp_member(make_target CXXTarget args)
     function("${make_target}" self)
+
+        set(_mt_options CXX_STANDARD SOURCE_DIR)
+        set(_mt_lists DEPENDS INCLUDES SOURCES INCLUDE_DIRS)
+        cmake_parse_arguments(_mt "" "${_mt_options}" "${_mt_lists}" ${ARGN})
+
+        foreach(_mt_option_i CXX_STANDARD DEPENDS INCLUDES SOURCES INCLUDE_DIRS SOURCE_DIR)
+            if(NOT "${_mt_${_mt_option_i}}" STREQUAL "")
+                string(TOLOWER "${_mt_option_i}" _mt_lc_option)
+                message("Setting ${_mt_lc_option} to ${_mt_${_mt_option_i}}") # DEBUG
+                CXXTarget(
+                    SET "${self}"
+                    "${_mt_lc_option}" "${_mt_${_mt_option_i}}"
+                )
+            endif()
+        endforeach()
 
         CXXTarget(_create_target "${self}")
         CXXTarget(_set_compile_features "${self}")
@@ -170,14 +185,12 @@ cpp_class(CXXTarget BuildTarget)
     function("${_set_link_libraries}" self)
 
         CXXTarget(target "${self}" _sll_name)
-        CXXTarget(GET "${self}" _sll_proj_deps project_dependencies)
+        CXXTarget(GET "${self}" _sll_deps depends)
 
-        foreach(_sll_proj_dep_i ${_sll_proj_deps})
-            BuildTarget(target "${_sll_dep_i}" "${_sll_dep_name}")
+        foreach(_sll_dep_i ${_sll_deps})
+            # Target(target "${_sll_dep_i}" "${_sll_dep_name}")
             target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_name}")
         endforeach()
-
-        # Add system dependencies here somehow?
 
     endfunction()
 
@@ -191,10 +204,11 @@ cpp_class(CXXTarget BuildTarget)
     function("${_set_public_headers}" self)
 
         CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" inc_files include_files)
+        CXXTarget(GET "${self}" inc_files includes)
 
-        CXXTarget(set_property "${self}" PUBLIC_HEADER "${inc_files}")
-
+        if(NOT "${inc_files}" STREQUAL "")
+            CXXTarget(set_property "${self}" PUBLIC_HEADER "${inc_files}")
+        endif()
     endfunction()
 
     #[[[
@@ -207,7 +221,7 @@ cpp_class(CXXTarget BuildTarget)
     function("${_set_sources}" self)
 
         CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" src_files source_files)
+        CXXTarget(GET "${self}" src_files sources)
 
         # Sources for a CXX target should be private
         target_sources(
