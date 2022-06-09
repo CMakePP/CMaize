@@ -130,16 +130,30 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(_set_include_directories CXXTarget)
     function("${_set_include_directories}" self)
 
-        CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" inc_dirs include_dirs)
-        CXXTarget(GET "${self}" src_dir source_dir)
+        CXXTarget(target "${self}" _sid_tgt_name)
+        CXXTarget(GET "${self}" _sid_inc_dirs include_dirs)
+        CXXTarget(GET "${self}" _sid_src_dir source_dir)
+
+        foreach(_sid_inc_dir_i ${_sid_inc_dirs})
+            get_filename_component(_sid_trunc_inc_dir "${_sid_inc_dir_i}" DIRECTORY)
+            list(APPEND _sid_inc_dirs "${_sid_trunc_inc_dir}")
+        endforeach()
 
         # Include all header files for the project, both from the public API
         # and private headers
+        foreach(_sid_inc_dir_i ${_sid_inc_dirs})
+            message("Adding include dir: ${_sid_inc_dir_i}") # DEBUG
+            target_include_directories(
+                "${_sid_tgt_name}"
+                PUBLIC
+                    $<BUILD_INTERFACE:${_sid_inc_dir_i}>
+            )
+        endforeach()
+
         target_include_directories(
-            "${tgt_name}"
+            "${_sid_tgt_name}"
             PUBLIC
-                ${inc_dirs}
+                $<INSTALL_INTERFACE:include>
             PRIVATE
                 "${src_dir}"
         )
