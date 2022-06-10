@@ -188,8 +188,7 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(GET "${self}" _sll_deps depends)
 
         foreach(_sll_dep_i ${_sll_deps})
-            # Target(target "${_sll_dep_i}" "${_sll_dep_name}")
-            target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_name}")
+            target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_i}")
         endforeach()
 
     endfunction()
