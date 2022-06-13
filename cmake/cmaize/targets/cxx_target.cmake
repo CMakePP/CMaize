@@ -131,9 +131,9 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Set the target include directories. This adds the value of
-    # ``include_directories`` as PUBLIC and ``source_dir`` as PRIVATE. This
-    # allows for both public and private headers to be found.
+    # Set the target include directories. This adds the include directories
+    # as PUBLIC and source directories as PRIVATE. This allows for both
+    # public and private headers to be found.
     #
     # .. note::
     # 
@@ -176,7 +176,8 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Set the link libraries for the target.
+    # Set the link libraries for the target. Uses the ``depends`` list
+    # to determine what targets to link.
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
@@ -194,7 +195,8 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Set the public headers on the target.
+    # Set the public headers on the target. It is set to all include files
+    # on this object.
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
@@ -211,9 +213,10 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Virtual member function to set the sources for the target.
+    # Set the sources for the target. Sources are set with the PRIVATE
+    # accessor so they are not propogated.
     #
-    # :param self: CXX Target object
+    # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
     cpp_member(_set_sources CXXTarget)
