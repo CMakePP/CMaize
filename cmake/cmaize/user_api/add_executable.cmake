@@ -3,6 +3,23 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
 
 #[[[
+# User function to build a executable target. ``cpp_add_executable()`` is
+# depricated and ``cmaize_add_executable()`` should be used to create
+# executables.
+#
+# :param _cal_tgt_name: Name of the target to be created.
+# :type _cal_tgt_name: desc
+# :param LANGUAGE: Build language for the target, defaults to "CXX"
+# :type LANGUAGE: desc, optional
+#]]
+function(cpp_add_executable _cal_tgt_name)
+
+    # Forward all arguments to the new API call
+    cmaize_add_executable("${_cal_tgt_name}" ${ARGN})
+
+endfunction()
+
+#[[[
 # User function to build a executable target.
 #
 # :param _cae_tgt_name: Name of the target to be created.
@@ -10,7 +27,7 @@ include(cmaize/targets/targets)
 # :param LANGUAGE: Build language for the target, defaults to "CXX"
 # :type LANGUAGE: desc, optional
 #]]
-function(cpp_add_executable _cae_tgt_name)
+function(cmaize_add_executable _cae_tgt_name)
 
     set(_cae_options LANGUAGE INCLUDE_DIR INCLUDE_DIRS)
     cmake_parse_arguments(_cal "" "${_cae_options}" "" ${ARGN})
@@ -30,7 +47,7 @@ function(cpp_add_executable _cae_tgt_name)
     message("language: ${_cae_LANGUAGE}")
     if("${_cae_LANGUAGE}" STREQUAL "cxx" OR "${_cae_LANGUAGE}" STREQUAL "")
         message("Making CXX executable...")
-        cpp_add_cxx_executable(
+        cmaize_add_cxx_executable(
             "${_cae_tgt_name}"
             INCLUDE_DIRS "${_cae_INCLUDE_DIRS}"
             ${ARGN}
@@ -51,7 +68,7 @@ endfunction()
 # :param INCLUDE_DIR: Directory containing files to include.
 # :type INCLUDE_DIR: path, optional
 #]]
-function(cpp_add_cxx_executable _cace_tgt_name)
+function(cmaize_add_cxx_executable _cace_tgt_name)
     set(_cace_options SOURCE_DIR INCLUDE_DIR)
 
     cmake_parse_arguments(_cace "" "${_cace_options}" "" ${ARGN})

@@ -3,7 +3,9 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
 
 #[[[
-# User function to build a library target.
+# User function to build a library target. ``cpp_add_library()`` is
+# depricated and ``cmaize_add_library()`` should be used to create
+# libraries.
 #
 # :param _cal_tgt_name: Name of the target to be created.
 # :type _cal_tgt_name: desc
@@ -11,6 +13,21 @@ include(cmaize/targets/targets)
 # :type LANGUAGE: desc, optional
 #]]
 function(cpp_add_library _cal_tgt_name)
+
+    # Forward all arguments to the new API call
+    cmaize_add_library("${_cal_tgt_name}" ${ARGN})
+
+endfunction()
+
+#[[[
+# User function to build a library target.
+#
+# :param _cal_tgt_name: Name of the target to be created.
+# :type _cal_tgt_name: desc
+# :param LANGUAGE: Build language for the target, defaults to "CXX"
+# :type LANGUAGE: desc, optional
+#]]
+function(cmaize_add_library _cal_tgt_name)
 
     set(_cal_options LANGUAGE INCLUDE_DIR INCLUDE_DIRS)
     cmake_parse_arguments(_cal "" "${_cal_options}" "" ${ARGN})
@@ -30,7 +47,7 @@ function(cpp_add_library _cal_tgt_name)
     message("language: ${_cal_LANGUAGE}")
     if("${_cal_LANGUAGE}" STREQUAL "cxx" OR "${_cal_LANGUAGE}" STREQUAL "")
         message("Making CXX library...")
-        cpp_add_cxx_library(
+        cmaize_add_cxx_library(
             "${_cal_tgt_name}"
             INCLUDE_DIRS "${_cal_INCLUDE_DIRS}"
             ${ARGN}
@@ -52,7 +69,7 @@ endfunction()
 # :type INCLUDE_DIR: path, optional
 # :param DEPENDS: Dependency target names
 #]]
-function(cpp_add_cxx_library _cacl_tgt_name)
+function(cmaize_add_cxx_library _cacl_tgt_name)
     set(_cacl_options SOURCE_DIR INCLUDE_DIR)
 
     cmake_parse_arguments(_cacl "" "${_cacl_options}" "" ${ARGN})
