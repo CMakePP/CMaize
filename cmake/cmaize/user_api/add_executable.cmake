@@ -32,28 +32,31 @@ function(cmaize_add_executable _cae_tgt_name)
     set(_cae_options LANGUAGE INCLUDE_DIR INCLUDE_DIRS)
     cmake_parse_arguments(_cal "" "${_cae_options}" "" ${ARGN})
 
+    # Default to CXX if no language is given
     if("${_cae_LANGUAGE}" STREQUAL "")
         set(_cae_LANGUAGE "CXX")
     endif()
 
-    # INCLUDE_DIRS is provided to preserve the user API, which has only
-    # been using INCLUDE_DIR
+    # INCLUDE_DIRS is generated to preserve the user API, which has 
+    # historically only used INCLUDE_DIR
     list(LENGTH _cae_INCLUDE_DIRS _cae_INCLUDE_DIRS_n)
     if(NOT "${_cae_INCLUDE_DIRS_n}" GREATER 0)
         set(_cae_INCLUDE_DIRS "${_cae_INCLUDE_DIR}")
     endif()
 
+    # Decide which language we are building for
     string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE)
-    message("language: ${_cae_LANGUAGE}")
     if("${_cae_LANGUAGE}" STREQUAL "cxx" OR "${_cae_LANGUAGE}" STREQUAL "")
-        message("Making CXX executable...")
         cmaize_add_cxx_executable(
             "${_cae_tgt_name}"
             INCLUDE_DIRS "${_cae_INCLUDE_DIRS}"
             ${ARGN}
         )
     elseif()
-        cpp_raise(InvalidBuildLanguage "Invalid build language: ${_cae_language}")
+        cpp_raise(
+            InvalidBuildLanguage
+            "Invalid build language: ${_cae_language}"
+        )
     endif()
 
 endfunction()

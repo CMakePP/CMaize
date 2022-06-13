@@ -76,7 +76,6 @@ cpp_class(CXXTarget BuildTarget)
         foreach(_mt_option_i CXX_STANDARD DEPENDS INCLUDES SOURCES INCLUDE_DIRS SOURCE_DIR)
             if(NOT "${_mt_${_mt_option_i}}" STREQUAL "")
                 string(TOLOWER "${_mt_option_i}" _mt_lc_option)
-                message("Setting ${_mt_lc_option} to ${_mt_${_mt_option_i}}") # DEBUG
                 CXXTarget(
                     SET "${self}"
                     "${_mt_lc_option}" "${_mt_${_mt_option_i}}"
@@ -157,7 +156,6 @@ cpp_class(CXXTarget BuildTarget)
         # Include all header files for the project, both from the public API
         # and private headers
         foreach(_sid_inc_dir_i ${_sid_inc_dirs})
-            message("Adding include dir: ${_sid_inc_dir_i}") # DEBUG
             target_include_directories(
                 "${_sid_tgt_name}"
                 PUBLIC

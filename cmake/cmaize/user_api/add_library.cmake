@@ -32,28 +32,31 @@ function(cmaize_add_library _cal_tgt_name)
     set(_cal_options LANGUAGE INCLUDE_DIR INCLUDE_DIRS)
     cmake_parse_arguments(_cal "" "${_cal_options}" "" ${ARGN})
 
+    # Default to CXX if no language is given
     if("${_cal_LANGUAGE}" STREQUAL "")
         set(_cal_LANGUAGE "CXX")
     endif()
 
-    # INCLUDE_DIRS is provided to preserve the user API, which has only
-    # been using INCLUDE_DIR
+    # INCLUDE_DIRS is generated to preserve the user API, which has 
+    # historically only used INCLUDE_DIR
     list(LENGTH _cal_INCLUDE_DIRS _cal_INCLUDE_DIRS_n)
     if(NOT "${_cal_INCLUDE_DIRS_n}" GREATER 0)
         set(_cal_INCLUDE_DIRS "${_cal_INCLUDE_DIR}")
     endif()
 
+    # Decide which language we are building for
     string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE)
-    message("language: ${_cal_LANGUAGE}")
     if("${_cal_LANGUAGE}" STREQUAL "cxx" OR "${_cal_LANGUAGE}" STREQUAL "")
-        message("Making CXX library...")
         cmaize_add_cxx_library(
             "${_cal_tgt_name}"
             INCLUDE_DIRS "${_cal_INCLUDE_DIRS}"
             ${ARGN}
         )
     elseif()
-        cpp_raise(InvalidBuildLanguage "Invalid build language: ${_cal_language}")
+        cpp_raise(
+            InvalidBuildLanguage 
+            "Invalid build language: ${_cal_language}"
+        )
     endif()
 
 endfunction()
@@ -92,10 +95,8 @@ function(cmaize_add_cxx_library _cacl_tgt_name)
     # is a library or interface library
     list(LENGTH _cacl_source_files _cacl_source_files_n)
     if("${_cacl_source_files_n}" GREATER 0)
-        message("Making a CXXLibrary") # DEBUG
         CXXLibrary(CTOR _cacl_lib_obj "${_cacl_tgt_name}")
     else()
-        message("Making a CXXInterfaceLibrary") # DEBUG
         CXXInterfaceLibrary(CTOR _cacl_lib_obj "${_cacl_tgt_name}")
     endif()
 
