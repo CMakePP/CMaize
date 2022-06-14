@@ -7,15 +7,29 @@ include(cmaize/targets/targets)
 # depricated and ``cmaize_add_executable()`` should be used to create
 # executables.
 #
-# :param _cal_tgt_name: Name of the target to be created.
-# :type _cal_tgt_name: desc
+# :param _cae_tgt_name: Name of the target to be created.
+# :type _cae_tgt_name: desc
 # :param LANGUAGE: Build language for the target, defaults to "CXX"
 # :type LANGUAGE: desc, optional
 #]]
-function(cpp_add_executable _cal_tgt_name)
+function(cpp_add_executable _cae_tgt_name)
+
+    set(_cae_options INCLUDE_DIR INCLUDE_DIRS)
+    cmake_parse_arguments(_cae "" "${_cae_options}" "" ${ARGN})
+
+    # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
+    # be generated based on the value of INCLUDE_DIR
+    list(LENGTH _cae_INCLUDE_DIRS _cae_INCLUDE_DIRS_n)
+    if(NOT "${_cae_INCLUDE_DIRS_n}" GREATER 0)
+        set(_cae_INCLUDE_DIRS "${_cae_INCLUDE_DIR}")
+    endif()
 
     # Forward all arguments to the new API call
-    cmaize_add_executable("${_cal_tgt_name}" ${ARGN})
+    cmaize_add_executable(
+        "${_cae_tgt_name}"
+        INCLUDE_DIRS "${_cae_INCLUDE_DIRS}"
+        ${ARGN}
+    )
 
 endfunction()
 
@@ -29,7 +43,7 @@ endfunction()
 #]]
 function(cmaize_add_executable _cae_tgt_name)
 
-    set(_cae_options LANGUAGE INCLUDE_DIR INCLUDE_DIRS)
+    set(_cae_options LANGUAGE)
     cmake_parse_arguments(_cae "" "${_cae_options}" "" ${ARGN})
 
     # Default to CXX if no language is given
@@ -37,19 +51,11 @@ function(cmaize_add_executable _cae_tgt_name)
         set(_cae_LANGUAGE "CXX")
     endif()
 
-    # INCLUDE_DIRS is generated to preserve the user API, which has 
-    # historically only used INCLUDE_DIR
-    list(LENGTH _cae_INCLUDE_DIRS _cae_INCLUDE_DIRS_n)
-    if(NOT "${_cae_INCLUDE_DIRS_n}" GREATER 0)
-        set(_cae_INCLUDE_DIRS "${_cae_INCLUDE_DIR}")
-    endif()
-
     # Decide which language we are building for
     string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE)
     if("${_cae_LANGUAGE}" STREQUAL "cxx" OR "${_cae_LANGUAGE}" STREQUAL "")
         cmaize_add_cxx_executable(
             "${_cae_tgt_name}"
-            INCLUDE_DIRS "${_cae_INCLUDE_DIRS}"
             ${ARGN}
         )
     elseif()
@@ -72,26 +78,12 @@ endfunction()
 # :type INCLUDE_DIR: path, optional
 #]]
 function(cmaize_add_cxx_executable _cace_tgt_name)
-    set(_cace_options SOURCE_DIR INCLUDE_DIR)
+    set(_cace_options SOURCE_DIR INCLUDE_DIRS)
 
     cmake_parse_arguments(_cace "" "${_cace_options}" "" ${ARGN})
 
-    # Get all the source files
-    file(GLOB_RECURSE _cace_source_files
-        LIST_DIRECTORIES false
-        CONFIGURE_DEPENDS
-        "${_cace_SOURCE_DIR}/*.cpp"
-    )
-
-    # Get the include files. This ``if`` statement might be able to be
-    # replaced with ``cmake_path(APPEND``
-    if (NOT "${_cace_INCLUDE_DIR}" STREQUAL "")
-        file(GLOB_RECURSE _cace_include_files
-            LIST_DIRECTORIES false
-            CONFIGURE_DEPENDS
-            "${_cace_INCLUDE_DIR}/*.hpp"
-        )
-    endif()
+    _cmaize_glob_files(_cace_source_files "${_cace_SOURCE_DIR}" "cpp")
+    _cmaize_glob_files(_cace_include_files "${_cace_INCLUDE_DIRS}" "hpp")
 
     CXXExecutable(CTOR _cace_lib_obj "${_cace_tgt_name}")
 

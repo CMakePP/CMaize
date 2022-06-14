@@ -1,6 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
+include(cmaize/utilities/glob_files)
 
 #[[[
 # User function to build a library target. ``cpp_add_library()`` is
@@ -14,8 +15,22 @@ include(cmaize/targets/targets)
 #]]
 function(cpp_add_library _cal_tgt_name)
 
+    set(_cal_options INCLUDE_DIR INCLUDE_DIRS)
+    cmake_parse_arguments(_cal "" "${_cal_options}" "" ${ARGN})
+
+    # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
+    # be generated based on the value of INCLUDE_DIR
+    list(LENGTH _cal_INCLUDE_DIRS _cal_INCLUDE_DIRS_n)
+    if(NOT "${_cal_INCLUDE_DIRS_n}" GREATER 0)
+        set(_cal_INCLUDE_DIRS "${_cal_INCLUDE_DIR}")
+    endif()
+
     # Forward all arguments to the new API call
-    cmaize_add_library("${_cal_tgt_name}" ${ARGN})
+    cmaize_add_library(
+        "${_cal_tgt_name}" 
+        INCLUDE_DIRS "${_cal_INCLUDE_DIRS}"
+        ${ARGN}
+    )
 
 endfunction()
 
@@ -29,7 +44,7 @@ endfunction()
 #]]
 function(cmaize_add_library _cal_tgt_name)
 
-    set(_cal_options LANGUAGE INCLUDE_DIR INCLUDE_DIRS)
+    set(_cal_options LANGUAGE)
     cmake_parse_arguments(_cal "" "${_cal_options}" "" ${ARGN})
 
     # Default to CXX if no language is given
@@ -37,19 +52,11 @@ function(cmaize_add_library _cal_tgt_name)
         set(_cal_LANGUAGE "CXX")
     endif()
 
-    # INCLUDE_DIRS is generated to preserve the user API, which has 
-    # historically only used INCLUDE_DIR
-    list(LENGTH _cal_INCLUDE_DIRS _cal_INCLUDE_DIRS_n)
-    if(NOT "${_cal_INCLUDE_DIRS_n}" GREATER 0)
-        set(_cal_INCLUDE_DIRS "${_cal_INCLUDE_DIR}")
-    endif()
-
     # Decide which language we are building for
     string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE)
     if("${_cal_LANGUAGE}" STREQUAL "cxx" OR "${_cal_LANGUAGE}" STREQUAL "")
         cmaize_add_cxx_library(
             "${_cal_tgt_name}"
-            INCLUDE_DIRS "${_cal_INCLUDE_DIRS}"
             ${ARGN}
         )
     elseif()
@@ -77,19 +84,8 @@ function(cmaize_add_cxx_library _cacl_tgt_name)
 
     cmake_parse_arguments(_cacl "" "${_cacl_options}" "" ${ARGN})
 
-    # Get all the source files
-    file(GLOB_RECURSE _cacl_source_files
-        LIST_DIRECTORIES false
-        CONFIGURE_DEPENDS
-        "${_cacl_SOURCE_DIR}/*.cpp"
-    )
-
-    # Get the include files
-    file(GLOB_RECURSE _cacl_include_files
-        LIST_DIRECTORIES false
-        CONFIGURE_DEPENDS
-        "${_cacl_INCLUDE_DIR}/*.hpp"
-    )
+    _cmaize_glob_files(_cacl_source_files "${_cacl_SOURCE_DIR}" "cpp")
+    _cmaize_glob_files(_cacl_include_files "${_cacl_INCLUDE_DIRS}" "hpp")
 
     # Check if any source files were provided to determine if the target
     # is a library or interface library

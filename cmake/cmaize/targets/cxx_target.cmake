@@ -163,8 +163,7 @@ cpp_class(CXXTarget BuildTarget)
             list(APPEND _sid_inc_dirs "${_sid_trunc_inc_dir}")
         endforeach()
 
-        # Include all header files for the project, both from the public API
-        # and private headers
+        # Set up public includes
         foreach(_sid_inc_dir_i ${_sid_inc_dirs})
             target_include_directories(
                 "${_sid_tgt_name}"
@@ -173,10 +172,16 @@ cpp_class(CXXTarget BuildTarget)
             )
         endforeach()
 
+        # Set up installation includes
         target_include_directories(
             "${_sid_tgt_name}"
             PUBLIC
                 $<INSTALL_INTERFACE:include>
+        )
+
+        # Set up private header includes
+        target_include_directories(
+            "${_sid_tgt_name}"
             PRIVATE
                 "${_sid_src_dir}"
         )
@@ -235,7 +240,7 @@ cpp_class(CXXTarget BuildTarget)
         # Sources for a CXX target should be private
         target_sources(
             "${_ss_tgt_name}"
-            PRIVATE
+            PUBLIC
                 ${_ss_src_files}
         )
 
