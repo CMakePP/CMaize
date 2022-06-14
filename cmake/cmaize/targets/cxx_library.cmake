@@ -11,7 +11,7 @@ cpp_class(CXXLibrary CXXTarget)
     # 
     # .. note::
     #
-    #    Overrides ``CXXTarget(_create_target``.
+    #    Overrides ``BuildTarget(_create_target``.
     #
     # :param self: CXXLibrary object
     # :type self: CXXLibrary

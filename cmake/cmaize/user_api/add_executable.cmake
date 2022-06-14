@@ -30,7 +30,7 @@ endfunction()
 function(cmaize_add_executable _cae_tgt_name)
 
     set(_cae_options LANGUAGE INCLUDE_DIR INCLUDE_DIRS)
-    cmake_parse_arguments(_cal "" "${_cae_options}" "" ${ARGN})
+    cmake_parse_arguments(_cae "" "${_cae_options}" "" ${ARGN})
 
     # Default to CXX if no language is given
     if("${_cae_LANGUAGE}" STREQUAL "")

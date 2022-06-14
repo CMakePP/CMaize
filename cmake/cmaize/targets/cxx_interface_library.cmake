@@ -6,6 +6,10 @@ cpp_class(CXXInterfaceLibrary CXXLibrary)
     #[[[
     # Get the access level for the target.
     #
+    # .. note::
+    # 
+    #    Implements ``CXXTarget(_access_level``.
+    #
     # :param self: CXXInterfaceLibrary object
     # :type self: CXXInterfaceLibrary
     # :param _al_result: Return variable holding the access level result.
@@ -27,7 +31,7 @@ cpp_class(CXXInterfaceLibrary CXXLibrary)
     #
     # .. note::
     #
-    #    Overrides ``CXXTarget(_create_target``.
+    #    Overrides ``BuildTarget(_create_target``.
     #
     # :param self: CXXInterfaceLibrary object
     # :type self: CXXInterfaceLibrary

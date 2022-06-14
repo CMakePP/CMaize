@@ -8,7 +8,7 @@ cpp_class(CXXExecutable CXXTarget)
     #
     # .. note::
     #
-    #    Overrides ``CXXTarget(_create_target``.
+    #    Overrides ``BuildTarget(_create_target``.
     #
     # :param self: CXXExecutable object
     # :type self: CXXExecutable

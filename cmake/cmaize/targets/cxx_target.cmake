@@ -45,10 +45,10 @@ cpp_class(CXXTarget BuildTarget)
     # :type self: CXXTarget
     #]]
     cpp_constructor(CTOR CXXTarget str)
-    function("${CTOR}" self tgt_name)
+    function("${CTOR}" self _ctor_tgt_name)
 
         # Call the parent ctor
-        BuildTarget(CTOR "${self}" "${tgt_name}")
+        BuildTarget(CTOR "${self}" "${_ctor_tgt_name}")
 
         # Make sure the CXX language has been enabled
         check_language(CXX)
@@ -63,12 +63,17 @@ cpp_class(CXXTarget BuildTarget)
     #[[[
     # Create the target and configure its properties so it is ready to build.
     #
+    # .. note::
+    # 
+    #    Implements ``BuildTarget(make_target``.
+    #
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
     cpp_member(make_target CXXTarget args)
     function("${make_target}" self)
 
+        CXXTarget(target "${self}" _mt_name) # DEBUG
         set(_mt_options CXX_STANDARD SOURCE_DIR)
         set(_mt_lists DEPENDS INCLUDES SOURCES INCLUDE_DIRS)
         cmake_parse_arguments(_mt "" "${_mt_options}" "${_mt_lists}" ${ARGN})
@@ -76,6 +81,7 @@ cpp_class(CXXTarget BuildTarget)
         foreach(_mt_option_i CXX_STANDARD DEPENDS INCLUDES SOURCES INCLUDE_DIRS SOURCE_DIR)
             if(NOT "${_mt_${_mt_option_i}}" STREQUAL "")
                 string(TOLOWER "${_mt_option_i}" _mt_lc_option)
+                message("Setting ${_mt_name}:${_mt_lc_option} to ${_mt_${_mt_option_i}}") # DEBUG
                 CXXTarget(
                     SET "${self}"
                     "${_mt_lc_option}" "${_mt_${_mt_option_i}}"
@@ -98,8 +104,8 @@ cpp_class(CXXTarget BuildTarget)
     # 
     # :param self: CXXTarget object
     # :type self: CXXTarget
-    # :param result: Returned access level.
-    # :param result: str*
+    # :param _al_access_level: Returned access level.
+    # :param _al_access_level: str*
     #
     # :returns: CMake access level of the target.
     # :rtype: str
@@ -121,11 +127,15 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(_set_compile_features CXXTarget)
     function("${_set_compile_features}" self)
 
-        CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" cxx_std cxx_standard)
+        CXXTarget(target "${self}" _scf_tgt_name)
+        CXXTarget(GET "${self}" _scf_cxx_std cxx_standard)
 
         # The CXX std will always have PUBLIC access
-        target_compile_features("${tgt_name}" PUBLIC "cxx_std_${cxx_std}")
+        target_compile_features(
+            "${_scf_tgt_name}"
+            PUBLIC
+                "cxx_std_${_scf_cxx_std}"
+        )
 
     endfunction()
 
@@ -168,7 +178,7 @@ cpp_class(CXXTarget BuildTarget)
             PUBLIC
                 $<INSTALL_INTERFACE:include>
             PRIVATE
-                "${src_dir}"
+                "${_sid_src_dir}"
         )
 
     endfunction()
@@ -202,12 +212,11 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(_set_public_headers CXXTarget)
     function("${_set_public_headers}" self)
 
-        CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" inc_files includes)
+        CXXTarget(GET "${self}" _sph_inc_files includes)
 
-        if(NOT "${inc_files}" STREQUAL "")
-            CXXTarget(set_property "${self}" PUBLIC_HEADER "${inc_files}")
-        endif()
+        # TODO: This may hang if '_sph_inc_files' is empty
+        CXXTarget(set_property "${self}" PUBLIC_HEADER "${_sph_inc_files}")
+
     endfunction()
 
     #[[[
@@ -220,14 +229,14 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(_set_sources CXXTarget)
     function("${_set_sources}" self)
 
-        CXXTarget(target "${self}" tgt_name)
-        CXXTarget(GET "${self}" src_files sources)
+        CXXTarget(target "${self}" _ss_tgt_name)
+        CXXTarget(GET "${self}" _ss_src_files sources)
 
         # Sources for a CXX target should be private
         target_sources(
-            "${tgt_name}"
+            "${_ss_tgt_name}"
             PRIVATE
-                ${src_files}
+                ${_ss_src_files}
         )
 
     endfunction()
