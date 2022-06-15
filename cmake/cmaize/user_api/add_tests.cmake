@@ -2,7 +2,15 @@ include_guard()
 
 include(cmaize/user_api/add_executable)
 
-function(cpp_add_tests _cat_test_name)
+#[[[
+# User function to build a library target. ``cpp_add_tests()`` is
+# depricated and ``cmaize_add_tests()`` should be used to create
+# new tests.
+#
+# :param _cat_test_name: Name for the test, test executable, and test command.
+# :type _cat_test_name: desc
+#]]
+macro(cpp_add_tests _cat_test_name)
 
     set(_cat_options INCLUDE_DIR INCLUDE_DIRS)
     cmake_parse_arguments(_cat "" "${_cat_options}" "" ${ARGN})
@@ -20,12 +28,18 @@ function(cpp_add_tests _cat_test_name)
         ${ARGN}
     )
 
-endfunction()
+endmacro()
 
-function(cmaize_add_tests _cat_test_name)
+#[[[
+# User macro to add a set of CTest tests.
+#
+# :param _cat_test_name: Name for the test, test executable, and test command.
+# :type _cat_test_name: desc
+#]]
+macro(cmaize_add_tests _cat_test_name)
 
     include(CTest)
     cmaize_add_executable("${_cat_test_name}" ${ARGN})
     add_test(NAME "${_cat_test_name}" COMMAND "${_cat_test_name}")
 
-endfunction()
+endmacro()
