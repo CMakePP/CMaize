@@ -3,7 +3,7 @@ include_guard()
 include(cmaize/user_api/add_executable)
 
 #[[[
-# User function to build a library target. ``cpp_add_tests()`` is
+# User macro to add a set of CTest tests. ``cpp_add_tests()`` is
 # depricated and ``cmaize_add_tests()`` should be used to create
 # new tests.
 #

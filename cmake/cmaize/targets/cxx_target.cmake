@@ -73,7 +73,6 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(make_target CXXTarget args)
     function("${make_target}" self)
 
-        CXXTarget(target "${self}" _mt_name) # DEBUG
         set(_mt_options CXX_STANDARD SOURCE_DIR)
         set(_mt_lists DEPENDS INCLUDES SOURCES INCLUDE_DIRS)
         cmake_parse_arguments(_mt "" "${_mt_options}" "${_mt_lists}" ${ARGN})
@@ -81,7 +80,6 @@ cpp_class(CXXTarget BuildTarget)
         foreach(_mt_option_i CXX_STANDARD DEPENDS INCLUDES SOURCES INCLUDE_DIRS SOURCE_DIR)
             if(NOT "${_mt_${_mt_option_i}}" STREQUAL "")
                 string(TOLOWER "${_mt_option_i}" _mt_lc_option)
-                message("Setting ${_mt_name}:${_mt_lc_option} to ${_mt_${_mt_option_i}}") # DEBUG
                 CXXTarget(
                     SET "${self}"
                     "${_mt_lc_option}" "${_mt_${_mt_option_i}}"
