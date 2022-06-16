@@ -32,35 +32,6 @@ cpp_class(CXXTarget BuildTarget)
     cpp_attr(CXXTarget sources)
 
     #[[[
-    # Construct a ``CXXTarget`` object. This ctor enables the CXX language
-    # if it has not already been enabled.
-    #
-    # .. warning::
-    #    
-    #    If an existing CMake target name is provided, the CXX language must
-    #    already be enabled upon creation of the CMake target, otherwise it
-    #    will not have the correct properties.
-    # 
-    # :param self: CXXTarget object
-    # :type self: CXXTarget
-    #]]
-    cpp_constructor(CTOR CXXTarget str)
-    function("${CTOR}" self _ctor_tgt_name)
-
-        # Call the parent ctor
-        BuildTarget(CTOR "${self}" "${_ctor_tgt_name}")
-
-        # Make sure the CXX language has been enabled
-        check_language(CXX)
-        if(CMAKE_CXX_COMPILER)
-            enable_language(CXX)
-        else()
-            message(STATUS "No CXX support")
-        endif()
-
-    endfunction()
-
-    #[[[
     # Create the target and configure its properties so it is ready to build.
     #
     # .. note::

@@ -10,32 +10,7 @@ function("${test_cxx_target}")
     ct_add_section(NAME "creating_new_tgt")
     function("${creating_new_tgt}")
 
-        #[[[
-        # Tests to make sure that the ctor enables the CXX language if
-        # it has not yet been enabled when the target is created.
-        #]]
-        ct_add_section(NAME "enables_cxx_language")
-        function("${enables_cxx_language}")
-
-            get_property(languages GLOBAL PROPERTY ENABLED_LANGUAGES)
-
-            # CXX shouldn't be enabled in the testing project
-            set(cxx_enabled FALSE)
-            if ("CXX" IN_LIST languages)
-                set(cxx_enabled TRUE)
-            endif()
-            ct_assert_equal(cxx_enabled FALSE)
-
-            CXXTarget(CTOR tgt_obj "test_target")
-
-            # Now CXX should be enabled (assuming CXX is possible on the machine)
-            if(NOT "${CMAKE_CXX_COMPILER}" STREQUAL "")
-                set(cxx_enabled TRUE)
-            endif()
-
-            ct_assert_equal(cxx_enabled TRUE)
-
-        endfunction()
+        
 
     endfunction()
 
