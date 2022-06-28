@@ -3,9 +3,12 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
 
 #[[[
-# User function to build a executable target. ``cpp_add_executable()`` is
-# depricated and ``cmaize_add_executable()`` should be used to create
-# executables.
+# User function to build a executable target.
+#
+# .. warning::
+#    
+#    ``cpp_add_executable()`` is depricated. ``cmaize_add_executable()``
+#    should be used to create executables.
 #
 # :param _cae_tgt_name: Name of the target to be created.
 # :type _cae_tgt_name: desc
@@ -74,8 +77,8 @@ endfunction()
 # :type _cace_tgt_name: desc
 # :param SOURCE_DIR: Directory containing source code.
 # :type SOURCE_DIR: path, optional
-# :param INCLUDE_DIR: Directory containing files to include.
-# :type INCLUDE_DIR: path, optional
+# :param INCLUDE_DIRS: Directories containing files to include.
+# :type INCLUDE_DIRS: path, optional
 #]]
 function(cmaize_add_cxx_executable _cace_tgt_name)
     set(_cace_options SOURCE_DIR INCLUDE_DIRS)

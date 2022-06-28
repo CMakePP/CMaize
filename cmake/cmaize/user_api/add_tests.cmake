@@ -3,9 +3,12 @@ include_guard()
 include(cmaize/user_api/add_executable)
 
 #[[[
-# User macro to add a set of CTest tests. ``cpp_add_tests()`` is
-# depricated and ``cmaize_add_tests()`` should be used to create
-# new tests.
+# User macro to add a set of CTest tests.
+#
+# .. warning::
+#
+#    ``cpp_add_tests()`` is depricated. ``cmaize_add_tests()`` should be
+#    used to create new tests.
 #
 # :param _cat_test_name: Name for the test, test executable, and test command.
 # :type _cat_test_name: desc

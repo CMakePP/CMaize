@@ -9,13 +9,17 @@ include(cmaize/targets/build_target)
 cpp_class(CXXTarget BuildTarget)
 
     #[[[
-    # :type: str
+    # :type: int
     #
     # CXX standard to use. For a given C++ standard designation, denoted as
     # ``cxx_std_xx`` or "C++ xx", only provide the number, "xx" of the 
-    # standard. Defaults to 17.
+    # standard.
+    #
+    # Following the precident set forth by CMake for the ``CXX_STANDARD``
+    # target property, this property is initialized to ``CMAKE_CXX_STANDARD``
+    # if it is set when the target is created.
     #]]
-    cpp_attr(CXXTarget cxx_standard 17)
+    cpp_attr(CXXTarget cxx_standard "${CMAKE_CXX_STANDARD}")
 
     #[[[
     # :type: path
@@ -48,7 +52,8 @@ cpp_class(CXXTarget BuildTarget)
         set(_mt_lists DEPENDS INCLUDES SOURCES INCLUDE_DIRS)
         cmake_parse_arguments(_mt "" "${_mt_options}" "${_mt_lists}" ${ARGN})
 
-        foreach(_mt_option_i CXX_STANDARD DEPENDS INCLUDES SOURCES INCLUDE_DIRS SOURCE_DIR)
+        list(APPEND _mt_full_options ${_mt_options} ${_mt_lists})
+        foreach(_mt_option_i ${_mt_full_options})
             if(NOT "${_mt_${_mt_option_i}}" STREQUAL "")
                 string(TOLOWER "${_mt_option_i}" _mt_lc_option)
                 CXXTarget(
@@ -58,6 +63,8 @@ cpp_class(CXXTarget BuildTarget)
             endif()
         endforeach()
 
+        # Make all of the calls to create the CMake target and set its
+        # properties
         CXXTarget(_create_target "${self}")
         CXXTarget(_set_compile_features "${self}")
         CXXTarget(_set_include_directories "${self}")
@@ -128,7 +135,10 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(GET "${self}" _sid_src_dir source_dir)
 
         foreach(_sid_inc_dir_i ${_sid_inc_dirs})
-            get_filename_component(_sid_trunc_inc_dir "${_sid_inc_dir_i}" DIRECTORY)
+            get_filename_component(
+                _sid_trunc_inc_dir
+                "${_sid_inc_dir_i}"
+                DIRECTORY)
             list(APPEND _sid_inc_dirs "${_sid_trunc_inc_dir}")
         endforeach()
 

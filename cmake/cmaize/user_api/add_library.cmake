@@ -4,9 +4,12 @@ include(cmaize/targets/targets)
 include(cmaize/utilities/glob_files)
 
 #[[[
-# User function to build a library target. ``cpp_add_library()`` is
-# depricated and ``cmaize_add_library()`` should be used to create
-# libraries.
+# User function to build a library target.
+#
+# .. warning::
+# 
+#    ``cpp_add_library()`` is depricated. ``cmaize_add_library()`` should
+#    be used to create libraries.
 #
 # :param _cal_tgt_name: Name of the target to be created.
 # :type _cal_tgt_name: desc
