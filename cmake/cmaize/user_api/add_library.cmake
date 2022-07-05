@@ -94,12 +94,27 @@ endfunction()
 # :type INCLUDE_DIRS: path, optional
 #]]
 function(cmaize_add_cxx_library _cacl_tgt_name)
-    set(_cacl_options SOURCE_DIR INCLUDE_DIRS)
+    set(_cacl_options SOURCE_DIR)
+    set(_cacl_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
 
-    cmake_parse_arguments(_cacl "" "${_cacl_options}" "" ${ARGN})
+    cmake_parse_arguments(_cacl "" "${_cacl_options}" "${_cacl_lists}" ${ARGN})
 
-    _cmaize_glob_files(_cacl_source_files "${_cacl_SOURCE_DIR}" "cpp")
-    _cmaize_glob_files(_cacl_include_files "${_cacl_INCLUDE_DIRS}" "hpp")
+    # Determines if the user gave custom source file extensions, otherwise
+    # defaulting to CMAKE_CXX_SOURCE_FILE_EXTENSIONS
+    list(LENGTH _cacl_SOURCE_EXTS _cacl_SOURCE_EXTS_n)
+    if(NOT "${_cacl_SOURCE_EXTS_n}" GREATER 0)
+        set(_cacl_SOURCE_EXTS "${CMAKE_CXX_SOURCE_FILE_EXTENSIONS}")
+    endif()
+
+    # Determines if the user gave custom include file extensions, otherwise
+    # defaulting to CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
+    list(LENGTH _cacl_INCLUDE_EXTS _cacl_INCLUDE_EXTS_n)
+    if(NOT "${_cacl_INCLUDE_EXTS_n}" GREATER 0)
+        set(_cacl_INCLUDE_EXTS "${CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS}")
+    endif()
+
+    _cmaize_glob_files(_cacl_source_files "${_cacl_SOURCE_DIR}" "${_cacl_SOURCE_EXTS}")
+    _cmaize_glob_files(_cacl_include_files "${_cacl_INCLUDE_DIRS}" "${_cacl_INCLUDE_EXTS}")
 
     # Check if any source files were provided to determine if the target
     # is a library or interface library

@@ -90,15 +90,36 @@ endfunction()
 # :param SOURCE_DIR: Directory containing source code.
 # :type SOURCE_DIR: path, optional
 # :param INCLUDE_DIRS: Directories containing files to include.
-# :type INCLUDE_DIRS: path, optional
+# :type INCLUDE_DIRS: List[path], optional
+# :param SOURCE_EXTS: Source file extensions (exclude the dot), defaults
+#                     to the value of ``CMAKE_CXX_SOURCE_FILE_EXTENSIONS``.
+# :type SOURCE_EXTS: List[desc], optional
+# :param INCLUDE_EXTS: Include file extensions (exclude the dot), defaults
+#                      to the value of ``CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS``.
+# :type INCLUDE_EXTS: List[desc], optional
 #]]
 function(cmaize_add_cxx_executable _cace_tgt_name)
-    set(_cace_options SOURCE_DIR INCLUDE_DIRS)
+    set(_cace_options SOURCE_DIR)
+    set(_cace_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
 
-    cmake_parse_arguments(_cace "" "${_cace_options}" "" ${ARGN})
+    cmake_parse_arguments(_cace "" "${_cace_options}" "${_cace_lists}" ${ARGN})
 
-    _cmaize_glob_files(_cace_source_files "${_cace_SOURCE_DIR}" "cpp")
-    _cmaize_glob_files(_cace_include_files "${_cace_INCLUDE_DIRS}" "hpp")
+    # Determines if the user gave custom source file extensions, otherwise
+    # defaulting to CMAKE_CXX_SOURCE_FILE_EXTENSIONS
+    list(LENGTH _cace_SOURCE_EXTS _cace_SOURCE_EXTS_n)
+    if(NOT "${_cace_SOURCE_EXTS_n}" GREATER 0)
+        set(_cace_SOURCE_EXTS "${CMAKE_CXX_SOURCE_FILE_EXTENSIONS}")
+    endif()
+
+    # Determines if the user gave custom include file extensions, otherwise
+    # defaulting to CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
+    list(LENGTH _cace_INCLUDE_EXTS _cace_INCLUDE_EXTS_n)
+    if(NOT "${_cace_INCLUDE_EXTS_n}" GREATER 0)
+        set(_cace_INCLUDE_EXTS "${CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS}")
+    endif()
+
+    _cmaize_glob_files(_cace_source_files "${_cace_SOURCE_DIR}" "${_cace_SOURCE_EXTS}")
+    _cmaize_glob_files(_cace_include_files "${_cace_INCLUDE_DIRS}" "${_cace_INCLUDE_EXTS}")
 
     CXXExecutable(CTOR _cace_lib_obj "${_cace_tgt_name}")
 
