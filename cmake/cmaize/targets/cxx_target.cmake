@@ -44,6 +44,18 @@ cpp_class(CXXTarget BuildTarget)
     #
     # :param self: CXXTarget object
     # :type self: CXXTarget
+    # :param SOURCE_DIR: Directory containing source code.
+    # :type SOURCE_DIR: path, optional
+    # :param INCLUDE_DIRS: Directories containing files to include.
+    # :type INCLUDE_DIRS: List[path], optional
+    # :param SOURCES: Source code files.
+    # :type SOURCES: List[path], optional
+    # :param INCLUDES: Include files.
+    # :type INCLUDES: List[path], optional
+    # :param CXX_STANDARD: CXX standard number.
+    # :type CXX_STANDARD: int, optional
+    # :param DEPENDS: Dependency target names.
+    # :type DEPENDS: List[desc], optional
     #]]
     cpp_member(make_target CXXTarget args)
     function("${make_target}" self)

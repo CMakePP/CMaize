@@ -12,8 +12,8 @@ include(cmaize/targets/targets)
 #
 # :param _cae_tgt_name: Name of the target to be created.
 # :type _cae_tgt_name: desc
-# :param LANGUAGE: Build language for the target, defaults to "CXX"
-# :type LANGUAGE: desc, optional
+# :param INCLUDE_DIR: Directories containing files to include.
+# :type INCLUDE_DIR: path, optional
 #]]
 function(cpp_add_executable _cae_tgt_name)
 
@@ -79,6 +79,11 @@ endfunction()
 
 #[[[
 # User function to build a CXX executable target.
+#
+# .. note::
+#    
+#    See ``CXXTarget(make_target`` documentation for additional optional
+#    arguments.
 #
 # :param _cace_tgt_name: Name of the target to be created.
 # :type _cace_tgt_name: desc

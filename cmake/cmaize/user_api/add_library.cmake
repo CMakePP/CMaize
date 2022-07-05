@@ -81,6 +81,11 @@ endfunction()
 #[[[
 # User function to build a CXX library target.
 #
+# .. note::
+#    
+#    See ``CXXTarget(make_target`` documentation for additional optional
+#    arguments.
+#
 # :param _cal_tgt_name: Name of the target to be created.
 # :type _cal_tgt_name: desc
 # :param SOURCE_DIR: Directory containing source code.
