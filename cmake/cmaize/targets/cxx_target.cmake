@@ -52,7 +52,8 @@ cpp_class(CXXTarget BuildTarget)
     # :type SOURCES: List[path], optional
     # :param INCLUDES: Include files.
     # :type INCLUDES: List[path], optional
-    # :param CXX_STANDARD: CXX standard number.
+    # :param CXX_STANDARD: CXX standard number. For example, to set the
+    #                      standard to ``cxx_std_98``, only provide ``98``.
     # :type CXX_STANDARD: int, optional
     # :param DEPENDS: Dependency target names.
     # :type DEPENDS: List[desc], optional
@@ -93,7 +94,7 @@ cpp_class(CXXTarget BuildTarget)
     # :param self: CXXTarget object
     # :type self: CXXTarget
     # :param _al_access_level: Returned access level.
-    # :param _al_access_level: str*
+    # :type _al_access_level: str*
     #
     # :returns: CMake access level of the target.
     # :rtype: str
