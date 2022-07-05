@@ -21,7 +21,8 @@ function(cpp_add_executable _cae_tgt_name)
     cmake_parse_arguments(_cae "" "${_cae_options}" "" ${ARGN})
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
-    # be generated based on the value of INCLUDE_DIR
+    # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
+    # provided, INCLUDE_DIR is ignored.
     list(LENGTH _cae_INCLUDE_DIRS _cae_INCLUDE_DIRS_n)
     if(NOT "${_cae_INCLUDE_DIRS_n}" GREATER 0)
         set(_cae_INCLUDE_DIRS "${_cae_INCLUDE_DIR}")
@@ -38,6 +39,12 @@ endfunction()
 
 #[[[
 # User function to build a executable target.
+#
+# .. note::
+#
+#    For additional optional parameters related to the specific language
+#    used, see the documentation for `cmaize_add_<LANGUAGE>_executable()`,
+#    where `<LANGUAGE>` is the language being used.
 #
 # :param _cae_tgt_name: Name of the target to be created.
 # :type _cae_tgt_name: desc

@@ -19,7 +19,8 @@ macro(cpp_add_tests _cat_test_name)
     cmake_parse_arguments(_cat "" "${_cat_options}" "" ${ARGN})
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
-    # be generated based on the value of INCLUDE_DIR
+    # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
+    # provided, INCLUDE_DIR is ignored.
     list(LENGTH _cat_INCLUDE_DIRS _cat_INCLUDE_DIRS_n)
     if(NOT "${_cat_INCLUDE_DIRS_n}" GREATER 0)
         set(_cat_INCLUDE_DIRS "${_cat_INCLUDE_DIR}")
@@ -35,6 +36,11 @@ endmacro()
 
 #[[[
 # User macro to add a set of CTest tests.
+#
+# .. note::
+#
+#    For additional optional parameters related to the specific language
+#    used, see the documentation for `cmaize_add_executable()`.
 #
 # :param _cat_test_name: Name for the test, test executable, and test command.
 # :type _cat_test_name: desc
