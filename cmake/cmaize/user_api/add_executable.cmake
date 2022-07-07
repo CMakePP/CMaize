@@ -12,13 +12,18 @@ include(cmaize/targets/targets)
 #
 # :param _cae_tgt_name: Name of the target to be created.
 # :type _cae_tgt_name: desc
-# :param INCLUDE_DIR: Directories containing files to include.
+# :param INCLUDE_DIR: Directory containing files to include.
 # :type INCLUDE_DIR: path, optional
+# :param INCLUDE_DIRS: Directories containing files to include. If this
+#                      parameter is given a value, the value of ``INCLUDE_DIR``
+#                      will be ignored.
+# :type INCLUDE_DIRS: List[path], optional
 #]]
 function(cpp_add_executable _cae_tgt_name)
 
-    set(_cae_options INCLUDE_DIR INCLUDE_DIRS)
-    cmake_parse_arguments(_cae "" "${_cae_options}" "" ${ARGN})
+    set(_cae_options INCLUDE_DIR)
+    set(_cae_lists INCLUDE_DIRS)
+    cmake_parse_arguments(_cae "" "${_cae_options}" "${_cae_lists}" ${ARGN})
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
     # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
@@ -44,7 +49,8 @@ endfunction()
 #
 #    For additional optional parameters related to the specific language
 #    used, see the documentation for `cmaize_add_<LANGUAGE>_executable()`,
-#    where `<LANGUAGE>` is the language being used.
+#    where `<LANGUAGE>` is the language being used. Supported languages
+#    are listed in the ``CMAIZE_SUPPORTED_LANGUAGES`` variable.
 #
 # :param _cae_tgt_name: Name of the target to be created.
 # :type _cae_tgt_name: desc
