@@ -19,7 +19,7 @@ cpp_class(BuildTarget Target)
     #
     # Files needed to compile or import.
     #]]
-    cpp_attr(BuildTarget include_files)
+    cpp_attr(BuildTarget includes)
 
     #[[[
     # :type: ProjectSpecification
@@ -28,19 +28,26 @@ cpp_class(BuildTarget Target)
     #]]
     cpp_attr(BuildTarget project_specification)
 
-    #[[[
-    # :type: List[BuildTarget]
-    #
-    # Dependencies that need to be built.
-    #]]
-    cpp_attr(BuildTarget project_dependencies)
+    # #[[[
+    # # :type: List[BuildTarget]
+    # #
+    # # Dependencies that need to be built.
+    # #]]
+    # cpp_attr(BuildTarget project_dependencies)
+
+    # #[[[
+    # # :type: List[InstalledTarget]
+    # #
+    # # Dependencies that are already installed.
+    # #]]
+    # cpp_attr(BuildTarget system_dependencies)
 
     #[[[
-    # :type: List[InstalledTarget]
+    # :type List[Target]
     #
-    # Dependencies that are already installed.
+    # Targets that are dependencies.
     #]]
-    cpp_attr(BuildTarget system_dependencies)
+    cpp_attr(BuildTarget depends)
 
     #[[[
     # Virtual member function for building the target.

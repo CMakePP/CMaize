@@ -150,18 +150,24 @@ cpp_class(Target)
     #
     # :param self: Target object
     # :type self: Target
-    # :param property_name: Name of the property to set.
-    # :type property_name: str
-    # :param property_value: Value of the property.
-    # :type property_value: desc
+    # :param _sp_property_name: Name of the property to set.
+    # :type _sp_property_name: desc
+    # :param args: Values of the property. This uses all additional
+    #              arguments provided to the function as the value
+    #              for the property.
+    #              TODO: Verify how to document this parameter properly
+    # :type args: args
     #]]
-    cpp_member(set_property Target str desc)
-    function("${set_property}" self property_name property_value)
+    cpp_member(set_property Target desc args)
+    function("${set_property}" self _sp_property_name)
 
         # Package the property into a map
-        cpp_map(CTOR prop_map "${property_name}" "${property_value}")
+        cpp_map(CTOR _sp_prop_map)
 
-        Target(set_properties "${self}" "${prop_map}")
+        # TODO: This may hang or throw if no property value is given (ARGN)
+        cpp_map(SET "${_sp_prop_map}" "${_sp_property_name}" "${ARGN}")
+
+        Target(set_properties "${self}" "${_sp_prop_map}")
 
     endfunction()
 
@@ -177,8 +183,8 @@ cpp_class(Target)
     #
     # :param self: Target object
     # :type self: Target
-    # :param properties: Property names and values.
-    # :type properties: cpp_map
+    # :param _sp_properties: Property names and values.
+    # :type _sp_properties: cpp_map
     #
     # **Example Usage**
     #
@@ -204,15 +210,19 @@ cpp_class(Target)
     #    Target(set_properties "${property_map}")
     #]]
     cpp_member(set_properties Target map)
-    function("${set_properties}" self properties)
+    function("${set_properties}" self _sp_properties)
 
-        Target(target "${self}" my_name)
+        Target(target "${self}" _sp_tgt_name)
 
-        cpp_map(KEYS "${properties}" keys)
+        cpp_map(KEYS "${_sp_properties}" _sp_keys)
 
-        foreach(key ${keys})
-            cpp_map(GET "${properties}" value "${key}")
-            set_target_properties("${my_name}" PROPERTIES "${key}" "${value}")
+        foreach(_sp_key ${_sp_keys})
+            cpp_map(GET "${_sp_properties}" _sp_value "${_sp_key}")
+            set_target_properties(
+                "${_sp_tgt_name}"
+                PROPERTIES
+                    "${_sp_key}" "${_sp_value}"
+            )
         endforeach()
 
     endfunction()
