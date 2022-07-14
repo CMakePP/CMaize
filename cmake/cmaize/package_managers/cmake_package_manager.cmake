@@ -1,6 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/target)
+include(cmaize/project_specification/project_specification)
 
 #[[[
 # CMake package manager going through ``find_package`` and ``FetchContent``.
@@ -10,7 +11,8 @@ cpp_class(CMakePackageManager PackageManager)
     #[[[
     # :type: List[path]
     #
-    # Search paths for ``find_package``. It is limited to only these paths.
+    # Search paths for ``find_package``. Default paths are used if this
+    # is empty.
     #]]
     cpp_attr(CMakePackageManager search_paths)
 
@@ -26,17 +28,11 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_member(add_paths CMakePackageManager args)
     function("${add_paths}" self)
 
-        message("_ap_paths: ${ARGN}")
-
         CMakePackageManager(GET "${self}" _ap_search_paths search_paths)
 
         foreach(_ap_path_i ${ARGN})
-            message("_ap_path_i: ${_ap_path_i}")
-            message("_ap_search_paths: ${_ap_search_paths}")
 
             list(FIND _ap_search_paths "${_ap_path_i}" found_result)
-
-            message("found_result: ${found_result}")
 
             # Only add the new path to the search path list if it does not
             # already exist in the search path
@@ -45,27 +41,75 @@ cpp_class(CMakePackageManager PackageManager)
             endif()
         endforeach()
 
-        message("Final _ap_search_paths: ${_ap_search_paths}")
         CMakePackageManager(SET "${self}" search_paths "${_ap_search_paths}")
 
     endfunction()
 
     #[[[
     # Virtual member to check if the package exists in the package manager.
+    #
+    # :param self: CMakePackageManager object
+    # :type self: CMakePackageManager
+    # :param _hp_result: Whether the package was found (TRUE) or not (FALSE)
+    # :type _hp_result: bool*
+    # :param _hp_project_specs: Specifications for the package to build.
+    # :type _hp_project_specs: ProjectSpecification
     #]]
-    cpp_member(has_package PackageManager bool ProjectSpecification)
-    cpp_virtual_member(has_package)
+    cpp_member(has_package CMakePackageManager desc ProjectSpecification)
+    function("${has_package}" self _hp_result _hp_project_specs)
+
+        ProjectSpecification(GET "${_hp_project_specs}" _hp_pkg_name name)
+        ProjectSpecification(GET "${_hp_project_specs}" _hp_pkg_version version)
+
+        CMakePackageManager(GET "${self}" _hp_search_paths search_paths)
+        list(LENGTH _hp_search_paths _hp_search_paths_n)
+
+        # Build the argument list for ``find_package()``
+        list(APPEND _hp_arg_list "${_hp_pkg_name}")
+        if(_hp_pkg_version)
+            list(APPEND _hp_arg_list "${_hp_pkg_version}")
+            list(APPEND _hp_arg_list "EXACT")
+        endif()
+        if(_hp_search_paths_n GREATER 0)
+            list(APPEND _hp_arg_list "PATHS" "${_hp_search_paths}")
+            # Disables the default paths so there are no surprises
+            list(APPEND _hp_arg_list "NO_DEFAULT_PATH")
+        endif()
+
+        # Join the list with spaces so separate arguments are parsed properly
+        list(JOIN _hp_arg_list " " _hp_arg_list)
+
+        # Effectively ``find_package("${_hp_arg_list}")``
+        cmake_language(EVAL CODE "find_package(${_hp_arg_list})")
+
+        # The bool result can be based on <PackageName>_FOUND result from
+        # ``find_package``
+        set("${_hp_result}" "${${_hp_pkg_name}_FOUND}")
+        cpp_return("${_hp_result}")
+
+    endfunction()
 
     #[[[
     # Virtual member function to get the package using the package manager.
     #]]
-    cpp_member(get_package PackageManager InstalledTarget ProjectSpecification)
-    cpp_virtual_member(get_package)
+    cpp_member(get_package CMakePackageManager InstalledTarget ProjectSpecification)
+    function("${get_package}" self _gp_result_target _gp_proj_specs)
+
+        CMakePackageManager(has_package _gp_has_package "${_gp_proj_specs}")
+
+        # No package, exit early
+        if (NOT _gp_has_package)
+            set("${gp_result_target}" "")
+            cpp_return("${gp_result_target}")
+        endif()
+
+        # TODO: Handle when the package actually exists...
+    endfunction()
 
     #[[[
     # Virtual member to install a package.
     #]]
-    cpp_member(install_package PackageManager Target)
+    cpp_member(install_package CMakePackageManager Target)
     cpp_virtual_member(install_package)
 
 cpp_end_class()
