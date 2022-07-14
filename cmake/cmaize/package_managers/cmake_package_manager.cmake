@@ -15,30 +15,38 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_attr(CMakePackageManager search_paths)
 
     #[[[
-    # Adds a new search path for the package manager.
+    # Adds new search paths for the package manager.
     #
     # These paths are stored in the ``search_paths`` attribute. Duplicate
     # paths will be ignored.
     #
     # :param _ap_paths: Paths to add to the search path.
-    # :type _ap_paths: List[path]
+    # :type _ap_paths: path or List[path]
     #]]
-    cpp_member(add_package CMakePackageManager list)
-    function("${add_package}" self _ap_paths)
+    cpp_member(add_paths CMakePackageManager str)
+    function("${add_paths}" self _ap_paths)
+
+        message("_ap_paths: ${_ap_paths}")
 
         CMakePackageManager(GET "${self}" _ap_search_paths search_paths)
 
-        foreach(_ap_path ${_ap_paths})
-            list(FIND _ap_search_paths "${_ap_path}" found_result)
+        foreach(_ap_path_i ${_ap_paths})
+            message("_ap_path_i: ${_ap_path_i}")
+            message("_ap_search_paths: ${_ap_search_paths}")
+
+            list(FIND _ap_search_paths "${_ap_path_i}" found_result)
+
+            message("found_result: ${found_result}")
 
             # Only add the new path to the search path list if it does not
             # already exist in the search path
-            if (NOT found_result EQUAL -1)
-                list(APPEND "${self}" _ap_search_paths "${_ap_path}")
+            if (found_result EQUAL -1)
+                list(APPEND _ap_search_paths "${_ap_path_i}")
             endif()
         endforeach()
 
-        CMakePackageManager(SET "${self}" search_paths _ap_search_paths)
+        message("Final _ap_search_paths: ${_ap_search_paths}")
+        CMakePackageManager(SET "${self}" search_paths "${_ap_search_paths}")
 
     endfunction()
 

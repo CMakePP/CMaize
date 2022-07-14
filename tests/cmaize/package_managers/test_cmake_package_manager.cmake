@@ -12,9 +12,9 @@ function("${test_cmake_package_manager}")
 
         set(corr "/some/path")
 
-        CMakePackageManager(pm_obj)
+        CMakePackageManager(CTOR pm_obj)
 
-        CMakePackageManager(add_path "${pm_obj}" "/some/path")
+        CMakePackageManager(add_paths "${pm_obj}" "/some/path")
 
         CMakePackageManager(GET "${pm_obj}" _search_paths search_paths)
 
