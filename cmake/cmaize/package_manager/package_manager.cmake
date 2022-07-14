@@ -3,7 +3,7 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/target)
 
 #[[[
-# 
+# Base class for the PackageManager class hierarchy.
 #]]
 cpp_class(PackageManager)
 
