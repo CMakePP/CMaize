@@ -23,14 +23,14 @@ cpp_class(CMakePackageManager PackageManager)
     # :param _ap_paths: Paths to add to the search path.
     # :type _ap_paths: path or List[path]
     #]]
-    cpp_member(add_paths CMakePackageManager str)
-    function("${add_paths}" self _ap_paths)
+    cpp_member(add_paths CMakePackageManager args)
+    function("${add_paths}" self)
 
-        message("_ap_paths: ${_ap_paths}")
+        message("_ap_paths: ${ARGN}")
 
         CMakePackageManager(GET "${self}" _ap_search_paths search_paths)
 
-        foreach(_ap_path_i ${_ap_paths})
+        foreach(_ap_path_i ${ARGN})
             message("_ap_path_i: ${_ap_path_i}")
             message("_ap_search_paths: ${_ap_search_paths}")
 
