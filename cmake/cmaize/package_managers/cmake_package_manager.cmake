@@ -22,8 +22,8 @@ cpp_class(CMakePackageManager PackageManager)
     # These paths are stored in the ``search_paths`` attribute. Duplicate
     # paths will be ignored.
     #
-    # :param _ap_paths: Paths to add to the search path.
-    # :type _ap_paths: path or List[path]
+    # :param args: Paths to add to the search path.
+    # :type args: path or List[path]
     #]]
     cpp_member(add_paths CMakePackageManager args)
     function("${add_paths}" self)
@@ -110,6 +110,50 @@ cpp_class(CMakePackageManager PackageManager)
     # Virtual member to install a package.
     #]]
     cpp_member(install_package CMakePackageManager Target)
-    cpp_virtual_member(install_package)
+    function("${install_package}" self _ip_target)
+
+        Target(target tgt_name)
+
+        # Generate <target>Config.cmake
+
+        # install(
+        #     DIRECTORY ...
+        #     DESTINATION ...
+        #     USE_SOURCE_PERMISSIONS
+        # )
+        install(
+            TARGETS "${tgt_name}"
+            # EXPORT YourLibraryTargets
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+        )
+        # install(
+        #     EXPORT YourLibraryTargets 
+        #     FILE YourLibraryTargets.cmake
+        #     DESTINATION "${CMAKE_INSTALL_DATADIR}/YourLibrary/cmake"
+        #     NAMESPACE YourLibrary::
+        # )
+
+    endfunction()
+
+    # NOTE: https://www.f-ax.de/dev/2020/10/07/cmake-config-package.html
+    cpp_member(_generate_config CMakePackageManager Target)
+    function("${_generate_config}" self _gc_target)
+
+        set(
+            file_contents 
+            "@PACKAGE_INIT@\n\n"
+            "include(CMakeFindDependencyMacro)\n"
+        )
+        
+        # find_dependency(Threads)
+        
+        # include("${CMAKE_CURRENT_LIST_DIR}/YourLibraryTargets.cmake")
+        
+        # check_required_components(Spix)")
+
+
+    endfunction()
 
 cpp_end_class()
