@@ -20,14 +20,12 @@ function("${test_project}")
             CMaizeProject(CTOR proj_obj "${proj_name}")
 
             CMaizeProject(GET "${proj_obj}" result_name name)
-            CMaizeProject(GET "${proj_obj}" result_languages languages)
             CMaizeProject(GET "${proj_obj}" specs specification)
+            ProjectSpecification(GET "${specs}" result_version version)
 
-            # project("${proj_name}")
-            # message("Project name: ${PROJECT_NAME}")
-            message("Source dir: ${${proj_name}_SOURCE_DIR}")
+
             ct_assert_equal(result_name "${proj_name}")
-            ct_assert_equal(result_languages "${${proj_name}_VERSION}")
+            ct_assert_equal(result_version "${${proj_name}_VERSION}")
             
             # Test the project specification details
             ProjectSpecification(GET "${specs}" spec_name name)

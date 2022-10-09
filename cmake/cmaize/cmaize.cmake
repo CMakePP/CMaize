@@ -12,7 +12,7 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 include(cmaize/globals)
-include(cmaize/project_specification/project_specification)
+include(cmaize/project/projects)
 include(cmaize/targets/targets)
 include(cmaize/toolchain/toolchain)
 include(cmaize/user_api/user_api)

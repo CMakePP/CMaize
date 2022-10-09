@@ -16,9 +16,9 @@ macro(cmaize_project _cp_name)
     # cpp_unique_id(uid)
     # set(_cp_name "${cp_name}_${uid}")
 
-    CMaizeProject(CTOR _cp_project _cp_name ${ARGN})
+    CMaizeProject(CTOR _cp_project "${_cp_name}" ${ARGN})
 
     cpp_set_global(CMAIZE_PROJECT_NAME "${_cp_name}")
-    cpp_set_global("${_cp_name}_PROJECT_OBJECT")
+    cpp_set_global("${_cp_name}_PROJECT_OBJECT" "${_cp_project}")
 
 endmacro()

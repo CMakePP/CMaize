@@ -57,7 +57,7 @@ cpp_class(CMaizeProject)
     # :rtype: ProjectSpecification
     #]]
     cpp_constructor(CTOR CMaizeProject desc args)
-    macro("${CTOR}" self _ctor_name)
+    function("${CTOR}" self _ctor_name)
 
         set(_ctor_lists LANGUAGES)
         cmake_parse_arguments(_ctor "" "" "${_ctor_lists}" ${ARGN})
@@ -69,34 +69,45 @@ cpp_class(CMaizeProject)
         # Create a vanilla CMake project, passing in all potential keyword
         # arguments as well
         project("${_ctor_name}" ${ARGN})
-        message("Project created: ${PROJECT_NAME}")
 
         # Create a project specification that defaults to the values set
         # in the above ``project()`` call
         ProjectSpecification(CTOR proj_spec)
         CMaizeProject(SET "${self}" specification "${proj_spec}")
 
-    endmacro()
+        # CMaizeProject(_take_over "${self}")
+
+    endfunction()
 
     #[[[
-    # Set the project version variable and splits the version into 
-    # major, minor, patch, and tweak components.
+    # Since the creation of a project through CMaizeProject instantiation
+    # can never be a literal, direct call in the top-level CMakeLists.txt
+    # file, the created project needs to be manually set to the top-level
+    # project.
     #
     # :param self: ``CMaizeProject`` object.
     # :type self: CMaizeProject
-    # :param project_version: Full project version string.
-    # :type project_version: str
     #]]
-    cpp_member(set_version CMaizeProject str)
-    function("${set_version}" self project_version)
+    cpp_member(_take_over CMaizeProject)
+    function("${_take_over}" self)
 
-        cmaize_split_version(major minor patch tweak "${project_version}")
+        CMaizeProject(GET "${self}" specs specification)
+        ProjectSpecification(GET "${specs}" _to_name name)
+        ProjectSpecification(GET "${specs}" _to_version version)
 
-        ProjectSpecification(SET "${self}" version "${project_version}")
-        ProjectSpecification(SET "${self}" major_version "${major}")
-        ProjectSpecification(SET "${self}" minor_version "${minor}")
-        ProjectSpecification(SET "${self}" patch_version "${patch}")
-        ProjectSpecification(SET "${self}" tweak_version "${tweak}")
+        # Make note of the current top-level project name
+        set(tmp_top_proj "${CMAKE_PROJECT_NAME}")
+
+        set(CMAKE_PROJECT_NAME "${_ctor_name}")
+        set(CMAKE_PROJECT_VERSION "${${_ctor_name}_VERSION}")
+        set(CMAKE_PROJECT_DESCRIPTION "${${_ctor_name}_DESCRIPTION}")
+        set(CMAKE_PROJECT_HOMEPAGE_URL "${${_ctor_name}_HOMEPAGE_URL}")
+        set(PROJECT_SOURCE_DIR "${${tmp_top_proj}_SOURCE_DIR}")
+        set(${_ctor_name}_SOURCE_DIR "${${tmp_top_proj}_SOURCE_DIR}")
+        set(PROJECT_BINARY_DIR "${${tmp_top_proj}_BINARY_DIR}")
+        set(${_ctor_name}_BINARY_DIR "${${tmp_top_proj}_BINARY_DIR}")
+        set(PROJECT_IS_TOP_LEVEL "${${tmp_top_proj}_IS_TOP_LEVEL}")
+        set(${_ctor_name}_IS_TOP_LEVEL "${${tmp_top_proj}_IS_TOP_LEVEL}")
 
     endfunction()
 
