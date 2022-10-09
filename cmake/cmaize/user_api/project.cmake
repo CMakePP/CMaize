@@ -12,15 +12,13 @@ include(cmaize/project/project)
 #]]
 macro(cmaize_project _cp_name)
 
-    set(_cp_options VERSION)
-    set(_cp_lists LANGUAGES)
-    cmake_parse_arguments(_cp "" "${_cal_options}" "${_cp_lists}" ${ARGN})
+    # TODO: Potentially append or prepend a uid to the project name
+    # cpp_unique_id(uid)
+    # set(_cp_name "${cp_name}_${uid}")
 
-    CMaizeProject(CTOR
-        _cp_project
-        _cp_VERSION
-        _cp_LANGUAGES
-        _cp_UNPARSED_ARGUMENTS
-    )
+    CMaizeProject(CTOR _cp_project _cp_name ${ARGN})
+
+    cpp_set_global(CMAIZE_PROJECT_NAME "${_cp_name}")
+    cpp_set_global("${_cp_name}_PROJECT_OBJECT")
 
 endmacro()

@@ -5,7 +5,7 @@ include(cmake_test/cmake_test)
 #]]
 ct_add_test(NAME "test_project_specification")
 function("${test_project_specification}")
-    include(cmaize/project_specification/project_specification)
+    include(cmaize/project/project_specification)
 
     #[[[
     # Test that the constructor is working with different arguments.

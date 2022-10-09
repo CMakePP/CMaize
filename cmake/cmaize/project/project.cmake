@@ -10,6 +10,13 @@ include(cmaize/utilities/utilities)
 cpp_class(CMaizeProject)
     
     #[[[
+    # :type: desc
+    #
+    # Name of the project.
+    #]]
+    cpp_attr(CMaizeProject name)
+
+    #[[[
     # :type: ProjectSpecification
     #
     # Details about the project.
@@ -17,7 +24,7 @@ cpp_class(CMaizeProject)
     cpp_attr(CMaizeProject specification)
 
     #[[[
-    # :type: list[str]
+    # :type: list[desc]
     #
     # Languages used in the project.
     #]]
@@ -50,22 +57,26 @@ cpp_class(CMaizeProject)
     # :rtype: ProjectSpecification
     #]]
     cpp_constructor(CTOR CMaizeProject desc args)
-    function("${CTOR}" self name)
+    macro("${CTOR}" self _ctor_name)
 
-        set(_cp_lists LANGUAGES)
-        cmake_parse_arguments(_cp "" "" "${_cp_lists}" ${ARGN})
+        set(_ctor_lists LANGUAGES)
+        cmake_parse_arguments(_ctor "" "" "${_ctor_lists}" ${ARGN})
 
-        CMaizeProject(SET "${self}" languages "${_cp_languages}")
+        CMaizeProject(SET "${self}" name "${_ctor_name}")
+
+        CMaizeProject(SET "${self}" languages "${_ctor_languages}")
 
         # Create a vanilla CMake project, passing in all potential keyword
         # arguments as well
-        project(name ${ARGN})
+        project("${_ctor_name}" ${ARGN})
+        message("Project created: ${PROJECT_NAME}")
 
         # Create a project specification that defaults to the values set
         # in the above ``project()`` call
         ProjectSpecification(CTOR proj_spec)
+        CMaizeProject(SET "${self}" specification "${proj_spec}")
 
-    endfunction()
+    endmacro()
 
     #[[[
     # Set the project version variable and splits the version into 
