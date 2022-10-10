@@ -82,7 +82,7 @@ cpp_class(CXXTarget BuildTarget)
         # making CMAKE_CXX_STANDARD, at the time of including, an empty
         # string.
         CXXTarget(GET "${self}" _mt_cxx_std cxx_standard)
-        if(NOT _mt_cxx_std)
+        if("${_mt_cxx_std}" STREQUAL "")
             CXXTarget(SET "${self}" cxx_standard "${CMAKE_CXX_STANDARD}")
         endif()
 
