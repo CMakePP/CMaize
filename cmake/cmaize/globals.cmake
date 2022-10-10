@@ -20,7 +20,7 @@ set(
 # Current CMaize project.
 #]]
 set(
-    CMAIZE_PROJECT_NAME
+    CMAIZE_PROJECT
     ""
 )
 
