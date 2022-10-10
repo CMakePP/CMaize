@@ -79,6 +79,16 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    cpp_member(add_target CMaizeProject BuildTarget)
+    function("${add_target}" self target)
+
+        CMaizeProject(GET "${self}" _at_targets targets)
+        list(APPEND _at_targets "${target}")
+        list(REMOVE_DUPLICATES _at_targets)
+        CMaizeProject(SET "${self}" targets "${_at_targets}")
+
+    endfunction()
+
     #[[[
     # Since the creation of a project through CMaizeProject instantiation
     # can never be a literal, direct call in the top-level CMakeLists.txt
