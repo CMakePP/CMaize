@@ -1,14 +1,6 @@
 include_guard()
 
 #[[[
-# Languages supported by CMaize.
-#]]
-set(
-    CMAIZE_SUPPORTED_LANGUAGES
-    CXX
-)
-
-#[[[
 # File extensions for CXX header files. This is the counterpart to
 # ``CMAKE_CXX_SOURCE_FILE_EXTENSIONS``.
 #]]
@@ -22,4 +14,20 @@ set(
     hxx
     HH
     hh
+)
+
+#[[[
+# Current CMaize project.
+#]]
+set(
+    CMAIZE_PROJECT_NAME
+    ""
+)
+
+#[[[
+# Languages supported by CMaize.
+#]]
+set(
+    CMAIZE_SUPPORTED_LANGUAGES
+    CXX
 )
