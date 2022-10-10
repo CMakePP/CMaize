@@ -76,6 +76,16 @@ cpp_class(CXXTarget BuildTarget)
             endif()
         endforeach()
 
+        # Default the CXX standard to CMAKE_CXX_STANDARD. This cannot be
+        # done by defaulting the attribute during the ``cpp_attr`` call
+        # since CMaize will be included before a project has been defined,
+        # making CMAKE_CXX_STANDARD, at the time of including, an empty
+        # string.
+        CXXTarget(GET "${self}" _mt_cxx_std cxx_standard)
+        if("${_mt_cxx_std}" STREQUAL "")
+            CXXTarget(SET "${self}" cxx_standard "${CMAKE_CXX_STANDARD}")
+        endif()
+
         # Make all of the calls to create the CMake target and set its
         # properties
         CXXTarget(_create_target "${self}")
