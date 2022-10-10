@@ -111,35 +111,4 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
-    #[[[
-    # Initialize project attributes with default values.
-    #
-    # :param self: ``CMaizeProject`` object to initialize.
-    # :type self: CMaizeProject
-    #]]
-    cpp_member(__initialize CMaizeProject)
-    function("${__initialize}" self)
-
-        # Get the name from the most recent ``project()`` call
-        ProjectSpecification(SET "${self}" name "${PROJECT_NAME}")
-        
-        # Get the version from the most recent ``project()`` call
-        ProjectSpecification(set_version "${self}" "${PROJECT_VERSION}")
-
-        ProjectSpecification(SET "${self}" build_type "${CMAKE_BUILD_TYPE}")
-
-        # Initialize toolchain using CMAKE_TOOLCHAIN_FILE variable
-        Toolchain(CTOR my_toolchain "${CMAKE_TOOLCHAIN_FILE}")
-        ProjectSpecification(SET "${self}" toolchain "${my_toolchain}")
-
-        # Set the configure_options map to an empty map
-        cpp_map(CTOR tmp_configure_options)
-        Toolchain(SET "${self}" configure_options "${tmp_configure_options}")
-
-        # Set the compile_options map to an empty map
-        cpp_map(CTOR tmp_compile_options)
-        Toolchain(SET "${self}" compile_options "${tmp_compile_options}")
-
-    endfunction()
-
 cpp_end_class()
