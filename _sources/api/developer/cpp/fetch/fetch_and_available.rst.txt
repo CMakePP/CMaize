@@ -1,15 +1,15 @@
 
-###################################
-cpp.fetch/fetch_and_available.cmake
-###################################
+#############################
+cpp.fetch/fetch_and_available
+#############################
 
-.. module:: cpp.fetch/fetch_and_available.cmake
+.. module:: cpp.fetch/fetch_and_available
 
 
 .. function:: cpp_fetch_and_available(_faa_name)
 
 
-   .. warning:: This is a macro, and so does not introduce a new scope.
+   .. note:: This is a macro, and so does not introduce a new scope.
 
    Fetches and makes a dependency available to the main project
    

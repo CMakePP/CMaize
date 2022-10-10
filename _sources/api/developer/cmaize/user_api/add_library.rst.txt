@@ -1,0 +1,63 @@
+
+###########################
+cmaize.user_api/add_library
+###########################
+
+.. module:: cmaize.user_api/add_library
+
+
+.. function:: cpp_add_library(_cal_tgt_name)
+
+   User function to build a library target.
+   
+   .. warning::
+   
+      ``cpp_add_library()`` is depricated. ``cmaize_add_library()`` should
+      be used to create libraries.
+   
+   :param _cal_tgt_name: Name of the target to be created.
+   :type _cal_tgt_name: desc
+   :param INCLUDE_DIR: Directory containing files to include.
+   :type INCLUDE_DIR: path, optional
+   :param INCLUDE_DIRS: Directories containing files to include. If this
+                        parameter is given a value, the value of ``INCLUDE_DIR``
+                        will be ignored.
+   :type INCLUDE_DIRS: List[path], optional
+   
+
+
+.. function:: cmaize_add_library(_cal_tgt_name)
+
+   User function to build a library target.
+   
+   .. note::
+   
+      For additional optional parameters related to the specific language
+      used, see the documentation for `cmaize_add_<LANGUAGE>_library()`,
+      where `<LANGUAGE>` is the language being used. Supported languages
+      are listed in the ``CMAIZE_SUPPORTED_LANGUAGES`` variable.
+   
+   :param _cal_tgt_name: Name of the target to be created.
+   :type _cal_tgt_name: desc
+   :param LANGUAGE: Build language for the target, defaults to "CXX"
+   :type LANGUAGE: desc, optional
+   
+
+
+.. function:: cmaize_add_cxx_library(_cacl_tgt_name)
+
+   User function to build a CXX library target.
+   
+   .. note::
+      
+      See ``CXXTarget(make_target`` documentation for additional optional
+      arguments.
+   
+   :param _cal_tgt_name: Name of the target to be created.
+   :type _cal_tgt_name: desc
+   :param SOURCE_DIR: Directory containing source code.
+   :type SOURCE_DIR: path, optional
+   :param INCLUDE_DIRS: Directories containing files to include.
+   :type INCLUDE_DIRS: path, optional
+   
+

@@ -1,7 +1,7 @@
 
-#####################
-cpp.fetch/fetch.cmake
-#####################
+###############
+cpp.fetch/fetch
+###############
 
-.. module:: cpp.fetch/fetch.cmake
+.. module:: cpp.fetch/fetch
 

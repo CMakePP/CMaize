@@ -1,7 +1,12 @@
 
-###########################################
-cpp.user_api/find_or_build_dependency.cmake
-###########################################
+#####################################
+cpp.user_api/find_or_build_dependency
+#####################################
 
-.. module:: cpp.user_api/find_or_build_dependency.cmake
+.. module:: cpp.user_api/find_or_build_dependency
+
+
+.. function:: cpp_find_or_build_dependency(_fobd_name)
+
+   
 

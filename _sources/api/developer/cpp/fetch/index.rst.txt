@@ -6,6 +6,6 @@ cpp.fetch
 .. toctree:: 
    :maxdepth: 2
 
-   fetch_and_available
    fetch
+   fetch_and_available
 

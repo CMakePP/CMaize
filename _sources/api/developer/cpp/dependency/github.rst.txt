@@ -1,7 +1,43 @@
 
-###########################
-cpp.dependency/github.cmake
-###########################
+#####################
+cpp.dependency/github
+#####################
 
-.. module:: cpp.dependency/github.cmake
+.. module:: cpp.dependency/github
+
+
+.. py:class:: GitHubDependency
+
+   Bases: :class:`Dependency`
+   
+   
+   **Methods**
+
+   .. py:method:: "${build_dependency}"()
+
+      
+
+
+   .. py:method:: init([, ...])
+
+      
+
+   **Attributes**
+
+   .. py:attribute:: private
+      :value: FALSE
+
+      
+
+
+   .. py:attribute:: version
+      :value: master
+
+      
+
+
+   .. py:attribute:: url
+
+      
+
 

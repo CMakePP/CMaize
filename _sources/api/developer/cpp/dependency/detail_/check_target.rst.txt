@@ -1,9 +1,9 @@
 
-#########################################
-cpp.dependency/detail_/check_target.cmake
-#########################################
+###################################
+cpp.dependency/detail_/check_target
+###################################
 
-.. module:: cpp.dependency/detail_/check_target.cmake
+.. module:: cpp.dependency/detail_/check_target
 
 
 .. function:: _cpp_dependency_check_target(_dct_this _dct_type)

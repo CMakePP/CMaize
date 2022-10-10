@@ -1,7 +1,7 @@
 
-###################
-cmaize.cmaize.cmake
-###################
+#############
+cmaize.cmaize
+#############
 
-.. module:: cmaize.cmaize.cmake
+.. module:: cmaize.cmaize
 

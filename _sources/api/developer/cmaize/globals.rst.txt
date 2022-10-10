@@ -1,0 +1,28 @@
+
+##############
+cmaize.globals
+##############
+
+.. module:: cmaize.globals
+
+
+.. data:: CMAIZE_SUPPORTED_LANGUAGES
+
+   Languages supported by CMaize.
+   
+
+   :Default value: CXX
+
+   :type: str
+
+
+.. data:: CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
+
+   File extensions for CXX header files. This is the counterpart to
+   ``CMAKE_CXX_SOURCE_FILE_EXTENSIONS``.
+   
+
+   :Default value: H h HPP hpp HXX hxx HH hh
+
+   :type: list
+

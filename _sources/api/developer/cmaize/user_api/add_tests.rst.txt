@@ -1,0 +1,55 @@
+
+#########################
+cmaize.user_api/add_tests
+#########################
+
+.. module:: cmaize.user_api/add_tests
+
+
+.. function:: cpp_add_tests(_cat_test_name)
+
+
+   .. note:: This is a macro, and so does not introduce a new scope.
+
+   User macro to add a set of CTest tests.
+   
+   .. warning::
+   
+      ``cpp_add_tests()`` is depricated. ``cmaize_add_tests()`` should be
+      used to create new tests.
+   
+   :param _cat_test_name: Name for the test, test executable, and test command.
+   :type _cat_test_name: desc
+   :param INCLUDE_DIR: Directory containing files to include.
+   :type INCLUDE_DIR: path, optional
+   :param INCLUDE_DIRS: Directories containing files to include. If this
+                        parameter is given a value, the value of ``INCLUDE_DIR``
+                        will be ignored.
+   :type INCLUDE_DIRS: List[path], optional
+   
+
+
+.. function:: cmaize_add_tests(_cat_test_name)
+
+
+   .. note:: This is a macro, and so does not introduce a new scope.
+
+   User macro to add a set of CTest tests.
+   
+   .. note::
+   
+      For additional optional parameters related to the specific language
+      used, see the documentation for `cmaize_add_executable()`.
+   
+   :param _cat_test_name: Name for the test, test executable, and test command.
+   :type _cat_test_name: desc
+   
+
+
+.. function:: "${_cat_test_name}"(COMMAND)
+
+
+   .. warning:: This is a CTest test definition, do not call this manually. Use the "ctest" program to execute this test.
+
+   
+

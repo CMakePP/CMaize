@@ -1,9 +1,9 @@
 
-####################################
-cmaize.utilities/split_version.cmake
-####################################
+##############################
+cmaize.utilities/split_version
+##############################
 
-.. module:: cmaize.utilities/split_version.cmake
+.. module:: cmaize.utilities/split_version
 
 
 .. function:: cmaize_split_version(major minor patch tweak version)

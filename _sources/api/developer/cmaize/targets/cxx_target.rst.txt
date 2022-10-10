@@ -1,0 +1,143 @@
+
+#########################
+cmaize.targets/cxx_target
+#########################
+
+.. module:: cmaize.targets/cxx_target
+
+
+.. py:class:: CXXTarget
+
+   Bases: :class:`BuildTarget`
+   
+   Wraps a target which must be built as part of the build system.
+   
+   **Methods**
+
+   .. py:method:: make_target([, ...])
+
+      Create the target and configure its properties so it is ready to build.
+      
+      .. note::
+      
+         Implements ``BuildTarget(make_target``.
+      
+      :param self: CXXTarget object
+      :type self: CXXTarget
+      :param SOURCE_DIR: Directory containing source code.
+      :type SOURCE_DIR: path, optional
+      :param INCLUDE_DIRS: Directories containing files to include.
+      :type INCLUDE_DIRS: List[path], optional
+      :param SOURCES: Source code files.
+      :type SOURCES: List[path], optional
+      :param INCLUDES: Include files.
+      :type INCLUDES: List[path], optional
+      :param CXX_STANDARD: CXX standard number. For example, to set the
+                           standard to ``cxx_std_98``, only provide ``98``.
+      :type CXX_STANDARD: int, optional
+      :param DEPENDS: Dependency target names.
+      :type DEPENDS: List[desc], optional
+      
+
+
+   .. py:method:: _access_level(_al_access_level)
+
+      Abstracts out CMake's access level concept (public, interface, or 
+      private).
+      
+      :param self: CXXTarget object
+      :type self: CXXTarget
+      :param _al_access_level: Returned access level.
+      :type _al_access_level: str*
+      
+      :returns: CMake access level of the target.
+      :rtype: str
+      
+
+
+   .. py:method:: _set_compile_features()
+
+      Sets the CXX standard and other compiler features on the CMake target.
+      
+      :param self: CXXTarget object
+      :type self: CXXTarget
+      
+
+
+   .. py:method:: _set_include_directories()
+
+      Set the target include directories. This adds the include directories
+      as PUBLIC and source directories as PRIVATE. This allows for both
+      public and private headers to be found.
+      
+      .. note::
+      
+         Implements ``BuildTarget(_set_include_directories``.
+      
+      :param self: CXXTarget object
+      :type self: CXXTarget
+      
+
+
+   .. py:method:: _set_link_libraries()
+
+      Set the link libraries for the target. Uses the ``depends`` list
+      to determine what targets to link.
+      
+      :param self: CXXTarget object
+      :type self: CXXTarget
+      
+
+
+   .. py:method:: _set_public_headers()
+
+      Set the public headers on the target. It is set to all include files
+      on this object.
+      
+      :param self: CXXTarget object
+      :type self: CXXTarget
+      
+
+
+   .. py:method:: _set_sources()
+
+      Set the sources for the target. Sources are set with the PRIVATE
+      accessor so they are not propogated.
+      
+      :param self: CXXTarget object
+      :type self: CXXTarget
+      
+
+   **Attributes**
+
+   .. py:attribute:: cxx_standard
+      :value: "${CMAKE_CXX_STANDARD}"
+
+      :type: int
+      
+      CXX standard to use. For a given C++ standard designation, denoted as
+      ``cxx_std_xx`` or "C++ xx", only provide the number, "xx" of the 
+      standard.
+      
+      Following the precident set forth by CMake for the ``CXX_STANDARD``
+      target property, this property is initialized to ``CMAKE_CXX_STANDARD``
+      if it is set when the target is created.
+      
+
+
+   .. py:attribute:: source_dir
+
+      :type: path
+      
+      Directory containing source code files.
+      
+
+
+   .. py:attribute:: sources
+
+      :type: List[path]
+      
+      Source files.
+      
+
+

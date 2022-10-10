@@ -1,0 +1,69 @@
+
+##############################
+cmaize.user_api/add_executable
+##############################
+
+.. module:: cmaize.user_api/add_executable
+
+
+.. function:: cpp_add_executable(_cae_tgt_name)
+
+   User function to build a executable target.
+   
+   .. warning::
+      
+      ``cpp_add_executable()`` is depricated. ``cmaize_add_executable()``
+      should be used to create executables.
+   
+   :param _cae_tgt_name: Name of the target to be created.
+   :type _cae_tgt_name: desc
+   :param INCLUDE_DIR: Directory containing files to include.
+   :type INCLUDE_DIR: path, optional
+   :param INCLUDE_DIRS: Directories containing files to include. If this
+                        parameter is given a value, the value of ``INCLUDE_DIR``
+                        will be ignored.
+   :type INCLUDE_DIRS: List[path], optional
+   
+
+
+.. function:: cmaize_add_executable(_cae_tgt_name)
+
+   User function to build a executable target.
+   
+   .. note::
+   
+      For additional optional parameters related to the specific language
+      used, see the documentation for `cmaize_add_<LANGUAGE>_executable()`,
+      where `<LANGUAGE>` is the language being used. Supported languages
+      are listed in the ``CMAIZE_SUPPORTED_LANGUAGES`` variable.
+   
+   :param _cae_tgt_name: Name of the target to be created.
+   :type _cae_tgt_name: desc
+   :param LANGUAGE: Build language for the target, defaults to "CXX"
+   :type LANGUAGE: desc, optional
+   
+
+
+.. function:: cmaize_add_cxx_executable(_cace_tgt_name)
+
+   User function to build a CXX executable target.
+   
+   .. note::
+      
+      See ``CXXTarget(make_target`` documentation for additional optional
+      arguments.
+   
+   :param _cace_tgt_name: Name of the target to be created.
+   :type _cace_tgt_name: desc
+   :param SOURCE_DIR: Directory containing source code.
+   :type SOURCE_DIR: path, optional
+   :param INCLUDE_DIRS: Directories containing files to include.
+   :type INCLUDE_DIRS: List[path], optional
+   :param SOURCE_EXTS: Source file extensions (exclude the dot), defaults
+                       to the value of ``CMAKE_CXX_SOURCE_FILE_EXTENSIONS``.
+   :type SOURCE_EXTS: List[desc], optional
+   :param INCLUDE_EXTS: Include file extensions (exclude the dot), defaults
+                        to the value of ``CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS``.
+   :type INCLUDE_EXTS: List[desc], optional
+   
+

@@ -7,7 +7,10 @@ cmaize
    :maxdepth: 2
 
    cmaize
+   globals
    project_specification/index.rst
-   utilities/index.rst
+   targets/index.rst
    toolchain/index.rst
+   user_api/index.rst
+   utilities/index.rst
 

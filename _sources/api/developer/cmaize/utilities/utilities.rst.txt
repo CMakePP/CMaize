@@ -1,7 +1,7 @@
 
-################################
-cmaize.utilities/utilities.cmake
-################################
+##########################
+cmaize.utilities/utilities
+##########################
 
-.. module:: cmaize.utilities/utilities.cmake
+.. module:: cmaize.utilities/utilities
 

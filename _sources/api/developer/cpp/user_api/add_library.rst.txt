@@ -1,7 +1,12 @@
 
-##############################
-cpp.user_api/add_library.cmake
-##############################
+########################
+cpp.user_api/add_library
+########################
 
-.. module:: cpp.user_api/add_library.cmake
+.. module:: cpp.user_api/add_library
+
+
+.. function:: cpp_add_library(_acl_name)
+
+   
 

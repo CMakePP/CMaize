@@ -1,0 +1,31 @@
+
+##########################
+cmaize.targets/cxx_library
+##########################
+
+.. module:: cmaize.targets/cxx_library
+
+
+.. py:class:: CXXLibrary
+
+   Bases: :class:`CXXTarget`
+   
+   
+   **Methods**
+
+   .. py:method:: _create_target()
+
+      Creates the library target with ``add_library()``.
+      
+      Creates a ``STATIC`` or ``SHARED`` library based on if the variable
+      ``BUILD_SHARED_LIBS`` is ``ON``.
+      
+      .. note::
+      
+         Overrides ``BuildTarget(_create_target``.
+      
+      :param self: CXXLibrary object
+      :type self: CXXLibrary
+      
+
+

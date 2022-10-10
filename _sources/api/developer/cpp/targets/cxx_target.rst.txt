@@ -1,7 +1,89 @@
 
-############################
-cpp.targets/cxx_target.cmake
-############################
+######################
+cpp.targets/cxx_target
+######################
 
-.. module:: cpp.targets/cxx_target.cmake
+.. module:: cpp.targets/cxx_target
+
+
+.. py:class:: CXXTarget
+
+   
+   **Methods**
+
+   .. py:method:: _access_level(_al_result)
+
+      
+
+      :param _al_result: 
+
+      :type _al_result: desc
+
+
+   .. py:method:: _create_target()
+
+      
+
+
+   .. py:method:: _set_include_dir()
+
+      
+
+
+   .. py:method:: _set_compile_features()
+
+      
+
+
+   .. py:method:: _set_public_headers()
+
+      
+
+
+   .. py:method:: _set_link_libraries()
+
+      
+
+
+   .. py:method:: make_target([, ...])
+
+      
+
+   **Attributes**
+
+   .. py:attribute:: cxx_standard
+      :value: 17
+
+      
+
+
+   .. py:attribute:: depends
+
+      
+
+
+   .. py:attribute:: include_dir
+
+      
+
+
+   .. py:attribute:: includes
+
+      
+
+
+   .. py:attribute:: name
+
+      
+
+
+   .. py:attribute:: source_dir
+
+      
+
+
+   .. py:attribute:: sources
+
+      
+
 

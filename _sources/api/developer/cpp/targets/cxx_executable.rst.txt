@@ -1,7 +1,20 @@
 
-################################
-cpp.targets/cxx_executable.cmake
-################################
+##########################
+cpp.targets/cxx_executable
+##########################
 
-.. module:: cpp.targets/cxx_executable.cmake
+.. module:: cpp.targets/cxx_executable
+
+
+.. py:class:: CXXExecutable
+
+   Bases: :class:`CXXTarget`
+   
+   
+   **Methods**
+
+   .. py:method:: _create_target()
+
+      
+
 

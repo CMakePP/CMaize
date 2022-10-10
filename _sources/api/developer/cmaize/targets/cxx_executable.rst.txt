@@ -1,0 +1,28 @@
+
+#############################
+cmaize.targets/cxx_executable
+#############################
+
+.. module:: cmaize.targets/cxx_executable
+
+
+.. py:class:: CXXExecutable
+
+   Bases: :class:`CXXTarget`
+   
+   
+   **Methods**
+
+   .. py:method:: _create_target()
+
+      Creates the executable target with ``add_executable()``.
+      
+      .. note::
+      
+         Overrides ``BuildTarget(_create_target``.
+      
+      :param self: CXXExecutable object
+      :type self: CXXExecutable
+      
+
+

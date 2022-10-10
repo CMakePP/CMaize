@@ -1,0 +1,12 @@
+
+###########################
+cmaize.utilities/glob_files
+###########################
+
+.. module:: cmaize.utilities/glob_files
+
+
+.. function:: _cmaize_glob_files(_cgf_return_files _cgf_dirs _cgf_file_exts)
+
+   
+

@@ -1,7 +1,30 @@
 
-#######################################
-cpp.targets/cxx_interface_library.cmake
-#######################################
+#################################
+cpp.targets/cxx_interface_library
+#################################
 
-.. module:: cpp.targets/cxx_interface_library.cmake
+.. module:: cpp.targets/cxx_interface_library
+
+
+.. py:class:: CXXInterfaceLibrary
+
+   Bases: :class:`CXXLibrary`
+   
+   
+   **Methods**
+
+   .. py:method:: _access_level(_al_result)
+
+      
+
+
+   .. py:method:: _create_target()
+
+      
+
+
+   .. py:method:: _set_public_headers()
+
+      
+
 

@@ -1,0 +1,77 @@
+
+###########################
+cmaize.targets/build_target
+###########################
+
+.. module:: cmaize.targets/build_target
+
+
+.. py:class:: BuildTarget
+
+   Bases: :class:`Target`
+   
+   Wraps a target which must be built as part of the build system.
+   
+   **Methods**
+
+   .. py:method:: make_target()
+
+      Virtual member function for building the target.
+      
+      :param self: BuildTarget object
+      :type self: BuildTarget
+      
+
+
+   .. py:method:: _create_target()
+
+      Virtual member function to wrap calls to add_library, add_executable,
+      add_custom_target, etc.
+      
+      :param self: BuildTarget object
+      :type self: BuildTarget
+      
+
+
+   .. py:method:: _set_include_directories()
+
+      Virtual member function to set the include directories for the target.
+      
+      :param self: BuildTarget object
+      :type self: BuildTarget
+      
+
+   **Attributes**
+
+   .. py:attribute:: include_dirs
+
+      :type: List[path]
+      
+      Paths needed to compile or import.
+      
+
+
+   .. py:attribute:: includes
+
+      :type: List[path]
+      
+      Files needed to compile or import.
+      
+
+
+   .. py:attribute:: project_specification
+
+      :type: ProjectSpecification
+      
+      The project specification for the current project.
+      
+
+
+   .. py:attribute:: depends
+
+      :type List[Target]
+      
+      Targets that are dependencies.
+      
+
+

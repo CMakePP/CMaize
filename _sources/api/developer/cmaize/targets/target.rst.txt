@@ -1,0 +1,171 @@
+
+#####################
+cmaize.targets/target
+#####################
+
+.. module:: cmaize.targets/target
+
+
+.. py:class:: Target
+
+   Base class for an entire hierarchy of build and install target classes.
+   
+   **Additional Constructors**
+
+   .. py:method:: CTOR(tgt_name)
+
+      Creates a ``Target`` object to manage a target of the given name.
+      
+      .. note::
+         
+         This does not create a corresponding CMake target,
+         so any call that should interact with a target will fail if the
+         target does not already exist. As a base class with no concrete
+         analog, ``Target`` really shouldn't be instantiated aside from
+         testing purposes. Instead, create a child with a concrete target
+         analog and instantiate that.
+      
+      :param self: Target object constructed.
+      :type self: Target
+      :param tgt_name: Name of the target. This should not duplicate any other
+                       target name already in scope.
+      :type tgt_name: str
+      :returns: ``self`` will be set to the newly constructed ``Target``
+                object.
+      :rtype: Target
+      
+
+
+   .. py:method:: CTOR(tgt_name)
+
+      Creates a ``Target`` object based on an existing CMake target.
+      
+      :param self: Target object constructed.
+      :type self: Target
+      :param tgt_name: Name of the existing target.
+      :type tgt_name: str
+      
+      :returns: ``self`` will be set to the newly constructed ``Target``
+                object.
+      :rtype: Target
+      
+
+   **Methods**
+
+   .. py:method:: target(return_target)
+
+      Get the CMake target name that the ``Target`` class represents.
+      
+      :param self: Target object
+      :type self: Target
+      :param return_target: Name of the CMake target.
+      :type return_target: str*
+      
+      :returns: Sets ``return_target`` to the name of the CMake target
+                represented by this class.
+      :rtype: str*
+      
+
+
+   .. py:method:: has_property(has_property, property_name)
+
+      Check if the target has the requested property.
+      
+      :param self: Target object
+      :type self: Target
+      :param has_property: Return variable for if the target has the property.
+      :type has_property: bool*
+      :param property_name: Name of the property to check for.
+      :type property_name: str
+      
+      :returns: Sets ``has_property`` according to if the target has the
+                requested property (True) or not (False).
+      :rtype: bool*
+      
+
+
+   .. py:method:: get_property(property_value, property_name)
+
+      Get the requested property for the ``Target``.
+      
+      :param self: Target object
+      :type self: Target
+      :param property_value: Return variable for the property value.
+      :type property_value: str*
+      :param property_name: Name of the property to check for.
+      :type property_name: str
+      
+      :returns: Sets ``property_value`` to the value of the property.
+      :rtype: str*
+      
+      :raises PropertyNotFound: Property does not exist in the target.
+      
+
+
+   .. py:method:: set_property(_sp_property_name[, ...])
+
+      Sets a single property to the given value, creating the property if it
+      does not exist.
+      
+      :param self: Target object
+      :type self: Target
+      :param _sp_property_name: Name of the property to set.
+      :type _sp_property_name: desc
+      :param args: Values of the property. This uses all additional
+                   arguments provided to the function as the value
+                   for the property.
+                   TODO: Verify how to document this parameter properly
+      :type args: args
+      
+
+
+   .. py:method:: set_properties(_sp_properties)
+
+      Sets the given properties to the given values.
+      
+      .. note::
+         
+         Member functions in CMakePPLang cannot be variadic, so it is not
+         possible to match the API for ``set_target_properties()``. However,
+         using a ``cpp_map`` is close, so it was used. See the example usage
+         below for a concise way of using this function.
+      
+      :param self: Target object
+      :type self: Target
+      :param _sp_properties: Property names and values.
+      :type _sp_properties: cpp_map
+      
+      **Example Usage**
+      
+      .. code-block:: cmake
+         
+         # Create a target so the property functions have something to act on
+         add_custom_target("example_target")
+      
+         # Create a Target object
+         Target(CTOR my_tgt "example_target")
+      
+         # Assign properties using the cpp_map constructor with the optional
+         # key-value pairs in the CTOR call
+         cpp_map(CTOR
+             property_map
+             <property_name_1> <property_value_1>
+             <property_name_2> <property_value_2>
+             <property_name_3> <property_value_3>
+             ...
+         )
+      
+         # Set the properties on the target with this function
+         Target(set_properties "${property_map}")
+      
+
+   **Attributes**
+
+   .. py:attribute:: _name
+
+      :type: str
+      
+      Name of the current target.
+      
+
+

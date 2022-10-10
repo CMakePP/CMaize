@@ -1,0 +1,60 @@
+
+####################################
+cmaize.targets/cxx_interface_library
+####################################
+
+.. module:: cmaize.targets/cxx_interface_library
+
+
+.. py:class:: CXXInterfaceLibrary
+
+   Bases: :class:`CXXLibrary`
+   
+   
+   **Methods**
+
+   .. py:method:: _access_level(_al_result)
+
+      Get the access level for the target.
+      
+      .. note::
+      
+         Implements ``CXXTarget(_access_level``.
+      
+      :param self: CXXInterfaceLibrary object
+      :type self: CXXInterfaceLibrary
+      :param _al_result: Return variable holding the access level result.
+      :type _al_result: str*
+      
+      :returns: Access level of the target.
+      :rtype: str
+      
+
+
+   .. py:method:: _create_target()
+
+      Creates the interface library target with ``add_library()``.
+      
+      .. note::
+      
+         Overrides ``BuildTarget(_create_target``.
+      
+      :param self: CXXInterfaceLibrary object
+      :type self: CXXInterfaceLibrary
+      
+
+
+   .. py:method:: _set_public_headers()
+
+      CMake doesn't let interface libraries set their public headers, so
+      this function is a no-op.
+      
+      .. note::
+      
+         Overrides ``CXXTarget(_set_public_headers``.
+      
+      :param self: CXXInterfaceLibrary object
+      :type self: CXXInterfaceLibrary
+      
+
+

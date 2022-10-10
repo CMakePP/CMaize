@@ -1,77 +1,39 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>ProjectSpecification Class &mdash; CMaize 1.0.0alpha documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Toolchain Class" href="toolchain.html" />
-    <link rel="prev" title="Class Design" href="index.html" /> 
+    <link rel="next" title="Target Class" href="target.html" />
+    <link rel="prev" title="InstalledTarget Class" href="installed_target.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../index.html" class="icon icon-home"> CMaize
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 1.0.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -79,19 +41,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started</a></li>
@@ -100,7 +51,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Design Notes</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">Class Design</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="build_target.html">BuildTarget Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cxx_target.html">CXX Build Target Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installed_target.html">InstalledTarget Class</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">ProjectSpecification Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="target.html">Target Class</a></li>
 <li class="toctree-l4"><a class="reference internal" href="toolchain.html">Toolchain Class</a></li>
 </ul>
 </li>
@@ -112,79 +67,35 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../dependencies/index.html">Declaring Dependencies</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">CMaize</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../index.html">Developing CMaize</a> &raquo;</li>
-        
           <li><a href="../index.html">Design Notes</a> &raquo;</li>
-        
           <li><a href="index.html">Class Design</a> &raquo;</li>
-        
       <li>ProjectSpecification Class</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../../../_sources/developer/design_notes/classes/project_specification.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="projectspecification-class">
-<h1>ProjectSpecification Class<a class="headerlink" href="#projectspecification-class" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="projectspecification-class">
+<h1>ProjectSpecification Class<a class="headerlink" href="#projectspecification-class" title="Permalink to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">ProjectSpecification</span></code> class is envisioned as holding all of the
 details about how to build a project (“project” being a catchall for a
 dependency or the project that the CMaize build system is being written
@@ -192,19 +103,19 @@ for). This includes things like where the source code lives, the version
 to build, and specific options for configuring and compiling.
 <code class="docutils literal notranslate"><span class="pre">ProjectSpecification</span></code> instances will ultimately be used to request
 packages from the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> and inform <code class="docutils literal notranslate"><span class="pre">Target</span></code> classes.</p>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="creating-a-projectspecification">
-<h3>Creating a ProjectSpecification<a class="headerlink" href="#creating-a-projectspecification" title="Permalink to this headline">¶</a></h3>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<section id="creating-a-projectspecification">
+<h3>Creating a ProjectSpecification<a class="headerlink" href="#creating-a-projectspecification" title="Permalink to this heading"></a></h3>
 <p>One constructor is provided to create an instance of <code class="docutils literal notranslate"><span class="pre">ProjectSpecification</span></code>,
 which will contain some default values determined for your system, with:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Create ProjectSpecification object</span>
 <span class="nb">ProjectSpecification</span><span class="p">(</span><span class="s">ps_obj</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="modifying-a-projectspecification">
-<h3>Modifying a ProjectSpecification<a class="headerlink" href="#modifying-a-projectspecification" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="modifying-a-projectspecification">
+<h3>Modifying a ProjectSpecification<a class="headerlink" href="#modifying-a-projectspecification" title="Permalink to this heading"></a></h3>
 <p>After a default instance is created, most attributes should be accessed and
 modified using CMakePPLang object <a class="reference external" href="https://cmakepp.github.io/CMakePPLang/features/classes.html#getting-and-setting-attributes">getters and setters</a>. However, to ensure that all version
 component variables are set correctly, you should use the
@@ -212,56 +123,39 @@ component variables are set correctly, you should use the
 <p>At the moment, the <code class="docutils literal notranslate"><span class="pre">configure_options</span></code> and <code class="docutils literal notranslate"><span class="pre">compile_options</span></code> attributes
 are not populated by <code class="docutils literal notranslate"><span class="pre">ProjectSpecification</span></code>. These maps are available for
 classes using <code class="docutils literal notranslate"><span class="pre">ProjectSpecification</span></code> to populate with relevant information.</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="toolchain.html" class="btn btn-neutral float-right" title="Toolchain Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.html" class="btn btn-neutral float-left" title="Class Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installed_target.html" class="btn btn-neutral float-left" title="InstalledTarget Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="target.html" class="btn btn-neutral float-right" title="Target Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, CMakePP Team.
-
-    </p>
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 
-#############
-cpp.cpp.cmake
-#############
+#######
+cpp.cpp
+#######
 
-.. module:: cpp.cpp.cmake
+.. module:: cpp.cpp
 

@@ -1,7 +1,7 @@
 
-#########################
-cpp.targets/targets.cmake
-#########################
+###################
+cpp.targets/targets
+###################
 
-.. module:: cpp.targets/targets.cmake
+.. module:: cpp.targets/targets
 

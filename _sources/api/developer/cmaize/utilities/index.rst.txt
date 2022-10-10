@@ -6,6 +6,7 @@ cmaize.utilities
 .. toctree:: 
    :maxdepth: 2
 
-   utilities
+   glob_files
    split_version
+   utilities
 

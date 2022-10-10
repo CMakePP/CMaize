@@ -1,15 +1,12 @@
 
-#####################################
-cpp.dependency/dependency_class.cmake
-#####################################
+###############################
+cpp.dependency/dependency_class
+###############################
 
-.. module:: cpp.dependency/dependency_class.cmake
-
-
-.. function:: cpp_class(Dependency)
+.. module:: cpp.dependency/dependency_class
 
 
-   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+.. py:class:: Dependency
 
    Models a dependency of the main CMake Project.
    
@@ -21,31 +18,77 @@ cpp.dependency/dependency_class.cmake
    - exports a CMake target
    
    
+   **Methods**
+
+   .. py:method:: _search_paths(_sp_result)
+
+      Computes a list of path prefixes which should be used when searching.
+      
+      This function encapsulates assembling a list of all the prefixes which
+      should be considered when looking for this dependency.
+      
+      :param _sp_this: The Dependency instance being used to assemble the paths.
+      :type _sp_this: Dependency
+      :param _sp_result: Name for variable which will hold the result.
+      :type _sp_result: desc
+      
 
 
-.. function:: cpp_member(_search_paths Dependency desc)
+   .. py:method:: find_dependency(_fd_found)
+
+      Attempts to locate the dependency
+      
+      
+
+      :param _fd_found: 
+
+      :type _fd_found: desc
 
 
-   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+   .. py:method:: build_dependency()
 
-   Computes a list of path prefixes which should be used when searching.
-   
-   This function encapsulates assembling a list of all the prefixes which
-   should be considered when looking for this dependency.
-   
-   :param _sp_this: The Dependency instance being used to assemble the paths.
-   :type _sp_this: Dependency
-   :param _sp_result: Name for variable which will hold the result.
-   :type _sp_result: desc
-   
+      
 
 
-.. function:: cpp_member(find_dependency Dependency desc)
+   .. py:method:: init([, ...])
+
+      
+
+   **Attributes**
+
+   .. py:attribute:: build_target
+
+      
 
 
-   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+   .. py:attribute:: cmake_args
 
-   Attempts to locate the dependency
-   
-   
+      
+
+
+   .. py:attribute:: find_target
+
+      
+
+
+   .. py:attribute:: found
+      :value: FALSE
+
+      
+
+
+   .. py:attribute:: name
+
+      
+
+
+   .. py:attribute:: target
+
+      
+
+
+   .. py:attribute:: version
+
+      
+
 
