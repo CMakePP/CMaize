@@ -82,7 +82,12 @@ function(cmaize_add_library _cal_tgt_name)
         )
     endif()
 
-    cpp_get_global(_cal_project CMAIZE_PROJECT)
+    cpp_get_global(_cal_project CMAIZE_PROJECT_${PROJECT_NAME})
+    # TODO: remove this once manual `cmaize_project()` calls are not
+    #       needed anymore.
+    if ("${_cal_project}" STREQUAL "")
+        cpp_return("")
+    endif()
 
     CMaizeProject(add_target "${_cal_project}" "${tgt_obj}")
 
