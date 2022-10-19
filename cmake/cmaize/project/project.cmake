@@ -64,7 +64,10 @@ cpp_class(CMaizeProject)
 
         CMaizeProject(SET "${self}" name "${_ctor_name}")
 
-        CMaizeProject(SET "${self}" languages "${_ctor_languages}")
+        if("${_ctor_LANGUAGES}" STREQUAL "")
+            get_property(_ctor_LANGUAGES GLOBAL PROPERTY ENABLED_LANGUAGES)
+        endif()
+        CMaizeProject(SET "${self}" languages "${_ctor_LANGUAGES}")
 
         # If the project name is different than the current project, assume
         # a new CMake project needs to be created
