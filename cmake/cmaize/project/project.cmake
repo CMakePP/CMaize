@@ -59,23 +59,21 @@ cpp_class(CMaizeProject)
     cpp_constructor(CTOR CMaizeProject str args)
     function("${CTOR}" self _ctor_name)
 
-        set(_ctor_flags EXISTS)
         set(_ctor_lists LANGUAGES)
-        cmake_parse_arguments(_ctor "${_ctor_flags}" "" "${_ctor_lists}" ${ARGN})
+        cmake_parse_arguments(_ctor "" "" "${_ctor_lists}" ${ARGN})
 
         CMaizeProject(SET "${self}" name "${_ctor_name}")
 
         CMaizeProject(SET "${self}" languages "${_ctor_languages}")
 
-        # Create a vanilla CMake project, passing in all potential keyword
-        # arguments as well
-        if(NOT "${_ctor_EXISTS}")
+        # If the project name is different than the current project, assume
+        # a new CMake project needs to be created
+        if(NOT "${_ctor_name}" STREQUAL "${PROJECT_NAME}")
             project("${_ctor_name}" ${ARGN})
         endif()
 
         # Create a project specification that defaults to the values set
         # in the above ``project()`` call
-        # CMaizeProject(_create_spec "${self}" proj_spec ${ARGN})
         ProjectSpecification(CTOR proj_spec)
         CMaizeProject(SET "${self}" specification "${proj_spec}")
 
@@ -88,19 +86,6 @@ cpp_class(CMaizeProject)
         list(APPEND _at_targets "${target}")
         list(REMOVE_DUPLICATES _at_targets)
         CMaizeProject(SET "${self}" targets "${_at_targets}")
-
-    endfunction()
-
-    cpp_member(_create_spec CMaizeProject ProjectSpecification args)
-    function("${_create_spec}" self return_value)
-
-        # Parse project keyword arguments
-        set(_ctor_lists LANGUAGES)
-        cmake_parse_arguments(_ctor "" "" "${_ctor_lists}" ${ARGN})
-
-        ProjectSpecification(CTOR _cs_spec)
-
-        ProjectSpecification()
 
     endfunction()
 
