@@ -75,11 +75,9 @@ cpp_class(CMaizeProject)
 
         # Create a project specification that defaults to the values set
         # in the above ``project()`` call
-        # CMaizeProject(_create_spec "${self}" spec ${ARGN})
+        # CMaizeProject(_create_spec "${self}" proj_spec ${ARGN})
         ProjectSpecification(CTOR proj_spec)
         CMaizeProject(SET "${self}" specification "${proj_spec}")
-
-        # CMaizeProject(_take_over "${self}")
 
     endfunction()
 
@@ -103,38 +101,6 @@ cpp_class(CMaizeProject)
         ProjectSpecification(CTOR _cs_spec)
 
         ProjectSpecification()
-
-    endfunction()
-
-    #[[[
-    # Since the creation of a project through CMaizeProject instantiation
-    # can never be a literal, direct call in the top-level CMakeLists.txt
-    # file, the created project needs to be manually set to the top-level
-    # project.
-    #
-    # :param self: ``CMaizeProject`` object.
-    # :type self: CMaizeProject
-    #]]
-    cpp_member(_take_over CMaizeProject)
-    function("${_take_over}" self)
-
-        CMaizeProject(GET "${self}" specs specification)
-        ProjectSpecification(GET "${specs}" _to_name name)
-        ProjectSpecification(GET "${specs}" _to_version version)
-
-        # Make note of the current top-level project name
-        set(tmp_top_proj "${CMAKE_PROJECT_NAME}")
-
-        set(CMAKE_PROJECT_NAME "${_ctor_name}")
-        set(CMAKE_PROJECT_VERSION "${${_ctor_name}_VERSION}")
-        set(CMAKE_PROJECT_DESCRIPTION "${${_ctor_name}_DESCRIPTION}")
-        set(CMAKE_PROJECT_HOMEPAGE_URL "${${_ctor_name}_HOMEPAGE_URL}")
-        set(PROJECT_SOURCE_DIR "${${tmp_top_proj}_SOURCE_DIR}")
-        set(${_ctor_name}_SOURCE_DIR "${${tmp_top_proj}_SOURCE_DIR}")
-        set(PROJECT_BINARY_DIR "${${tmp_top_proj}_BINARY_DIR}")
-        set(${_ctor_name}_BINARY_DIR "${${tmp_top_proj}_BINARY_DIR}")
-        set(PROJECT_IS_TOP_LEVEL "${${tmp_top_proj}_IS_TOP_LEVEL}")
-        set(${_ctor_name}_IS_TOP_LEVEL "${${tmp_top_proj}_IS_TOP_LEVEL}")
 
     endfunction()
 
