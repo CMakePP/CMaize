@@ -26,7 +26,7 @@ cpp_class(CMaizeProject)
     #[[[
     # :type: list[desc]
     #
-    # Languages used in the project.
+    # Languages used in the project. Defaults to an empty list.
     #]]
     cpp_attr(CMaizeProject languages)
 
@@ -45,16 +45,46 @@ cpp_class(CMaizeProject)
     cpp_attr(CMaizeProject targets)
 
     #[[[
-    # Default constructor for ProjectSpecification object with only
-    # autopopulated options available.
+    # Creates a ``CMaizeProject`` object and underlying CMake project, if
+    # necessary.
+    #
+    # The underlying CMake project is only created if the given project name
+    # does not match the CMake project name in PROJECT_NAME.
     #
     # :param self: CMaizeProject object constructed.
     # :type self: CMaizeProject
-    # :param name: Name of the project. Must be unique.
-    # :type name: desc
+    # :param _ctor_name: Name of the project. Must be unique.
+    # :type _ctor_name: desc
+    #
+    # :Keyword Arguments:
+    #    * **VERSION** (*desc*) --
+    #      Version string of non-negative integers of the form
+    #      ``<major>[.<minor>[.<patch>[.<tweak>] ] ]``. Populates the
+    #      version attributes of the ``ProjectSpecification``. Parallels
+    #      the ``VERSION <version>`` keyword for CMake ``project()``
+    #      (`link <cmake_project_>`__), and the value is passed to
+    #      a CMake ``project()`` call if the project does not exist yet.
+    #    * **DESCRIPTION** (*desc*) --
+    #      Description of the project. Parallels the 
+    #      ``DESCRIPTION <project-description-string>`` keyword for 
+    #      CMake ``project()`` (`link <cmake_project_>`__), and the value
+    #      is passed to a CMake ``project()`` call if the project does not
+    #      exist yet.
+    #    * **HOMEPAGE_URL** (*desc*) --
+    #      Homepage URL for the project. Parallels the
+    #      ``HOMEPAGE_URL <url-string>`` keyword for CMake ``project()``
+    #      (`link <cmake_project_>`__), and the value is passed to
+    #      a CMake ``project()`` call if the project does not exist yet.
+    #    * **LANGUAGES** (*list[desc]*) --
+    #      Languages supported by the project. These languages are passed to
+    #      the LANGUAGES keyword of the CMake ``project()`` call if the project
+    #      does not exist yet.
+    #
     # :returns: ``self`` will be set to the newly constructed
-    #           ``ProjectSpecification`` object.
-    # :rtype: ProjectSpecification
+    #           ``CMaizeProject`` object.
+    # :rtype: CMaizeProject
+    #
+    # .. _cmake_project: https://cmake.org/cmake/help/latest/command/project.html
     #]]
     cpp_constructor(CTOR CMaizeProject str args)
     function("${CTOR}" self _ctor_name)
@@ -64,9 +94,6 @@ cpp_class(CMaizeProject)
 
         CMaizeProject(SET "${self}" name "${_ctor_name}")
 
-        if("${_ctor_LANGUAGES}" STREQUAL "")
-            get_property(_ctor_LANGUAGES GLOBAL PROPERTY ENABLED_LANGUAGES)
-        endif()
         CMaizeProject(SET "${self}" languages "${_ctor_LANGUAGES}")
 
         # If the project name is different than the current project, assume
@@ -82,13 +109,21 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    #[[[
+    # Add a target to the project. Duplicate objects will be removed.
+    #
+    # :param self: CMaizeProject object.
+    # :type self: CMaizeProject
+    # :param _at_target: Target object to be added.
+    # :type _at_target: BuildTarget
+    #]]
     cpp_member(add_target CMaizeProject BuildTarget)
-    function("${add_target}" self target)
+    function("${add_target}" self _at_target)
 
-        CMaizeProject(GET "${self}" _at_targets targets)
-        list(APPEND _at_targets "${target}")
-        list(REMOVE_DUPLICATES _at_targets)
-        CMaizeProject(SET "${self}" targets "${_at_targets}")
+        CMaizeProject(GET "${self}" _at_target_list targets)
+        list(APPEND _at_target_list "${_at_target}")
+        list(REMOVE_DUPLICATES _at_target_list)
+        CMaizeProject(SET "${self}" targets "${_at_target_list}")
 
     endfunction()
 
