@@ -6,6 +6,20 @@ include(cmaize/utilities/utilities)
 #[[[
 # The ``CMaizeProject`` provides a workspace to collect information about a
 # project, using that information to build and package the project.
+#
+# **Usage:**
+# 
+# A ``CMaizeProject`` object will be automatically created for the current
+# when CMaize is included in a ``CMakeLists.txt`` file if a ``project()``
+# call has already been made. Otherwise, the ``cmaize_project()`` user
+# function will create one and store it in the global
+# ``CMAIZE_PROJECT_<project_name>`` variable.
+#
+# To retrieve an existing project object created in these ways, call:
+# 
+# .. code-block:: cmake
+#
+#    cpp_get_global(result_object CMAIZE_PROJECT_<project_name>)
 #]]
 cpp_class(CMaizeProject)
     
@@ -49,11 +63,11 @@ cpp_class(CMaizeProject)
     # necessary.
     #
     # The underlying CMake project is only created if the given project name
-    # does not match the CMake project name in PROJECT_NAME.
+    # does not match the CMake project name in ``PROJECT_NAME``.
     #
-    # :param self: CMaizeProject object constructed.
+    # :param self: The constructed object.
     # :type self: CMaizeProject
-    # :param _ctor_name: Name of the project. Must be unique.
+    # :param _ctor_name: Name of the project.
     # :type _ctor_name: desc
     #
     # :Keyword Arguments:
@@ -83,7 +97,8 @@ cpp_class(CMaizeProject)
     # :returns: ``self`` will be set to the newly constructed
     #           ``CMaizeProject`` object.
     # :rtype: CMaizeProject
-    #
+    # 
+    # .. Reference definitions
     # .. _cmake_project: https://cmake.org/cmake/help/latest/command/project.html
     #]]
     cpp_constructor(CTOR CMaizeProject str args)
