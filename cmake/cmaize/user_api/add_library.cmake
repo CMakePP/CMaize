@@ -69,8 +69,8 @@ function(cmaize_add_library _cal_tgt_name)
     endif()
 
     # Decide which language we are building for
-    string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE)
-    if("${_cal_LANGUAGE}" STREQUAL "cxx" OR "${_cal_LANGUAGE}" STREQUAL "")
+    string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE_lower)
+    if("${_cal_LANGUAGE_lower}" STREQUAL "cxx")
         cmaize_add_cxx_library(tgt_obj
             "${_cal_tgt_name}"
             ${ARGN}
@@ -78,13 +78,14 @@ function(cmaize_add_library _cal_tgt_name)
     elseif()
         cpp_raise(
             InvalidBuildLanguage 
-            "Invalid build language: ${_cal_language}"
+            "Invalid build language: ${_cal_LANGUAGE}"
         )
     endif()
 
     cpp_get_global(_cal_project CMAIZE_PROJECT_${PROJECT_NAME})
     
     CMaizeProject(add_target "${_cal_project}" "${tgt_obj}")
+    CMaizeProject(add_language "${_cal_project}" "${_cal_LANGUAGE}")
 
 endfunction()
 

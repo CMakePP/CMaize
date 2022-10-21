@@ -68,8 +68,8 @@ function(cmaize_add_executable _cae_tgt_name)
     endif()
 
     # Decide which language we are building for
-    string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE)
-    if("${_cae_LANGUAGE}" STREQUAL "cxx" OR "${_cae_LANGUAGE}" STREQUAL "")
+    string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE_lower)
+    if("${_cae_LANGUAGE_lower}" STREQUAL "cxx")
         cmaize_add_cxx_executable(tgt_obj
             "${_cae_tgt_name}"
             ${ARGN}
@@ -77,13 +77,14 @@ function(cmaize_add_executable _cae_tgt_name)
     elseif()
         cpp_raise(
             InvalidBuildLanguage
-            "Invalid build language: ${_cae_language}"
+            "Invalid build language: ${_cae_LANGUAGE}"
         )
     endif()
 
     cpp_get_global(_cae_project CMAIZE_PROJECT_${PROJECT_NAME})
 
     CMaizeProject(add_target "${_cae_project}" "${tgt_obj}")
+    CMaizeProject(add_language "${_cae_project}" "${_cae_LANGUAGE}")
 
 endfunction()
 
