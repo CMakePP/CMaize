@@ -68,18 +68,23 @@ function(cmaize_add_executable _cae_tgt_name)
     endif()
 
     # Decide which language we are building for
-    string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE)
-    if("${_cae_LANGUAGE}" STREQUAL "cxx" OR "${_cae_LANGUAGE}" STREQUAL "")
-        cmaize_add_cxx_executable(
+    string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE_lower)
+    if("${_cae_LANGUAGE_lower}" STREQUAL "cxx")
+        cmaize_add_cxx_executable(tgt_obj
             "${_cae_tgt_name}"
             ${ARGN}
         )
     elseif()
         cpp_raise(
             InvalidBuildLanguage
-            "Invalid build language: ${_cae_language}"
+            "Invalid build language: ${_cae_LANGUAGE}"
         )
     endif()
+
+    cpp_get_global(_cae_project CMAIZE_PROJECT_${PROJECT_NAME})
+
+    CMaizeProject(add_target "${_cae_project}" "${tgt_obj}")
+    CMaizeProject(add_language "${_cae_project}" "${_cae_LANGUAGE}")
 
 endfunction()
 
@@ -91,6 +96,8 @@ endfunction()
 #    See ``CXXTarget(make_target`` documentation for additional optional
 #    arguments.
 #
+# :param _cace_tgt_obj: Returned target object created.
+# :type _cace_tgt_obj: BuildTarget
 # :param _cace_tgt_name: Name of the target to be created.
 # :type _cace_tgt_name: desc
 # :param SOURCE_DIR: Directory containing source code.
@@ -103,8 +110,11 @@ endfunction()
 # :param INCLUDE_EXTS: Include file extensions (exclude the dot), defaults
 #                      to the value of ``CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS``.
 # :type INCLUDE_EXTS: List[desc], optional
+#
+# :returns: CXX executable target object.
+# :rtype: BuildTarget
 #]]
-function(cmaize_add_cxx_executable _cace_tgt_name)
+function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
     set(_cace_options SOURCE_DIR)
     set(_cace_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
 
@@ -127,13 +137,17 @@ function(cmaize_add_cxx_executable _cace_tgt_name)
     _cmaize_glob_files(_cace_source_files "${_cace_SOURCE_DIR}" "${_cace_SOURCE_EXTS}")
     _cmaize_glob_files(_cace_include_files "${_cace_INCLUDE_DIRS}" "${_cace_INCLUDE_EXTS}")
 
-    CXXExecutable(CTOR _cace_lib_obj "${_cace_tgt_name}")
+    CXXExecutable(CTOR _cace_exe_obj "${_cace_tgt_name}")
 
     CXXExecutable(make_target
-        "${_cace_lib_obj}"
+        "${_cace_exe_obj}"
         INCLUDES "${_cace_include_files}"
         SOURCES "${_cace_source_files}"
         ${ARGN}
     )
+
+    set("${_cace_tgt_obj}" "${_cace_exe_obj}")
+
+    cpp_return("${_cace_tgt_obj}")
 
 endfunction()

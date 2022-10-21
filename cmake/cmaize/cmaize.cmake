@@ -1,19 +1,5 @@
-include_guard()
+include(cmaize/cmaize_impl)
 
-if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-    set(_msg "The build directory (${CMAKE_BINARY_DIR}) is the same as the ")
-    string(APPEND _msg "current source directory (${CMAKE_CURRENT_SOURCE_DIR})")
-    string(APPEND _msg ". This usually means you are attempting to build in ")
-    string(APPEND _msg "source, which is strongly discouraged. Please rerun ")
-    string(APPEND _msg "cmake with a build directory (use the -B flag) and ")
-    string(APPEND _msg "delete ${CMAKE_CURRENT_SOURCE_DIR}/CMakeCache.txt ")
-    string(APPEND _msg "which was created when you ran cmake in source.")
-    message(FATAL_ERROR "${_msg}")
-endif()
-
-include(cmaize/globals)
-include(cmaize/project_specification/project_specification)
-include(cmaize/targets/targets)
-include(cmaize/toolchain/toolchain)
-include(cmaize/user_api/user_api)
-include(cmaize/utilities/utilities)
+# Automatically create a CMaizeProject instance if CMake project
+# has already been defined before CMaize was included
+cmaize_project("${PROJECT_NAME}")

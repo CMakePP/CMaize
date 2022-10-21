@@ -14,6 +14,8 @@ As a convenience to your users you can make it so that your build system
 automatically downloads CMaize and includes it. The easiest way to do this is
 to put the following CMake script in a file ``cmake/get_cmaize.cmake``:
 
+.. todo: Remove ``include_guard()`` in the ``cmake/get_cmaize.cmake`` example
+
 .. code-block:: cmake
 
     include_guard()
@@ -46,6 +48,8 @@ to put the following CMake script in a file ``cmake/get_cmaize.cmake``:
 and then in your top level ``CMakeLists.txt`` (assumed to be in the same
 directory as the ``cmake`` directory you put ``get_cmaize.cmake`` in) add the
 line:
+
+.. todo: Add in that the ``include(cmaize)`` call must be after a CMake ``project()`` has been created.
 
 .. code-block:: cmake
 
