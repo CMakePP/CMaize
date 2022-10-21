@@ -114,7 +114,18 @@ cpp_class(CMaizeProject)
         # If the project name is different than the current project, assume
         # a new CMake project needs to be created
         if(NOT "${_ctor_name}" STREQUAL "${PROJECT_NAME}")
-            project("${_ctor_name}" ${ARGN})
+            set(_ctor_msg 
+                "The given project name does not match the current CMake"
+                "project. Make sure that `project()` was called before"
+                "creating a CMaize project."
+                "\nProject given: ${_ctor_name}"
+                "\nCurrent project: ${PROJECT_NAME}"
+            )
+            string(JOIN " " _ctor_msg ${_ctor_msg})
+            cpp_raise(
+                ProjectNotFound
+                "${_ctor_msg}"
+            )
         endif()
 
         # Create a project specification that defaults to the values set

@@ -13,11 +13,25 @@ function("${test_project}")
     ct_add_section(NAME "test_ctor")
     function("${test_ctor}")
 
-        ct_add_section(NAME "creates_default_project")
-        function("${creates_default_project}")
+        ct_add_section(NAME "no_project" EXPECTFAIL)
+        function("${no_project}")
 
-            set(proj_name "test_project_test_ctor_creates_default_project")
+            set(proj_name "test_project_test_ctor_no_project")
 
+            # no project() call
+            # project("${proj_name}")
+
+            # This should throw an exception
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+        endfunction()
+
+        ct_add_section(NAME "default_project")
+        function("${default_project}")
+
+            set(proj_name "test_project_test_ctor_default_project")
+
+            project("${proj_name}")
             CMaizeProject(CTOR proj_obj "${proj_name}")
 
             CMaizeProject(GET "${proj_obj}" result_name name)
@@ -30,10 +44,11 @@ function("${test_project}")
             ct_assert_equal(spec_name "${proj_name}")
 
             # Test version
-            ct_assert_equal(spec_version "")
+            ct_assert_equal(spec_version "${proj_version}")
+            ct_assert_equal(spec_version "${${proj_name}_VERSION}")
 
             # Test languages
-            # ct_assert_equal(result_languages NONE)
+            ct_assert_equal(result_languages "")
 
         endfunction()
 
@@ -46,7 +61,7 @@ function("${test_project}")
             set(proj_homepage "https://www.testproject.com")
             set(proj_languages NONE)
 
-            CMaizeProject(CTOR proj_obj
+            project(
                 "${proj_name}"
                 VERSION "${proj_version}"
                 DESCRIPTION "${proj_desc}"
@@ -54,33 +69,24 @@ function("${test_project}")
                 LANGUAGES "${proj_languages}"
             )
 
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
             CMaizeProject(GET "${proj_obj}" result_name name)
             CMaizeProject(GET "${proj_obj}" result_languages languages)
             CMaizeProject(GET "${proj_obj}" specs specification)
             ProjectSpecification(GET "${specs}" spec_name name)
             ProjectSpecification(GET "${specs}" spec_version version)
 
-            # NOTE: <PROJECT_NAME>_<VARIABLE> CMake variables cannot be
-            #       checked right now, since it seems that they are cleared
-            #       after leaving the CMaizeProject(CTOR call. The checks
-            #       that would be used are commented out.
-
             # Test name
             ct_assert_equal(result_name "${proj_name}")
             ct_assert_equal(spec_name "${proj_name}")
 
             # Test version
-            # ct_assert_equal(${proj_name}_VERSION "${proj_version}")
             ct_assert_equal(spec_version "${proj_version}")
-
-            # Test description
-            # ct_assert_equal(${proj_name}_DESCRIPTION "${proj_desc}")
-
-            # Test homepage URL
-            # ct_assert_equal(${proj_name}_HOMEPAGE_URL "${proj_homepage}")
+            ct_assert_equal(spec_version "${${proj_name}_VERSION}")
 
             # Test languages
-            ct_assert_equal(result_languages NONE)
+            ct_assert_equal(result_languages "")
             
         endfunction()
 
@@ -94,6 +100,8 @@ function("${test_project}")
 
             set(proj_name "test_project_test_add_target_single_target")
             set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
 
             CMaizeProject(CTOR proj_obj "${proj_name}")
 
@@ -118,6 +126,8 @@ function("${test_project}")
             set(proj_name "test_project_test_add_target_duplicate_target")
             set(tgt_name "${proj_name}_tgt")
 
+            project("${proj_name}")
+
             CMaizeProject(CTOR proj_obj "${proj_name}")
 
             BuildTarget(CTOR tgt_obj "${tgt_name}")
@@ -141,6 +151,8 @@ function("${test_project}")
 
             set(proj_name "test_project_test_add_target_multiple_targets")
             set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
 
             CMaizeProject(CTOR proj_obj "${proj_name}")
 
