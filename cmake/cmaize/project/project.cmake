@@ -153,4 +153,22 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    #[[[
+    # Add a language to the project. Duplicate languages will be removed.
+    #
+    # :param self: CMaizeProject object.
+    # :type self: CMaizeProject
+    # :param _at_language: Language to be added.
+    # :type _at_language: BuildTarget
+    #]]
+    cpp_member(add_language CMaizeProject desc)
+    function("${add_language}" self _at_language)
+
+        CMaizeProject(GET "${self}" _at_language_list languages)
+        list(APPEND _at_language_list "${_at_language}")
+        list(REMOVE_DUPLICATES _at_language_list)
+        CMaizeProject(SET "${self}" languages "${_at_language_list}")
+
+    endfunction()
+
 cpp_end_class()

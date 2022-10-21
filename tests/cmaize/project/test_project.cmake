@@ -179,4 +179,34 @@ function("${test_project}")
 
     endfunction()
 
+    ct_add_section(NAME "test_add_language")
+    function("${test_add_language}")
+
+        ct_add_section(NAME "multiple_languages")
+        function("${multiple_languages}")
+
+            set(proj_name "test_project_test_add_language_multiple_languages")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")  
+
+            # Add two distinct languages
+            CMaizeProject(add_language "${proj_obj}" C)
+            CMaizeProject(add_language "${proj_obj}" CXX)
+
+            CMaizeProject(GET "${proj_obj}" lang_list languages)
+
+            # Make sure there is an element in the languages list
+            list(LENGTH lang_list lang_list_len)
+            ct_assert_equal(lang_list_len 2)
+
+            # Test that the list contents are correct
+            ct_assert_equal(lang_list "C;CXX")
+
+        endfunction()
+
+    endfunction()
+
 endfunction()
