@@ -94,6 +94,7 @@ function("${test_project}")
 
     ct_add_section(NAME "test_add_target")
     function("${test_add_target}")
+        include(cmaize/targets/build_target)
 
         ct_add_section(NAME "single_target")
         function("${single_target}")
