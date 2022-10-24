@@ -6,7 +6,7 @@ include(cmake_test/cmake_test)
 ct_add_test(NAME "test_cmake_package_manager")
 function("${test_cmake_package_manager}")
     include(cmaize/package_managers/cmake_package_manager)
-    include(cmaize/project_specification/project_specification)
+    include(cmaize/project/project_specification)
 
     ct_add_section(NAME "can_add_single_path")
     function("${can_add_single_path}")

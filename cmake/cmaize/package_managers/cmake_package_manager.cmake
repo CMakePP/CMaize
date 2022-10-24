@@ -1,7 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/target)
-include(cmaize/project_specification/project_specification)
+include(cmaize/project/project_specification)
 
 #[[[
 # CMake package manager going through ``find_package`` and ``FetchContent``.
