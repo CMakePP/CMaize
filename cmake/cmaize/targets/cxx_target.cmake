@@ -242,7 +242,7 @@ cpp_class(CXXTarget BuildTarget)
         # Sources for a CXX target should be private
         target_sources(
             "${_ss_tgt_name}"
-            PUBLIC
+            PRIVATE
                 ${_ss_src_files}
         )
 

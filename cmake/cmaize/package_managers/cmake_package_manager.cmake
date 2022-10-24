@@ -3,6 +3,8 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/target)
 include(cmaize/project/project_specification)
 
+include(GNUInstallDirs)
+
 #[[[
 # CMake package manager going through ``find_package`` and ``FetchContent``.
 #]]
@@ -112,7 +114,7 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_member(install_package CMakePackageManager Target)
     function("${install_package}" self _ip_target)
 
-        Target(target tgt_name)
+        Target(target "${_ip_target}" tgt_name)
 
         # Generate <target>Config.cmake
 
@@ -123,17 +125,18 @@ cpp_class(CMakePackageManager PackageManager)
         # )
         install(
             TARGETS "${tgt_name}"
-            # EXPORT YourLibraryTargets
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
-            ARCHIVE DESTINATION lib
+            EXPORT "${tgt_name}_targets"
+            RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}"
+            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
+            PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
         )
-        # install(
-        #     EXPORT YourLibraryTargets 
-        #     FILE YourLibraryTargets.cmake
-        #     DESTINATION "${CMAKE_INSTALL_DATADIR}/YourLibrary/cmake"
-        #     NAMESPACE YourLibrary::
-        # )
+        install(
+            EXPORT ${tgt_name}_targets
+            FILE ${tgt_name}_targets.cmake
+            DESTINATION "${CMAKE_INSTALL_DATADIR}/${tgt_name}/cmake"
+            NAMESPACE ${tgt_name}::
+        )
 
     endfunction()
 
