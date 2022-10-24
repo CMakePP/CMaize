@@ -69,18 +69,23 @@ function(cmaize_add_library _cal_tgt_name)
     endif()
 
     # Decide which language we are building for
-    string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE)
-    if("${_cal_LANGUAGE}" STREQUAL "cxx" OR "${_cal_LANGUAGE}" STREQUAL "")
-        cmaize_add_cxx_library(
+    string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE_lower)
+    if("${_cal_LANGUAGE_lower}" STREQUAL "cxx")
+        cmaize_add_cxx_library(tgt_obj
             "${_cal_tgt_name}"
             ${ARGN}
         )
     elseif()
         cpp_raise(
             InvalidBuildLanguage 
-            "Invalid build language: ${_cal_language}"
+            "Invalid build language: ${_cal_LANGUAGE}"
         )
     endif()
+
+    cpp_get_global(_cal_project CMAIZE_PROJECT_${PROJECT_NAME})
+    
+    CMaizeProject(add_target "${_cal_project}" "${tgt_obj}")
+    CMaizeProject(add_language "${_cal_project}" "${_cal_LANGUAGE}")
 
 endfunction()
 
@@ -92,14 +97,19 @@ endfunction()
 #    See ``CXXTarget(make_target`` documentation for additional optional
 #    arguments.
 #
+# :param _cacl_tgt_obj: Returned target object created.
+# :type _cacl_tgt_obj: BuildTarget
 # :param _cal_tgt_name: Name of the target to be created.
 # :type _cal_tgt_name: desc
 # :param SOURCE_DIR: Directory containing source code.
 # :type SOURCE_DIR: path, optional
 # :param INCLUDE_DIRS: Directories containing files to include.
 # :type INCLUDE_DIRS: path, optional
+# 
+# :returns: CXX library target object.
+# :rtype: BuildTarget
 #]]
-function(cmaize_add_cxx_library _cacl_tgt_name)
+function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     set(_cacl_options SOURCE_DIR)
     set(_cacl_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
 
@@ -137,5 +147,9 @@ function(cmaize_add_cxx_library _cacl_tgt_name)
         SOURCES "${_cacl_source_files}"
         ${ARGN}
     )
+
+    set("${_cacl_tgt_obj}" "${_cacl_lib_obj}")
+
+    cpp_return("${_cacl_tgt_obj}")
 
 endfunction()
