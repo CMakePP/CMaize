@@ -112,10 +112,17 @@ cpp_class(CMakePackageManager PackageManager)
     #[[[
     # Virtual member to install a package.
     #]]
-    cpp_member(install_package CMakePackageManager BuildTarget)
+    cpp_member(install_package CMakePackageManager BuildTarget args)
     function("${install_package}" self _ip_target)
 
+        set(_ip_options NAMESPACE)
+        cmake_parse_arguments(_ip "" "${_ip_options}" "" ${ARGN})
+
         Target(target "${_ip_target}" _ip_tgt_name)
+
+        if("${_ip_NAMESPACE}" STREQUAL "")
+            set(_ip_NAMESPACE "${_ip_tgt_name}::")
+        endif()
 
         # Generate <target>Config.cmake
 
@@ -136,7 +143,7 @@ cpp_class(CMakePackageManager PackageManager)
             EXPORT ${_ip_tgt_name}_targets
             FILE ${_ip_tgt_name}_targets.cmake
             DESTINATION "${CMAKE_INSTALL_DATADIR}/${_ip_tgt_name}/cmake"
-            NAMESPACE ${_ip_tgt_name}::
+            NAMESPACE "${_ip_NAMESPACE}"
         )
 
         # Writes config file to build directory
