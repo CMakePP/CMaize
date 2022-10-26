@@ -3,6 +3,7 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/target)
 include(cmaize/project/project_specification)
 
+include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
 #[[[
@@ -111,10 +112,10 @@ cpp_class(CMakePackageManager PackageManager)
     #[[[
     # Virtual member to install a package.
     #]]
-    cpp_member(install_package CMakePackageManager Target)
+    cpp_member(install_package CMakePackageManager BuildTarget)
     function("${install_package}" self _ip_target)
 
-        Target(target "${_ip_target}" tgt_name)
+        Target(target "${_ip_target}" _ip_tgt_name)
 
         # Generate <target>Config.cmake
 
@@ -124,38 +125,66 @@ cpp_class(CMakePackageManager PackageManager)
         #     USE_SOURCE_PERMISSIONS
         # )
         install(
-            TARGETS "${tgt_name}"
-            EXPORT "${tgt_name}_targets"
+            TARGETS "${_ip_tgt_name}"
+            EXPORT "${_ip_tgt_name}_targets"
             RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}"
             LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
             PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
         )
         install(
-            EXPORT ${tgt_name}_targets
-            FILE ${tgt_name}_targets.cmake
-            DESTINATION "${CMAKE_INSTALL_DATADIR}/${tgt_name}/cmake"
-            NAMESPACE ${tgt_name}::
+            EXPORT ${_ip_tgt_name}_targets
+            FILE ${_ip_tgt_name}_targets.cmake
+            DESTINATION "${CMAKE_INSTALL_DATADIR}/${_ip_tgt_name}/cmake"
+            NAMESPACE ${_ip_tgt_name}::
+        )
+
+        # Writes config file to build directory
+        CMakePackageManager(_generate_config "${self}" "${_ip_target}")
+
+        # Install config file
+        configure_package_config_file(
+            "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake"
+            INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/${_ip_tgt_name}/cmake"
+        )
+
+        install(
+            FILES "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake"
+            DESTINATION "${CMAKE_INSTALL_DATADIR}/${_ip_tgt_name}/cmake"
         )
 
     endfunction()
 
     # NOTE: https://www.f-ax.de/dev/2020/10/07/cmake-config-package.html
-    cpp_member(_generate_config CMakePackageManager Target)
+    cpp_member(_generate_config CMakePackageManager BuildTarget)
     function("${_generate_config}" self _gc_target)
 
         set(
             file_contents 
-            "@PACKAGE_INIT@\n\n"
-            "include(CMakeFindDependencyMacro)\n"
+            "@PACKAGE_INIT@\n\ninclude(CMakeFindDependencyMacro)\n"
         )
         
-        # find_dependency(Threads)
+        BuildTarget(GET "${_gc_target}" _gc_dep_list depends)
+        foreach(_gc_dep_i ${_gc_dep_list})
+            string(APPEND file_contents "find_dependency(${_gc_dep_i})\n")
+        endforeach()
         
-        # include("${CMAKE_CURRENT_LIST_DIR}/YourLibraryTargets.cmake")
+        BuildTarget(target "${_gc_target}" _gc_tgt_name)
+        string(APPEND
+            file_contents
+            "include(\${CMAKE_CURRENT_LIST_DIR}/${_gc_tgt_name}_targets.cmake)\n"
+        )
         
-        # check_required_components(Spix)")
+        string(APPEND
+            file_contents
+            "check_required_components(${_gc_tgt_name})"
+        )
 
+        file(WRITE
+            "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake.in"
+            "${file_contents}"
+        )
 
     endfunction()
 
