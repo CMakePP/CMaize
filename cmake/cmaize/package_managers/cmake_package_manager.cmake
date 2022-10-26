@@ -142,8 +142,12 @@ cpp_class(CMakePackageManager PackageManager)
         install(
             EXPORT ${_ip_tgt_name}_targets
             FILE ${_ip_tgt_name}_targets.cmake
-            DESTINATION "${CMAKE_INSTALL_DATADIR}/${_ip_tgt_name}/cmake"
+            DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${_ip_tgt_name}"
             NAMESPACE "${_ip_NAMESPACE}"
+        )
+        install(
+            DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/_deps"
+            DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
         )
 
         # Writes config file to build directory
@@ -153,12 +157,12 @@ cpp_class(CMakePackageManager PackageManager)
         configure_package_config_file(
             "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake.in"
             "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake"
-            INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/${_ip_tgt_name}/cmake"
+            INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${_ip_tgt_name}"
         )
 
         install(
             FILES "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake"
-            DESTINATION "${CMAKE_INSTALL_DATADIR}/${_ip_tgt_name}/cmake"
+            DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${_ip_tgt_name}"
         )
 
     endfunction()
