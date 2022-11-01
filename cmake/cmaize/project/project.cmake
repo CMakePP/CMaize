@@ -1,6 +1,6 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
-include(cmaize/targets/targets)
+include(cmaize/targets/target)
 include(cmaize/project/project_specification)
 include(cmaize/utilities/utilities)
 
