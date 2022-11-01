@@ -126,18 +126,13 @@ cpp_class(CMakePackageManager PackageManager)
 
         # Generate <target>Config.cmake
 
-        # install(
-        #     DIRECTORY ...
-        #     DESTINATION ...
-        #     USE_SOURCE_PERMISSIONS
-        # )
         install(
             TARGETS "${_ip_tgt_name}"
             EXPORT "${_ip_tgt_name}_targets"
             RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}"
             LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
-            PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
+            # PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
         )
         install(
             EXPORT ${_ip_tgt_name}_targets
@@ -145,6 +140,17 @@ cpp_class(CMakePackageManager PackageManager)
             DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${_ip_tgt_name}"
             NAMESPACE "${_ip_NAMESPACE}"
         )
+
+        # Install the include directories, preserving the directory structure
+        BuildTarget(GET "${_ip_target}" inc_dir_list include_dirs)
+        foreach(inc_dir_i ${inc_dir_list})
+            install(
+                DIRECTORY "${inc_dir_i}"
+                DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+                USE_SOURCE_PERMISSIONS
+            )
+        endforeach()
+
         install(
             DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/_deps"
             DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
