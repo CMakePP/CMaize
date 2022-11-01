@@ -152,16 +152,21 @@ cpp_class(CMaizeProject)
     #
     # :param self: CMaizeProject object.
     # :type self: CMaizeProject
-    # :param _at_language: Language to be added.
-    # :type _at_language: desc
+    # :param _al_language: Language to be added.
+    # :type _al_language: desc
     #]]
     cpp_member(add_language CMaizeProject desc)
-    function("${add_language}" self _at_language)
+    function("${add_language}" self _al_language)
 
-        CMaizeProject(GET "${self}" _at_language_list languages)
-        list(APPEND _at_language_list "${_at_language}")
-        list(REMOVE_DUPLICATES _at_language_list)
-        CMaizeProject(SET "${self}" languages "${_at_language_list}")
+        CMaizeProject(GET "${self}" _al_language_list languages)
+
+        list(FIND _al_language_list "${_al_language}" _al_found)
+
+        # Add the language to the list if it doesn't exist
+        if("${_al_found}" STREQUAL "-1")
+            list(APPEND _al_language_list "${_al_language}")
+            CMaizeProject(SET "${self}" languages "${_al_language_list}")
+        endif()
 
     endfunction()
 
