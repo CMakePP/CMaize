@@ -8,15 +8,17 @@ include(cmaize/utilities/utilities)
 # The ``CMaizeProject`` provides a workspace to collect information about a
 # project, using that information to build and package the project.
 #
+# This object will **not** create a CMake project if one does not already
+# exist.
+#
 # **Usage:**
 # 
 # A ``CMaizeProject`` object will be automatically created for the current
 # when CMaize is included in a ``CMakeLists.txt`` file if a ``project()``
-# call has already been made. Otherwise, the ``cmaize_project()`` user
-# function will create one and store it in the global
-# ``CMAIZE_PROJECT_<project_name>`` variable.
+# call has already been made. This project should not be created manually
+# in most cases.
 #
-# To retrieve an existing project object created in these ways, call:
+# To retrieve an existing project object, call:
 # 
 # .. code-block:: cmake
 #
@@ -67,15 +69,14 @@ cpp_class(CMaizeProject)
     cpp_attr(CMaizeProject installed_targets)
 
     #[[[
-    # Creates a ``CMaizeProject`` object and underlying CMake project, if
-    # necessary.
-    #
-    # The underlying CMake project is only created if the given project name
-    # does not match the CMake project name in ``PROJECT_NAME``.
+    # Creates a ``CMaizeProject`` object. A CMake project of the same name
+    # must already be created through a ``project()`` call and must be
+    # the active project.
     #
     # :param self: The constructed object.
     # :type self: CMaizeProject
-    # :param _ctor_name: Name of the project.
+    # :param _ctor_name: Name of the project. Must match the active project
+    #                    named in ``PROJECT_NAME``.
     # :type _ctor_name: desc
     #
     # :Keyword Arguments:
@@ -101,6 +102,9 @@ cpp_class(CMaizeProject)
     #      Languages supported by the project. These languages are passed to
     #      the LANGUAGES keyword of the CMake ``project()`` call if the project
     #      does not exist yet.
+    #
+    # :raises ProjectNotFound: The active CMake project does not match the
+    #                          given project name.
     #
     # :returns: ``self`` will be set to the newly constructed
     #           ``CMaizeProject`` object.
@@ -168,6 +172,11 @@ cpp_class(CMaizeProject)
     # :type self: CMaizeProject
     # :param _at_target: Target object to be added.
     # :type _at_target: Target
+    #
+    # :Keyword Arguments:
+    #    * **INSTALLED** (*bool*) --
+    #      Flag to indicate that the target being added is already installed
+    #      on the system.
     #]]
     cpp_member(add_target CMaizeProject Target args)
     function("${add_target}" self _at_target)
