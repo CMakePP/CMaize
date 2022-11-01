@@ -1,5 +1,6 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
+include(cmaize/targets/target)
 include(cmaize/project/project_specification)
 include(cmaize/utilities/utilities)
 
@@ -52,11 +53,18 @@ cpp_class(CMaizeProject)
     cpp_attr(CMaizeProject package_managers)
 
     #[[[
-    # :type: list[Target]
+    # :type: list[BuildTarget]
     #
-    # Targets that are a part of the project.
+    # Targets that will be built as part of the project.
     #]]
-    cpp_attr(CMaizeProject targets)
+    cpp_attr(CMaizeProject build_targets)
+
+    #[[[
+    # :type: list[InstalledTarget]
+    #
+    # Targets the project uses that are already installed on the system.
+    #]]
+    cpp_attr(CMaizeProject installed_targets)
 
     #[[[
     # Creates a ``CMaizeProject`` object and underlying CMake project, if
@@ -136,30 +144,12 @@ cpp_class(CMaizeProject)
     endfunction()
 
     #[[[
-    # Add a target to the project. Duplicate objects will be removed.
-    #
-    # :param self: CMaizeProject object.
-    # :type self: CMaizeProject
-    # :param _at_target: Target object to be added.
-    # :type _at_target: BuildTarget
-    #]]
-    cpp_member(add_target CMaizeProject BuildTarget)
-    function("${add_target}" self _at_target)
-
-        CMaizeProject(GET "${self}" _at_target_list targets)
-        list(APPEND _at_target_list "${_at_target}")
-        list(REMOVE_DUPLICATES _at_target_list)
-        CMaizeProject(SET "${self}" targets "${_at_target_list}")
-
-    endfunction()
-
-    #[[[
     # Add a language to the project. Duplicate languages will be removed.
     #
     # :param self: CMaizeProject object.
     # :type self: CMaizeProject
     # :param _at_language: Language to be added.
-    # :type _at_language: BuildTarget
+    # :type _at_language: desc
     #]]
     cpp_member(add_language CMaizeProject desc)
     function("${add_language}" self _at_language)
@@ -168,6 +158,80 @@ cpp_class(CMaizeProject)
         list(APPEND _at_language_list "${_at_language}")
         list(REMOVE_DUPLICATES _at_language_list)
         CMaizeProject(SET "${self}" languages "${_at_language_list}")
+
+    endfunction()
+
+    #[[[
+    # Add a target to the project. Duplicate objects will be removed.
+    #
+    # :param self: CMaizeProject object.
+    # :type self: CMaizeProject
+    # :param _at_target: Target object to be added.
+    # :type _at_target: Target
+    #]]
+    cpp_member(add_target CMaizeProject Target args)
+    function("${add_target}" self _at_target)
+
+        set(_at_flags INSTALLED)
+        cmake_parse_arguments(_at "${_at_flags}" "" "" ${ARGN})
+
+        # Default to CMake package manager if none were given
+        set(_at_tgt_attr "build_targets")
+        if(_at_INSTALLED)
+            set(_at_tgt_attr "installed_targets")
+        endif()
+
+        # Check if a Target with the same name exists already
+        CMaizeProject(_check_target "${self}" _at_found "${_at_target}")
+
+        # Add the target to the list if it doesn't already exist
+        if(NOT _at_found)
+            CMaizeProject(GET "${self}" _at_tgt_list ${_at_tgt_attr})
+            list(APPEND _at_tgt_list "${_at_target}")        
+            CMaizeProject(SET "${self}" ${_at_tgt_attr} "${_at_tgt_list}")
+        endif()
+
+    endfunction()
+
+    #[[[
+    # Checks if a target with the same name is already added to this project.
+    #
+    # This checks both the build and installed target lists.
+    #
+    # :param self: CMaizeProject object.
+    # :type self: CMaizeProject
+    # :param _ct_found: Return variable for if the target was found.
+    # :type _ct_found: bool*
+    # :param _ct_tgt: Target to search for.
+    # :type _ct_tgt: Target
+    #
+    # :returns: Target found (TRUE) or not (FALSE).
+    # :rtype: bool
+    #]]
+    cpp_member(_check_target CMaizeProject desc Target)
+    function("${_check_target}" self  _ct_found _ct_tgt)
+
+        Target(target "${_ct_tgt}" _ct_tgt_name)
+
+        # Search each list of targets in the project
+        foreach(_ct_tgt_list_i "build_targets" "installed_targets")
+            CMaizeProject(GET "${self}" _ct_tgt_list ${_ct_tgt_list_i})
+
+            # Search the list for a target with a matching name
+            foreach(_ct_tgt_i ${_ct_tgt_list})
+                Target(target "${_ct_tgt_i}" _ct_tgt_i_name)
+                
+                # Exit early if a target with the same name is found
+                if("${_ct_tgt_name}" STREQUAL "${_ct_tgt_i_name}")
+                    set("${_ct_found}" TRUE)
+                    cpp_return("${_ct_found}")
+                endif()
+            endforeach()
+        endforeach()
+
+        # Target was not found
+        set("${_ct_found}" FALSE)
+        cpp_return("${_ct_found}")
 
     endfunction()
 

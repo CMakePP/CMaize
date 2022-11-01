@@ -96,10 +96,10 @@ function("${test_project}")
     function("${test_add_target}")
         include(cmaize/targets/build_target)
 
-        ct_add_section(NAME "single_target")
-        function("${single_target}")
+        ct_add_section(NAME "build_target")
+        function("${build_target}")
 
-            set(proj_name "test_project_test_add_target_single_target")
+            set(proj_name "test_project_test_add_target_build_target")
             set(tgt_name "${proj_name}_tgt")
 
             project("${proj_name}")
@@ -113,11 +113,40 @@ function("${test_project}")
             # Add a target
             CMaizeProject(add_target "${proj_obj}" "${tgt_obj}")
 
-            CMaizeProject(GET "${proj_obj}" tgt_list targets)
+            CMaizeProject(GET "${proj_obj}" tgt_list build_targets)
 
             # Make sure there is an element in the targets list
             list(LENGTH tgt_list tgt_list_len)
             ct_assert_equal(tgt_list_len 1)
+
+        endfunction()
+
+        ct_add_section(NAME "installed_target")
+        function("${installed_target}")
+
+            set(proj_name "test_project_test_add_target_installed_target")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            InstalledTarget(CTOR tgt_obj "${tgt_name}")
+
+            CMaizeProject(GET "${proj_obj}" tmp_name name)        
+
+            # Add a target
+            CMaizeProject(add_target "${proj_obj}" "${tgt_obj}" INSTALLED)
+
+            CMaizeProject(GET "${proj_obj}" build_tgt_list build_targets)
+            CMaizeProject(GET "${proj_obj}" installed_tgt_list installed_targets)
+
+            # Make sure there is an element in the targets list
+            list(LENGTH build_tgt_list build_tgt_list_len)
+            ct_assert_equal(build_tgt_list_len 0)
+
+            list(LENGTH installed_tgt_list installed_tgt_list_len)
+            ct_assert_equal(installed_tgt_list_len 1)
 
         endfunction()
 
@@ -131,19 +160,25 @@ function("${test_project}")
 
             CMaizeProject(CTOR proj_obj "${proj_name}")
 
-            BuildTarget(CTOR tgt_obj "${tgt_name}")
+            BuildTarget(CTOR build_tgt_obj "${tgt_name}")
+            InstalledTarget(CTOR installed_tgt_obj "${tgt_name}")
 
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
-            # Duplicate target should not be successfully added
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj}")
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj}")
+            # Duplicate targets should not be successfully added
+            CMaizeProject(add_target "${proj_obj}" "${build_tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${build_tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${installed_tgt_obj}" INSTALLED)
 
-            CMaizeProject(GET "${proj_obj}" tgt_list targets)
+            CMaizeProject(GET "${proj_obj}" build_tgt_list build_targets)
+            CMaizeProject(GET "${proj_obj}" installed_tgt_list installed_targets)
 
             # Make sure there is an element in the targets list
-            list(LENGTH tgt_list tgt_list_len)
-            ct_assert_equal(tgt_list_len 1)
+            list(LENGTH build_tgt_list build_tgt_list_len)
+            ct_assert_equal(build_tgt_list_len 1)
+
+            list(LENGTH installed_tgt_list installed_tgt_list_len)
+            ct_assert_equal(installed_tgt_list_len 0)
 
         endfunction()
 
@@ -170,9 +205,10 @@ function("${test_project}")
             # Duplicate target should not be successfully added
             CMaizeProject(add_target "${proj_obj}" "${tgt_obj_1}")
 
-            CMaizeProject(GET "${proj_obj}" tgt_list targets)
+            CMaizeProject(GET "${proj_obj}" tgt_list build_targets)
 
-            # Make sure there is an element in the targets list
+            # Make sure there are the corrent number of elements in
+            # the targets list
             list(LENGTH tgt_list tgt_list_len)
             ct_assert_equal(tgt_list_len 3)
 
@@ -182,6 +218,31 @@ function("${test_project}")
 
     ct_add_section(NAME "test_add_language")
     function("${test_add_language}")
+
+        ct_add_section(NAME "duplicate_languages")
+        function("${duplicate_languages}")
+
+            set(proj_name "test_project_test_add_language_duplicate_languages")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")  
+
+            # Add two distinct languages
+            CMaizeProject(add_language "${proj_obj}" C)
+            CMaizeProject(add_language "${proj_obj}" C)
+
+            CMaizeProject(GET "${proj_obj}" lang_list languages)
+
+            # Make sure there is an element in the languages list
+            list(LENGTH lang_list lang_list_len)
+            ct_assert_equal(lang_list_len 1)
+
+            # Test that the list contents are correct
+            ct_assert_equal(lang_list "C")
+
+        endfunction()
 
         ct_add_section(NAME "multiple_languages")
         function("${multiple_languages}")
