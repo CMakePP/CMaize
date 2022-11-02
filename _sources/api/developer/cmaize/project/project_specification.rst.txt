@@ -1,9 +1,9 @@
 
-##################################################
-cmaize.project_specification/project_specification
-##################################################
+####################################
+cmaize.project/project_specification
+####################################
 
-.. module:: cmaize.project_specification/project_specification
+.. module:: cmaize.project/project_specification
 
 
 .. py:class:: ProjectSpecification

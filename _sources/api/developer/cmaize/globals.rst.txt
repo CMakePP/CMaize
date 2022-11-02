@@ -6,16 +6,6 @@ cmaize.globals
 .. module:: cmaize.globals
 
 
-.. data:: CMAIZE_SUPPORTED_LANGUAGES
-
-   Languages supported by CMaize.
-   
-
-   :Default value: CXX
-
-   :type: str
-
-
 .. data:: CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
 
    File extensions for CXX header files. This is the counterpart to
@@ -25,4 +15,24 @@ cmaize.globals
    :Default value: H h HPP hpp HXX hxx HH hh
 
    :type: list
+
+
+.. data:: CMAIZE_PROJECT
+
+   Current CMaize project.
+   
+
+   :Default value: 
+
+   :type: str
+
+
+.. data:: CMAIZE_SUPPORTED_LANGUAGES
+
+   Languages supported by CMaize.
+   
+
+   :Default value: CXX
+
+   :type: str
 

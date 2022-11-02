@@ -44,7 +44,7 @@ cmaize.user_api/add_library
    
 
 
-.. function:: cmaize_add_cxx_library(_cacl_tgt_name)
+.. function:: cmaize_add_cxx_library(_cacl_tgt_obj _cacl_tgt_name)
 
    User function to build a CXX library target.
    
@@ -53,11 +53,16 @@ cmaize.user_api/add_library
       See ``CXXTarget(make_target`` documentation for additional optional
       arguments.
    
+   :param _cacl_tgt_obj: Returned target object created.
+   :type _cacl_tgt_obj: BuildTarget
    :param _cal_tgt_name: Name of the target to be created.
    :type _cal_tgt_name: desc
    :param SOURCE_DIR: Directory containing source code.
    :type SOURCE_DIR: path, optional
    :param INCLUDE_DIRS: Directories containing files to include.
    :type INCLUDE_DIRS: path, optional
+   
+   :returns: CXX library target object.
+   :rtype: BuildTarget
    
 

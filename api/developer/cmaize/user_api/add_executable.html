@@ -50,14 +50,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../project_specification/index.html">cmaize.project_specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../targets/index.html">cmaize.targets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.user_api</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.user_api/add_executable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a></li>
 <li class="toctree-l4"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_api.html">cmaize.user_api/user_api</a></li>
 </ul>
 </li>
@@ -84,11 +86,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">API</a> &raquo;</li>
-          <li><a href="../index.html">cmaize</a> &raquo;</li>
-          <li><a href="index.html">cmaize.user_api</a> &raquo;</li>
-      <li>cmaize.user_api/add_executable</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
+          <li class="breadcrumb-item"><a href="index.html">cmaize.user_api</a></li>
+      <li class="breadcrumb-item active">cmaize.user_api/add_executable</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/api/developer/cmaize/user_api/add_executable.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -145,7 +147,7 @@ are listed in the <code class="docutils literal notranslate"><span class="pre">C
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.user_api-add_executable.cmaize_add_cxx_executable">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_cxx_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cace_tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cmaize_add_cxx_executable" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_cxx_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cace_tgt_obj</span> <span class="pre">_cace_tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cmaize_add_cxx_executable" title="Permalink to this definition"></a></dt>
 <dd><p>User function to build a CXX executable target.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -155,6 +157,7 @@ arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>_cace_tgt_obj</strong> (<a class="reference internal" href="../targets/build_target.html#cmaize.targets-build_target.BuildTarget" title="cmaize.targets/build_target.BuildTarget"><em>BuildTarget</em></a>) – Returned target object created.</p></li>
 <li><p><strong>_cace_tgt_name</strong> (<em>desc</em>) – Name of the target to be created.</p></li>
 <li><p><strong>SOURCE_DIR</strong> (<em>path</em><em>, </em><em>optional</em>) – Directory containing source code.</p></li>
 <li><p><strong>INCLUDE_DIRS</strong> (<em>List</em><em>[</em><em>path</em><em>]</em><em>, </em><em>optional</em>) – Directories containing files to include.</p></li>
@@ -163,6 +166,12 @@ to the value of <code class="docutils literal notranslate"><span class="pre">CMA
 <li><p><strong>INCLUDE_EXTS</strong> (<em>List</em><em>[</em><em>desc</em><em>]</em><em>, </em><em>optional</em>) – Include file extensions (exclude the dot), defaults
 to the value of <code class="docutils literal notranslate"><span class="pre">CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS</span></code>.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>CXX executable target object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="../targets/build_target.html#cmaize.targets-build_target.BuildTarget" title="cmaize.targets/build_target.BuildTarget">BuildTarget</a></p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,0 +1,7 @@
+
+#######################
+cmaize.project/projects
+#######################
+
+.. module:: cmaize.project/projects
+

@@ -50,8 +50,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../project_specification/index.html">cmaize.project_specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../targets/index.html">cmaize.targets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">cmaize.user_api</a></li>
@@ -83,11 +84,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">API</a> &raquo;</li>
-          <li><a href="../index.html">cmaize</a> &raquo;</li>
-          <li><a href="index.html">cmaize.utilities</a> &raquo;</li>
-      <li>cmaize.utilities/split_version</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
+          <li class="breadcrumb-item"><a href="index.html">cmaize.utilities</a></li>
+      <li class="breadcrumb-item active">cmaize.utilities/split_version</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/api/developer/cmaize/utilities/split_version.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -107,36 +108,36 @@ may be blank.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>major</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Returned first component of the version.</p></li>
-<li><p><strong>minor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Returned second component of the version.</p></li>
-<li><p><strong>patch</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Returned third component of the version.</p></li>
-<li><p><strong>tweak</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Returned fourth component of the version.</p></li>
-<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Version string to be separated into components.</p></li>
+<li><p><strong>major</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned first component of the version.</p></li>
+<li><p><strong>minor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned second component of the version.</p></li>
+<li><p><strong>patch</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned third component of the version.</p></li>
+<li><p><strong>tweak</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned fourth component of the version.</p></li>
+<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Version string to be separated into components.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">major</span></code> will be set to the first component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">minor</span></code> will be set to the second component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">patch</span></code> will be set to the third component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">tweak</span></code> will be set to the fourth component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>

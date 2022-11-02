@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cmaize.globals &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>cmaize.cmaize_impl &mdash; CMaize 1.0.0alpha documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="cmaize.project" href="project/index.html" />
-    <link rel="prev" title="cmaize.cmaize_impl" href="cmaize_impl.html" /> 
+    <link rel="next" title="cmaize.globals" href="globals.html" />
+    <link rel="prev" title="cmaize.cmaize" href="cmaize.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,13 +50,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="cmaize.html">cmaize.cmaize</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cmaize_impl.html">cmaize.cmaize_impl</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cmaize.globals</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cmaize.globals.CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS"><code class="docutils literal notranslate"><span class="pre">CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cmaize.globals.CMAIZE_PROJECT"><code class="docutils literal notranslate"><span class="pre">CMAIZE_PROJECT</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cmaize.globals.CMAIZE_SUPPORTED_LANGUAGES"><code class="docutils literal notranslate"><span class="pre">CMAIZE_SUPPORTED_LANGUAGES</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cmaize.cmaize_impl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="globals.html">cmaize.globals</a></li>
 <li class="toctree-l3"><a class="reference internal" href="project/index.html">cmaize.project</a></li>
 <li class="toctree-l3"><a class="reference internal" href="targets/index.html">cmaize.targets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="toolchain/index.html">cmaize.toolchain</a></li>
@@ -87,9 +82,9 @@
       <li><a href="../../../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">API</a></li>
           <li class="breadcrumb-item"><a href="index.html">cmaize</a></li>
-      <li class="breadcrumb-item active">cmaize.globals</li>
+      <li class="breadcrumb-item active">cmaize.cmaize_impl</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../_sources/api/developer/cmaize/globals.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/api/developer/cmaize/cmaize_impl.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -97,58 +92,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-cmaize.globals">
-<span id="cmaize-globals"></span><h1>cmaize.globals<a class="headerlink" href="#module-cmaize.globals" title="Permalink to this heading"></a></h1>
-<dl class="py data">
-<dt class="sig sig-object py" id="cmaize.globals.CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS">
-<span class="sig-prename descclassname"><span class="pre">cmaize.globals.</span></span><span class="sig-name descname"><span class="pre">CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS</span></span><a class="headerlink" href="#cmaize.globals.CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS" title="Permalink to this definition"></a></dt>
-<dd><p>File extensions for CXX header files. This is the counterpart to
-<code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_SOURCE_FILE_EXTENSIONS</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default value</dt>
-<dd class="field-odd"><p>H h HPP hpp HXX hxx HH hh</p>
-</dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="cmaize.globals.CMAIZE_PROJECT">
-<span class="sig-prename descclassname"><span class="pre">cmaize.globals.</span></span><span class="sig-name descname"><span class="pre">CMAIZE_PROJECT</span></span><a class="headerlink" href="#cmaize.globals.CMAIZE_PROJECT" title="Permalink to this definition"></a></dt>
-<dd><p>Current CMaize project.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default value</dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="cmaize.globals.CMAIZE_SUPPORTED_LANGUAGES">
-<span class="sig-prename descclassname"><span class="pre">cmaize.globals.</span></span><span class="sig-name descname"><span class="pre">CMAIZE_SUPPORTED_LANGUAGES</span></span><a class="headerlink" href="#cmaize.globals.CMAIZE_SUPPORTED_LANGUAGES" title="Permalink to this definition"></a></dt>
-<dd><p>Languages supported by CMaize.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default value</dt>
-<dd class="field-odd"><p>CXX</p>
-</dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="module-cmaize.cmaize_impl">
+<span id="cmaize-cmaize-impl"></span><h1>cmaize.cmaize_impl<a class="headerlink" href="#module-cmaize.cmaize_impl" title="Permalink to this heading"></a></h1>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cmaize_impl.html" class="btn btn-neutral float-left" title="cmaize.cmaize_impl" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="project/index.html" class="btn btn-neutral float-right" title="cmaize.project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cmaize.html" class="btn btn-neutral float-left" title="cmaize.cmaize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="globals.html" class="btn btn-neutral float-right" title="cmaize.globals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

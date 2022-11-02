@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cmaize.user_api &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>cmaize.project/projects &mdash; CMaize 1.0.0alpha documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="cmaize.user_api/add_executable" href="add_executable.html" />
-    <link rel="prev" title="cmaize.toolchain/toolchain" href="../toolchain/toolchain.html" /> 
+    <link rel="next" title="cmaize.targets" href="../targets/index.html" />
+    <link rel="prev" title="cmaize.project/project_specification" href="project_specification.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,17 +52,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../targets/index.html">cmaize.targets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cmaize.user_api</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="add_executable.html">cmaize.user_api/add_executable</a></li>
-<li class="toctree-l4"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a></li>
-<li class="toctree-l4"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a></li>
-<li class="toctree-l4"><a class="reference internal" href="user_api.html">cmaize.user_api/user_api</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.project</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="project.html">cmaize.project/project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="project_specification.html">cmaize.project/project_specification</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.project/projects</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../targets/index.html">cmaize.targets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">cmaize.user_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">cmaize.utilities</a></li>
 </ul>
 </li>
@@ -89,9 +87,10 @@
       <li><a href="../../../../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
           <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
-      <li class="breadcrumb-item active">cmaize.user_api</li>
+          <li class="breadcrumb-item"><a href="index.html">cmaize.project</a></li>
+      <li class="breadcrumb-item active">cmaize.project/projects</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../../_sources/api/developer/cmaize/user_api/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/api/developer/cmaize/project/projects.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -99,42 +98,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cmaize-user-api">
-<h1>cmaize.user_api<a class="headerlink" href="#cmaize-user-api" title="Permalink to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="add_executable.html">cmaize.user_api/add_executable</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="add_executable.html#cmaize.user_api-add_executable.cpp_add_executable"><code class="docutils literal notranslate"><span class="pre">cpp_add_executable()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="add_executable.html#cmaize.user_api-add_executable.cmaize_add_executable"><code class="docutils literal notranslate"><span class="pre">cmaize_add_executable()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="add_executable.html#cmaize.user_api-add_executable.cmaize_add_cxx_executable"><code class="docutils literal notranslate"><span class="pre">cmaize_add_cxx_executable()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="add_library.html#cmaize.user_api-add_library.cpp_add_library"><code class="docutils literal notranslate"><span class="pre">cpp_add_library()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="add_library.html#cmaize.user_api-add_library.cmaize_add_library"><code class="docutils literal notranslate"><span class="pre">cmaize_add_library()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="add_library.html#cmaize.user_api-add_library.cmaize_add_cxx_library"><code class="docutils literal notranslate"><span class="pre">cmaize_add_cxx_library()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="add_tests.html#cmaize.user_api-add_tests.cpp_add_tests"><code class="docutils literal notranslate"><span class="pre">cpp_add_tests()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="add_tests.html#cmaize.user_api-add_tests.cmaize_add_tests"><code class="docutils literal notranslate"><span class="pre">cmaize_add_tests()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cmaize_project.html#cmaize.user_api-cmaize_project.cmaize_project"><code class="docutils literal notranslate"><span class="pre">cmaize_project()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="user_api.html">cmaize.user_api/user_api</a></li>
-</ul>
-</div>
+  <section id="module-cmaize.project-projects">
+<span id="cmaize-project-projects"></span><h1>cmaize.project/projects<a class="headerlink" href="#module-cmaize.project-projects" title="Permalink to this heading"></a></h1>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../toolchain/toolchain.html" class="btn btn-neutral float-left" title="cmaize.toolchain/toolchain" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="add_executable.html" class="btn btn-neutral float-right" title="cmaize.user_api/add_executable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="project_specification.html" class="btn btn-neutral float-left" title="cmaize.project/project_specification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../targets/index.html" class="btn btn-neutral float-right" title="cmaize.targets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,0 +1,12 @@
+
+##############
+cmaize.project
+##############
+
+.. toctree:: 
+   :maxdepth: 2
+
+   project
+   project_specification
+   projects
+

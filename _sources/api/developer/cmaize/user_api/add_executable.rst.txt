@@ -44,7 +44,7 @@ cmaize.user_api/add_executable
    
 
 
-.. function:: cmaize_add_cxx_executable(_cace_tgt_name)
+.. function:: cmaize_add_cxx_executable(_cace_tgt_obj _cace_tgt_name)
 
    User function to build a CXX executable target.
    
@@ -53,6 +53,8 @@ cmaize.user_api/add_executable
       See ``CXXTarget(make_target`` documentation for additional optional
       arguments.
    
+   :param _cace_tgt_obj: Returned target object created.
+   :type _cace_tgt_obj: BuildTarget
    :param _cace_tgt_name: Name of the target to be created.
    :type _cace_tgt_name: desc
    :param SOURCE_DIR: Directory containing source code.
@@ -65,5 +67,8 @@ cmaize.user_api/add_executable
    :param INCLUDE_EXTS: Include file extensions (exclude the dot), defaults
                         to the value of ``CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS``.
    :type INCLUDE_EXTS: List[desc], optional
+   
+   :returns: CXX executable target object.
+   :rtype: BuildTarget
    
 

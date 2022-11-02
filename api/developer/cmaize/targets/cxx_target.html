@@ -50,8 +50,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../project_specification/index.html">cmaize.project_specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.targets</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="build_target.html">cmaize.targets/build_target</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_executable.html">cmaize.targets/cxx_executable</a></li>
@@ -88,11 +89,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">API</a> &raquo;</li>
-          <li><a href="../index.html">cmaize</a> &raquo;</li>
-          <li><a href="index.html">cmaize.targets</a> &raquo;</li>
-      <li>cmaize.targets/cxx_target</li>
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
+          <li class="breadcrumb-item"><a href="index.html">cmaize.targets</a></li>
+      <li class="breadcrumb-item active">cmaize.targets/cxx_target</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../../_sources/api/developer/cmaize/targets/cxx_target.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -126,7 +127,7 @@
 <li><p><strong>INCLUDE_DIRS</strong> (<em>List</em><em>[</em><em>path</em><em>]</em><em>, </em><em>optional</em>) – Directories containing files to include.</p></li>
 <li><p><strong>SOURCES</strong> (<em>List</em><em>[</em><em>path</em><em>]</em><em>, </em><em>optional</em>) – Source code files.</p></li>
 <li><p><strong>INCLUDES</strong> (<em>List</em><em>[</em><em>path</em><em>]</em><em>, </em><em>optional</em>) – Include files.</p></li>
-<li><p><strong>CXX_STANDARD</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a><em>, </em><em>optional</em>) – CXX standard number. For example, to set the
+<li><p><strong>CXX_STANDARD</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>optional</em>) – CXX standard number. For example, to set the
 standard to <code class="docutils literal notranslate"><span class="pre">cxx_std_98</span></code>, only provide <code class="docutils literal notranslate"><span class="pre">98</span></code>.</p></li>
 <li><p><strong>DEPENDS</strong> (<em>List</em><em>[</em><em>desc</em><em>]</em><em>, </em><em>optional</em>) – Dependency target names.</p></li>
 </ul>
@@ -150,7 +151,7 @@ private).</p>
 <dd class="field-even"><p>CMake access level of the target.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -225,7 +226,7 @@ accessor so they are not propogated.</p>
 <span class="sig-name descname"><span class="pre">cxx_standard</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;${CMAKE_CXX_STANDARD}&quot;</span></em><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.cxx_standard" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
 </dd>
 </dl>
 <p>CXX standard to use. For a given C++ standard designation, denoted as
