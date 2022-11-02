@@ -26,8 +26,8 @@ function("${test_cmake_package_manager}")
     ct_add_section(NAME "can_add_multiple_paths")
     function("${can_add_multiple_paths}")
 
-        ct_add_section(NAME "without_duplicates")
-        function("${without_duplicates}")
+        ct_add_section(NAME "as_separate_elements")
+        function("${as_separate_elements}")
 
             list(APPEND corr "/some/path")
             list(APPEND corr "/another/path")
@@ -36,7 +36,31 @@ function("${test_cmake_package_manager}")
 
             CMakePackageManager(add_paths
                 "${pm_obj}"
-                "/some/path;/another/path"
+                "/some/path" "/another/path"
+            )
+
+            CMakePackageManager(GET "${pm_obj}" _search_paths search_paths)
+
+            ct_assert_equal(corr "${_search_paths}")
+
+        endfunction()
+
+        ct_add_section(NAME "with_mixed_list_and_elements")
+        function("${with_mixed_list_and_elements}")
+
+            list(APPEND corr "/some/path")
+            list(APPEND corr "/another/path")
+            list(APPEND corr "/a/third/path")
+
+            list(APPEND test "/some/path")
+            list(APPEND test "/another/path")
+
+            CMakePackageManager(CTOR pm_obj)
+
+            CMakePackageManager(add_paths
+                "${pm_obj}"
+                "${test}"
+                "/a/third/path"
             )
 
             CMakePackageManager(GET "${pm_obj}" _search_paths search_paths)
