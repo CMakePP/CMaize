@@ -9,14 +9,16 @@ include(cmakepp_lang/cmakepp_lang)
 #]]
 function(cmaize_add_package _cap_tgt_name)
 
-    set(_cal_options INCLUDE_DIR)
-    set(_cal_lists INCLUDE_DIRS)
-    cmake_parse_arguments(_cal "" "${_cal_options}" "${_cal_lists}" ${ARGN})
+    message("-- DEBUG: Registering install pacakge: ${_cap_tgt_name}")
+
+    # set(_cap_options INCLUDE_DIR)
+    # set(_cap_lists INCLUDE_DIRS)
+    # cmake_parse_arguments(_cap "" "${_cap_options}" "${_cap_lists}" ${ARGN})
 
     cpp_get_global(_cap_proj CMAIZE_PROJECT_${PROJECT_NAME})
 
     CMaizeProject(GET "${_cap_proj}" _cap_pms package_managers)
-    CMaizeProject(GET "${_cap_proj}" tgt_list targets)
+    CMaizeProject(GET "${_cap_proj}" tgt_list build_targets)
 
     # TODO: Expand this to different package managers
     # TODO: Only use CMake package manager right now, but people could

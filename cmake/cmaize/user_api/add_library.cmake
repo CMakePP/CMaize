@@ -60,6 +60,8 @@ endfunction()
 #]]
 function(cmaize_add_library _cal_tgt_name)
 
+    message("-- DEBUG: Registering library target: ${_cal_tgt_name}")
+
     set(_cal_options LANGUAGE)
     cmake_parse_arguments(_cal "" "${_cal_options}" "" ${ARGN})
 

@@ -54,6 +54,8 @@ endmacro()
 #]]
 macro(cmaize_add_tests _cat_test_name)
 
+    message("-- DEBUG: Registering test target: ${_cat_test_name}")
+
     include(CTest)
     cmaize_add_executable("${_cat_test_name}" ${ARGN})
     add_test(NAME "${_cat_test_name}" COMMAND "${_cat_test_name}")
