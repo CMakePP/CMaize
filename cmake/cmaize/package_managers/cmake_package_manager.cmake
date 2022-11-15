@@ -151,10 +151,10 @@ cpp_class(CMakePackageManager PackageManager)
             )
         endforeach()
 
-        install(
-            DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/_deps"
-            DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
-        )
+        # install(
+        #     DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/_deps"
+        #     DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
+        # )
 
         # Writes config file to build directory
         CMakePackageManager(_generate_config "${self}" "${_ip_target}")
