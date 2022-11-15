@@ -9,7 +9,7 @@ include(cmakepp_lang/cmakepp_lang)
 #]]
 function(cmaize_add_package _cap_tgt_name)
 
-    message("-- DEBUG: Registering install pacakge: ${_cap_tgt_name}")
+    message("-- DEBUG: Registering install package: ${_cap_tgt_name}")
 
     set(_cap_options PACKAGE_MANAGER)
     cmake_parse_arguments(_cap "" "${_cap_options}" "" ${ARGN})

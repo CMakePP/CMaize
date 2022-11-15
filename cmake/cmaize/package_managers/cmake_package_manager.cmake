@@ -200,7 +200,15 @@ cpp_class(CMakePackageManager PackageManager)
 
     endfunction()
 
-    # NOTE: https://www.f-ax.de/dev/2020/10/07/cmake-config-package.html
+    #[[[
+    # Generate a package config file for the given target. This function
+    # writes the package config file into the ``CMAKE_CURRENT_BINARY_DIR``.
+    #
+    # :param self: CMakePackageManager object
+    # :type self: CMakePackageManager
+    # :param _gc_target: Target to install
+    # :type _gc_target: BuildTarget*
+    #]]
     cpp_member(_generate_config CMakePackageManager BuildTarget)
     function("${_generate_config}" self _gc_target)
 
