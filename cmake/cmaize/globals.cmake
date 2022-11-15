@@ -31,3 +31,11 @@ set(
     CMAIZE_SUPPORTED_LANGUAGES
     CXX
 )
+
+#[[[
+# Package manager options supported by CMaize.
+#]]
+set(
+    CMAIZE_SUPPORTED_PACKAGE_MANAGERS
+    CMake
+)
