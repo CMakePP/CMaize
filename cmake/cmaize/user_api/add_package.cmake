@@ -11,9 +11,8 @@ function(cmaize_add_package _cap_tgt_name)
 
     message("-- DEBUG: Registering install pacakge: ${_cap_tgt_name}")
 
-    # set(_cap_options INCLUDE_DIR)
-    # set(_cap_lists INCLUDE_DIRS)
-    # cmake_parse_arguments(_cap "" "${_cap_options}" "${_cap_lists}" ${ARGN})
+    set(_cap_options PACKAGE_MANAGER)
+    cmake_parse_arguments(_cap "" "${_cap_options}" "" ${ARGN})
 
     cpp_get_global(_cap_proj CMAIZE_PROJECT_${PROJECT_NAME})
 
