@@ -8,6 +8,19 @@ function("${test_cmake_package_manager}")
     include(cmaize/package_managers/cmake_package_manager)
     include(cmaize/project/project_specification)
 
+    ct_add_section(NAME "type_is_cmake")
+    function("${type_is_cmake}")
+
+        set(corr "CMake")
+
+        CMakePackageManager(CTOR pm_obj)
+
+        CMakePackageManager(GET "${pm_obj}" _type type)
+
+        ct_assert_equal(corr "${_type}")
+
+    endfunction()
+
     ct_add_section(NAME "can_add_single_path")
     function("${can_add_single_path}")
 

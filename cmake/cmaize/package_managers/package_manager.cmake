@@ -8,6 +8,13 @@ include(cmaize/targets/target)
 cpp_class(PackageManager)
 
     #[[[
+    # :type: desc
+    #
+    # Type of package manager being used.
+    #]]
+    cpp_attr(PackageManager type)
+
+    #[[[
     # Virtual member to check if the package exists in the package manager.
     #]]
     cpp_member(has_package PackageManager bool ProjectSpecification)

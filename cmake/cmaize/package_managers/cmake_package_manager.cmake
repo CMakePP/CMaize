@@ -20,6 +20,19 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_attr(CMakePackageManager search_paths)
 
     #[[[
+    # Default constructor of CMakePackageManager.
+    #
+    # :param self: The constructed object.
+    # :type self: CMakePackageManager
+    #]]
+    cpp_constructor(CTOR CMakePackageManager)
+    function("${CTOR}" self)
+
+        PackageManager(SET "${self}" type "CMake")
+
+    endfunction()
+
+    #[[[
     # Adds new search paths for the package manager.
     #
     # These paths are stored in the ``search_paths`` attribute. Duplicate
