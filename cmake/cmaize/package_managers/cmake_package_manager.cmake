@@ -49,7 +49,8 @@ cpp_class(CMakePackageManager PackageManager)
     endfunction()
 
     #[[[
-    # Virtual member to check if the package exists in the package manager.
+    # Checks if the package can be found on the system using CMake's
+    # ``find_package``.
     #
     # :param self: CMakePackageManager object
     # :type self: CMakePackageManager
@@ -80,10 +81,13 @@ cpp_class(CMakePackageManager PackageManager)
         endif()
 
         # Join the list with spaces so separate arguments are parsed properly
-        list(JOIN _hp_arg_list " " _hp_arg_list)
+        list(JOIN _hp_arg_list " " _hp_args)
 
-        # Effectively ``find_package("${_hp_arg_list}")``
-        cmake_language(EVAL CODE "find_package(${_hp_arg_list})")
+        # Effectively ``find_package("${_hp_args}")``.
+        # ``cmake_language(EVAL CODE`` allows ``${_hp_args}`` to be
+        # expanded and used as separate arguments to ``find_package``,
+        # instead of being parsed as a single, string argument
+        cmake_language(EVAL CODE "find_package(${_hp_args})")
 
         # The bool result can be based on <PackageName>_FOUND result from
         # ``find_package``
@@ -93,9 +97,20 @@ cpp_class(CMakePackageManager PackageManager)
     endfunction()
 
     #[[[
-    # Virtual member function to get the package using the package manager.
+    # Get the requested package if it is installed. This is currently mostly
+    # unimplemented and should not yet be used.
+    #
+    # :param self: CMakePackageManager object
+    # :type self: CMakePackageManager
+    # :param _gp_result_target: Resulting target object return variable
+    # :type _gp_result_target: InstalledTarget*
+    # :param _gp_proj_specs: Specifications for the package to build.
+    # :type _gp_proj_specs: ProjectSpecification
+    #
+    # :returns: Resulting target from the package manager
+    # :rtype: InstalledTarget
     #]]
-    cpp_member(get_package CMakePackageManager InstalledTarget ProjectSpecification)
+    cpp_member(get_package CMakePackageManager str ProjectSpecification)
     function("${get_package}" self _gp_result_target _gp_proj_specs)
 
         CMakePackageManager(has_package _gp_has_package "${_gp_proj_specs}")
@@ -110,7 +125,19 @@ cpp_class(CMakePackageManager PackageManager)
     endfunction()
 
     #[[[
-    # Virtual member to install a package.
+    # Install a given target in the project.
+    #
+    # :param self: CMakePackageManager object
+    # :type self: CMakePackageManager
+    # :param _ip_target: Target to install
+    # :type _ip_target: BuildTarget*
+    #
+    # :Keyword Arguments:
+    #    * **NAMESPACE** (*desc*) --
+    #      Namespace to prepend to the target name. Include the delimiter when
+    #      providing a namespace (for example, give "MyNamespace::", not just
+    #      "MyNamespace"). If no namespace is given, "${PROJECT_NAME}::" is
+    #      used.
     #]]
     cpp_member(install_package CMakePackageManager BuildTarget args)
     function("${install_package}" self _ip_target)
@@ -121,7 +148,7 @@ cpp_class(CMakePackageManager PackageManager)
         Target(target "${_ip_target}" _ip_tgt_name)
 
         if("${_ip_NAMESPACE}" STREQUAL "")
-            set(_ip_NAMESPACE "${_ip_tgt_name}::")
+            set(_ip_NAMESPACE "${PROJECT_NAME}::")
         endif()
 
         # Generate <target>Config.cmake
@@ -129,10 +156,10 @@ cpp_class(CMakePackageManager PackageManager)
         install(
             TARGETS "${_ip_tgt_name}"
             EXPORT "${_ip_tgt_name}_targets"
-            RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}"
-            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
-            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}"
-            # PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
+            RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/${_ip_tgt_name}"
+            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_ip_tgt_name}"
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_ip_tgt_name}"
+            # PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_ip_tgt_name}"
         )
         install(
             EXPORT ${_ip_tgt_name}_targets
