@@ -73,9 +73,7 @@ function(cmaize_add_package_cmake _capc_tgt_name)
 endfunction()
 
 #[[[
-# Get an existing package manager from the current project, or create a new
-# package manager if one does not exist. This new package manager instance
-# is added to the current project.
+# Get an existing package manager from the current project.
 #
 # :param _gpm_return_pm: Return variable for the package manager
 # :type _gpm_return_pm: PackageManager*
@@ -84,7 +82,8 @@ endfunction()
 #                   ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS``.
 # :type _gpm_name: desc
 #
-# :returns: Package manager of the requested type.
+# :returns: Package manager of the requested type. Will be empty if one
+#           was not found.
 # :rtype: PackageManager
 #]]
 function(get_package_manager _gpm_return_pm _gpm_type)
