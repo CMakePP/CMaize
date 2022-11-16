@@ -272,4 +272,83 @@ function("${test_project}")
 
     endfunction()
 
+    ct_add_section(NAME "test_add_package_manager")
+    function("${test_add_package_manager}")
+        include(cmaize/package_managers/package_managers)
+
+        ct_add_section(NAME "single_package_manager")
+        function("${single_package_manager}")
+
+            set(proj_name "test_project_test_add_package_manager_single_package_manager")
+            set(pm_name "${proj_name}_pm")
+
+            project("${proj_name}")
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            CMakePackageManager(CTOR pm_obj)
+
+            # Try to add a package manager
+            CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj}")
+
+            CMaizeProject(GET "${proj_obj}" pm_list package_managers)
+
+            # Make sure there is an element in the package_managers list
+            list(LENGTH pm_list pm_list_len)
+            ct_assert_equal(pm_list_len 1)
+
+        endfunction()
+
+        ct_add_section(NAME "duplicate_package_manager")
+        function("${duplicate_package_manager}")
+
+            set(proj_name "test_project_test_add_package_manager_duplicate_package_manager")
+            set(pm_name "${proj_name}_pm")
+
+            project("${proj_name}")
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            CMakePackageManager(CTOR pm_obj)
+
+            # Try to add a package manager
+            CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj}")
+            # This should not add the object again
+            CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj}")
+
+            CMaizeProject(GET "${proj_obj}" pm_list package_managers)
+
+            # Make sure there is an element in the package_managers list
+            list(LENGTH pm_list pm_list_len)
+            ct_assert_equal(pm_list_len 1)
+
+        endfunction()
+
+        ct_add_section(NAME "multiple_package_managers")
+        function("${multiple_package_managers}")
+
+            set(proj_name "test_project_test_add_package_manager_multiple_package_managers")
+            set(pm_name "${proj_name}_pm")
+
+            project("${proj_name}")
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            CMakePackageManager(CTOR pm_obj_1)
+            PackageManager(CTOR pm_obj_2)
+
+            # Try to add a package manager
+            CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj_1}")
+            # This should not add the object again
+            CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj_1}")
+            # The different package manager should get added
+            CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj_2}")
+
+            CMaizeProject(GET "${proj_obj}" pm_list package_managers)
+
+            # Make sure there is an element in the package_managers list
+            list(LENGTH pm_list pm_list_len)
+            ct_assert_equal(pm_list_len 2)
+
+        endfunction()
+
+    endfunction()
+
 endfunction()
