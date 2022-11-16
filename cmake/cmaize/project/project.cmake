@@ -234,19 +234,18 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
-        #[[[
-    # Checks if a target with the same name is already added to this project.
-    #
-    # This checks both the build and installed target lists.
+    #[[[
+    # Checks if a package manager with the same type is already added to
+    # this project.
     #
     # :param self: CMaizeProject object.
     # :type self: CMaizeProject
-    # :param _ct_found: Return variable for if the target was found.
-    # :type _ct_found: bool*
-    # :param _ct_tgt: Target to search for.
-    # :type _ct_tgt: Target
+    # :param cpm_found: Return variable for if the package manager was found.
+    # :type cpm_found: bool*
+    # :param cpm_tgt: Package manager to search for.
+    # :type cpm_tgt: Package manager
     #
-    # :returns: Target found (TRUE) or not (FALSE).
+    # :returns: Package manager found (TRUE) or not (FALSE).
     # :rtype: bool
     #]]
     cpp_member(check_package_manager CMaizeProject desc PackageManager)
