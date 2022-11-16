@@ -1,7 +1,9 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
-include(cmaize/targets/target)
+
+include(cmaize/package_managers/package_manager)
 include(cmaize/project/project_specification)
+include(cmaize/targets/target)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
