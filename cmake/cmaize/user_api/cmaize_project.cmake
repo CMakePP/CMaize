@@ -2,6 +2,7 @@ include_guard()
 
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/project/project)
+include(cmaize/package_managers/package_managers)
 
 #[[[
 # Creates a CMaize project and the underlying CMake project.
