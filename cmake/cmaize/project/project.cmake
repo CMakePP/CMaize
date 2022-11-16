@@ -171,6 +171,33 @@ cpp_class(CMaizeProject)
     endfunction()
 
     #[[[
+    # Add a package manager to the project. Duplicate package manager types
+    # will not be added.
+    #
+    # :param self: CMaizeProject object.
+    # :type self: CMaizeProject
+    # :param _apm_pm: Package manager object to be added.
+    # :type _apm_pm: Package manager
+    #]]
+    cpp_member(add_package_manager CMaizeProject PackageManager)
+    function("${add_package_manager}" self _apm_pm)
+
+        # Check if a package manager with the same type exists already
+        CMaizeProject(check_package_manager "${self}" _apm_found "${_apm_pm}")
+
+        # Package manager already exists, exit early
+        if(_apm_found)
+            cpp_return("")
+        endif()
+
+        # Add the package manager to the list
+        CMaizeProject(GET "${self}" _apm_pm_list package_managers)
+        list(APPEND _apm_pm_list "${_apm_pm}")
+        CMaizeProject(SET "${self}" package_managers "${_apm_pm_list}")
+
+    endfunction()
+
+    #[[[
     # Add a target to the project. Duplicate objects will be removed.
     #
     # :param self: CMaizeProject object.
@@ -189,14 +216,14 @@ cpp_class(CMaizeProject)
         set(_at_flags INSTALLED)
         cmake_parse_arguments(_at "${_at_flags}" "" "" ${ARGN})
 
-        # Default to CMake package manager if none were given
+        # Default to the build target list
         set(_at_tgt_attr "build_targets")
         if(_at_INSTALLED)
             set(_at_tgt_attr "installed_targets")
         endif()
 
         # Check if a Target with the same name exists already
-        CMaizeProject(_check_target "${self}" _at_found "${_at_target}")
+        CMaizeProject(check_target "${self}" _at_found "${_at_target}")
 
         # Add the target to the list if it doesn't already exist
         if(NOT _at_found)
@@ -204,6 +231,45 @@ cpp_class(CMaizeProject)
             list(APPEND _at_tgt_list "${_at_target}")        
             CMaizeProject(SET "${self}" ${_at_tgt_attr} "${_at_tgt_list}")
         endif()
+
+    endfunction()
+
+        #[[[
+    # Checks if a target with the same name is already added to this project.
+    #
+    # This checks both the build and installed target lists.
+    #
+    # :param self: CMaizeProject object.
+    # :type self: CMaizeProject
+    # :param _ct_found: Return variable for if the target was found.
+    # :type _ct_found: bool*
+    # :param _ct_tgt: Target to search for.
+    # :type _ct_tgt: Target
+    #
+    # :returns: Target found (TRUE) or not (FALSE).
+    # :rtype: bool
+    #]]
+    cpp_member(check_package_manager CMaizeProject desc PackageManager)
+    function("${check_package_manager}" self  _cpm_found _cpm_pm)
+
+        PackageManager(GET "${_cpm_pm}" _cpm_pm_type type)
+
+        CMaizeProject(GET "${self}" _cpm_pm_list package_managers)
+
+        # Search the list for a package manager with a matching type
+        foreach(_cpm_pm_i ${_cpm_pm_list})
+            PackageManager(GET "${_cpm_pm_i}" _cpm_pm_i_type type)
+            
+            # Exit early if a package manager with the same type is found
+            if("${_cpm_pm_type}" STREQUAL "${_cpm_pm_i_type}")
+                set("${_cpm_found}" TRUE)
+                cpp_return("${_cpm_found}")
+            endif()
+        endforeach()
+
+        # Package manager was not found
+        set("${_cpm_found}" FALSE)
+        cpp_return("${_cpm_found}")
 
     endfunction()
 
@@ -222,8 +288,8 @@ cpp_class(CMaizeProject)
     # :returns: Target found (TRUE) or not (FALSE).
     # :rtype: bool
     #]]
-    cpp_member(_check_target CMaizeProject desc Target)
-    function("${_check_target}" self  _ct_found _ct_tgt)
+    cpp_member(check_target CMaizeProject desc Target)
+    function("${check_target}" self  _ct_found _ct_tgt)
 
         Target(target "${_ct_tgt}" _ct_tgt_name)
 
