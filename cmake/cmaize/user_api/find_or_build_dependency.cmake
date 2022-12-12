@@ -4,7 +4,25 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/project/project)
 include(cmaize/package_managers/package_managers)
 
-# TODO: Add a compatability layer for the old cpp_find_or_build_dependency
+#[[[
+# Add a dependency to the project.
+#
+# .. warning::
+# 
+#    ``cpp_find_or_build_dependency()`` is depricated.
+#    ``cmaize_find_or_build_dependency()`` should be used to add a dependency
+#    to the project.
+#
+# :param _fobd_name: Name of the dependency.
+# :type _fobd_name: desc
+# :param **kwargs: Additional keyword arguments may be necessary.
+#]]
+function(cpp_find_or_build_dependency _fobd_name)
+
+    # Forward all arguments to the new API call
+    cmaize_find_or_build_dependency("${_fobd_name}" ${ARGN})
+
+endfunction()
 
 #[[[
 # Add a dependency to the project.
@@ -18,6 +36,7 @@ include(cmaize/package_managers/package_managers)
 #
 # :param _fobdc_name: Name of the dependency.
 # :type _fobdc_name: desc
+# :param **kwargs: Additional keyword arguments may be necessary.
 #
 # :Keyword Arguments:
 #    * **VERSION** (*desc*) --
@@ -65,7 +84,7 @@ endfunction()
 #
 # :param _fobdc_name: Name of the dependency to find or build.
 # :type _fobdc_name: desc
-# :param **kwargs: Optional keyword arguments.
+# :param **kwargs: Additional keyword arguments may be necessary.
 #]]
 function(cmaize_find_or_build_dependency_cmake _fobdc_name)
 
