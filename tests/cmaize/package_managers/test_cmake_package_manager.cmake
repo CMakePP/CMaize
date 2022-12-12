@@ -5,7 +5,7 @@ include(cmake_test/cmake_test)
 #]]
 ct_add_test(NAME "test_cmake_package_manager")
 function("${test_cmake_package_manager}")
-    include(cmaize/package_managers/cmake_package_manager)
+    include(cmaize/package_managers/cmake/cmake)
     include(cmaize/project/project_specification)
 
     ct_add_section(NAME "type_is_cmake")
@@ -119,6 +119,24 @@ function("${test_cmake_package_manager}")
     #     CMakePackageManager(has_package "${pm_obj}" result "${ps_obj}")
 
     #     ct_assert_equal(result TRUE)
+
+    # endfunction()
+
+    # ct_add_section(NAME "can_find_git")
+    # function("${can_find_git}")
+
+    #     ProjectSpecification(CTOR ps_obj)
+    #     ProjectSpecification(SET "${ps_obj}" name "utilities")
+
+    #     CMakePackageManager(CTOR pm_obj)
+    #     CMakePackageManager(add_paths "${pm_obj}" "/home/zachcran/programs/cmakepp_workspace/test_repos/nwx_utilities/install")
+
+    #     CMakePackageManager(has_package "${pm_obj}" result "${ps_obj}")
+    #     CMakePackageManager(has_package "${pm_obj}" result "${ps_obj}")
+
+    #     message("-- DEBUG: utilities_FOUND: ${utilities_FOUND}")
+
+    #     ct_assert_equal(FALSE TRUE)
 
     # endfunction()
 
