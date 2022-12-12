@@ -1,19 +1,13 @@
 include_guard()
+include(cmakepp_lang/cmakepp_lang)
 
 #[[[
 # File extensions for CXX header files. This is the counterpart to
 # ``CMAKE_CXX_SOURCE_FILE_EXTENSIONS``.
 #]]
-set(
+cpp_set_global(
     CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
-    H
-    h
-    HPP
-    hpp
-    HXX
-    hxx
-    HH
-    hh
+    "H;h;HPP;hpp;HXX;hxx;HH;hh"
 )
 
 #[[[
@@ -21,7 +15,7 @@ set(
 # value of the old ``CPP_GITHUB_TOKEN`` for backwards compatability and
 # will be a blank string ("") if ``CPP_GITHUB_TOKEN`` does not exist.
 #]]
-set(
+cpp_set_global(
     CMAIZE_GITHUB_TOKEN
     "${CPP_GITHUB_TOKEN}"
 )
@@ -29,7 +23,7 @@ set(
 #[[[
 # Current CMaize project.
 #]]
-set(
+cpp_set_global(
     CMAIZE_PROJECT
     ""
 )
@@ -37,7 +31,7 @@ set(
 #[[[
 # Languages supported by CMaize.
 #]]
-set(
+cpp_set_global(
     CMAIZE_SUPPORTED_LANGUAGES
     CXX
 )
@@ -45,7 +39,7 @@ set(
 #[[[
 # Package manager options supported by CMaize.
 #]]
-set(
+cpp_set_global(
     CMAIZE_SUPPORTED_PACKAGE_MANAGERS
     CMake
 )
