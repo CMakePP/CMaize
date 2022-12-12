@@ -2,10 +2,11 @@ include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/package_managers/package_manager)
-include(cmaize/fetch/fetch_and_available)
-include(cmaize/targets/target)
+include(cmaize/package_managers/cmake/dependency/dependency)
 include(cmaize/project/project_specification)
 include(cmaize/targets/target)
+include(cmaize/utilities/fetch_and_available)
+
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
@@ -34,6 +35,11 @@ cpp_class(CMakePackageManager PackageManager)
 
         PackageManager(SET "${self}" type "CMake")
 
+        CMakePackageManager(add_paths "${self}" ${CMAKE_PREFIX_PATH})
+
+        # TODO: Add paths from Dependency(_search_paths if there are any
+        #       generalizable ones
+
     endfunction()
 
     #[[[
@@ -42,8 +48,8 @@ cpp_class(CMakePackageManager PackageManager)
     # These paths are stored in the ``search_paths`` attribute. Duplicate
     # paths will be ignored.
     #
-    # :param args: Paths to add to the search path.
-    # :type args: path or List[path]
+    # :param *args: Path or paths to add to the search path.
+    # :type *args: path or List[path]
     #]]
     cpp_member(add_paths CMakePackageManager args)
     function("${add_paths}" self)
@@ -66,80 +72,82 @@ cpp_class(CMakePackageManager PackageManager)
     endfunction()
 
     #[[[
-    # Checks if the package can be found on the system using CMake's
-    # ``find_package``.
+    # Register the dependency with the package manager. This does not search
+    # for or build the dependency, but makes it known to the package manager
+    # for future searching and building.
     #
-    # :param self: CMakePackageManager object
-    # :type self: CMakePackageManager
-    # :param _hp_found: Return value for if the package was found.
-    # :type _hp_found: bool*
-    # :param _hp_project_specs: Specifications for the package to build.
-    # :type _hp_project_specs: ProjectSpecification
+    # :param _rd_result: Returned dependency.
+    # :type _rd_result: Dependency*
+    # :param _rd_name: Name of the dependency.
+    # :type _rd_name: desc
+    # :param **kwargs: Additional keyword arguments that may be required.
     #
-    # :returns: Whether the package was found (TRUE) or not (FALSE)
-    # :rtype: bool
+    # :returns: Dependency object created and initialized.
+    # :rtype: Dependency
     #]]
-    cpp_member(has_package CMakePackageManager desc ProjectSpecification)
-    function("${has_package}" self _hp_found _hp_project_specs)
+    cpp_member(register_dependency CMakePackageManager desc ProjectSpecification args)
+    function("${register_dependency}" self _rd_result _rd_proj_specs)
 
-        ProjectSpecification(GET "${_hp_project_specs}" _hp_pkg_name name)
-        ProjectSpecification(GET "${_hp_project_specs}" _hp_pkg_version version)
+        ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
+        ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_version version)
 
-        # Check if the package was already found beforehand
-        message("-- DEBUG: ${_hp_pkg_name}_FOUND: ${${_hp_pkg_name}_FOUND}")
-        if (${_hp_pkg_name}_FOUND)
-            message("-- DEBUG: Package already found, exitting early")
-            set("${_hp_found}" "${${_hp_pkg_name}_FOUND}")
-            cpp_return("${_hp_found}")
+        # TODO: Move this to a local variable in the package manager
+        cpp_get_global(_rd_depend "__CMAIZE_DEPENDENCY_${_rd_pkg_name}__")
+        if("${_rd_depend}" STREQUAL "")
+            # TODO: Actually make sure it's from GitHub
+            GitHubDependency(CTOR _rd_depend)
+
+            Dependency(INIT "${_rd_depend}"
+                NAME "${_rd_pkg_name}"
+                ${ARGN}
+            )
+            cpp_set_global("__CMAIZE_DEPENDENCY_${_rd_pkg_name}__" "${_rd_depend}")
         endif()
 
-        # Build the argument list for ``find_package()``
-        list(APPEND _hp_arg_list "${_hp_pkg_name}")
+        set("${_rd_result}" "${_rd_depend}")
+        cpp_return("${_rd_result}")
 
-        # Add version arguments
-        if(NOT "${_hp_pkg_version}" STREQUAL "")
-            list(APPEND _hp_arg_list "${_hp_pkg_version}")
+    endfunction()
 
-            # Was an exact version specified? If so, find_package will
-            # request an exact version. This is not always honored by the
-            # package, though.
-            string(FIND "${_hp_pkg_version}" "..." _hp_is_pkg_ver_range)
-            if(NOT _hp_is_pkg_ver_range)
-                list(APPEND _hp_arg_list "EXACT")
-            endif()
+    #[[[
+    # Finds an installed package.
+    #
+    # This function uses CMake's ``find_package`` in config mode to search for
+    # the packages on your system.
+    #
+    # :param _fi_result: Return value for the installed target.
+    # :type _fi_result: InstalledTarget*
+    # :param _fi_project_specs: Specifications for the package to build.
+    # :type _fi_project_specs: ProjectSpecification
+    # :param **kwargs: Additional keyword arguments that may be required.
+    #
+    # :returns: Target object representing the found dependency, or a blank
+    #           string ("") if it was not found.
+    # :rtype: InstalledTarget
+    #]]
+    cpp_member(find_installed CMakePackageManager desc ProjectSpecification args)
+    function("${find_installed}" self _fi_result _fi_project_specs)
+
+        ProjectSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
+
+        CMaizeProject(register_dependency
+            "${self}"
+            _fi_depend
+            "${_fi_project_specs}"
+            ${ARGN}
+        )
+
+        Dependency(find_dependency "${_fi_depend}" _fi_found)
+        if(NOT "${_fi_found}")
+            cpp_return("")
         endif()
 
-        CMakePackageManager(GET "${self}" _hp_search_paths search_paths)
-        list(LENGTH _hp_search_paths _hp_search_paths_n)
+        # Create an installed target
+        set(_fi_depend_root_path "${${_fi_pkg_name}_DIR}")
+        InstalledTarget(ctor _fi_tgt "${_fi_depend_root_path}")
 
-        # If there are custom search paths, limit find_package to only those
-        # search paths
-        if(_hp_search_paths_n GREATER 0)
-            list(APPEND _hp_arg_list "PATHS" "${_hp_search_paths}")
-            
-            # Disables the default paths so there are no surprises
-            list(APPEND _hp_arg_list "NO_PACKAGE_ROOT_PATH")
-            list(APPEND _hp_arg_list "NO_SYSTEM_ENVIRONMENT_PATH")
-            list(APPEND _hp_arg_list "NO_CMAKE_PACKAGE_REGISTRY")
-            list(APPEND _hp_arg_list "NO_CMAKE_SYSTEM_PATH")
-            list(APPEND _hp_arg_list "NO_CMAKE_SYSTEM_PACKAGE_REGISTRY")
-        endif()
-
-        # Join the list with spaces so separate arguments are parsed properly
-        list(JOIN _hp_arg_list " " _hp_args)
-        message("-- DEBUG: arg_list: ${_hp_arg_list}")
-
-        # Effectively ``find_package("${_hp_args}")``.
-        # ``cmake_language(EVAL CODE`` allows ``${_hp_args}`` to be
-        # expanded and used as separate arguments to ``find_package``,
-        # instead of being parsed as a single, string argument
-        cmake_language(EVAL CODE "find_package(${_hp_args})")
-
-        # The bool result can be based on <PackageName>_FOUND result from
-        # ``find_package``
-        set(${_hp_pkg_name}_FOUND ${${_hp_pkg_name}_FOUND} PARENT_SCOPE)
-        set("${_hp_found}" "${${_hp_pkg_name}_FOUND}")
-        cpp_return("${_hp_found}")
+        set("${_hp_result}" "${_fi_tgt}")
+        cpp_return("${_hp_result}")
 
     endfunction()
 
@@ -149,36 +157,37 @@ cpp_class(CMakePackageManager PackageManager)
     #
     # :param self: CMakePackageManager object
     # :type self: CMakePackageManager
-    # :param _gp_result_target: Resulting target object return variable
-    # :type _gp_result_target: InstalledTarget*
+    # :param _gp_result: Resulting target object return variable
+    # :type _gp_result: InstalledTarget*
     # :param _gp_proj_specs: Specifications for the package to build.
     # :type _gp_proj_specs: ProjectSpecification
     #
     # :returns: Resulting target from the package manager
     # :rtype: InstalledTarget
     #]]
-    cpp_member(get_package CMakePackageManager str ProjectSpecification)
-    function("${get_package}" self _gp_result_target _gp_proj_specs)
+    cpp_member(get_package CMakePackageManager str ProjectSpecification args)
+    function("${get_package}" self _gp_result _gp_proj_specs)
 
-        # It's possible GitHub URLs link to an "asset" (i.e., a tarball)
-        string(FIND "${_fp_url}" ".tgz" _fp_is_tarball)
+        CMaizeProject(register_dependency
+            "${self}"
+            _gp_depend
+            "${_gp_proj_specs}"
+            ${ARGN}    
+        )
 
-        if("${_fp_is_tarball}" STREQUAL "-1")
-            cmaize_fetch_and_available(
-                "${_fp_name}"
-                GIT_REPOSITORY "${_fp_url}"
-                GIT_TAG "${_fp_version}"
-            )
-        else()
-            cmaize_fetch_and_available("${_fp_name}" URL "${_fp_url}")
+        Dependency(BUILD_DEPENDENCY "${_gp_depend}")
+
+        # Alias the build target as the find_target to unify the API
+        Dependency(GET "${_gp_depend}" _gp_find_target "find_target")
+        Dependency(GET "${_gp_depend}" _gp_build_target "build_target")
+        if(NOT "${_gp_find_target}" STREQUAL "${_gp_build_target}")
+            if(TARGET "${_gp_find_target}")
+                return()
+            endif()
+            add_library("${_gp_find_target}" ALIAS "${_gp_build_target}")
         endif()
 
-        foreach(_fp_pair ${_fp_old_cmake_args})
-            string(REPLACE "=" [[;]] _fp_split_pair "${_fp_pair}")
-            list(GET _fp_split_pair 0 _fp_var)
-            list(GET _fp_split_pair 1 _fp_val)
-            set("${_fp_var}" "${_fp_val}" CACHE BOOL "" FORCE)
-        endforeach()
+        # TODO: Create a build target
 
     endfunction()
 

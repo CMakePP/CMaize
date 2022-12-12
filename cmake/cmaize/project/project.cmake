@@ -1,5 +1,6 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
+
 include(cmaize/targets/target)
 include(cmaize/project/project_specification)
 include(cmaize/utilities/utilities)
@@ -269,6 +270,28 @@ cpp_class(CMaizeProject)
         # Package manager was not found
         set("${_cpm_found}" FALSE)
         cpp_return("${_cpm_found}")
+
+    endfunction()
+
+    cpp_member(get_package_manager CMaizeProject desc desc)
+    function("${get_package_manager}" self  _cpm_result _cpm_pm_name)
+
+        CMaizeProject(GET "${self}" _cpm_pm_list package_managers)
+
+        # Search the list for a package manager with a matching type
+        foreach(_cpm_pm_i ${_cpm_pm_list})
+            PackageManager(GET "${_cpm_pm_i}" _cpm_pm_i_type type)
+            
+            # Exit early if a package manager with the same type is found
+            if("${_cpm_pm_name}" STREQUAL "${_cpm_pm_i_type}")
+                set("${_cpm_result}" "${_cpm_pm_i}")
+                cpp_return("${_cpm_result}")
+            endif()
+        endforeach()
+
+        # Package manager was not found
+        set("${_cpm_result}" "")
+        cpp_return("${_cpm_result}")
 
     endfunction()
 
