@@ -80,7 +80,7 @@ cpp_class(CMakePackageManager PackageManager)
     # :type _rd_result: Dependency*
     # :param _rd_name: Name of the dependency.
     # :type _rd_name: desc
-    # :param **kwargs: Additional keyword arguments that may be required.
+    # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :returns: Dependency object created and initialized.
     # :rtype: Dependency
@@ -119,7 +119,7 @@ cpp_class(CMakePackageManager PackageManager)
     # :type _fi_result: InstalledTarget*
     # :param _fi_project_specs: Specifications for the package to build.
     # :type _fi_project_specs: ProjectSpecification
-    # :param **kwargs: Additional keyword arguments that may be required.
+    # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :returns: Target object representing the found dependency, or a blank
     #           string ("") if it was not found.
