@@ -11,9 +11,9 @@ cpp_class(PackageManager)
     #[[[
     # :type: desc
     #
-    # Name of the package manager being used.
+    # Type of the package manager being used.
     #]]
-    cpp_attr(PackageManager name)
+    cpp_attr(PackageManager type)
 
     #[[[
     # Virtual member to check if the package exists in the package manager.
