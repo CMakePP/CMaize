@@ -25,13 +25,13 @@ cpp_class(GitHubDependency Dependency)
         # TODO: make sure URL starts with github.com/
 
         if("${_bd_private}")
-            if("${CPP_GITHUB_TOKEN}" STREQUAL "")
+            if("${CMAIZE_GITHUB_TOKEN}" STREQUAL "")
                 message(
                   FATAL_ERROR
-                  "Private GitHub repos require CPP_GITHUB_TOKEN to be set."
+                  "Private GitHub repos require CMAIZE_GITHUB_TOKEN to be set."
                 )
             endif()
-            set(_bd_url "https://${CPP_GITHUB_TOKEN}@${_bd_url}")
+            set(_bd_url "https://${CMAIZE_GITHUB_TOKEN}@${_bd_url}")
         else()
             set(_bd_url "https://${_bd_url}")
         endif()
