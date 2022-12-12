@@ -10,21 +10,28 @@ cpp_class(PackageManager)
     #[[[
     # :type: desc
     #
-    # Type of package manager being used.
+    # Name of the package manager being used.
     #]]
-    cpp_attr(PackageManager type)
+    cpp_attr(PackageManager name)
 
     #[[[
     # Virtual member to check if the package exists in the package manager.
     #]]
-    cpp_member(has_package PackageManager bool ProjectSpecification)
+    cpp_member(has_package PackageManager desc ProjectSpecification)
     cpp_virtual_member(has_package)
 
     #[[[
-    # Virtual member function to get the package using the package manager.
+    # Virtual member function to get an installed package target.
     #]]
-    cpp_member(get_package PackageManager InstalledTarget ProjectSpecification)
-    cpp_virtual_member(get_package)
+    cpp_member(find_installed PackageManager desc ProjectSpecification)
+    cpp_virtual_member(find_installed)
+
+    #[[[
+    # Virtual member function to get the package source and prepare a
+    # build target.
+    #]]
+    cpp_member(fetch_package PackageManager desc ProjectSpecification)
+    cpp_virtual_member(fetch_package)
 
     #[[[
     # Virtual member to install a package.

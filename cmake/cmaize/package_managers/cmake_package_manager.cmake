@@ -2,6 +2,8 @@ include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/package_managers/package_manager)
+include(cmaize/fetch/fetch_and_available)
+include(cmaize/targets/target)
 include(cmaize/project/project_specification)
 include(cmaize/targets/target)
 
@@ -69,34 +71,63 @@ cpp_class(CMakePackageManager PackageManager)
     #
     # :param self: CMakePackageManager object
     # :type self: CMakePackageManager
-    # :param _hp_result: Whether the package was found (TRUE) or not (FALSE)
-    # :type _hp_result: bool*
+    # :param _hp_found: Return value for if the package was found.
+    # :type _hp_found: bool*
     # :param _hp_project_specs: Specifications for the package to build.
     # :type _hp_project_specs: ProjectSpecification
+    #
+    # :returns: Whether the package was found (TRUE) or not (FALSE)
+    # :rtype: bool
     #]]
     cpp_member(has_package CMakePackageManager desc ProjectSpecification)
-    function("${has_package}" self _hp_result _hp_project_specs)
+    function("${has_package}" self _hp_found _hp_project_specs)
 
         ProjectSpecification(GET "${_hp_project_specs}" _hp_pkg_name name)
         ProjectSpecification(GET "${_hp_project_specs}" _hp_pkg_version version)
 
-        CMakePackageManager(GET "${self}" _hp_search_paths search_paths)
-        list(LENGTH _hp_search_paths _hp_search_paths_n)
+        # Check if the package was already found beforehand
+        message("-- DEBUG: ${_hp_pkg_name}_FOUND: ${${_hp_pkg_name}_FOUND}")
+        if (${_hp_pkg_name}_FOUND)
+            message("-- DEBUG: Package already found, exitting early")
+            set("${_hp_found}" "${${_hp_pkg_name}_FOUND}")
+            cpp_return("${_hp_found}")
+        endif()
 
         # Build the argument list for ``find_package()``
         list(APPEND _hp_arg_list "${_hp_pkg_name}")
-        if(_hp_pkg_version)
+
+        # Add version arguments
+        if(NOT "${_hp_pkg_version}" STREQUAL "")
             list(APPEND _hp_arg_list "${_hp_pkg_version}")
-            list(APPEND _hp_arg_list "EXACT")
+
+            # Was an exact version specified? If so, find_package will
+            # request an exact version. This is not always honored by the
+            # package, though.
+            string(FIND "${_hp_pkg_version}" "..." _hp_is_pkg_ver_range)
+            if(NOT _hp_is_pkg_ver_range)
+                list(APPEND _hp_arg_list "EXACT")
+            endif()
         endif()
+
+        CMakePackageManager(GET "${self}" _hp_search_paths search_paths)
+        list(LENGTH _hp_search_paths _hp_search_paths_n)
+
+        # If there are custom search paths, limit find_package to only those
+        # search paths
         if(_hp_search_paths_n GREATER 0)
             list(APPEND _hp_arg_list "PATHS" "${_hp_search_paths}")
+            
             # Disables the default paths so there are no surprises
-            list(APPEND _hp_arg_list "NO_DEFAULT_PATH")
+            list(APPEND _hp_arg_list "NO_PACKAGE_ROOT_PATH")
+            list(APPEND _hp_arg_list "NO_SYSTEM_ENVIRONMENT_PATH")
+            list(APPEND _hp_arg_list "NO_CMAKE_PACKAGE_REGISTRY")
+            list(APPEND _hp_arg_list "NO_CMAKE_SYSTEM_PATH")
+            list(APPEND _hp_arg_list "NO_CMAKE_SYSTEM_PACKAGE_REGISTRY")
         endif()
 
         # Join the list with spaces so separate arguments are parsed properly
         list(JOIN _hp_arg_list " " _hp_args)
+        message("-- DEBUG: arg_list: ${_hp_arg_list}")
 
         # Effectively ``find_package("${_hp_args}")``.
         # ``cmake_language(EVAL CODE`` allows ``${_hp_args}`` to be
@@ -106,8 +137,9 @@ cpp_class(CMakePackageManager PackageManager)
 
         # The bool result can be based on <PackageName>_FOUND result from
         # ``find_package``
-        set("${_hp_result}" "${${_hp_pkg_name}_FOUND}")
-        cpp_return("${_hp_result}")
+        set(${_hp_pkg_name}_FOUND ${${_hp_pkg_name}_FOUND} PARENT_SCOPE)
+        set("${_hp_found}" "${${_hp_pkg_name}_FOUND}")
+        cpp_return("${_hp_found}")
 
     endfunction()
 
@@ -128,15 +160,26 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_member(get_package CMakePackageManager str ProjectSpecification)
     function("${get_package}" self _gp_result_target _gp_proj_specs)
 
-        CMakePackageManager(has_package _gp_has_package "${_gp_proj_specs}")
+        # It's possible GitHub URLs link to an "asset" (i.e., a tarball)
+        string(FIND "${_fp_url}" ".tgz" _fp_is_tarball)
 
-        # No package, exit early
-        if (NOT _gp_has_package)
-            set("${gp_result_target}" "")
-            cpp_return("${gp_result_target}")
+        if("${_fp_is_tarball}" STREQUAL "-1")
+            cmaize_fetch_and_available(
+                "${_fp_name}"
+                GIT_REPOSITORY "${_fp_url}"
+                GIT_TAG "${_fp_version}"
+            )
+        else()
+            cmaize_fetch_and_available("${_fp_name}" URL "${_fp_url}")
         endif()
 
-        # TODO: Handle when the package actually exists...
+        foreach(_fp_pair ${_fp_old_cmake_args})
+            string(REPLACE "=" [[;]] _fp_split_pair "${_fp_pair}")
+            list(GET _fp_split_pair 0 _fp_var)
+            list(GET _fp_split_pair 1 _fp_val)
+            set("${_fp_var}" "${_fp_val}" CACHE BOOL "" FORCE)
+        endforeach()
+
     endfunction()
 
     #[[[
