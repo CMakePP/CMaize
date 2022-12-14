@@ -198,6 +198,7 @@ cpp_class(CMakePackageManager PackageManager)
     # :type self: CMakePackageManager
     # :param _ip_target: Target to install
     # :type _ip_target: BuildTarget*
+    # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
     #    * **NAMESPACE** (*desc*) --
@@ -205,11 +206,17 @@ cpp_class(CMakePackageManager PackageManager)
     #      providing a namespace (for example, give "MyNamespace::", not just
     #      "MyNamespace"). If no namespace is given, "${PROJECT_NAME}::" is
     #      used.
+    #    * **VERSION** (*desc*) --
+    #      Version of the package. This sets the VERSION and SOVERSION
+    #      properties of the target to the full version and major version,
+    #      respectively. Currently, only semantic versioning
+    #      (https://semver.org) is supported. Defaults to the value of
+    #      ``${PROJECT_VERSION}`` or "0.1.0" if PROJECT_VERSION is also emtpy.
     #]]
     cpp_member(install_package CMakePackageManager BuildTarget args)
     function("${install_package}" self _ip_target)
 
-        set(_ip_options NAMESPACE)
+        set(_ip_options NAMESPACE VERSION)
         cmake_parse_arguments(_ip "" "${_ip_options}" "" ${ARGN})
 
         Target(target "${_ip_target}" _ip_tgt_name)
@@ -217,6 +224,23 @@ cpp_class(CMakePackageManager PackageManager)
         if("${_ip_NAMESPACE}" STREQUAL "")
             set(_ip_NAMESPACE "${PROJECT_NAME}::")
         endif()
+
+        # Default to the project version if no explicit version is given
+        if("${_ip_VERSION}" STREQUAL "")
+            if(NOT "${PROJECT_VERSION}" STREQUAL "")
+                set(_ip_VERSION ${PROJECT_VERSION})
+            else()
+                set(_ip_VERSION "0.1.0")
+            endif()
+        endif()
+
+        # Set package version
+        Target(set_property "${_ip_target}" VERSION "${_ip_VERSION}")
+
+        cmaize_split_version(
+            _ip_major _ip_minor _ip_patch _ip_tweak "${_ip_VERSION}"
+        )
+        Target(set_property "${_ip_target}" SOVERSION "${_ip_major}")
 
         # Generate <target>Config.cmake
 
