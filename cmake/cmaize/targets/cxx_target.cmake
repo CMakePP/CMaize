@@ -92,7 +92,7 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(_set_compile_features "${self}")
         CXXTarget(_set_include_directories "${self}")
         CXXTarget(_set_link_libraries "${self}")
-        CXXTarget(_set_public_headers "${self}")
+        # CXXTarget(_set_public_headers "${self}")
         CXXTarget(_set_sources "${self}")
 
     endfunction()
