@@ -85,7 +85,9 @@ function(cmaize_add_executable _cae_tgt_name)
 
     cpp_get_global(_cae_project CMAIZE_PROJECT_${PROJECT_NAME})
 
-    CMaizeProject(add_target "${_cae_project}" "${tgt_obj}")
+    CMaizeProject(add_target
+        "${_cae_project}" "${tgt_obj}" NAME "${_cae_tgt_name}"
+    )
     CMaizeProject(add_language "${_cae_project}" "${_cae_LANGUAGE}")
 
 endfunction()
