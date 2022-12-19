@@ -16,7 +16,11 @@ function("${test_tgt}")
         ct_add_section(NAME "test_dir_exists")
         function("${test_dir_exists}")
 
-            InstalledTarget(CTOR tgt_obj "${CMAKE_CURRENT_SOURCE_DIR}")
+            set(tgt_name "test_ctor_test_dir_exists")
+
+            InstalledTarget(CTOR
+                tgt_obj "${tgt_name}" "${CMAKE_CURRENT_SOURCE_DIR}"
+            )
 
             InstalledTarget(GET "${tgt_obj}" result root_path)
 
@@ -27,7 +31,11 @@ function("${test_tgt}")
         ct_add_section(NAME "test_dir_nonexistant" EXPECTFAIL)
         function("${test_dir_nonexistant}")
 
-            InstalledTarget(CTOR tgt_obj "${CMAKE_CURRENT_SOURCE_DIR}/nonexistant")
+            set(tgt_name "test_ctor_test_dir_nonexistant")
+
+            InstalledTarget(CTOR
+                tgt_obj "${tgt_name}" "${CMAKE_CURRENT_SOURCE_DIR}/nonexistant"
+            )
         
         endfunction()
 

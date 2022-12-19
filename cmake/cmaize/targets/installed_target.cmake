@@ -28,18 +28,20 @@ cpp_class(InstalledTarget Target)
     #
     # :raises DirectoryNotFound: Root directory was not found.
     #]]
-    cpp_constructor(CTOR InstalledTarget path)
-    function("${CTOR}" self root)
+    cpp_constructor(CTOR InstalledTarget desc path)
+    function("${CTOR}" self _ctor_name _ctor_root)
+
+        Target(SET "${self}" _name "${_ctor_name}")
 
         # Check if the root path exists
-        cpp_directory_exists(exists "${root}")
+        cpp_directory_exists(exists "${_ctor_root}")
         if(NOT exists)
             set(msg "InstalledTarget root directory not found. ")
-            string(APPEND msg "Root given: ${root}")
+            string(APPEND msg "Root given: ${_ctor_root}")
             cpp_raise(DirectoryNotFound "${msg}")
         endif() 
 
-        InstalledTarget(SET "${self}" root_path "${root}")
+        InstalledTarget(SET "${self}" root_path "${_ctor_root}")
 
     endfunction()
 
