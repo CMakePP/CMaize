@@ -220,8 +220,10 @@ cpp_class(CMaizeProject)
     #[[[
     # Add a target to the project. Duplicate objects will be removed.
     #
-    # :param self: CMaizeProject object.
-    # :type self: CMaizeProject
+    # :param _at_target_name: Identifying name for the target. This can match
+    #                         name of either the CMake target or CMaize Target
+    #                         object, but is required to do match them.
+    # :type _at_target_name: desc or target
     # :param _at_target: Target object to be added.
     # :type _at_target: Target
     #
@@ -230,45 +232,96 @@ cpp_class(CMaizeProject)
     #      Flag to indicate that the target being added is already installed
     #      on the system.
     #]]
-    cpp_member(add_target CMaizeProject Target args)
-    function("${add_target}" self _at_target)
+    cpp_member(add_target CMaizeProject str Target args)
+    function("${add_target}" self _at_target_name _at_target)
 
-        set(_at_flags INSTALLED)
-        set(_at_options NAME)
-        cmake_parse_arguments(_at "${_at_flags}" "${_at_options}" "" ${ARGN})
+        CMaizeProject(_add_target
+            "${self}" "${_at_target}" NAME "${_at_target_name}" ${ARGN}
+        )
+
+    endfunction()
+
+    #[[[
+    # Add a target to the project. Duplicate objects will be removed.
+    #
+    # Overload for ``add_target()`` to handle target names of the ``target``
+    # type. See the main ``add_target()`` definition for full description.
+    #]]
+    cpp_member(add_target CMaizeProject target Target args)
+    function("${add_target}" self _at_target_name _at_target)
+
+        CMaizeProject(_add_target
+            "${self}" "${_at_target}" NAME "${_at_target_name}" ${ARGN}
+        )
+
+    endfunction()
+
+    #[[[
+    # Add a target to the project. Duplicate objects will not be added.
+    #
+    # This internal implementation exists so a required keyword argument is
+    # not part of the public interface, as well as to handle both ``desc`` and
+    # ``target`` types. Both types are effectively strings representing target
+    # names in this algorithm and can be treated equivalently, but cannot be
+    # typecast to each other by CMakePPLang. The CMakePPLang type checking
+    # is bypassed through the aforementioned required keyword argument for
+    # the target name, essentially combining the two types.
+    #
+    # :param _at_target: Target object to be added.
+    # :type _at_target: Target
+    # :param NAME: Required keyword argument. See description below.
+    # :type NAME: desc or target
+    #
+    # :Keyword Arguments:
+    #    * **INSTALLED** (*bool*) --
+    #      Flag to indicate that the target being added is already installed
+    #      on the system.
+    #    * **NAME** (*desc* or *target*) -- 
+    #      Identifying name for the target. This can match name of either the
+    #      CMake target or CMaize Target object, but is required to do match
+    #      them. This keyword argument is **required**.
+    #]]
+    cpp_member(_add_target CMaizeProject Target args)
+    function("${_add_target}" self __at_target)
+
+        set(__at_flags INSTALLED)
+        set(__at_one_value_args NAME)
+        cmake_parse_arguments(__at "${__at_flags}" "${__at_one_value_args}" "" ${ARGN})
+
+        # Ensure that NAME was provided
+        cpp_contains(__at_name_exists __at_NAME "${__at_KEYWORDS_MISSING_VALUES}")
+        if(__at_name_exists)
+            cpp_raise(KeywordMissing "Missing required keyword argument: NAME")
+        endif()
 
         # Default to the build target list
-        set(_at_tgt_attr "build_targets")
-        if(_at_INSTALLED)
-            set(_at_tgt_attr "installed_targets")
+        set(__at_tgt_attr "build_targets")
+        if(__at_INSTALLED)
+            set(__at_tgt_attr "installed_targets")
         endif()
 
-        # If a name was not given, default to the 
-        if("${_at_NAME}" STREQUAL "")
-            Target(target "${_at_target}" _at_NAME)
-        endif()
-
-        # Check if a Target with the same name exists already
+        # Check if a Target with the same name exists already as either
+        # a build or installed target
         CMaizeProject(check_target
             "${self}"
-            _at_found
-            NAME "${_at_NAME}"
-            ${_at_UNPARSED_ARGUMENTS}
+            __at_found
+            "${__at_NAME}"
+            ALL
         )
 
         # Exit early if a target with the same name already exists
         # TODO: Should we throw an error here, or maybe just overwrite the
         #       existing target?
-        if(_at_found)
+        if(__at_found)
             cpp_return("")
         endif()
 
         # Add the target to the list if it doesn't already exist
-        CMaizeProject(GET "${self}" _at_tgt_map "${_at_tgt_attr}")
+        CMaizeProject(GET "${self}" __at_tgt_map "${__at_tgt_attr}")
 
-        cpp_map(SET "${_at_tgt_map}" "${_at_NAME}" "${_at_target}")
+        cpp_map(SET "${__at_tgt_map}" "${__at_NAME}" "${__at_target}")
         
-        CMaizeProject(SET "${self}" "${_at_tgt_attr}" "${_at_tgt_map}")
+        CMaizeProject(SET "${self}" "${__at_tgt_attr}" "${__at_tgt_map}")
 
     endfunction()
 
@@ -303,41 +356,74 @@ cpp_class(CMaizeProject)
     #
     # This checks both the build and installed target lists.
     #
-    # :param self: CMaizeProject object.
-    # :type self: CMaizeProject
     # :param _ct_found: Return variable for if the target was found.
     # :type _ct_found: bool*
-    # :param _ct_tgt: Target to search for.
-    # :type _ct_tgt: Target
+    # :param _ct_target_name: Identifying name for the target. This can match
+    #                         name of either the CMake target or CMaize Target
+    #                         object, but is required to do match them.
+    # :type _ct_target_name: desc or target
     #
     # :returns: Target found (TRUE) or not (FALSE).
     # :rtype: bool
     #]]
-    cpp_member(check_target CMaizeProject desc args)
-    function("${check_target}" self  _ct_found)
+    cpp_member(check_target CMaizeProject desc desc args)
+    function("${check_target}" self  _ct_found _ct_target_name)
 
-        set(_ct_flags INSTALLED)
-        set(_ct_options NAME)
-        cmake_parse_arguments(_ct "${_ct_flags}" "${_ct_options}" "" ${ARGN})
+        CMaizeProject(_check_target
+            "${self}" "${_ct_found}" NAME "${_ct_target_name}" ${ARGN}
+        )
+        cpp_return("${_ct_found}")
+
+    endfunction()
+
+    cpp_member(check_target CMaizeProject desc target args)
+    function("${check_target}" self  _ct_found _ct_target_name)
+
+        CMaizeProject(_check_target
+            "${self}" "${_ct_found}" NAME "${_ct_target_name}" ${ARGN}
+        )
+        cpp_return("${_ct_found}")
+
+    endfunction()
+
+    cpp_member(_check_target CMaizeProject desc args)
+    function("${_check_target}" self  __ct_found)
+
+        set(__ct_flags INSTALLED ALL)
+        set(__ct_one_value_args NAME)
+        cmake_parse_arguments(__ct "${__ct_flags}" "${__ct_one_value_args}" "" ${ARGN})
+
+        # Ensure that NAME was provided
+        cpp_contains(__ct_name_exists __ct_NAME "${__ct_KEYWORDS_MISSING_VALUES}")
+        if(__ct_name_exists)
+            cpp_raise(KeywordMissing "Missing required keyword argument: NAME")
+        endif()
 
         # Default to the build target list
-        set(_ct_tgt_attr "build_targets")
-        if(_ct_INSTALLED)
-            set(_ct_tgt_attr "installed_targets")
+        set(__ct_tgt_attr "build_targets")
+        if(__ct_ALL)
+            # Search both lists
+            list(APPEND __ct_tgt_attr "installed_targets")
+        elseif(__ct_INSTALLED)
+            set(__ct_tgt_attr "installed_targets")
         endif()
 
-        list(FIND _ct_KEYWORDS_MISSING_VALUES "NAME" _ct_name_found)
-        if(NOT _ct_name_found)
-            cpp_raise(MissingArgument "Keyword argument NAME must be provided.")
-            cpp_return("")
-        endif()
+        foreach(__ct_tgt_attr_i ${__ct_tgt_attr})
+            # Get the collection of targets
+            CMaizeProject(GET "${self}" __ct_tgt_map "${__ct_tgt_attr_i}")
 
-        # Get the collection of targets
-        CMaizeProject(GET "${self}" _ct_tgt_map "${_ct_tgt_attr}")
+            # Check if a target with the same name already exists
+            cpp_map(HAS_KEY "${__ct_tgt_map}" __ct_found_i "${__ct_NAME}")
 
-        # Check if a target with the same name already exists
-        cpp_map(HAS_KEY "${_ct_tgt_map}" "${_ct_found}" "${_ct_NAME}")
-        cpp_return("${_ct_found}")
+            # Return early if target is found
+            if(__ct_found_i)
+                set("${__ct_found}" "${__ct_found_i}")
+                cpp_return("${__ct_found}")
+            endif()
+        endforeach()
+
+        set("${__ct_found}" FALSE)
+        cpp_return("${__ct_found}")
 
     endfunction()
 
@@ -363,11 +449,10 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
-    cpp_member(get_target CMaizeProject desc args)
-    function("${get_target}" self  _gt_result)
+    cpp_member(get_target CMaizeProject desc str args)
+    function("${get_target}" self  _gt_result _gt_target_name)
 
         set(_gt_flags INSTALLED)
-        set(_gt_options NAME)
         cmake_parse_arguments(_gt "${_gt_flags}" "${_gt_options}" "" ${ARGN})
 
         # Default to the build target list
@@ -376,17 +461,11 @@ cpp_class(CMaizeProject)
             set(_gt_tgt_attr "installed_targets")
         endif()
 
-        list(FIND _gt_KEYWORDS_MISSING_VALUES "NAME" _gt_name_found)
-        if(NOT _gt_name_found)
-            cpp_raise(MissingArgument "Keyword argument NAME must be provided.")
-            cpp_return("")
-        endif()
-
         # Get the collection of targets
         CMaizeProject(GET "${self}" _gt_tgt_map "${_gt_tgt_attr}")
 
         # Find the specified target
-        cpp_map(GET "${_gt_tgt_map}" "${_gt_NAME}" "${_gt_result}")
+        cpp_map(GET "${_gt_tgt_map}" "${_gt_target_name}" "${_gt_result}")
 
         cpp_return("${_gt_result}")
 

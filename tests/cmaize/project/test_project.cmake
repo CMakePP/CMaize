@@ -112,7 +112,7 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Add a target
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${tgt_obj}")
 
             CMaizeProject(GET "${proj_obj}" tgt_dict build_targets)
             cpp_map(KEYS "${tgt_dict}" keys_list)
@@ -138,7 +138,7 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Add a target
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj}" NAME "${tgt_name}" INSTALLED)
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${tgt_obj}" INSTALLED)
 
             CMaizeProject(GET "${proj_obj}" build_tgt_map build_targets)
             CMaizeProject(GET "${proj_obj}" installed_tgt_map installed_targets)
@@ -170,9 +170,9 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Duplicate targets should not be successfully added
-            CMaizeProject(add_target "${proj_obj}" "${build_tgt_obj}" NAME "${tgt_name}")
-            CMaizeProject(add_target "${proj_obj}" "${build_tgt_obj}" NAME "${tgt_name}")
-            CMaizeProject(add_target "${proj_obj}" "${installed_tgt_obj}" NAME "${tgt_name}" INSTALLED)
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${installed_tgt_obj}" INSTALLED)
 
             CMaizeProject(GET "${proj_obj}" build_tgt_dict build_targets)
             CMaizeProject(GET "${proj_obj}" installed_tgt_dict installed_targets)
@@ -205,11 +205,11 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Add three distinct targets
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_1}" NAME "${tgt_name}_1")
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_2}" NAME "${tgt_name}_2")
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_3}" NAME "${tgt_name}_3")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}_1" "${tgt_obj_1}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}_2" "${tgt_obj_2}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}_3" "${tgt_obj_3}")
             # Duplicate target should not be successfully added
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_1}" NAME "${tgt_name}_1")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}_1" "${tgt_obj_1}")
 
             CMaizeProject(GET "${proj_obj}" tgt_dict build_targets)
             cpp_map(KEYS "${tgt_dict}" keys_list)

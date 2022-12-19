@@ -87,7 +87,7 @@ function(cmaize_add_library _cal_tgt_name)
     cpp_get_global(_cal_project CMAIZE_PROJECT_${PROJECT_NAME})
     
     CMaizeProject(add_target
-        "${_cal_project}" "${tgt_obj}" NAME "${_cal_tgt_name}"
+        "${_cal_project}" "${_cal_tgt_name}" "${tgt_obj}"
     )
     CMaizeProject(add_language "${_cal_project}" "${_cal_LANGUAGE}")
 

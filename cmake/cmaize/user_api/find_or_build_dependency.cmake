@@ -112,7 +112,9 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
         ${ARGN}
     )
     if(NOT "${_fobdc_tgt}" STREQUAL "")
-        CMaizeProject(add_target "${_fobdc_project}" "${_fobdc_tgt}" INSTALLED)
+        CMaizeProject(add_target
+            "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}" INSTALLED
+        )
         cpp_return("")
     endif()
 
