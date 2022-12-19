@@ -88,7 +88,8 @@ endfunction()
 #]]
 function(cmaize_find_or_build_dependency_cmake _fobdc_name)
 
-    cmake_parse_arguments(_fobdc "" "VERSION" "" ${ARGN})
+    set(_fobdc_one_value_args VERSION)
+    cmake_parse_arguments(_fobdc "" "${_fobdc_one_value_args}" "" ${ARGN})
 
     cpp_get_global(_fobdc_project CMAIZE_PROJECT_${PROJECT_NAME})
 
@@ -126,7 +127,9 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
         ${ARGN}
     )
     if(NOT "${_fobdc_tgt}" STREQUAL "")
-        CMaizeProject(add_target "${_fobdc_project}" "${_fobdc_tgt}")
+        CMaizeProject(add_target
+            "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}"
+        )
         cpp_return("")
     endif()
 

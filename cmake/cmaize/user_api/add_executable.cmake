@@ -155,7 +155,9 @@ function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
     CXXExecutable(make_target
         "${_cace_exe_obj}"
         INCLUDES "${_cace_include_files}"
+        INCLUDE_DIRS "${_cace_INCLUDE_DIRS}"
         SOURCES "${_cace_source_files}"
+        SOURCE_DIR "${_cace_SOURCE_DIR}"
         DEPENDS "${_cace_DEPENDS}"
         ${_cace_UNPARSED_ARGUMENTS}
     )

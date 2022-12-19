@@ -158,7 +158,9 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     CXXLibrary(make_target
         "${_cacl_lib_obj}"
         INCLUDES "${_cacl_include_files}"
+        INCLUDE_DIRS "${_cacl_INCLUDE_DIRS}"
         SOURCES "${_cacl_source_files}"
+        SOURCE_DIR "${_cacl_SOURCE_DIR}"
         DEPENDS "${_cacl_DEPENDS}"
         ${_cacl_UNPARSED_ARGUMENTS}
     )
