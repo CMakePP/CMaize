@@ -72,7 +72,7 @@ function(cmaize_add_executable _cae_tgt_name)
     # Decide which language we are building for
     string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE_lower)
     if("${_cae_LANGUAGE_lower}" STREQUAL "cxx")
-        cmaize_add_cxx_executable(tgt_obj
+        cmaize_add_cxx_executable(_cae_tgt_obj
             "${_cae_tgt_name}"
             ${ARGN}
         )
@@ -86,7 +86,7 @@ function(cmaize_add_executable _cae_tgt_name)
     cpp_get_global(_cae_project CMAIZE_PROJECT_${PROJECT_NAME})
 
     CMaizeProject(add_target
-        "${_cae_project}" "${_cae_tgt_name}" "${tgt_obj}"
+        "${_cae_project}" "${_cae_tgt_name}" "${_cae_tgt_obj}"
     )
     CMaizeProject(add_language "${_cae_project}" "${_cae_LANGUAGE}")
 

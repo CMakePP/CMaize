@@ -73,7 +73,7 @@ function(cmaize_add_library _cal_tgt_name)
     # Decide which language we are building for
     string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE_lower)
     if("${_cal_LANGUAGE_lower}" STREQUAL "cxx")
-        cmaize_add_cxx_library(tgt_obj
+        cmaize_add_cxx_library(_cal_tgt_obj
             "${_cal_tgt_name}"
             ${ARGN}
         )
@@ -87,7 +87,7 @@ function(cmaize_add_library _cal_tgt_name)
     cpp_get_global(_cal_project CMAIZE_PROJECT_${PROJECT_NAME})
     
     CMaizeProject(add_target
-        "${_cal_project}" "${_cal_tgt_name}" "${tgt_obj}"
+        "${_cal_project}" "${_cal_tgt_name}" "${_cal_tgt_obj}"
     )
     CMaizeProject(add_language "${_cal_project}" "${_cal_LANGUAGE}")
 
