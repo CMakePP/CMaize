@@ -103,42 +103,45 @@
 <span id="cmaize-utilities-split-version"></span><h1>cmaize.utilities/split_version<a class="headerlink" href="#module-cmaize.utilities-split_version" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.utilities-split_version.cmaize_split_version">
-<span class="sig-prename descclassname"><span class="pre">cmaize.utilities/split_version.</span></span><span class="sig-name descname"><span class="pre">cmaize_split_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">major</span> <span class="pre">minor</span> <span class="pre">patch</span> <span class="pre">tweak</span> <span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.utilities-split_version.cmaize_split_version" title="Permalink to this definition"></a></dt>
-<dd><p>Split the given version string into its components. Some return values
-may be blank.</p>
+<span class="sig-prename descclassname"><span class="pre">cmaize.utilities/split_version.</span></span><span class="sig-name descname"><span class="pre">cmaize_split_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_sv_major</span> <span class="pre">_sv_minor</span> <span class="pre">_sv_patch</span> <span class="pre">_sv_tweak</span> <span class="pre">_sv_version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.utilities-split_version.cmaize_split_version" title="Permalink to this definition"></a></dt>
+<dd><p>Split a given version string into its components.</p>
+<p>This function assumes that semantic versioning (<a href="#id1"><span class="problematic" id="id2">`https://semver.org`__</span></a>)
+is being used, as well as an additional, optional TWEAK component that
+CMake natively supports. Some return values may be blank if there are not
+four components to the version string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>major</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned first component of the version.</p></li>
-<li><p><strong>minor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned second component of the version.</p></li>
-<li><p><strong>patch</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned third component of the version.</p></li>
-<li><p><strong>tweak</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Returned fourth component of the version.</p></li>
-<li><p><strong>version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Version string to be separated into components.</p></li>
+<li><p><strong>_sv_major</strong> (<em>desc</em>) – Returned first component of the version.</p></li>
+<li><p><strong>_sv_minor</strong> (<em>desc</em>) – Returned second component of the version.</p></li>
+<li><p><strong>_sv_patch</strong> (<em>desc</em>) – Returned third component of the version.</p></li>
+<li><p><strong>_sv_tweak</strong> (<em>desc</em>) – Returned fourth component of the version.</p></li>
+<li><p><strong>_sv_version</strong> (<em>desc</em>) – Version string to be separated into components.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">major</span></code> will be set to the first component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
+<dd class="field-even"><p>The first component of the given version.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>desc</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">minor</span></code> will be set to the second component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
+<dd class="field-even"><p>The second component of the given version.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>desc</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">patch</span></code> will be set to the third component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
+<dd class="field-even"><p>The third component of the given version.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>desc</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">tweak</span></code> will be set to the fourth component of <code class="docutils literal notranslate"><span class="pre">version</span></code>.</p>
+<dd class="field-even"><p>The fourth component of the given version.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>desc</p>
 </dd>
 </dl>
 </dd></dl>

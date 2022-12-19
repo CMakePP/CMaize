@@ -6,29 +6,33 @@ cmaize.utilities/split_version
 .. module:: cmaize.utilities/split_version
 
 
-.. function:: cmaize_split_version(major minor patch tweak version)
+.. function:: cmaize_split_version(_sv_major _sv_minor _sv_patch _sv_tweak _sv_version)
 
-   Split the given version string into its components. Some return values
-   may be blank.
+   Split a given version string into its components.
    
-   :param major: Returned first component of the version.
-   :type major: str
-   :param minor: Returned second component of the version.
-   :type minor: str
-   :param patch: Returned third component of the version.
-   :type patch: str
-   :param tweak: Returned fourth component of the version.
-   :type tweak: str
-   :param version: Version string to be separated into components.
-   :type version: str
+   This function assumes that semantic versioning (`https://semver.org`__)
+   is being used, as well as an additional, optional TWEAK component that
+   CMake natively supports. Some return values may be blank if there are not
+   four components to the version string.
    
-   :returns: ``major`` will be set to the first component of ``version``.
-   :rtype: str
-   :returns: ``minor`` will be set to the second component of ``version``.
-   :rtype: str
-   :returns: ``patch`` will be set to the third component of ``version``.
-   :rtype: str
-   :returns: ``tweak`` will be set to the fourth component of ``version``.
-   :rtype: str
+   :param _sv_major: Returned first component of the version.
+   :type _sv_major: desc
+   :param _sv_minor: Returned second component of the version.
+   :type _sv_minor: desc
+   :param _sv_patch: Returned third component of the version.
+   :type _sv_patch: desc
+   :param _sv_tweak: Returned fourth component of the version.
+   :type _sv_tweak: desc
+   :param _sv_version: Version string to be separated into components.
+   :type _sv_version: desc
+   
+   :returns: The first component of the given version.
+   :rtype: desc
+   :returns: The second component of the given version.
+   :rtype: desc
+   :returns: The third component of the given version.
+   :rtype: desc
+   :returns: The fourth component of the given version.
+   :rtype: desc
    
 
