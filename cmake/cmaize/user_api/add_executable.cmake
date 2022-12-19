@@ -22,9 +22,11 @@ include(cmaize/utilities/replace_project_targets)
 #]]
 function(cpp_add_executable _cae_tgt_name)
 
-    set(_cae_options INCLUDE_DIR)
-    set(_cae_lists INCLUDE_DIRS)
-    cmake_parse_arguments(_cae "" "${_cae_options}" "${_cae_lists}" ${ARGN})
+    set(_cae_one_value_args INCLUDE_DIR)
+    set(_cae_multi_value_args INCLUDE_DIRS)
+    cmake_parse_arguments(
+        _cae "" "${_cae_one_value_args}" "${_cae_multi_value_args}" ${ARGN}
+    )
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
     # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
@@ -62,8 +64,8 @@ function(cmaize_add_executable _cae_tgt_name)
 
     message("-- DEBUG: Registering executable target: ${_cae_tgt_name}")
 
-    set(_cae_options LANGUAGE)
-    cmake_parse_arguments(_cae "" "${_cae_options}" "" ${ARGN})
+    set(_cae_one_value_args LANGUAGE)
+    cmake_parse_arguments(_cae "" "${_cae_one_value_args}" "" ${ARGN})
 
     # Default to CXX if no language is given
     if("${_cae_LANGUAGE}" STREQUAL "")
@@ -146,9 +148,7 @@ function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
 
     # Replace any DEPENDS values specifying CMaize Target objects with the
     # underlying target name
-    message("-- DEBUG: _cace_DEPENDS: ${_cace_DEPENDS}")
     cmaize_replace_project_targets(_cace_DEPENDS ${_cace_DEPENDS})
-    message("-- DEBUG: _cace_DEPENDS: ${_cace_DEPENDS}")
 
     CXXExecutable(CTOR _cace_exe_obj "${_cace_tgt_name}")
 

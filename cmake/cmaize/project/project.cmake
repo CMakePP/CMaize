@@ -75,7 +75,7 @@ cpp_class(CMaizeProject)
     # the active project.
     #
     # :param self: The constructed object.
-    # :type self: CMaizeProject
+    # :type self: CMaizeProject*
     # :param _ctor_name: Name of the project. Must match the active project
     #                    named in ``PROJECT_NAME``.
     # :type _ctor_name: desc
@@ -117,8 +117,8 @@ cpp_class(CMaizeProject)
     cpp_constructor(CTOR CMaizeProject str args)
     function("${CTOR}" self _ctor_name)
 
-        set(_ctor_lists LANGUAGES)
-        cmake_parse_arguments(_ctor "" "" "${_ctor_lists}" ${ARGN})
+        set(_ctor_multi_value_args LANGUAGES)
+        cmake_parse_arguments(_ctor "" "" "${_ctor_multi_value_args}" ${ARGN})
 
         CMaizeProject(SET "${self}" name "${_ctor_name}")
 
@@ -220,14 +220,19 @@ cpp_class(CMaizeProject)
     # :param _at_target_name: Identifying name for the target. This can match
     #                         name of either the CMake target or CMaize Target
     #                         object, but is required to do match them.
-    # :type _at_target_name: desc or target
+    # :type _at_target_name: desc
     # :param _at_target: Target object to be added.
     # :type _at_target: Target
+    # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
     #    * **INSTALLED** (*bool*) --
     #      Flag to indicate that the target being added is already installed
     #      on the system.
+    #    * **NAME** (*desc* or *target*) -- 
+    #      Identifying name for the target. This can match name of either the
+    #      CMake target or CMaize Target object, but is required to do match
+    #      them. This keyword argument is **required**.
     #]]
     cpp_member(add_target CMaizeProject str Target args)
     function("${add_target}" self _at_target_name _at_target)
@@ -241,8 +246,16 @@ cpp_class(CMaizeProject)
     #[[[
     # Add a target to the project. Duplicate objects will be removed.
     #
-    # Overload for ``add_target()`` to handle target names of the ``target``
-    # type. See the main ``add_target()`` definition for full description.
+    # .. note::
+    #
+    #    Overload for ``add_target()`` to handle target names of the ``target``
+    #    type. See the main ``add_target()`` definition for full description.
+    #
+    # :param _at_target_name: Identifying name for the target.
+    # :type _at_target_name: target
+    # :param _at_target: Target object to be added.
+    # :type _at_target: Target
+    # :param **kwargs: Additional keyword arguments may be necessary.
     #]]
     cpp_member(add_target CMaizeProject target Target args)
     function("${add_target}" self _at_target_name _at_target)
@@ -264,10 +277,11 @@ cpp_class(CMaizeProject)
     # is bypassed through the aforementioned required keyword argument for
     # the target name, essentially combining the two types.
     #
-    # :param _at_target: Target object to be added.
-    # :type _at_target: Target
+    # :param __at_target: Target object to be added.
+    # :type __at_target: Target
     # :param NAME: Required keyword argument. See description below.
     # :type NAME: desc or target
+    # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
     #    * **INSTALLED** (*bool*) --
@@ -281,9 +295,9 @@ cpp_class(CMaizeProject)
     cpp_member(_add_target CMaizeProject Target args)
     function("${_add_target}" self __at_target)
 
-        set(__at_flags INSTALLED)
+        set(__at_options INSTALLED)
         set(__at_one_value_args NAME)
-        cmake_parse_arguments(__at "${__at_flags}" "${__at_one_value_args}" "" ${ARGN})
+        cmake_parse_arguments(__at "${__at_options}" "${__at_one_value_args}" "" ${ARGN})
 
         # Ensure that NAME was provided
         cpp_contains(__at_name_exists __at_NAME "${__at_KEYWORDS_MISSING_VALUES}")
@@ -326,10 +340,10 @@ cpp_class(CMaizeProject)
     #
     # :param self: CMaizeProject object.
     # :type self: CMaizeProject
-    # :param cpm_found: Return variable for if the package manager was found.
-    # :type cpm_found: bool*
-    # :param cpm_tgt: Package manager to search for.
-    # :type cpm_tgt: Package manager
+    # :param _cpm_found: Return variable for if the package manager was found.
+    # :type _cpm_found: bool*
+    # :param _cpm_tgt: Package manager to search for.
+    # :type _cpm_tgt: Package manager
     #
     # :returns: Package manager found (TRUE) or not (FALSE).
     # :rtype: bool
@@ -349,15 +363,24 @@ cpp_class(CMaizeProject)
     #[[[
     # Checks if a target with the same name is already added to this project.
     #
-    # This checks both the build and installed target lists.
-    #
     # :param _ct_found: Return variable for if the target was found.
     # :type _ct_found: bool*
     # :param _ct_target_name: Identifying name for the target. This can match
     #                         name of either the CMake target or CMaize Target
     #                         object, but is required to do match them.
-    # :type _ct_target_name: desc or target
+    # :type _ct_target_name: desc
+    # :param **kwargs: Additional keyword arguments may be necessary.
     #
+    # :Keyword Arguments:
+    #    * **INSTALLED** (*bool*) --
+    #      Flag to indicate that the installed targets should be checked.
+    #    * **ALL** (*bool*) --
+    #      Flag to indicate that both the build and installed targets should
+    #      be checked.
+    #    * **NAME** (*desc* or *target*) -- 
+    #      Identifying name for a target contained in the current Cmaize
+    #      project. This keyword argument is **required**.
+    # 
     # :returns: Target found (TRUE) or not (FALSE).
     # :rtype: bool
     #]]
@@ -371,6 +394,26 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    #[[[
+    # Checks if a target with the same name is already added to this project.
+    #
+    # .. note::
+    #
+    #    Overload for ``check_target()`` to handle target names of the
+    #    ``target`` type. See the main ``get_target()`` definition for full
+    #    description.
+    #
+    # :param _ct_found: Return variable for if the target was found.
+    # :type _ct_found: bool*
+    # :param _ct_target_name: Identifying name for the target. This can match
+    #                         name of either the CMake target or CMaize Target
+    #                         object, but is required to do match them.
+    # :type _ct_target_name: target
+    # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # :returns: Target found (TRUE) or not (FALSE).
+    # :rtype: bool
+    #]]
     cpp_member(check_target CMaizeProject desc target args)
     function("${check_target}" self  _ct_found _ct_target_name)
 
@@ -381,15 +424,50 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    #[[[
+    # Checks if a target with the same name is already added to this project.
+    # This defaults to build targets.
+    #
+    # This internal implementation exists so a required keyword argument is
+    # not part of the public interface, as well as to handle both ``desc`` and
+    # ``target`` types. Both types are effectively strings representing target
+    # names in this algorithm and can be treated equivalently, but cannot be
+    # typecast to each other by CMakePPLang. The CMakePPLang type checking
+    # is bypassed through the aforementioned required keyword argument for
+    # the target name, essentially combining the two types.
+    #
+    # :param __ct_found: Return variable for whether the target was found.
+    # :type __ct_found: bool*
+    # :param NAME: Required keyword argument. See description below.
+    # :type NAME: desc or target
+    # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # :Keyword Arguments:
+    #    * **INSTALLED** (*bool*) --
+    #      Flag to indicate that the installed targets should be checked.
+    #    * **ALL** (*bool*) --
+    #      Flag to indicate that both the build and installed targets should
+    #      be checked.
+    #    * **NAME** (*desc* or *target*) -- 
+    #      Identifying name for a target contained in the current Cmaize
+    #      project. This keyword argument is **required**.
+    #
+    # :returns: Target found (TRUE) or not (FALSE).
+    # :rtype: bool
+    #]]
     cpp_member(_check_target CMaizeProject desc args)
     function("${_check_target}" self  __ct_found)
 
-        set(__ct_flags INSTALLED ALL)
+        set(__ct_options INSTALLED ALL)
         set(__ct_one_value_args NAME)
-        cmake_parse_arguments(__ct "${__ct_flags}" "${__ct_one_value_args}" "" ${ARGN})
+        cmake_parse_arguments(
+            __ct "${__ct_options}" "${__ct_one_value_args}" "" ${ARGN}
+        )
 
         # Ensure that NAME was provided
-        cpp_contains(__ct_name_exists __ct_NAME "${__ct_KEYWORDS_MISSING_VALUES}")
+        cpp_contains(
+            __ct_name_exists __ct_NAME "${__ct_KEYWORDS_MISSING_VALUES}"
+        )
         if(__ct_name_exists)
             cpp_raise(KeywordMissing "Missing required keyword argument: NAME")
         endif()
@@ -422,6 +500,20 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    #[[[
+    # Get a package manager of the requested type stored in the project.
+    #
+    # :param _gpm_result: Return variable for the package manager object.
+    # :type _gpm_result: PackageManager*
+    # :param _gpm_pm_type: Type of package manager to retrieve. See
+    #                      ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS`` for the list
+    #                      of supported package manager types.
+    # :type _gpm_pm_type: desc
+    # 
+    # :returns: Requested package manager object, or an empty string ("") if
+    #           no package manager with the matching type was found.
+    # :rtype: PackageManager
+    #]]
     cpp_member(get_package_manager CMaizeProject desc desc)
     function("${get_package_manager}" self  _gpm_result _gpm_pm_type)
 
@@ -444,6 +536,28 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    #[[[
+    # Get a Target with the requested identifying name stored in the project.
+    #
+    # :param _gt_result: Return variable for the Target object.
+    # :type _gt_result: Target*
+    # :param _gt_target_name: Identifying name of the target to retrieve. This
+    #                         should match the name provided during the
+    #                         ``CMaizeProject(add_target`` call.
+    # :type _gt_target_name: desc
+    # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # :Keyword Arguments:
+    #    * **INSTALLED** (*bool*) --
+    #      Flag to indicate that the installed targets should be searched.
+    #    * **NAME** (*desc* or *target*) -- 
+    #      Identifying name for a target contained in the current Cmaize
+    #      project. This keyword argument is **required**.
+    # 
+    # :returns: Requested target object, or an empty string ("") if
+    #           no target with the matching type was found.
+    # :rtype: Target
+    #]]
     cpp_member(get_target CMaizeProject desc desc args)
     function("${get_target}" self  _gt_result _gt_target_name)
 
@@ -454,24 +568,71 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
+    #[[[
+    # Get a Target with the requested identifying name stored in the project.
+    #
+    # .. note::
+    #
+    #    Overload for ``get_target()`` to handle target names of the ``target``
+    #    type. See the main ``get_target()`` definition for full description.
+    #
+    # :param _gt_result: Return variable for the Target object.
+    # :type _gt_result: Target*
+    # :param _gt_target_name: Identifying name of the target to retrieve. This
+    #                         should match the name provided during the
+    #                         ``CMaizeProject(add_target`` call.
+    # :type _gt_target_name: target
+    # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # :returns: Requested target object, or an empty string ("") if
+    #           no target with the matching type was found.
+    # :rtype: Target
+    #]]
     cpp_member(get_target CMaizeProject desc target args)
     function("${get_target}" self  _gt_result _gt_target_name)
 
         CMaizeProject(_get_target
             "${self}" "${_gt_result}" NAME "${_gt_target_name}" ${ARGN}
         )
-        message("-- DEBUG: _gt_result: ${_gt_result}: ${${_gt_result}}")
         cpp_return("${_gt_result}")
 
     endfunction()
 
+    #[[[
+    # Get a Target with the requested identifying name stored in the project.
+    #
+    # This internal implementation exists so a required keyword argument is
+    # not part of the public interface, as well as to handle both ``desc`` and
+    # ``target`` types. Both types are effectively strings representing target
+    # names in this algorithm and can be treated equivalently, but cannot be
+    # typecast to each other by CMakePPLang. The CMakePPLang type checking
+    # is bypassed through the aforementioned required keyword argument for
+    # the target name, essentially combining the two types.
+    #
+    # :param __gt_result: Return variable for the resulting target.
+    # :type __gt_result: Target*
+    # :param NAME: Required keyword argument. See description below.
+    # :type NAME: desc or target
+    # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # :Keyword Arguments:
+    #    * **INSTALLED** (*bool*) --
+    #      Flag to indicate that the installed targets should be searched.
+    #    * **NAME** (*desc* or *target*) -- 
+    #      Identifying name for a target contained in the current Cmaize
+    #      project. This keyword argument is **required**.
+    #
+    # :returns: Requested target object, or an empty string ("") if
+    #           no target with the matching type was found.
+    # :rtype: Target
+    #]]
     cpp_member(_get_target CMaizeProject desc args)
     function("${_get_target}" self  __gt_result)
 
-        set(__gt_flags INSTALLED)
+        set(__gt_options INSTALLED)
         set(__gt_one_value_args NAME)
         cmake_parse_arguments(
-            __gt "${__gt_flags}" "${__gt_one_value_args}" "" ${ARGN}
+            __gt "${__gt_options}" "${__gt_one_value_args}" "" ${ARGN}
         )
 
         # Ensure that NAME was provided

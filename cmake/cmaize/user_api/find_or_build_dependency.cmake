@@ -47,8 +47,8 @@ endfunction()
 #]]
 function(cmaize_find_or_build_dependency _fobdc_name)
 
-    set(_fobdc_options PACKAGE_MANAGER)
-    cmake_parse_arguments(_fobd "" "${_fobdc_options}" "" ${ARGN})
+    set(_fobdc_one_value_args PACKAGE_MANAGER)
+    cmake_parse_arguments(_fobd "" "${_fobdc_one_value_args}" "" ${ARGN})
 
     # Default to CMake package manager if none were given
     if("${_fobdc_PACKAGE_MANAGER}" STREQUAL "")

@@ -21,9 +21,11 @@ include(cmaize/user_api/add_executable)
 #]]
 macro(cpp_add_tests _cat_test_name)
 
-    set(_cat_options INCLUDE_DIR)
-    set(_cat_lists INCLUDE_DIRS)
-    cmake_parse_arguments(_cat "" "${_cat_options}" "${_cat_lists}" ${ARGN})
+    set(_cat_one_value_args INCLUDE_DIR)
+    set(_cat_multi_value_args INCLUDE_DIRS)
+    cmake_parse_arguments(
+        _cat "" "${_cat_one_value_args}" "${_cat_multi_value_args}" ${ARGN}
+    )
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
     # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is

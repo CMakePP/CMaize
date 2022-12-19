@@ -61,12 +61,16 @@ cpp_class(CXXTarget BuildTarget)
     cpp_member(make_target CXXTarget args)
     function("${make_target}" self)
 
-        set(_mt_options CXX_STANDARD SOURCE_DIR)
-        set(_mt_lists DEPENDS INCLUDES SOURCES INCLUDE_DIRS)
-        cmake_parse_arguments(_mt "" "${_mt_options}" "${_mt_lists}" ${ARGN})
+        set(_mt_one_value_args CXX_STANDARD SOURCE_DIR)
+        set(_mt_multi_value_args DEPENDS INCLUDES SOURCES INCLUDE_DIRS)
+        cmake_parse_arguments(
+            _mt "" "${_mt_one_value_args}" "${_mt_multi_value_args}" ${ARGN}
+        )
 
-        list(APPEND _mt_full_options ${_mt_options} ${_mt_lists})
-        foreach(_mt_option_i ${_mt_full_options})
+        list(APPEND
+            _mt_full_args ${_mt_one_value_args} ${_mt_multi_value_args}
+        )
+        foreach(_mt_option_i ${_mt_full_args})
             if(NOT "${_mt_${_mt_option_i}}" STREQUAL "")
                 string(TOLOWER "${_mt_option_i}" _mt_lc_option)
                 CXXTarget(

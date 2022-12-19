@@ -16,8 +16,8 @@ function(cmaize_add_package _cap_tgt_name)
 
     message("-- DEBUG: Registering install package: ${_cap_tgt_name}")
 
-    set(_cap_options PACKAGE_MANAGER)
-    cmake_parse_arguments(_cap "" "${_cap_options}" "" ${ARGN})
+    set(_cap_one_value_args PACKAGE_MANAGER)
+    cmake_parse_arguments(_cap "" "${_cap_one_value_args}" "" ${ARGN})
 
     if("${_cap_PACKAGE_MANAGER}" STREQUAL "")
         set(_cap_PACKAGE_MANAGER "CMake")

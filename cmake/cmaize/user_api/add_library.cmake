@@ -24,9 +24,11 @@ include(cmaize/utilities/replace_project_targets)
 #]]
 function(cpp_add_library _cal_tgt_name)
 
-    set(_cal_options INCLUDE_DIR)
-    set(_cal_lists INCLUDE_DIRS)
-    cmake_parse_arguments(_cal "" "${_cal_options}" "${_cal_lists}" ${ARGN})
+    set(_cal_one_value_args INCLUDE_DIR)
+    set(_cal_multi_value_args INCLUDE_DIRS)
+    cmake_parse_arguments(
+        _cal "" "${_cal_one_value_args}" "${_cal_multi_value_args}" ${ARGN}
+    )
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
     # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
@@ -64,8 +66,8 @@ function(cmaize_add_library _cal_tgt_name)
 
     message("-- DEBUG: Registering library target: ${_cal_tgt_name}")
 
-    set(_cal_options LANGUAGE)
-    cmake_parse_arguments(_cal "" "${_cal_options}" "" ${ARGN})
+    set(_cal_one_value_args LANGUAGE)
+    cmake_parse_arguments(_cal "" "${_cal_one_value_args}" "" ${ARGN})
 
     # Default to CXX if no language is given
     if("${_cal_LANGUAGE}" STREQUAL "")
@@ -151,9 +153,7 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
 
     # Replace any DEPENDS values specifying CMaize Target objects with the
     # underlying target name
-    message("-- DEBUG: _cacl_DEPENDS: ${_cacl_DEPENDS}")
     cmaize_replace_project_targets(_cacl_DEPENDS ${_cacl_DEPENDS})
-    message("-- DEBUG: _cacl_DEPENDS: ${_cacl_DEPENDS}")
 
     CXXLibrary(make_target
         "${_cacl_lib_obj}"
@@ -170,56 +170,3 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     cpp_return("${_cacl_tgt_obj}")
 
 endfunction()
-
-# function(cmaize_replace_project_targets _rpt_result)
-
-#     # Assign the given target list to a variable
-#     set(_rpt_targets ${ARGN})
-
-#     # Create a copy target list to replace values in
-#     set(_rpt_targets_replaced "${_rpt_targets}")
-
-#     list(LENGTH _rpt_targets _rpt_targets_len)
-    
-#     # Return blank list if a blank list was given
-#     if(_rpt_targets_len LESS_EQUAL 0)
-#         cpp_return("${_rpt_result}")
-#     endif()
-
-#     cpp_get_global(_rpt_project CMAIZE_PROJECT_${PROJECT_NAME})
-
-#     # Check if each dependency listed is a CMaize Target
-#     foreach(_rpt_targets_i ${_rpt_targets})
-#         CMaizeProject(check_target
-#             "${_rpt_project}" _rpt_tgt_exists "${_rpt_targets_i}"
-#         )
-
-#         # Don't do anything for targets that are not CMaize Targets
-#         if(NOT _rpt_tgt_exists)
-#             continue()
-#         endif()
-
-#         CMaizeProject(get_target
-#             "${_rpt_project}" _rpt_tgt_obj "${_rpt_targets_i}"
-#         )
-
-#         # Get the name of the underlying CMake target
-#         Target(target "${_rpt_tgt_obj}" _rpt_tgt_name)
-
-#         # Replace the CMaize Target name with the CMake target name
-#         # This is done while preserving the order of target names
-#         list(FIND
-#             _rpt_targets_replaced
-#             "${_rpt_targets_i}"
-#             _rpt_tgt_idx
-#         )
-#         list(REMOVE_AT _rpt_targets_replaced "${_rpt_tgt_idx}")
-#         list(INSERT
-#             _rpt_targets_replaced "${_rpt_tgt_idx}" "${_rpt_tgt_name}"
-#         )
-#     endforeach()
-
-#     set("${_rpt_result}" "${_rpt_targets_replaced}")
-#     cpp_return("${_rpt_result}")
-
-# endfunction()

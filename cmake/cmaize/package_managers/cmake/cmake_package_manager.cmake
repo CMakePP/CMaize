@@ -85,7 +85,9 @@ cpp_class(CMakePackageManager PackageManager)
     # :returns: Dependency object created and initialized.
     # :rtype: Dependency
     #]]
-    cpp_member(register_dependency CMakePackageManager desc ProjectSpecification args)
+    cpp_member(register_dependency
+        CMakePackageManager desc ProjectSpecification args
+    )
     function("${register_dependency}" self _rd_result _rd_proj_specs)
 
         ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
@@ -125,7 +127,9 @@ cpp_class(CMakePackageManager PackageManager)
     #           string ("") if it was not found.
     # :rtype: InstalledTarget
     #]]
-    cpp_member(find_installed CMakePackageManager desc ProjectSpecification args)
+    cpp_member(find_installed
+        CMakePackageManager desc ProjectSpecification args
+    )
     function("${find_installed}" self _fi_result _fi_project_specs)
 
         ProjectSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
@@ -221,8 +225,8 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_member(install_package CMakePackageManager BuildTarget args)
     function("${install_package}" self _ip_target)
 
-        set(_ip_options NAMESPACE VERSION)
-        cmake_parse_arguments(_ip "" "${_ip_options}" "" ${ARGN})
+        set(_ip_one_value_args NAMESPACE VERSION)
+        cmake_parse_arguments(_ip "" "${_ip_one_value_args}" "" ${ARGN})
 
         Target(target "${_ip_target}" _ip_tgt_name)
 
@@ -286,7 +290,8 @@ cpp_class(CMakePackageManager PackageManager)
         configure_package_config_file(
             "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake.in"
             "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake"
-            INSTALL_DESTINATION "${CMAKE_INSTALL_DATADIR}/cmake/${_ip_tgt_name}"
+            INSTALL_DESTINATION
+                "${CMAKE_INSTALL_DATADIR}/cmake/${_ip_tgt_name}"
         )
 
         install(
@@ -302,31 +307,31 @@ cpp_class(CMakePackageManager PackageManager)
     #
     # :param self: CMakePackageManager object
     # :type self: CMakePackageManager
-    # :param _gc_target: Target to install
-    # :type _gc_target: BuildTarget*
+    # :param __gc_target: Target to install
+    # :type __gc_target: BuildTarget*
     #]]
     cpp_member(_generate_config CMakePackageManager BuildTarget)
-    function("${_generate_config}" self _gc_target)
+    function("${_generate_config}" self __gc_target)
 
         set(
             file_contents 
             "@PACKAGE_INIT@\n\ninclude(CMakeFindDependencyMacro)\n"
         )
         
-        BuildTarget(GET "${_gc_target}" _gc_dep_list depends)
-        foreach(_gc_dep_i ${_gc_dep_list})
-            string(APPEND file_contents "find_dependency(${_gc_dep_i})\n")
+        BuildTarget(GET "${__gc_target}" __gc_dep_list depends)
+        foreach(__gc_dep_i ${__gc_dep_list})
+            string(APPEND file_contents "find_dependency(${__gc_dep_i})\n")
         endforeach()
         
-        BuildTarget(target "${_gc_target}" _gc_tgt_name)
+        BuildTarget(target "${__gc_target}" __gc_tgt_name)
         string(APPEND
             file_contents
-            "include(\${CMAKE_CURRENT_LIST_DIR}/${_gc_tgt_name}_targets.cmake)\n"
+            "include(\${CMAKE_CURRENT_LIST_DIR}/${__gc_tgt_name}_targets.cmake)\n"
         )
         
         string(APPEND
             file_contents
-            "check_required_components(${_gc_tgt_name})"
+            "check_required_components(${__gc_tgt_name})"
         )
 
         file(WRITE

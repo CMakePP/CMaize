@@ -22,15 +22,16 @@ cpp_class(Target)
     # :type self: Target
     # :param tgt_name: Name of the target. This should not duplicate any other
     #                  target name already in scope.
-    # :type tgt_name: str
+    # :type tgt_name: desc
+    #
     # :returns: ``self`` will be set to the newly constructed ``Target``
     #           object.
     # :rtype: Target
     #]]
-    cpp_constructor(CTOR Target str)
-    function("${CTOR}" self tgt_name)
+    cpp_constructor(CTOR Target desc)
+    function("${CTOR}" self _ctor_name)
 
-        Target(SET "${self}" _name "${tgt_name}")
+        Target(SET "${self}" _name "${_ctor_name}")
 
     endfunction()
 

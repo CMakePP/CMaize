@@ -75,18 +75,18 @@ cpp_class(GitHubDependency Dependency)
 
     cpp_member(init GitHubDependency args)
     function("${init}" _i_this)
-        set(_i_flags PRIVATE)
-        set(_i_options BUILD_TARGET FIND_TARGET NAME URL VERSION)
+        set(_i_options PRIVATE)
+        set(_i_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
         set(_i_list CMAKE_ARGS)
         cmake_parse_arguments(
-            _i "${_i_flags}" "${_i_options}" "${_i_list}" ${ARGN}
+            _i "${_i_options}" "${_i_one_value_args}" "${_i_list}" ${ARGN}
         )
 
         if("${_i_PRIVATE}")
             Dependency(SET "${_i_this}" private TRUE)
         endif()
 
-        foreach(_i_option_i ${_i_options})
+        foreach(_i_option_i ${_i_one_value_args})
             if("${_i_${_i_option_i}}" STREQUAL "")
                 continue()
             endif()

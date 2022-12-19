@@ -124,8 +124,8 @@ cpp_class(Dependency)
     cpp_member(init Dependency args)
     function("${init}" self)
 
-        set(_i_options BUILD_TARGET FIND_TARGET NAME URL VERSION)
-        cmake_parse_arguments(_i "" "${_i_options}" "" ${ARGN})
+        set(_i_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
+        cmake_parse_arguments(_i "" "${_i_one_value_args}" "" ${ARGN})
 
         Dependency(SET "${self}" name "${_i_NAME}")
         Dependency(SET "${self}" location "${_i_URL}")
