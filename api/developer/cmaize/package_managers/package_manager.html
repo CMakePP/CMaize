@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cmaize.project/projects &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>cmaize.package_managers/package_manager &mdash; CMaize 1.0.0alpha documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="cmaize.targets" href="../targets/index.html" />
-    <link rel="prev" title="cmaize.project/project_specification" href="project_specification.html" /> 
+    <link rel="next" title="cmaize.package_managers/package_managers" href="package_managers.html" />
+    <link rel="prev" title="cmaize.package_managers/cmake_package_manager" href="cmake_package_manager.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,13 +52,13 @@
 <li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.project</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="project.html">cmaize.project/project</a></li>
-<li class="toctree-l4"><a class="reference internal" href="project_specification.html">cmaize.project/project_specification</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.project/projects</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.package_managers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cmake_package_manager.html">cmaize.package_managers/cmake_package_manager</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.package_managers/package_manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_managers.html">cmaize.package_managers/package_managers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../targets/index.html">cmaize.targets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">cmaize.user_api</a></li>
@@ -88,10 +88,10 @@
       <li><a href="../../../../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
           <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
-          <li class="breadcrumb-item"><a href="index.html">cmaize.project</a></li>
-      <li class="breadcrumb-item active">cmaize.project/projects</li>
+          <li class="breadcrumb-item"><a href="index.html">cmaize.package_managers</a></li>
+      <li class="breadcrumb-item active">cmaize.package_managers/package_manager</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../../_sources/api/developer/cmaize/project/projects.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/api/developer/cmaize/package_managers/package_manager.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -99,16 +99,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-cmaize.project-projects">
-<span id="cmaize-project-projects"></span><h1>cmaize.project/projects<a class="headerlink" href="#module-cmaize.project-projects" title="Permalink to this heading"></a></h1>
+  <section id="module-cmaize.package_managers-package_manager">
+<span id="cmaize-package-managers-package-manager"></span><h1>cmaize.package_managers/package_manager<a class="headerlink" href="#module-cmaize.package_managers-package_manager" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/package_manager.</span></span><span class="sig-name descname"><span class="pre">PackageManager</span></span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager" title="Permalink to this definition"></a></dt>
+<dd><p>Base class for the PackageManager class hierarchy.</p>
+<p><strong>Methods</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.has_package">
+<span class="sig-name descname"><span class="pre">has_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.has_package" title="Permalink to this definition"></a></dt>
+<dd><p>Virtual member to check if the package exists in the package manager.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.get_package">
+<span class="sig-name descname"><span class="pre">get_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.get_package" title="Permalink to this definition"></a></dt>
+<dd><p>Virtual member function to get the package using the package manager.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.install_package">
+<span class="sig-name descname"><span class="pre">install_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.install_package" title="Permalink to this definition"></a></dt>
+<dd><p>Virtual member to install a package.</p>
+</dd></dl>
+
+<p><strong>Attributes</strong></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.type" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>desc</p>
+</dd>
+</dl>
+<p>Type of package manager being used.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="project_specification.html" class="btn btn-neutral float-left" title="cmaize.project/project_specification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../targets/index.html" class="btn btn-neutral float-right" title="cmaize.targets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cmake_package_manager.html" class="btn btn-neutral float-left" title="cmaize.package_managers/cmake_package_manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="package_managers.html" class="btn btn-neutral float-right" title="cmaize.package_managers/package_managers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

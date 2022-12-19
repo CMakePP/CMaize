@@ -6,7 +6,7 @@ cmaize.user_api/add_executable
 .. module:: cmaize.user_api/add_executable
 
 
-.. function:: cpp_add_executable(_cae_tgt_name)
+.. function:: cpp_add_executable(_cae_tgt_name **kwargs)
 
    User function to build a executable target.
    
@@ -26,7 +26,7 @@ cmaize.user_api/add_executable
    
 
 
-.. function:: cmaize_add_executable(_cae_tgt_name)
+.. function:: cmaize_add_executable(_cae_tgt_name **kwargs)
 
    User function to build a executable target.
    
@@ -44,7 +44,7 @@ cmaize.user_api/add_executable
    
 
 
-.. function:: cmaize_add_cxx_executable(_cace_tgt_obj _cace_tgt_name)
+.. function:: cmaize_add_cxx_executable(_cace_tgt_obj _cace_tgt_name **kwargs)
 
    User function to build a CXX executable target.
    

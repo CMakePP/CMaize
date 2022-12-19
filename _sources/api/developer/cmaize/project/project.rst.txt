@@ -89,6 +89,18 @@ cmaize.project/project
       
 
 
+   .. py:method:: add_package_manager(_apm_pm)
+
+      Add a package manager to the project. Duplicate package manager types
+      will not be added.
+      
+      :param self: CMaizeProject object.
+      :type self: CMaizeProject
+      :param _apm_pm: Package manager object to be added.
+      :type _apm_pm: Package manager
+      
+
+
    .. py:method:: add_target(_at_target[, ...])
 
       Add a target to the project. Duplicate objects will be removed.
@@ -105,7 +117,32 @@ cmaize.project/project
       
 
 
-   .. py:method:: _check_target(_ct_found, _ct_tgt)
+   .. py:method:: check_package_manager(_cpm_found, _cpm_pm)
+
+      Checks if a package manager with the same type is already added to
+      this project.
+      
+      :param self: CMaizeProject object.
+      :type self: CMaizeProject
+      :param cpm_found: Return variable for if the package manager was found.
+      :type cpm_found: bool*
+      :param cpm_tgt: Package manager to search for.
+      :type cpm_tgt: Package manager
+      
+      :returns: Package manager found (TRUE) or not (FALSE).
+      :rtype: bool
+      
+
+      :param _cpm_found: 
+
+      :type _cpm_found: desc
+
+      :param _cpm_pm: 
+
+      :type _cpm_pm: PackageManager
+
+
+   .. py:method:: check_target(_ct_found, _ct_tgt)
 
       Checks if a target with the same name is already added to this project.
       

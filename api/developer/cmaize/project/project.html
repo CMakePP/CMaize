@@ -52,6 +52,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.project</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.project/project</a></li>
 <li class="toctree-l4"><a class="reference internal" href="project_specification.html">cmaize.project/project_specification</a></li>
@@ -187,6 +188,21 @@ given project name.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-project.CMaizeProject.add_package_manager">
+<span class="sig-name descname"><span class="pre">add_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_apm_pm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-project.CMaizeProject.add_package_manager" title="Permalink to this definition"></a></dt>
+<dd><p>Add a package manager to the project. Duplicate package manager types
+will not be added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-project.CMaizeProject" title="cmaize.project/project.CMaizeProject"><em>CMaizeProject</em></a>) – CMaizeProject object.</p></li>
+<li><p><strong>_apm_pm</strong> (<em>Package manager</em>) – Package manager object to be added.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-project.CMaizeProject.add_target">
 <span class="sig-name descname"><span class="pre">add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_at_target</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-project.CMaizeProject.add_target" title="Permalink to this definition"></a></dt>
 <dd><p>Add a target to the project. Duplicate objects will be removed.</p>
@@ -208,8 +224,32 @@ on the system.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.project-project.CMaizeProject._check_target">
-<span class="sig-name descname"><span class="pre">_check_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ct_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ct_tgt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-project.CMaizeProject._check_target" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cmaize.project-project.CMaizeProject.check_package_manager">
+<span class="sig-name descname"><span class="pre">check_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cpm_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_cpm_pm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-project.CMaizeProject.check_package_manager" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if a package manager with the same type is already added to
+this project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-project.CMaizeProject" title="cmaize.project/project.CMaizeProject"><em>CMaizeProject</em></a>) – CMaizeProject object.</p></li>
+<li><p><strong>cpm_found</strong> (<em>bool*</em>) – Return variable for if the package manager was found.</p></li>
+<li><p><strong>cpm_tgt</strong> (<em>Package manager</em>) – Package manager to search for.</p></li>
+<li><p><strong>_cpm_found</strong> (<em>desc</em>) – </p></li>
+<li><p><strong>_cpm_pm</strong> (<a class="reference internal" href="../package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager" title="cmaize.package_managers/package_manager.PackageManager"><em>PackageManager</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Package manager found (TRUE) or not (FALSE).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-project.CMaizeProject.check_target">
+<span class="sig-name descname"><span class="pre">check_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ct_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ct_tgt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-project.CMaizeProject.check_target" title="Permalink to this definition"></a></dt>
 <dd><p>Checks if a target with the same name is already added to this project.</p>
 <p>This checks both the build and installed target lists.</p>
 <dl class="field-list simple">
@@ -268,7 +308,7 @@ on the system.</p></li>
 <span class="sig-name descname"><span class="pre">package_managers</span></span><a class="headerlink" href="#cmaize.project-project.CMaizeProject.package_managers" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[PackageManager]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="../package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager" title="cmaize.package_managers/package_manager.PackageManager">PackageManager</a>]</p>
 </dd>
 </dl>
 <p>Package managers used by the project.</p>

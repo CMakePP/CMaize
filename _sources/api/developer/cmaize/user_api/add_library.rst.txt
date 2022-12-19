@@ -6,7 +6,7 @@ cmaize.user_api/add_library
 .. module:: cmaize.user_api/add_library
 
 
-.. function:: cpp_add_library(_cal_tgt_name)
+.. function:: cpp_add_library(_cal_tgt_name **kwargs)
 
    User function to build a library target.
    
@@ -26,7 +26,7 @@ cmaize.user_api/add_library
    
 
 
-.. function:: cmaize_add_library(_cal_tgt_name)
+.. function:: cmaize_add_library(_cal_tgt_name **kwargs)
 
    User function to build a library target.
    
@@ -44,7 +44,7 @@ cmaize.user_api/add_library
    
 
 
-.. function:: cmaize_add_cxx_library(_cacl_tgt_obj _cacl_tgt_name)
+.. function:: cmaize_add_cxx_library(_cacl_tgt_obj _cacl_tgt_name **kwargs)
 
    User function to build a CXX library target.
    

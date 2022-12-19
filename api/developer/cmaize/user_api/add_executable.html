@@ -52,12 +52,14 @@
 <li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../targets/index.html">cmaize.targets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.user_api</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.user_api/add_executable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="add_package.html">cmaize.user_api/add_package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_api.html">cmaize.user_api/user_api</a></li>
@@ -104,7 +106,7 @@
 <span id="cmaize-user-api-add-executable"></span><h1>cmaize.user_api/add_executable<a class="headerlink" href="#module-cmaize.user_api-add_executable" title="Permalink to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.user_api-add_executable.cpp_add_executable">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cpp_add_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cae_tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cpp_add_executable" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cpp_add_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cae_tgt_name</span> <span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cpp_add_executable" title="Permalink to this definition"></a></dt>
 <dd><p>User function to build a executable target.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -126,7 +128,7 @@ will be ignored.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.user_api-add_executable.cmaize_add_executable">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cae_tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cmaize_add_executable" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cae_tgt_name</span> <span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cmaize_add_executable" title="Permalink to this definition"></a></dt>
 <dd><p>User function to build a executable target.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -147,7 +149,7 @@ are listed in the <code class="docutils literal notranslate"><span class="pre">C
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.user_api-add_executable.cmaize_add_cxx_executable">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_cxx_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cace_tgt_obj</span> <span class="pre">_cace_tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cmaize_add_cxx_executable" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_executable.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_cxx_executable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cace_tgt_obj</span> <span class="pre">_cace_tgt_name</span> <span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_executable.cmaize_add_cxx_executable" title="Permalink to this definition"></a></dt>
 <dd><p>User function to build a CXX executable target.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

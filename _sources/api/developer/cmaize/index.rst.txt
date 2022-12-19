@@ -9,6 +9,7 @@ cmaize
    cmaize
    cmaize_impl
    globals
+   package_managers/index.rst
    project/index.rst
    targets/index.rst
    toolchain/index.rst

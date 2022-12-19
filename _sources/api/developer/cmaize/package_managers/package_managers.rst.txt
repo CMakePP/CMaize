@@ -1,0 +1,7 @@
+
+########################################
+cmaize.package_managers/package_managers
+########################################
+
+.. module:: cmaize.package_managers/package_managers
+

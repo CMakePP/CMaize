@@ -7,6 +7,7 @@ cpp
    :maxdepth: 2
 
    cpp
+   cpp_impl
    dependency/index.rst
    fetch/index.rst
    targets/index.rst

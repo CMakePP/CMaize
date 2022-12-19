@@ -36,3 +36,13 @@ cmaize.globals
 
    :type: str
 
+
+.. data:: CMAIZE_SUPPORTED_PACKAGE_MANAGERS
+
+   Package manager options supported by CMaize.
+   
+
+   :Default value: CMake
+
+   :type: str
+

@@ -119,8 +119,6 @@
       </ul></li>
       <li><a href="api/developer/cmaize/toolchain/toolchain.html#cmaize.toolchain-toolchain.Toolchain._autopopulate_options">_autopopulate_options() (cmaize.toolchain/toolchain.Toolchain method)</a>
 </li>
-      <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject._check_target">_check_target() (cmaize.project/project.CMaizeProject method)</a>
-</li>
       <li><a href="api/developer/cmaize/utilities/glob_files.html#cmaize.utilities-glob_files._cmaize_glob_files">_cmaize_glob_files() (in module cmaize.utilities/glob_files)</a>
 </li>
       <li><a href="api/developer/cmaize/toolchain/toolchain.html#cmaize.toolchain-toolchain._CMAIZE_TOOLCHAIN_AUTOPOPULATED_VARIABLE_NAMES">_CMAIZE_TOOLCHAIN_AUTOPOPULATED_VARIABLE_NAMES (in module cmaize.toolchain/toolchain)</a>
@@ -147,6 +145,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager._generate_config">_generate_config() (cmaize.package_managers/cmake_package_manager.CMakePackageManager method)</a>
+</li>
       <li><a href="api/developer/cmaize/targets/target.html#cmaize.targets-target.Target._name">_name (cmaize.targets/target.Target attribute)</a>
 </li>
       <li><a href="api/developer/cpp/dependency/dependency_class.html#cpp.dependency-dependency_class.Dependency._search_paths">_search_paths() (cpp.dependency/dependency_class.Dependency method)</a>
@@ -191,8 +191,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.add_language">add_language() (cmaize.project/project.CMaizeProject method)</a>
 </li>
+      <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.add_package_manager">add_package_manager() (cmaize.project/project.CMaizeProject method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager.add_paths">add_paths() (cmaize.package_managers/cmake_package_manager.CMakePackageManager method)</a>
+</li>
       <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.add_target">add_target() (cmaize.project/project.CMaizeProject method)</a>
 </li>
       <li><a href="api/developer/cmaize/toolchain/toolchain.html#cmaize.toolchain-toolchain.Toolchain.auto_options">auto_options (cmaize.toolchain/toolchain.Toolchain attribute)</a>
@@ -221,6 +225,10 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.check_package_manager">check_package_manager() (cmaize.project/project.CMaizeProject method)</a>
+</li>
+      <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.check_target">check_target() (cmaize.project/project.CMaizeProject method)</a>
+</li>
       <li>
     cmaize.cmaize
 
@@ -240,6 +248,27 @@
 
       <ul>
         <li><a href="api/developer/cmaize/globals.html#module-cmaize.globals">module</a>
+</li>
+      </ul></li>
+      <li>
+    cmaize.package_managers/cmake_package_manager
+
+      <ul>
+        <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#module-cmaize.package_managers-cmake_package_manager">module</a>
+</li>
+      </ul></li>
+      <li>
+    cmaize.package_managers/package_manager
+
+      <ul>
+        <li><a href="api/developer/cmaize/package_managers/package_manager.html#module-cmaize.package_managers-package_manager">module</a>
+</li>
+      </ul></li>
+      <li>
+    cmaize.package_managers/package_managers
+
+      <ul>
+        <li><a href="api/developer/cmaize/package_managers/package_managers.html#module-cmaize.package_managers-package_managers">module</a>
 </li>
       </ul></li>
       <li>
@@ -341,6 +370,13 @@
 </li>
       </ul></li>
       <li>
+    cmaize.user_api/add_package
+
+      <ul>
+        <li><a href="api/developer/cmaize/user_api/add_package.html#module-cmaize.user_api-add_package">module</a>
+</li>
+      </ul></li>
+      <li>
     cmaize.user_api/add_tests
 
       <ul>
@@ -390,6 +426,10 @@
 </li>
       <li><a href="api/developer/cmaize/user_api/add_library.html#cmaize.user_api-add_library.cmaize_add_library">cmaize_add_library() (in module cmaize.user_api/add_library)</a>
 </li>
+      <li><a href="api/developer/cmaize/user_api/add_package.html#cmaize.user_api-add_package.cmaize_add_package">cmaize_add_package() (in module cmaize.user_api/add_package)</a>
+</li>
+      <li><a href="api/developer/cmaize/user_api/add_package.html#cmaize.user_api-add_package.cmaize_add_package_cmake">cmaize_add_package_cmake() (in module cmaize.user_api/add_package)</a>
+</li>
       <li><a href="api/developer/cmaize/user_api/add_tests.html#cmaize.user_api-add_tests.cmaize_add_tests">cmaize_add_tests() (in module cmaize.user_api/add_tests)</a>
 </li>
       <li><a href="api/developer/cmaize/globals.html#cmaize.globals.CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS">CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS (in module cmaize.globals)</a>
@@ -400,14 +440,18 @@
 </li>
       <li><a href="api/developer/cmaize/utilities/split_version.html#cmaize.utilities-split_version.cmaize_split_version">cmaize_split_version() (in module cmaize.utilities/split_version)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/developer/cmaize/globals.html#cmaize.globals.CMAIZE_SUPPORTED_LANGUAGES">CMAIZE_SUPPORTED_LANGUAGES (in module cmaize.globals)</a>
+</li>
+      <li><a href="api/developer/cmaize/globals.html#cmaize.globals.CMAIZE_SUPPORTED_PACKAGE_MANAGERS">CMAIZE_SUPPORTED_PACKAGE_MANAGERS (in module cmaize.globals)</a>
 </li>
       <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject">CMaizeProject (class in cmaize.project/project)</a>
 </li>
       <li><a href="api/developer/cpp/dependency/dependency_class.html#cpp.dependency-dependency_class.Dependency.cmake_args">cmake_args (cpp.dependency/dependency_class.Dependency attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager">CMakePackageManager (class in cmaize.package_managers/cmake_package_manager)</a>
+</li>
       <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.compile_options">compile_options (cmaize.project/project_specification.ProjectSpecification attribute)</a>
 </li>
       <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.configure_options">configure_options (cmaize.project/project_specification.ProjectSpecification attribute)</a>
@@ -417,6 +461,13 @@
 
       <ul>
         <li><a href="api/developer/cpp/cpp.html#module-cpp.cpp">module</a>
+</li>
+      </ul></li>
+      <li>
+    cpp.cpp_impl
+
+      <ul>
+        <li><a href="api/developer/cpp/cpp_impl.html#module-cpp.cpp_impl">module</a>
 </li>
       </ul></li>
       <li>
@@ -553,9 +604,11 @@
 </li>
       <li><a href="api/developer/cpp/user_api/find_or_build_dependency.html#cpp.user_api-find_or_build_dependency.cpp_find_or_build_dependency">cpp_find_or_build_dependency() (in module cpp.user_api/find_or_build_dependency)</a>
 </li>
-      <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.CTOR">CTOR() (cmaize.project/project.CMaizeProject method)</a>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager.CTOR">CTOR() (cmaize.package_managers/cmake_package_manager.CMakePackageManager method)</a>
 
       <ul>
+        <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.CTOR">(cmaize.project/project.CMaizeProject method)</a>
+</li>
         <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.CTOR">(cmaize.project/project_specification.ProjectSpecification method)</a>
 </li>
         <li><a href="api/developer/cmaize/targets/installed_target.html#cmaize.targets-installed_target.InstalledTarget.CTOR">(cmaize.targets/installed_target.InstalledTarget method)</a>
@@ -641,8 +694,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/developer/cmaize/toolchain/toolchain.html#cmaize.toolchain-toolchain.Toolchain.generate_file_contents">generate_file_contents() (cmaize.toolchain/toolchain.Toolchain method)</a>
 </li>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager.get_package">get_package() (cmaize.package_managers/cmake_package_manager.CMakePackageManager method)</a>
+
+      <ul>
+        <li><a href="api/developer/cmaize/package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager.get_package">(cmaize.package_managers/package_manager.PackageManager method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/user_api/add_package.html#cmaize.user_api-add_package.get_package_manager">get_package_manager() (in module cmaize.user_api/add_package)</a>
+</li>
       <li><a href="api/developer/cmaize/targets/target.html#cmaize.targets-target.Target.get_property">get_property() (cmaize.targets/target.Target method)</a>
 </li>
       <li><a href="api/developer/cpp/dependency/github.html#cpp.dependency-github.GitHubDependency">GitHubDependency (class in cpp.dependency/github)</a>
@@ -653,10 +714,16 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/developer/cmaize/targets/target.html#cmaize.targets-target.Target.has_property">has_property() (cmaize.targets/target.Target method)</a>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager.has_package">has_package() (cmaize.package_managers/cmake_package_manager.CMakePackageManager method)</a>
+
+      <ul>
+        <li><a href="api/developer/cmaize/package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager.has_package">(cmaize.package_managers/package_manager.PackageManager method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/targets/target.html#cmaize.targets-target.Target.has_property">has_property() (cmaize.targets/target.Target method)</a>
+</li>
       <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.hash">hash() (cmaize.project/project_specification.ProjectSpecification method)</a>
 </li>
   </ul></td>
@@ -675,12 +742,18 @@
         <li><a href="api/developer/cpp/targets/cxx_target.html#cpp.targets-cxx_target.CXXTarget.includes">(cpp.targets/cxx_target.CXXTarget attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/developer/cpp/dependency/dependency_class.html#cpp.dependency-dependency_class.Dependency.init">init() (cpp.dependency/dependency_class.Dependency method)</a>
 
       <ul>
         <li><a href="api/developer/cpp/dependency/github.html#cpp.dependency-github.GitHubDependency.init">(cpp.dependency/github.GitHubDependency method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager.install_package">install_package() (cmaize.package_managers/cmake_package_manager.CMakePackageManager method)</a>
+
+      <ul>
+        <li><a href="api/developer/cmaize/package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager.install_package">(cmaize.package_managers/package_manager.PackageManager method)</a>
 </li>
       </ul></li>
       <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.installed_targets">installed_targets (cmaize.project/project.CMaizeProject attribute)</a>
@@ -723,6 +796,12 @@
 </li>
         <li><a href="api/developer/cmaize/globals.html#module-cmaize.globals">cmaize.globals</a>
 </li>
+        <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#module-cmaize.package_managers-cmake_package_manager">cmaize.package_managers/cmake_package_manager</a>
+</li>
+        <li><a href="api/developer/cmaize/package_managers/package_manager.html#module-cmaize.package_managers-package_manager">cmaize.package_managers/package_manager</a>
+</li>
+        <li><a href="api/developer/cmaize/package_managers/package_managers.html#module-cmaize.package_managers-package_managers">cmaize.package_managers/package_managers</a>
+</li>
         <li><a href="api/developer/cmaize/project/project.html#module-cmaize.project-project">cmaize.project/project</a>
 </li>
         <li><a href="api/developer/cmaize/project/project_specification.html#module-cmaize.project-project_specification">cmaize.project/project_specification</a>
@@ -751,6 +830,8 @@
 </li>
         <li><a href="api/developer/cmaize/user_api/add_library.html#module-cmaize.user_api-add_library">cmaize.user_api/add_library</a>
 </li>
+        <li><a href="api/developer/cmaize/user_api/add_package.html#module-cmaize.user_api-add_package">cmaize.user_api/add_package</a>
+</li>
         <li><a href="api/developer/cmaize/user_api/add_tests.html#module-cmaize.user_api-add_tests">cmaize.user_api/add_tests</a>
 </li>
         <li><a href="api/developer/cmaize/user_api/cmaize_project.html#module-cmaize.user_api-cmaize_project">cmaize.user_api/cmaize_project</a>
@@ -764,6 +845,8 @@
         <li><a href="api/developer/cmaize/utilities/utilities.html#module-cmaize.utilities-utilities">cmaize.utilities/utilities</a>
 </li>
         <li><a href="api/developer/cpp/cpp.html#module-cpp.cpp">cpp.cpp</a>
+</li>
+        <li><a href="api/developer/cpp/cpp_impl.html#module-cpp.cpp_impl">cpp.cpp_impl</a>
 </li>
         <li><a href="api/developer/cpp/dependency/dependency.html#module-cpp.dependency-dependency">cpp.dependency/dependency</a>
 </li>
@@ -822,6 +905,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/developer/cmaize/project/project.html#cmaize.project-project.CMaizeProject.package_managers">package_managers (cmaize.project/project.CMaizeProject attribute)</a>
 </li>
+      <li><a href="api/developer/cmaize/package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager">PackageManager (class in cmaize.package_managers/package_manager)</a>
+</li>
       <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.patch_version">patch_version (cmaize.project/project_specification.ProjectSpecification attribute)</a>
 </li>
   </ul></td>
@@ -846,20 +931,22 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/developer/cmaize/package_managers/cmake_package_manager.html#cmaize.package_managers-cmake_package_manager.CMakePackageManager.search_paths">search_paths (cmaize.package_managers/cmake_package_manager.CMakePackageManager attribute)</a>
+</li>
       <li><a href="api/developer/cmaize/targets/target.html#cmaize.targets-target.Target.set_properties">set_properties() (cmaize.targets/target.Target method)</a>
 </li>
       <li><a href="api/developer/cmaize/targets/target.html#cmaize.targets-target.Target.set_property">set_property() (cmaize.targets/target.Target method)</a>
 </li>
       <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.set_version">set_version() (cmaize.project/project_specification.ProjectSpecification method)</a>, <a href="api/developer/cmaize/project/project_specification.html#id0">[1]</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/developer/cmaize/targets/cxx_target.html#cmaize.targets-cxx_target.CXXTarget.source_dir">source_dir (cmaize.targets/cxx_target.CXXTarget attribute)</a>
 
       <ul>
         <li><a href="api/developer/cpp/targets/cxx_target.html#cpp.targets-cxx_target.CXXTarget.source_dir">(cpp.targets/cxx_target.CXXTarget attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/developer/cmaize/targets/cxx_target.html#cmaize.targets-cxx_target.CXXTarget.sources">sources (cmaize.targets/cxx_target.CXXTarget attribute)</a>
 
       <ul>
@@ -887,6 +974,8 @@
       <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.toolchain">toolchain (cmaize.project/project_specification.ProjectSpecification attribute)</a>
 </li>
       <li><a href="api/developer/cmaize/project/project_specification.html#cmaize.project-project_specification.ProjectSpecification.tweak_version">tweak_version (cmaize.project/project_specification.ProjectSpecification attribute)</a>
+</li>
+      <li><a href="api/developer/cmaize/package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager.type">type (cmaize.package_managers/package_manager.PackageManager attribute)</a>
 </li>
   </ul></td>
 </tr></table>

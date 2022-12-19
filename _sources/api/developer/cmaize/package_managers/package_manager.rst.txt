@@ -1,0 +1,41 @@
+
+#######################################
+cmaize.package_managers/package_manager
+#######################################
+
+.. module:: cmaize.package_managers/package_manager
+
+
+.. py:class:: PackageManager
+
+   Base class for the PackageManager class hierarchy.
+   
+   **Methods**
+
+   .. py:method:: has_package()
+
+      Virtual member to check if the package exists in the package manager.
+      
+
+
+   .. py:method:: get_package()
+
+      Virtual member function to get the package using the package manager.
+      
+
+
+   .. py:method:: install_package()
+
+      Virtual member to install a package.
+      
+
+   **Attributes**
+
+   .. py:attribute:: type
+
+      :type: desc
+      
+      Type of package manager being used.
+      
+
+

@@ -8,6 +8,7 @@ cmaize.user_api
 
    add_executable
    add_library
+   add_package
    add_tests
    cmaize_project
    user_api

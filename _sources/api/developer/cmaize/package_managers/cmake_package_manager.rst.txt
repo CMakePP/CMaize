@@ -1,0 +1,109 @@
+
+#############################################
+cmaize.package_managers/cmake_package_manager
+#############################################
+
+.. module:: cmaize.package_managers/cmake_package_manager
+
+
+.. py:class:: CMakePackageManager
+
+   Bases: :class:`PackageManager`
+   
+   CMake package manager going through ``find_package`` and ``FetchContent``.
+   
+   **Additional Constructors**
+
+   .. py:method:: CTOR()
+
+      Default constructor of CMakePackageManager.
+      
+      :param self: The constructed object.
+      :type self: CMakePackageManager
+      
+
+   **Methods**
+
+   .. py:method:: add_paths([, ...])
+
+      Adds new search paths for the package manager.
+      
+      These paths are stored in the ``search_paths`` attribute. Duplicate
+      paths will be ignored.
+      
+      :param args: Paths to add to the search path.
+      :type args: path or List[path]
+      
+
+
+   .. py:method:: has_package(_hp_result, _hp_project_specs)
+
+      Checks if the package can be found on the system using CMake's
+      ``find_package``.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param _hp_result: Whether the package was found (TRUE) or not (FALSE)
+      :type _hp_result: bool*
+      :param _hp_project_specs: Specifications for the package to build.
+      :type _hp_project_specs: ProjectSpecification
+      
+
+
+   .. py:method:: get_package(_gp_result_target, _gp_proj_specs)
+
+      Get the requested package if it is installed. This is currently mostly
+      unimplemented and should not yet be used.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param _gp_result_target: Resulting target object return variable
+      :type _gp_result_target: InstalledTarget*
+      :param _gp_proj_specs: Specifications for the package to build.
+      :type _gp_proj_specs: ProjectSpecification
+      
+      :returns: Resulting target from the package manager
+      :rtype: InstalledTarget
+      
+
+
+   .. py:method:: install_package(_ip_target[, ...])
+
+      Install a given target in the project.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param _ip_target: Target to install
+      :type _ip_target: BuildTarget*
+      
+      :Keyword Arguments:
+         * **NAMESPACE** (*desc*) --
+           Namespace to prepend to the target name. Include the delimiter when
+           providing a namespace (for example, give "MyNamespace::", not just
+           "MyNamespace"). If no namespace is given, "${PROJECT_NAME}::" is
+           used.
+      
+
+
+   .. py:method:: _generate_config(_gc_target)
+
+      Generate a package config file for the given target. This function
+      writes the package config file into the ``CMAKE_CURRENT_BINARY_DIR``.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param _gc_target: Target to install
+      :type _gc_target: BuildTarget*
+      
+
+   **Attributes**
+
+   .. py:attribute:: search_paths
+
+      :type: List[path]
+      
+      Search paths for ``find_package``. Default paths are used if this
+      is empty.
+      
+
+

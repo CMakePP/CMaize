@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cmaize.user_api/add_library &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>cmaize.user_api/add_package &mdash; CMaize 1.0.0alpha documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="cmaize.user_api/add_package" href="add_package.html" />
-    <link rel="prev" title="cmaize.user_api/add_executable" href="add_executable.html" /> 
+    <link rel="next" title="cmaize.user_api/add_tests" href="add_tests.html" />
+    <link rel="prev" title="cmaize.user_api/add_library" href="add_library.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,8 +58,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.user_api</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="add_executable.html">cmaize.user_api/add_executable</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.user_api/add_library</a></li>
-<li class="toctree-l4"><a class="reference internal" href="add_package.html">cmaize.user_api/add_package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.user_api/add_package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_api.html">cmaize.user_api/user_api</a></li>
@@ -92,9 +92,9 @@
           <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
           <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
           <li class="breadcrumb-item"><a href="index.html">cmaize.user_api</a></li>
-      <li class="breadcrumb-item active">cmaize.user_api/add_library</li>
+      <li class="breadcrumb-item active">cmaize.user_api/add_package</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../../_sources/api/developer/cmaize/user_api/add_library.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/api/developer/cmaize/user_api/add_package.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -102,74 +102,56 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-cmaize.user_api-add_library">
-<span id="cmaize-user-api-add-library"></span><h1>cmaize.user_api/add_library<a class="headerlink" href="#module-cmaize.user_api-add_library" title="Permalink to this heading"></a></h1>
+  <section id="module-cmaize.user_api-add_package">
+<span id="cmaize-user-api-add-package"></span><h1>cmaize.user_api/add_package<a class="headerlink" href="#module-cmaize.user_api-add_package" title="Permalink to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="cmaize.user_api-add_library.cpp_add_library">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_library.</span></span><span class="sig-name descname"><span class="pre">cpp_add_library</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cal_tgt_name</span> <span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_library.cpp_add_library" title="Permalink to this definition"></a></dt>
-<dd><p>User function to build a library target.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><code class="docutils literal notranslate"><span class="pre">cpp_add_library()</span></code> is depricated. <code class="docutils literal notranslate"><span class="pre">cmaize_add_library()</span></code> should
-be used to create libraries.</p>
-</div>
+<dt class="sig sig-object py" id="cmaize.user_api-add_package.cmaize_add_package">
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_package.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cap_tgt_name</span> <span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_package.cmaize_add_package" title="Permalink to this definition"></a></dt>
+<dd><p>User function to install a package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>_cal_tgt_name</strong> (<em>desc</em>) – Name of the target to be created.</p></li>
-<li><p><strong>INCLUDE_DIR</strong> (<em>path</em><em>, </em><em>optional</em>) – Directory containing files to include.</p></li>
-<li><p><strong>INCLUDE_DIRS</strong> (<em>List</em><em>[</em><em>path</em><em>]</em><em>, </em><em>optional</em>) – Directories containing files to include. If this
-parameter is given a value, the value of <code class="docutils literal notranslate"><span class="pre">INCLUDE_DIR</span></code>
-will be ignored.</p></li>
+<dd class="field-odd"><p><strong>_cap_tgt_name</strong> (<em>desc</em>) – Name of the target to be installed.</p>
+</dd>
+<dt class="field-even">Keyword Arguments</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>PACKAGE_MANAGER</strong> (<em>desc</em>) –
+Package manager to add the package to. A list of supported package
+manager keywords can be found in <code class="docutils literal notranslate"><span class="pre">CMAIZE_SUPPORTED_PACKAGE_MANAGERS</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cmaize.user_api-add_library.cmaize_add_library">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_library.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_library</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cal_tgt_name</span> <span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_library.cmaize_add_library" title="Permalink to this definition"></a></dt>
-<dd><p>User function to build a library target.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For additional optional parameters related to the specific language
-used, see the documentation for <cite>cmaize_add_&lt;LANGUAGE&gt;_library()</cite>,
-where <cite>&lt;LANGUAGE&gt;</cite> is the language being used. Supported languages
-are listed in the <code class="docutils literal notranslate"><span class="pre">CMAIZE_SUPPORTED_LANGUAGES</span></code> variable.</p>
-</div>
+<dt class="sig sig-object py" id="cmaize.user_api-add_package.cmaize_add_package_cmake">
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_package.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_package_cmake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_capc_tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_package.cmaize_add_package_cmake" title="Permalink to this definition"></a></dt>
+<dd><p>User function to install a CMake package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>_cal_tgt_name</strong> (<em>desc</em>) – Name of the target to be created.</p></li>
-<li><p><strong>LANGUAGE</strong> (<em>desc</em><em>, </em><em>optional</em>) – Build language for the target, defaults to “CXX”</p></li>
-</ul>
+<dd class="field-odd"><p><strong>_capc_tgt_name</strong> (<em>desc</em>) – Name of the target to be installed.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cmaize.user_api-add_library.cmaize_add_cxx_library">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_library.</span></span><span class="sig-name descname"><span class="pre">cmaize_add_cxx_library</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cacl_tgt_obj</span> <span class="pre">_cacl_tgt_name</span> <span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_library.cmaize_add_cxx_library" title="Permalink to this definition"></a></dt>
-<dd><p>User function to build a CXX library target.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>See <code class="docutils literal notranslate"><span class="pre">CXXTarget(make_target</span></code> documentation for additional optional
-arguments.</p>
-</div>
+<dt class="sig sig-object py" id="cmaize.user_api-add_package.get_package_manager">
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/add_package.</span></span><span class="sig-name descname"><span class="pre">get_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gpm_return_pm</span> <span class="pre">_gpm_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-add_package.get_package_manager" title="Permalink to this definition"></a></dt>
+<dd><p>Get an existing package manager from the current project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_cacl_tgt_obj</strong> (<a class="reference internal" href="../targets/build_target.html#cmaize.targets-build_target.BuildTarget" title="cmaize.targets/build_target.BuildTarget"><em>BuildTarget</em></a>) – Returned target object created.</p></li>
-<li><p><strong>_cal_tgt_name</strong> (<em>desc</em>) – Name of the target to be created.</p></li>
-<li><p><strong>SOURCE_DIR</strong> (<em>path</em><em>, </em><em>optional</em>) – Directory containing source code.</p></li>
-<li><p><strong>INCLUDE_DIRS</strong> (<em>path</em><em>, </em><em>optional</em>) – Directories containing files to include.</p></li>
+<li><p><strong>_gpm_return_pm</strong> (<em>PackageManager*</em>) – Return variable for the package manager</p></li>
+<li><p><strong>_gpm_name</strong> (<em>desc</em>) – Name of the type of package manager to use. Supported
+package manager names can be found in
+<code class="docutils literal notranslate"><span class="pre">CMAIZE_SUPPORTED_PACKAGE_MANAGERS</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>CXX library target object.</p>
+<dd class="field-even"><p>Package manager of the requested type. Will be empty if one
+was not found.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../targets/build_target.html#cmaize.targets-build_target.BuildTarget" title="cmaize.targets/build_target.BuildTarget">BuildTarget</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="../package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager" title="cmaize.package_managers/package_manager.PackageManager">PackageManager</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -180,8 +162,8 @@ arguments.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="add_executable.html" class="btn btn-neutral float-left" title="cmaize.user_api/add_executable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="add_package.html" class="btn btn-neutral float-right" title="cmaize.user_api/add_package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="add_library.html" class="btn btn-neutral float-left" title="cmaize.user_api/add_library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="add_tests.html" class="btn btn-neutral float-right" title="cmaize.user_api/add_tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

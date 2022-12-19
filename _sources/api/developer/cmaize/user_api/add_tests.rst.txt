@@ -6,7 +6,7 @@ cmaize.user_api/add_tests
 .. module:: cmaize.user_api/add_tests
 
 
-.. function:: cpp_add_tests(_cat_test_name)
+.. function:: cpp_add_tests(_cat_test_name **kwargs)
 
 
    .. note:: This is a macro, and so does not introduce a new scope.
