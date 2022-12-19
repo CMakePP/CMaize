@@ -144,7 +144,9 @@ cpp_class(CMakePackageManager PackageManager)
 
         # Create an installed target
         set(_fi_depend_root_path "${${_fi_pkg_name}_DIR}")
-        InstalledTarget(ctor _fi_tgt "${_fi_depend_root_path}")
+        InstalledTarget(ctor
+            _fi_tgt "${_fi_pkg_name}" "${_fi_depend_root_path}"
+        )
 
         set("${_hp_result}" "${_fi_tgt}")
         cpp_return("${_hp_result}")
@@ -187,7 +189,10 @@ cpp_class(CMakePackageManager PackageManager)
             add_library("${_gp_find_target}" ALIAS "${_gp_build_target}")
         endif()
 
-        # TODO: Create a build target
+        # Create a build target
+        BuildTarget(CTOR "${_gp_result}" "${_gp_find_target}")
+
+        cpp_return("${_gp_result}")
 
     endfunction()
 
