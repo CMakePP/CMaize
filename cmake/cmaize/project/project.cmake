@@ -460,6 +460,7 @@ cpp_class(CMaizeProject)
         CMaizeProject(_get_target
             "${self}" "${_gt_result}" NAME "${_gt_target_name}" ${ARGN}
         )
+        message("-- DEBUG: _gt_result: ${_gt_result}: ${${_gt_result}}")
         cpp_return("${_gt_result}")
 
     endfunction()
@@ -490,12 +491,8 @@ cpp_class(CMaizeProject)
         # Get the collection of targets
         CMaizeProject(GET "${self}" __gt_tgt_map "${__gt_tgt_attr}")
 
-        message("-- DEBUG: __gt_NAME: ${__gt_result}")
-
         # Find the specified target
-        cpp_map(GET "${__gt_tgt_map}" "${__gt_NAME}" "${__gt_result}")
-
-        message("-- DEBUG: __gt_result: ${__gt_result}: ${${__gt_result}}")
+        cpp_map(GET "${__gt_tgt_map}" "${__gt_result}" "${__gt_NAME}")
 
         cpp_return("${__gt_result}")
 
