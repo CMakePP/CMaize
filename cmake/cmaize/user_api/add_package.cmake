@@ -43,32 +43,28 @@ endfunction()
 #]]
 function(cmaize_add_package_cmake _capc_tgt_name)
 
-    get_package_manager(_capc_pm_obj "${_capc_tgt_name}")
+    # Get the CMaize project
+    cpp_get_global(_capc_proj CMAIZE_PROJECT_${PROJECT_NAME})
+
+    # Get the correct package manager
+    CMaizeProject(get_package_manager
+        "${_capc_proj}" _capc_pm_obj "CMake"
+    )
 
     # Create new package manager if it doesn't exist
     if("${_capc_pm_obj}" STREQUAL "")
-        CMakePackageManager(CTOR _capc_pm_obj)
-
-        cpp_get_global(_capc_proj CMAIZE_PROJECT_${PROJECT_NAME})        
+        CMakePackageManager(CTOR _capc_pm_obj)      
         CMaizeProject(add_package_manager "${_capc_proj}" "${_capc_pm_obj}")
     endif()
 
-    # Get the build targets from the project
-    cpp_get_global(_capc_proj CMAIZE_PROJECT_${PROJECT_NAME})
-    CMaizeProject(GET "${_capc_proj}" tgt_list build_targets)
+    # Get the target from the project
+    CMaizeProject(get_target "${_capc_proj}" _capc_tgt_obj "${_capc_tgt_name}")
 
-    # Search for the correct target to package
-    foreach(tgt_i ${tgt_list})
-        Target(target "${tgt_i}" _capc_name)
-        if("${_capc_name}" STREQUAL "${_capc_tgt_name}")
-            PackageManager(install_package
-                "${_capc_pm_obj}"
-                "${tgt_i}"
-                ${ARGN}
-            )
-            cpp_return("")
-        endif()
-    endforeach()
+    PackageManager(install_package
+        "${_capc_pm_obj}"
+        "${_capc_tgt_obj}"
+        ${ARGN}
+    )
 
 endfunction()
 
