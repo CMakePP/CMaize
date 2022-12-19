@@ -277,6 +277,63 @@ function("${test_project}")
 
     endfunction()
 
+    ct_add_section(NAME "test_get_target")
+    function("${test_get_target}")
+        include(cmaize/targets/build_target)
+        include(cmaize/targets/installed_target)
+
+        ct_add_section(NAME "build_target")
+        function("${build_target}")
+
+            set(proj_name "test_project_test_add_target_build_target")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            BuildTarget(CTOR tgt_obj "${tgt_name}")
+
+            # Add the target to the map
+            CMaizeProject(GET "${proj_obj}" _build_targets build_targets)
+            cpp_map(SET "${_build_targets}" "${tgt_name}" "${tgt_obj}")
+
+            CMaizeProject(get_target "${proj_obj}" _tgt_obj "${tgt_name}")
+
+            Target(target "${_tgt_obj}" _tgt_obj_name)
+            ct_assert_equal(tgt_name "${_tgt_obj_name}")
+        
+        endfunction()
+
+        ct_add_section(NAME "installed_target")
+        function("${installed_target}")
+
+            set(proj_name "test_project_test_add_target_installed_target")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            InstalledTarget(CTOR tgt_obj "${tgt_name}")
+
+            # Add the target to the map
+            CMaizeProject(GET
+                "${proj_obj}" _installed_targets installed_targets
+            )
+            cpp_map(SET "${_installed_targets}" "${tgt_name}" "${tgt_obj}")
+
+            CMaizeProject(get_target
+                "${proj_obj}" _tgt_obj "${tgt_name}" INSTALLED
+            )
+
+            Target(target "${_tgt_obj}" _tgt_obj_name)
+            ct_assert_equal(tgt_name "${_tgt_obj_name}")
+        
+        endfunction()
+
+    endfunction()
+
     ct_add_section(NAME "test_add_language")
     function("${test_add_language}")
 
