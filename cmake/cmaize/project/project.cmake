@@ -212,9 +212,6 @@ cpp_class(CMaizeProject)
         # Add the package manager to the map
         cpp_map(SET "${_apm_pm_map}" "${_apm_pm_type}" "${_apm_pm}")
 
-        # Update the package manager collection attribute
-        CMaizeProject(SET "${self}" package_managers "${_apm_pm_map}")
-
     endfunction()
 
     #[[[
@@ -320,8 +317,6 @@ cpp_class(CMaizeProject)
         CMaizeProject(GET "${self}" __at_tgt_map "${__at_tgt_attr}")
 
         cpp_map(SET "${__at_tgt_map}" "${__at_NAME}" "${__at_target}")
-        
-        CMaizeProject(SET "${self}" "${__at_tgt_attr}" "${__at_tgt_map}")
 
     endfunction()
 
@@ -449,25 +444,60 @@ cpp_class(CMaizeProject)
 
     endfunction()
 
-    cpp_member(get_target CMaizeProject desc str args)
+    cpp_member(get_target CMaizeProject desc desc args)
     function("${get_target}" self  _gt_result _gt_target_name)
 
-        set(_gt_flags INSTALLED)
-        cmake_parse_arguments(_gt "${_gt_flags}" "${_gt_options}" "" ${ARGN})
+        CMaizeProject(_get_target
+            "${self}" "${_gt_result}" NAME "${_gt_target_name}" ${ARGN}
+        )
+        cpp_return("${_gt_result}")
+
+    endfunction()
+
+    cpp_member(get_target CMaizeProject desc target args)
+    function("${get_target}" self  _gt_result _gt_target_name)
+
+        CMaizeProject(_get_target
+            "${self}" "${_gt_result}" NAME "${_gt_target_name}" ${ARGN}
+        )
+        cpp_return("${_gt_result}")
+
+    endfunction()
+
+    cpp_member(_get_target CMaizeProject desc args)
+    function("${_get_target}" self  __gt_result)
+
+        set(__gt_flags INSTALLED)
+        set(__gt_one_value_args NAME)
+        cmake_parse_arguments(
+            __gt "${__gt_flags}" "${__gt_one_value_args}" "" ${ARGN}
+        )
+
+        # Ensure that NAME was provided
+        cpp_contains(
+            __gt_name_exists __gt_NAME "${__gt_KEYWORDS_MISSING_VALUES}"
+        )
+        if(__gt_name_exists)
+            cpp_raise(KeywordMissing "Missing required keyword argument: NAME")
+        endif()
 
         # Default to the build target list
-        set(_gt_tgt_attr "build_targets")
-        if(_gt_INSTALLED)
-            set(_gt_tgt_attr "installed_targets")
+        set(__gt_tgt_attr "build_targets")
+        if(__gt_INSTALLED)
+            set(__gt_tgt_attr "installed_targets")
         endif()
 
         # Get the collection of targets
-        CMaizeProject(GET "${self}" _gt_tgt_map "${_gt_tgt_attr}")
+        CMaizeProject(GET "${self}" __gt_tgt_map "${__gt_tgt_attr}")
+
+        message("-- DEBUG: __gt_NAME: ${__gt_result}")
 
         # Find the specified target
-        cpp_map(GET "${_gt_tgt_map}" "${_gt_target_name}" "${_gt_result}")
+        cpp_map(GET "${__gt_tgt_map}" "${__gt_NAME}" "${__gt_result}")
 
-        cpp_return("${_gt_result}")
+        message("-- DEBUG: __gt_result: ${__gt_result}: ${${__gt_result}}")
+
+        cpp_return("${__gt_result}")
 
     endfunction()
 
