@@ -1,6 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
+include(cmaize/utilities/replace_project_targets)
 
 #[[[
 # User function to build a executable target.
@@ -37,7 +38,7 @@ function(cpp_add_executable _cae_tgt_name)
     cmaize_add_executable(
         "${_cae_tgt_name}"
         INCLUDE_DIRS "${_cae_INCLUDE_DIRS}"
-        ${ARGN}
+        ${_cae_UNPARSED_ARGUMENTS}
     )
 
 endfunction()
@@ -74,7 +75,7 @@ function(cmaize_add_executable _cae_tgt_name)
     if("${_cae_LANGUAGE_lower}" STREQUAL "cxx")
         cmaize_add_cxx_executable(_cae_tgt_obj
             "${_cae_tgt_name}"
-            ${ARGN}
+            ${_cae_UNPARSED_ARGUMENTS}
         )
     elseif()
         cpp_raise(
@@ -119,10 +120,12 @@ endfunction()
 # :rtype: BuildTarget
 #]]
 function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
-    set(_cace_options SOURCE_DIR)
-    set(_cace_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
+    set(_cace_one_value_args SOURCE_DIR)
+    set(_cace_multi_value_args INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS DEPENDS)
 
-    cmake_parse_arguments(_cace "" "${_cace_options}" "${_cace_lists}" ${ARGN})
+    cmake_parse_arguments(
+        _cace "" "${_cace_one_value_args}" "${_cace_multi_value_args}" ${ARGN}
+    )
 
     # Determines if the user gave custom source file extensions, otherwise
     # defaulting to CMAKE_CXX_SOURCE_FILE_EXTENSIONS
@@ -141,13 +144,20 @@ function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
     _cmaize_glob_files(_cace_source_files "${_cace_SOURCE_DIR}" "${_cace_SOURCE_EXTS}")
     _cmaize_glob_files(_cace_include_files "${_cace_INCLUDE_DIRS}" "${_cace_INCLUDE_EXTS}")
 
+    # Replace any DEPENDS values specifying CMaize Target objects with the
+    # underlying target name
+    message("-- DEBUG: _cace_DEPENDS: ${_cace_DEPENDS}")
+    cmaize_replace_project_targets(_cace_DEPENDS ${_cace_DEPENDS})
+    message("-- DEBUG: _cace_DEPENDS: ${_cace_DEPENDS}")
+
     CXXExecutable(CTOR _cace_exe_obj "${_cace_tgt_name}")
 
     CXXExecutable(make_target
         "${_cace_exe_obj}"
         INCLUDES "${_cace_include_files}"
         SOURCES "${_cace_source_files}"
-        ${ARGN}
+        DEPENDS "${_cace_DEPENDS}"
+        ${_cace_UNPARSED_ARGUMENTS}
     )
 
     set("${_cace_tgt_obj}" "${_cace_exe_obj}")

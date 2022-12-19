@@ -36,7 +36,7 @@ macro(cpp_add_tests _cat_test_name)
     cmaize_add_tests(
         "${_cat_test_name}"
         INCLUDE_DIRS "${_cat_INCLUDE_DIRS}"
-        ${ARGN}
+        ${_cat_UNPARSED_ARGUMENTS}
     )
 
 endmacro()

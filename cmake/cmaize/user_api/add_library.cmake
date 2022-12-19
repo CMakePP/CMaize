@@ -2,6 +2,8 @@ include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
 include(cmaize/utilities/glob_files)
+include(cmaize/utilities/replace_project_targets)
+
 
 #[[[
 # User function to build a library target.
@@ -38,7 +40,7 @@ function(cpp_add_library _cal_tgt_name)
     cmaize_add_library(
         "${_cal_tgt_name}" 
         INCLUDE_DIRS "${_cal_INCLUDE_DIRS}"
-        ${ARGN}
+        ${_cal_UNPARSED_ARGUMENTS}
     )
 
 endfunction()
@@ -75,7 +77,7 @@ function(cmaize_add_library _cal_tgt_name)
     if("${_cal_LANGUAGE_lower}" STREQUAL "cxx")
         cmaize_add_cxx_library(_cal_tgt_obj
             "${_cal_tgt_name}"
-            ${ARGN}
+            ${_cal_UNPARSED_ARGUMENTS}
         )
     elseif()
         cpp_raise(
@@ -114,10 +116,12 @@ endfunction()
 # :rtype: BuildTarget
 #]]
 function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
-    set(_cacl_options SOURCE_DIR)
-    set(_cacl_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
+    set(_cacl_one_value_args SOURCE_DIR)
+    set(_cacl_multi_value_args INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS DEPENDS)
 
-    cmake_parse_arguments(_cacl "" "${_cacl_options}" "${_cacl_lists}" ${ARGN})
+    cmake_parse_arguments(
+        _cacl "" "${_cacl_one_value_args}" "${_cacl_multi_value_args}" ${ARGN}
+    )
 
     # Determines if the user gave custom source file extensions, otherwise
     # defaulting to CMAKE_CXX_SOURCE_FILE_EXTENSIONS
@@ -145,11 +149,18 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
         CXXInterfaceLibrary(CTOR _cacl_lib_obj "${_cacl_tgt_name}")
     endif()
 
+    # Replace any DEPENDS values specifying CMaize Target objects with the
+    # underlying target name
+    message("-- DEBUG: _cacl_DEPENDS: ${_cacl_DEPENDS}")
+    cmaize_replace_project_targets(_cacl_DEPENDS ${_cacl_DEPENDS})
+    message("-- DEBUG: _cacl_DEPENDS: ${_cacl_DEPENDS}")
+
     CXXLibrary(make_target
         "${_cacl_lib_obj}"
         INCLUDES "${_cacl_include_files}"
         SOURCES "${_cacl_source_files}"
-        ${ARGN}
+        DEPENDS "${_cacl_DEPENDS}"
+        ${_cacl_UNPARSED_ARGUMENTS}
     )
 
     set("${_cacl_tgt_obj}" "${_cacl_lib_obj}")
@@ -157,3 +168,56 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     cpp_return("${_cacl_tgt_obj}")
 
 endfunction()
+
+# function(cmaize_replace_project_targets _rpt_result)
+
+#     # Assign the given target list to a variable
+#     set(_rpt_targets ${ARGN})
+
+#     # Create a copy target list to replace values in
+#     set(_rpt_targets_replaced "${_rpt_targets}")
+
+#     list(LENGTH _rpt_targets _rpt_targets_len)
+    
+#     # Return blank list if a blank list was given
+#     if(_rpt_targets_len LESS_EQUAL 0)
+#         cpp_return("${_rpt_result}")
+#     endif()
+
+#     cpp_get_global(_rpt_project CMAIZE_PROJECT_${PROJECT_NAME})
+
+#     # Check if each dependency listed is a CMaize Target
+#     foreach(_rpt_targets_i ${_rpt_targets})
+#         CMaizeProject(check_target
+#             "${_rpt_project}" _rpt_tgt_exists "${_rpt_targets_i}"
+#         )
+
+#         # Don't do anything for targets that are not CMaize Targets
+#         if(NOT _rpt_tgt_exists)
+#             continue()
+#         endif()
+
+#         CMaizeProject(get_target
+#             "${_rpt_project}" _rpt_tgt_obj "${_rpt_targets_i}"
+#         )
+
+#         # Get the name of the underlying CMake target
+#         Target(target "${_rpt_tgt_obj}" _rpt_tgt_name)
+
+#         # Replace the CMaize Target name with the CMake target name
+#         # This is done while preserving the order of target names
+#         list(FIND
+#             _rpt_targets_replaced
+#             "${_rpt_targets_i}"
+#             _rpt_tgt_idx
+#         )
+#         list(REMOVE_AT _rpt_targets_replaced "${_rpt_tgt_idx}")
+#         list(INSERT
+#             _rpt_targets_replaced "${_rpt_tgt_idx}" "${_rpt_tgt_name}"
+#         )
+#     endforeach()
+
+#     set("${_rpt_result}" "${_rpt_targets_replaced}")
+#     cpp_return("${_rpt_result}")
+
+# endfunction()
