@@ -1,6 +1,6 @@
 #[[[
-# Replaces CMaize Target object names with their underlying CMake target
-# names in the given list. This function only works with CMaize Target
+# Replaces CMaizeTarget object names with their underlying CMake target
+# names in the given list. This function only works with CMaizeTarget
 # objects in the current CMaize project.
 #
 # :param _rpt_result: Return variable.
@@ -8,7 +8,7 @@
 # :param args: List of target names.
 # :type args: list[desc]
 #
-# :returns: Target list with target names replaced.
+# :returns: CMaizeTarget list with target names replaced.
 # :rtype: list[desc]
 #]]
 function(cmaize_replace_project_targets _rpt_result)
@@ -28,7 +28,7 @@ function(cmaize_replace_project_targets _rpt_result)
 
     cpp_get_global(_rpt_project CMAIZE_PROJECT_${PROJECT_NAME})
 
-    # Check if each dependency listed is a CMaize Target
+    # Check if each dependency listed is a CMaizeTarget
     foreach(_rpt_targets_i ${_rpt_targets})
         CMaizeProject(check_target
             "${_rpt_project}" _rpt_tgt_exists "${_rpt_targets_i}"
@@ -44,9 +44,9 @@ function(cmaize_replace_project_targets _rpt_result)
         )
 
         # Get the name of the underlying CMake target
-        Target(target "${_rpt_tgt_obj}" _rpt_tgt_name)
+        CMaizeTarget(target "${_rpt_tgt_obj}" _rpt_tgt_name)
         
-        # Replace the CMaize Target name with the CMake target name
+        # Replace the CMaizeTarget name with the CMake target name
         # This is done while preserving the order of target names
         list(FIND
             _rpt_targets_replaced

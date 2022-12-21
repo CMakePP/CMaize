@@ -1,11 +1,11 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
-include(cmaize/targets/target)
+include(cmaize/targets/cmaize_target)
 
 #[[[
 # Wraps a target that is already installed on the system.
 #]]
-cpp_class(InstalledTarget Target)
+cpp_class(InstalledTarget CMaizeTarget)
 
     #[[[
     # :type: path
@@ -31,7 +31,7 @@ cpp_class(InstalledTarget Target)
     cpp_constructor(CTOR InstalledTarget desc path)
     function("${CTOR}" self _ctor_name _ctor_root)
 
-        Target(SET "${self}" _name "${_ctor_name}")
+        CMaizeTarget(SET "${self}" _name "${_ctor_name}")
 
         # Check if the root path exists
         cpp_directory_exists(exists "${_ctor_root}")

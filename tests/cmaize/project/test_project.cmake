@@ -8,7 +8,7 @@ function("${test_project}")
     include(cmaize/project/project)
 
     #[[[
-    # Test ``Target(CTOR`` method.
+    # Test ``CMaizeTarget(CTOR`` method.
     #]]
     ct_add_section(NAME "test_ctor")
     function("${test_ctor}")
@@ -128,7 +128,7 @@ function("${test_project}")
 
             # Make sure that the correct object is stored at the key
             cpp_map(GET "${tgt_dict}" tmp_tgt_obj "${tgt_name}")
-            Target(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
             ct_assert_equal(tgt_name "${tmp_tgt_obj_name}")
 
         endfunction()
@@ -173,7 +173,7 @@ function("${test_project}")
 
             # Make sure that the correct object is stored at the key
             cpp_map(GET "${installed_tgt_map}" tmp_tgt_obj "${tgt_name}")
-            Target(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
             ct_assert_equal(tgt_name "${tmp_tgt_obj_name}")
 
         endfunction()
@@ -213,7 +213,7 @@ function("${test_project}")
 
             # Make sure that the correct object is stored at the key
             cpp_map(GET "${build_tgt_map}" tmp_tgt_obj "${tgt_name}")
-            Target(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
             ct_assert_equal(tgt_name "${tmp_tgt_obj_name}")
 
             # Make sure there is an element in the installed_targets list
@@ -261,7 +261,7 @@ function("${test_project}")
 
             # Make sure that the correct object is stored at the key
             cpp_map(GET "${tgt_dict}" tmp_tgt_obj "${tgt_name}_1")
-            Target(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
             ct_assert_equal(tmp_tgt_obj_name "${tgt_name}_1")
 
             # Make sure that the correct key is in the collection
@@ -270,7 +270,7 @@ function("${test_project}")
 
             # Make sure that the correct object is stored at the key
             cpp_map(GET "${tgt_dict}" tmp_tgt_obj "${tgt_name}_2")
-            Target(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
             ct_assert_equal(tmp_tgt_obj_name "${tgt_name}_2")
 
         endfunction()
@@ -300,7 +300,7 @@ function("${test_project}")
 
             CMaizeProject(get_target "${proj_obj}" _tgt_obj "${tgt_name}")
 
-            Target(target "${_tgt_obj}" _tgt_obj_name)
+            CMaizeTarget(target "${_tgt_obj}" _tgt_obj_name)
             ct_assert_equal(tgt_name "${_tgt_obj_name}")
         
         endfunction()
@@ -327,7 +327,7 @@ function("${test_project}")
                 "${proj_obj}" _tgt_obj "${tgt_name}" INSTALLED
             )
 
-            Target(target "${_tgt_obj}" _tgt_obj_name)
+            CMaizeTarget(target "${_tgt_obj}" _tgt_obj_name)
             ct_assert_equal(tgt_name "${_tgt_obj_name}")
         
         endfunction()

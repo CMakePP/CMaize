@@ -4,7 +4,7 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/package_managers/package_manager)
 include(cmaize/package_managers/cmake/dependency/dependency)
 include(cmaize/project/project_specification)
-include(cmaize/targets/target)
+include(cmaize/targets/cmaize_target)
 include(cmaize/utilities/fetch_and_available)
 
 

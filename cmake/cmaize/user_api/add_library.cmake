@@ -151,7 +151,7 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
         CXXInterfaceLibrary(CTOR _cacl_lib_obj "${_cacl_tgt_name}")
     endif()
 
-    # Replace any DEPENDS values specifying CMaize Target objects with the
+    # Replace any DEPENDS values specifying CMaizeTarget objects with the
     # underlying target name
     cmaize_replace_project_targets(_cacl_DEPENDS ${_cacl_DEPENDS})
 

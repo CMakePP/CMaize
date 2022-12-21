@@ -1,7 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
-include(cmaize/targets/target)
+include(cmaize/targets/cmaize_target)
 
 #[[[
 # Base class for the PackageManager class hierarchy.
