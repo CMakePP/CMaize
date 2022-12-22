@@ -37,7 +37,7 @@ cpp_class(PackageManager)
     #[[[
     # Virtual member to install a package.
     #]]
-    cpp_member(install_package PackageManager Target)
+    cpp_member(install_package PackageManager str args)
     cpp_virtual_member(install_package)
 
 cpp_end_class()
