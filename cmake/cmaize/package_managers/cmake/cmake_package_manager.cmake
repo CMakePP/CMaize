@@ -134,7 +134,7 @@ cpp_class(CMakePackageManager PackageManager)
 
         ProjectSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
 
-        CMaizeProject(register_dependency
+        CMakePackageManager(register_dependency
             "${self}"
             _fi_depend
             "${_fi_project_specs}"
@@ -152,8 +152,8 @@ cpp_class(CMakePackageManager PackageManager)
             _fi_tgt "${_fi_pkg_name}" "${_fi_depend_root_path}"
         )
 
-        set("${_hp_result}" "${_fi_tgt}")
-        cpp_return("${_hp_result}")
+        set("${_fi_result}" "${_fi_tgt}")
+        cpp_return("${_fi_result}")
 
     endfunction()
 
@@ -174,7 +174,7 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_member(get_package CMakePackageManager str ProjectSpecification args)
     function("${get_package}" self _gp_result _gp_proj_specs)
 
-        CMaizeProject(register_dependency
+        CMakePackageManager(register_dependency
             "${self}"
             _gp_depend
             "${_gp_proj_specs}"
