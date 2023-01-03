@@ -13,6 +13,19 @@ function("${test_tgt}")
     ct_add_section(NAME "test_ctor")
     function("${test_ctor}")
 
+        ct_add_section(NAME "test_tgt_name")
+        function("${test_tgt_name}")
+            set(tgt_name "test_ctor_test_tgt_name")
+
+            InstalledTarget(CTOR
+                tgt_obj "${tgt_name}" "${CMAKE_CURRENT_SOURCE_DIR}"
+            )
+
+            CMaizeTarget(target "${tgt_obj}" result)
+
+            ct_assert_equal(result "${tgt_name}")
+        endfunction()
+
         ct_add_section(NAME "test_dir_exists")
         function("${test_dir_exists}")
 

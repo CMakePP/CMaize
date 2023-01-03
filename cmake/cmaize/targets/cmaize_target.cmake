@@ -22,35 +22,16 @@ cpp_class(CMaizeTarget)
     # :type self: CMaizeTarget
     # :param tgt_name: Name of the target. This should not duplicate any other
     #                  target name already in scope.
-    # :type tgt_name: desc
+    # :type tgt_name: desc or target
     #
     # :returns: ``self`` will be set to the newly constructed ``CMaizeTarget``
     #           object.
     # :rtype: CMaizeTarget
     #]]
-    cpp_constructor(CTOR CMaizeTarget desc)
+    cpp_constructor(CTOR CMaizeTarget str)
     function("${CTOR}" self _ctor_name)
 
         CMaizeTarget(SET "${self}" _name "${_ctor_name}")
-
-    endfunction()
-
-    #[[[
-    # Creates a ``CMaizeTarget`` object based on an existing CMake target.
-    #
-    # :param self: CMaizeTarget object constructed.
-    # :type self: CMaizeTarget
-    # :param tgt_name: Name of the existing target.
-    # :type tgt_name: str
-    #
-    # :returns: ``self`` will be set to the newly constructed ``CMaizeTarget``
-    #           object.
-    # :rtype: CMaizeTarget
-    #]]
-    cpp_constructor(CTOR CMaizeTarget target)
-    function("${CTOR}" self tgt_name)
-
-        CMaizeTarget(SET "${self}" _name "${tgt_name}")
 
     endfunction()
 
@@ -60,13 +41,13 @@ cpp_class(CMaizeTarget)
     # :param self: CMaizeTarget object
     # :type self: CMaizeTarget
     # :param return_target: Name of the CMake target.
-    # :type return_target: str*
+    # :type return_target: desc*
     #
     # :returns: Sets ``return_target`` to the name of the CMake target
     #           represented by this class.
-    # :rtype: str*
+    # :rtype: desc
     #]]
-    cpp_member(target CMaizeTarget str)
+    cpp_member(target CMaizeTarget desc)
     function("${target}" self return_target)
 
         CMaizeTarget(GET "${self}" "${return_target}" _name)
@@ -83,13 +64,13 @@ cpp_class(CMaizeTarget)
     # :param has_property: Return variable for if the target has the property.
     # :type has_property: bool*
     # :param property_name: Name of the property to check for.
-    # :type property_name: str
+    # :type property_name: desc
     #
     # :returns: Sets ``has_property`` according to if the target has the
     #           requested property (True) or not (False).
     # :rtype: bool*
     #]]
-    cpp_member(has_property CMaizeTarget desc str)
+    cpp_member(has_property CMaizeTarget desc desc)
     function("${has_property}" self has_property property_name)
 
         CMaizeTarget(target "${self}" my_name)
@@ -121,14 +102,14 @@ cpp_class(CMaizeTarget)
     # :param property_value: Return variable for the property value.
     # :type property_value: str*
     # :param property_name: Name of the property to check for.
-    # :type property_name: str
+    # :type property_name: desc
     #
     # :returns: Sets ``property_value`` to the value of the property.
-    # :rtype: str*
+    # :rtype: str
     #
     # :raises PropertyNotFound: Property does not exist in the target.
     #]]
-    cpp_member(get_property CMaizeTarget str str)
+    cpp_member(get_property CMaizeTarget desc desc)
     function("${get_property}" self property_value property_name)
 
         CMaizeTarget(has_property "${self}" prop_exists "${property_name}")

@@ -28,7 +28,7 @@ cpp_class(InstalledTarget CMaizeTarget)
     #
     # :raises DirectoryNotFound: Root directory was not found.
     #]]
-    cpp_constructor(CTOR InstalledTarget desc path)
+    cpp_constructor(CTOR InstalledTarget str path)
     function("${CTOR}" self _ctor_name _ctor_root)
 
         CMaizeTarget(SET "${self}" _name "${_ctor_name}")

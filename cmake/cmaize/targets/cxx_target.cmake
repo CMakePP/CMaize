@@ -108,10 +108,10 @@ cpp_class(CXXTarget BuildTarget)
     # :param self: CXXTarget object
     # :type self: CXXTarget
     # :param _al_access_level: Returned access level.
-    # :type _al_access_level: str*
+    # :type _al_access_level: desc*
     #
     # :returns: CMake access level of the target.
-    # :rtype: str
+    # :rtype: desc
     #]]
     cpp_member(_access_level CXXTarget desc)
     function("${_access_level}" self _al_access_level)
@@ -208,6 +208,7 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(GET "${self}" _sll_deps depends)
 
         foreach(_sll_dep_i ${_sll_deps})
+            message("-- DEBUG: Linking dependency ${_sll_dep_i} to ${_sll_name}.")
             target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_i}")
         endforeach()
 

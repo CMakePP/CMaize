@@ -13,12 +13,12 @@ cpp_class(CXXInterfaceLibrary CXXLibrary)
     # :param self: CXXInterfaceLibrary object
     # :type self: CXXInterfaceLibrary
     # :param _al_result: Return variable holding the access level result.
-    # :type _al_result: str*
+    # :type _al_result: desc*
     #
     # :returns: Access level of the target.
-    # :rtype: str
+    # :rtype: desc
     #]]
-    cpp_member(_access_level CXXInterfaceLibrary str)
+    cpp_member(_access_level CXXInterfaceLibrary desc)
     function("${_access_level}" self _al_result)
 
         set("${_al_result}" INTERFACE)
