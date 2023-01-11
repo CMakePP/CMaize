@@ -14,10 +14,14 @@ function(cpp_find_or_build_dependency _fobd_name)
         cpp_set_global("__CPP_DEPENDENCY_${_fobd_name}__" "${_fobd_depend}")
     endif()
 
+    message(STATUS "Attempting to find installed _fobd_name")
+
     Dependency(FIND_DEPENDENCY "${_fobd_depend}" _fobd_found)
     if("${_fobd_found}")
         return()
     endif()
+    
+    message(STATUS "Attempting to fetch and build _fobd_name")
 
     Dependency(BUILD_DEPENDENCY "${_fobd_depend}")
 
