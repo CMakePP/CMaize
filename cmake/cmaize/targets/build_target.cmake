@@ -5,7 +5,7 @@ include(cmaize/targets/target)
 #[[[
 # Wraps a target which must be built as part of the build system.
 #]]
-cpp_class(BuildTarget Target)
+cpp_class(BuildTarget CMaizeTarget)
 
     #[[[
     # :type: List[path]
@@ -43,7 +43,7 @@ cpp_class(BuildTarget Target)
     # cpp_attr(BuildTarget system_dependencies)
 
     #[[[
-    # :type List[Target]
+    # :type List[CMaizeTarget]
     #
     # Targets that are dependencies.
     #]]

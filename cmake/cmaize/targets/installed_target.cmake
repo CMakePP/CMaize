@@ -5,7 +5,7 @@ include(cmaize/targets/target)
 #[[[
 # Wraps a target that is already installed on the system.
 #]]
-cpp_class(InstalledTarget Target)
+cpp_class(InstalledTarget CMaizeTarget)
 
     #[[[
     # :type: path

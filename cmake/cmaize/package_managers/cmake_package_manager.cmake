@@ -160,7 +160,7 @@ cpp_class(CMakePackageManager PackageManager)
         set(_ip_options NAMESPACE)
         cmake_parse_arguments(_ip "" "${_ip_options}" "" ${ARGN})
 
-        Target(target "${_ip_target}" _ip_tgt_name)
+        CMaizeTarget(target "${_ip_target}" _ip_tgt_name)
 
         if("${_ip_NAMESPACE}" STREQUAL "")
             set(_ip_NAMESPACE "${PROJECT_NAME}::")
