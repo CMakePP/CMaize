@@ -202,15 +202,15 @@ cpp_class(CMaizeProject)
     #
     # :param self: CMaizeProject object.
     # :type self: CMaizeProject
-    # :param _at_target: Target object to be added.
-    # :type _at_target: Target
+    # :param _at_target: CMaizeTarget object to be added.
+    # :type _at_target: CMaizeTarget
     #
     # :Keyword Arguments:
     #    * **INSTALLED** (*bool*) --
     #      Flag to indicate that the target being added is already installed
     #      on the system.
     #]]
-    cpp_member(add_target CMaizeProject Target args)
+    cpp_member(add_target CMaizeProject CMaizeTarget args)
     function("${add_target}" self _at_target)
 
         set(_at_flags INSTALLED)
@@ -222,7 +222,7 @@ cpp_class(CMaizeProject)
             set(_at_tgt_attr "installed_targets")
         endif()
 
-        # Check if a Target with the same name exists already
+        # Check if a CMaizeTarget with the same name exists already
         CMaizeProject(check_target "${self}" _at_found "${_at_target}")
 
         # Add the target to the list if it doesn't already exist
@@ -282,15 +282,15 @@ cpp_class(CMaizeProject)
     # :param _ct_found: Return variable for if the target was found.
     # :type _ct_found: bool*
     # :param _ct_tgt: Target to search for.
-    # :type _ct_tgt: Target
+    # :type _ct_tgt: CMaizeTarget
     #
     # :returns: Target found (TRUE) or not (FALSE).
     # :rtype: bool
     #]]
-    cpp_member(check_target CMaizeProject desc Target)
+    cpp_member(check_target CMaizeProject desc CMaizeTarget)
     function("${check_target}" self  _ct_found _ct_tgt)
 
-        Target(target "${_ct_tgt}" _ct_tgt_name)
+        CMaizeTarget(target "${_ct_tgt}" _ct_tgt_name)
 
         # Search each list of targets in the project
         foreach(_ct_tgt_list_i "build_targets" "installed_targets")
@@ -298,7 +298,7 @@ cpp_class(CMaizeProject)
 
             # Search the list for a target with a matching name
             foreach(_ct_tgt_i ${_ct_tgt_list})
-                Target(target "${_ct_tgt_i}" _ct_tgt_i_name)
+                CMaizeTarget(target "${_ct_tgt_i}" _ct_tgt_i_name)
                 
                 # Exit early if a target with the same name is found
                 if("${_ct_tgt_name}" STREQUAL "${_ct_tgt_i_name}")

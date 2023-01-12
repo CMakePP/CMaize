@@ -1,14 +1,14 @@
 include(cmake_test/cmake_test)
 
 #[[[
-# Test the ``Target`` class.
+# Test the ``CMaizeTarget`` class.
 #]]
 ct_add_test(NAME "test_tgt")
 function("${test_tgt}")
     include(cmaize/targets/target)
 
     #[[[
-    # Test ``Target(CTOR`` method.
+    # Test ``CMaizeTarget(CTOR`` method.
     #]]
     ct_add_section(NAME "test_ctor")
     function("${test_ctor}")
@@ -17,9 +17,9 @@ function("${test_tgt}")
         function("${test_nonexistant_tgt}")
             set(tgt_name "test_tgt_ctor_nonexistant_tgt")
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
 
-            Target(GET "${tgt_obj}" result _name)
+            CMaizeTarget(GET "${tgt_obj}" result _name)
 
             ct_assert_equal(result "${tgt_name}")
         endfunction()
@@ -39,10 +39,10 @@ function("${test_tgt}")
                 PROPERTY "${prop_name}" "${prop_value}"
             )
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
 
             # Test that the name is correct
-            Target(GET "${tgt_obj}" result _name)
+            CMaizeTarget(GET "${tgt_obj}" result _name)
             ct_assert_equal(result "${tgt_name}")
 
             # Test that the property set beforehand still exists with
@@ -54,7 +54,7 @@ function("${test_tgt}")
     endfunction()
 
     #[[[
-    # Test ``Target(target`` method.
+    # Test ``CMaizeTarget(target`` method.
     #]]
     ct_add_section(NAME "test_get_target")
     function("${test_get_target}")
@@ -63,13 +63,13 @@ function("${test_tgt}")
         function("${nonexistant_tgt}")
             set(tgt_name "test_tgt_get_target_nonexistant_tgt")
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
 
             # Explicitly set the _name variable to avoid testing assignment
             # bugs in the CTOR
-            Target(SET "${tgt_obj}" _name "${tgt_name}")
+            CMaizeTarget(SET "${tgt_obj}" _name "${tgt_name}")
 
-            Target(target "${tgt_obj}" result)
+            CMaizeTarget(target "${tgt_obj}" result)
 
             ct_assert_equal(result "${tgt_name}")
         endfunction()
@@ -79,13 +79,13 @@ function("${test_tgt}")
             set(tgt_name "test_tgt_get_target_existing_tgt")
             add_custom_target("${tgt_name}")
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
 
             # Explicitly set the _name variable to avoid testing assignment
             # bugs in the CTOR
-            Target(SET "${tgt_obj}" _name "${tgt_name}")
+            CMaizeTarget(SET "${tgt_obj}" _name "${tgt_name}")
 
-            Target(target "${tgt_obj}" result)
+            CMaizeTarget(target "${tgt_obj}" result)
 
             ct_assert_equal(result "${tgt_name}")
         endfunction()
@@ -93,7 +93,7 @@ function("${test_tgt}")
     endfunction()
     
     #[[[
-    # Test ``Target(has_property`` method.
+    # Test ``CMaizeTarget(has_property`` method.
     #]]
     ct_add_section(NAME "test_has_property")
     function("${test_has_property}")
@@ -104,9 +104,9 @@ function("${test_tgt}")
             set(tgt_name "test_tgt_has_property_invalid_property")
             add_custom_target("${tgt_name}")
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
 
-            Target(has_property "${tgt_obj}" result "invalid_property")
+            CMaizeTarget(has_property "${tgt_obj}" result "invalid_property")
 
             ct_assert_equal(result FALSE)
 
@@ -123,9 +123,9 @@ function("${test_tgt}")
                 PROPERTY "${prop_name}" "test_value"
             )
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
             
-            Target(has_property "${tgt_obj}" result "${prop_name}")
+            CMaizeTarget(has_property "${tgt_obj}" result "${prop_name}")
 
             ct_assert_equal(result TRUE)
 
@@ -134,7 +134,7 @@ function("${test_tgt}")
     endfunction()
 
     #[[[
-    # Test ``Target(get_property`` method.
+    # Test ``CMaizeTarget(get_property`` method.
     #]]
     ct_add_section(NAME "test_get_property")
     function("${test_get_property}")
@@ -145,10 +145,10 @@ function("${test_tgt}")
             set(tgt_name "test_tgt_get_property_invalid_property")
             add_custom_target("${tgt_name}")
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
 
             # Should raise a PropertyNotFound
-            Target(get_property "${tgt_obj}" result "invalid_property")
+            CMaizeTarget(get_property "${tgt_obj}" result "invalid_property")
 
         endfunction()
 
@@ -164,9 +164,9 @@ function("${test_tgt}")
                 PROPERTY "${prop_name}" "${prop_value}"
             )
 
-            Target(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
 
-            Target(get_property "${tgt_obj}" result "${prop_name}")
+            CMaizeTarget(get_property "${tgt_obj}" result "${prop_name}")
 
             ct_assert_equal(result "${prop_value}")
 
@@ -175,7 +175,7 @@ function("${test_tgt}")
     endfunction()
 
     #[[[
-    # Test ``Target(set_property`` method.
+    # Test ``CMaizeTarget(set_property`` method.
     #]]
     ct_add_section(NAME "test_set_property")
     function("${test_set_property}")
@@ -192,8 +192,8 @@ function("${test_tgt}")
             add_custom_target("${tgt_name}")
 
             # Set the property value on the target
-            Target(CTOR tgt_obj "${tgt_name}")
-            Target(set_property "${tgt_obj}" "${prop_name}" "${prop_value}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(set_property "${tgt_obj}" "${prop_name}" "${prop_value}")
 
             # Check the property value on the target
             get_target_property(result "${tgt_name}" "${prop_name}")
@@ -219,16 +219,16 @@ function("${test_tgt}")
                 PROPERTY "${prop_name}" "${prop_value}"
             )
 
-            # Set the property again in the Target object
-            Target(CTOR tgt_obj "${tgt_name}")
-            Target(set_property "${tgt_obj}" "${prop_name}" "${prop_value2}")
+            # Set the property again in the CMaizeTarget object
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(set_property "${tgt_obj}" "${prop_name}" "${prop_value2}")
 
             get_target_property(result "${tgt_name}" "${prop_name}")
             ct_assert_equal(result "${prop_value2}")
 
-            # This will overwrite the value that the Target object just
+            # This will overwrite the value that the CMaizeTarget object just
             # overwrote above
-            Target(set_property "${tgt_obj}" "${prop_name}" "${prop_value3}")
+            CMaizeTarget(set_property "${tgt_obj}" "${prop_name}" "${prop_value3}")
 
             get_target_property(result "${tgt_name}" "${prop_name}")
             ct_assert_equal(result "${prop_value3}")
@@ -238,7 +238,7 @@ function("${test_tgt}")
     endfunction()
 
     #[[[
-    # Test ``Target(set_properties`` method.
+    # Test ``CMaizeTarget(set_properties`` method.
     #]]
     ct_add_section(NAME "test_set_properties")
     function("${test_set_properties}")
@@ -258,8 +258,8 @@ function("${test_tgt}")
             add_custom_target("${tgt_name}")
 
             # Set the property value on the target
-            Target(CTOR tgt_obj "${tgt_name}")
-            Target(set_properties "${tgt_obj}" "${property_map}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(set_properties "${tgt_obj}" "${property_map}")
 
             # Check the property value on the target
             get_target_property(result_1 "${tgt_name}" "test_name_1")
@@ -290,8 +290,8 @@ function("${test_tgt}")
             )
 
             # Set the property value on the target
-            Target(CTOR tgt_obj "${tgt_name}")
-            Target(set_properties "${tgt_obj}" "${property_map}")
+            CMaizeTarget(CTOR tgt_obj "${tgt_name}")
+            CMaizeTarget(set_properties "${tgt_obj}" "${property_map}")
 
             # Check the property value on the target
             get_target_property(result_1 "${tgt_name}" "test_name_1")
