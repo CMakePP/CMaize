@@ -8,7 +8,7 @@ cmaize.targets/build_target
 
 .. py:class:: BuildTarget
 
-   Bases: :class:`Target`
+   Bases: :class:`CMaizeTarget`
    
    Wraps a target which must be built as part of the build system.
    
@@ -69,7 +69,7 @@ cmaize.targets/build_target
 
    .. py:attribute:: depends
 
-      :type List[Target]
+      :type List[CMaizeTarget]
       
       Targets that are dependencies.
       

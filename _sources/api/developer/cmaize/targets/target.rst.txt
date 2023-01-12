@@ -6,7 +6,7 @@ cmaize.targets/target
 .. module:: cmaize.targets/target
 
 
-.. py:class:: Target
+.. py:class:: CMaizeTarget
 
    Base class for an entire hierarchy of build and install target classes.
    
@@ -14,50 +14,50 @@ cmaize.targets/target
 
    .. py:method:: CTOR(tgt_name)
 
-      Creates a ``Target`` object to manage a target of the given name.
+      Creates a ``CMaizeTarget`` object to manage a target of the given name.
       
       .. note::
          
          This does not create a corresponding CMake target,
          so any call that should interact with a target will fail if the
          target does not already exist. As a base class with no concrete
-         analog, ``Target`` really shouldn't be instantiated aside from
+         analog, ``CMaizeTarget`` really shouldn't be instantiated aside from
          testing purposes. Instead, create a child with a concrete target
          analog and instantiate that.
       
-      :param self: Target object constructed.
-      :type self: Target
+      :param self: CMaizeTarget object constructed.
+      :type self: CMaizeTarget
       :param tgt_name: Name of the target. This should not duplicate any other
                        target name already in scope.
       :type tgt_name: str
-      :returns: ``self`` will be set to the newly constructed ``Target``
+      :returns: ``self`` will be set to the newly constructed ``CMaizeTarget``
                 object.
-      :rtype: Target
+      :rtype: CMaizeTarget
       
 
 
    .. py:method:: CTOR(tgt_name)
 
-      Creates a ``Target`` object based on an existing CMake target.
+      Creates a ``CMaizeTarget`` object based on an existing CMake target.
       
-      :param self: Target object constructed.
-      :type self: Target
+      :param self: CMaizeTarget object constructed.
+      :type self: CMaizeTarget
       :param tgt_name: Name of the existing target.
       :type tgt_name: str
       
-      :returns: ``self`` will be set to the newly constructed ``Target``
+      :returns: ``self`` will be set to the newly constructed ``CMaizeTarget``
                 object.
-      :rtype: Target
+      :rtype: CMaizeTarget
       
 
    **Methods**
 
    .. py:method:: target(return_target)
 
-      Get the CMake target name that the ``Target`` class represents.
+      Get the CMake target name that the ``CMaizeTarget`` class represents.
       
-      :param self: Target object
-      :type self: Target
+      :param self: CMaizeTarget object
+      :type self: CMaizeTarget
       :param return_target: Name of the CMake target.
       :type return_target: str*
       
@@ -71,8 +71,8 @@ cmaize.targets/target
 
       Check if the target has the requested property.
       
-      :param self: Target object
-      :type self: Target
+      :param self: CMaizeTarget object
+      :type self: CMaizeTarget
       :param has_property: Return variable for if the target has the property.
       :type has_property: bool*
       :param property_name: Name of the property to check for.
@@ -86,10 +86,10 @@ cmaize.targets/target
 
    .. py:method:: get_property(property_value, property_name)
 
-      Get the requested property for the ``Target``.
+      Get the requested property for the ``CMaizeTarget``.
       
-      :param self: Target object
-      :type self: Target
+      :param self: CMaizeTarget object
+      :type self: CMaizeTarget
       :param property_value: Return variable for the property value.
       :type property_value: str*
       :param property_name: Name of the property to check for.
@@ -107,8 +107,8 @@ cmaize.targets/target
       Sets a single property to the given value, creating the property if it
       does not exist.
       
-      :param self: Target object
-      :type self: Target
+      :param self: CMaizeTarget object
+      :type self: CMaizeTarget
       :param _sp_property_name: Name of the property to set.
       :type _sp_property_name: desc
       :param args: Values of the property. This uses all additional
@@ -130,8 +130,8 @@ cmaize.targets/target
          using a ``cpp_map`` is close, so it was used. See the example usage
          below for a concise way of using this function.
       
-      :param self: Target object
-      :type self: Target
+      :param self: CMaizeTarget object
+      :type self: CMaizeTarget
       :param _sp_properties: Property names and values.
       :type _sp_properties: cpp_map
       
@@ -142,8 +142,8 @@ cmaize.targets/target
          # Create a target so the property functions have something to act on
          add_custom_target("example_target")
       
-         # Create a Target object
-         Target(CTOR my_tgt "example_target")
+         # Create a CMaizeTarget object
+         CMaizeTarget(CTOR my_tgt "example_target")
       
          # Assign properties using the cpp_map constructor with the optional
          # key-value pairs in the CTOR call
@@ -156,7 +156,7 @@ cmaize.targets/target
          )
       
          # Set the properties on the target with this function
-         Target(set_properties "${property_map}")
+         CMaizeTarget(set_properties "${property_map}")
       
 
    **Attributes**

@@ -8,7 +8,7 @@ cmaize.targets/installed_target
 
 .. py:class:: InstalledTarget
 
-   Bases: :class:`Target`
+   Bases: :class:`CMaizeTarget`
    
    Wraps a target that is already installed on the system.
    

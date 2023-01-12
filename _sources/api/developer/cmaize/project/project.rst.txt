@@ -107,8 +107,8 @@ cmaize.project/project
       
       :param self: CMaizeProject object.
       :type self: CMaizeProject
-      :param _at_target: Target object to be added.
-      :type _at_target: Target
+      :param _at_target: CMaizeTarget object to be added.
+      :type _at_target: CMaizeTarget
       
       :Keyword Arguments:
          * **INSTALLED** (*bool*) --
@@ -153,7 +153,7 @@ cmaize.project/project
       :param _ct_found: Return variable for if the target was found.
       :type _ct_found: bool*
       :param _ct_tgt: Target to search for.
-      :type _ct_tgt: Target
+      :type _ct_tgt: CMaizeTarget
       
       :returns: Target found (TRUE) or not (FALSE).
       :rtype: bool
