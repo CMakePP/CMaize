@@ -18,6 +18,7 @@ function(cpp_find_or_build_dependency _fobd_name)
 
     Dependency(FIND_DEPENDENCY "${_fobd_depend}" _fobd_found)
     if("${_fobd_found}")
+        message(STATUS "${_fobd_name} installation found")
         return()
     endif()
     
