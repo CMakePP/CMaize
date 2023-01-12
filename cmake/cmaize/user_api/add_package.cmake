@@ -59,7 +59,7 @@ function(cmaize_add_package_cmake _capc_tgt_name)
 
     # Search for the correct target to package
     foreach(tgt_i ${tgt_list})
-        Target(target "${tgt_i}" _capc_name)
+        CMaizeTarget(target "${tgt_i}" _capc_name)
         if("${_capc_name}" STREQUAL "${_capc_tgt_name}")
             PackageManager(install_package
                 "${_capc_pm_obj}"

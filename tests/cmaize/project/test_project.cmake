@@ -8,7 +8,7 @@ function("${test_project}")
     include(cmaize/project/project)
 
     #[[[
-    # Test ``Target(CTOR`` method.
+    # Test ``CMaizeTarget(CTOR`` method.
     #]]
     ct_add_section(NAME "test_ctor")
     function("${test_ctor}")
