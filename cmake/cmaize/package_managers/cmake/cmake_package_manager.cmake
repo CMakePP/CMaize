@@ -90,6 +90,15 @@ cpp_class(CMakePackageManager PackageManager)
     )
     function("${register_dependency}" self _rd_result _rd_proj_specs)
 
+        # This didn't work
+        # set(_rd_lists CMAKE_ARGS)
+        # cmake_parse_arguments(_rd "" "" "${_rd_lists}" ${ARGN})
+
+        # cpp_contains(_rd_contains_cmake_args "CMAKE_INSTALL_PREFIX" "${_rd_CMAKE_ARGS}")
+        # if(NOT _rd_contains_cmake_args)
+        #     list(APPEND _rd_CMAKE_ARGS "CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}/lib/test/external")
+        # endif()
+
         ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
         ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_version version)
 
@@ -132,6 +141,11 @@ cpp_class(CMakePackageManager PackageManager)
     )
     function("${find_installed}" self _fi_result _fi_project_specs)
 
+        set(_fi_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
+        cmake_parse_arguments(
+            _fi "" "${_fi_one_value_args}" "" ${ARGN}
+        )
+
         ProjectSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
 
         CMakePackageManager(register_dependency
@@ -142,14 +156,25 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         Dependency(find_dependency "${_fi_depend}" _fi_found)
-        if(NOT "${_fi_found}")
+        message(DEBUG "${_fi_pkg_name}_DIR: ${${_fi_pkg_name}_DIR}")
+        if(NOT "${_fi_found}" OR "${${_fi_pkg_name}_DIR}" STREQUAL "${_fi_pkg_name}_DIR-NOTFOUND")
             cpp_return("")
         endif()
 
+        # Make sure that FIND_TARGET is populated with a name
+        if("${_fi_FIND_TARGET}" STREQUAL "")
+            if("${_fi_BUILD_TARGET}" STREQUAL "")
+                set(_fi_FIND_TARGET "${_fi_pkg_name}")
+            else()
+                set(_fi_FIND_TARGET "${_fi_BUILD_TARGET}")
+            endif()
+        endif()
+
+        message(DEBUG "Creating target object for ${_fi_FIND_TARGET}")
         # Create an installed target
         set(_fi_depend_root_path "${${_fi_pkg_name}_DIR}")
         InstalledTarget(ctor
-            _fi_tgt "${_fi_pkg_name}" "${_fi_depend_root_path}"
+            _fi_tgt "${_fi_FIND_TARGET}" "${_fi_depend_root_path}"
         )
 
         set("${_fi_result}" "${_fi_tgt}")
@@ -183,18 +208,21 @@ cpp_class(CMakePackageManager PackageManager)
 
         Dependency(BUILD_DEPENDENCY "${_gp_depend}")
 
-        # Alias the build target as the find_target to unify the API
         Dependency(GET "${_gp_depend}" _gp_find_target "find_target")
         Dependency(GET "${_gp_depend}" _gp_build_target "build_target")
-        if(NOT "${_gp_find_target}" STREQUAL "${_gp_build_target}")
-            if(TARGET "${_gp_find_target}")
-                return()
-            endif()
-            add_library("${_gp_find_target}" ALIAS "${_gp_build_target}")
-        endif()
 
         # Create a build target
-        BuildTarget(CTOR "${_gp_result}" "${_gp_find_target}")
+        BuildTarget(CTOR "${_gp_result}" "${_gp_build_target}")
+
+        # Alias the build target as the find_target to unify the API
+        if(NOT TARGET "${_gp_find_target}")
+            if(NOT "${_gp_find_target}" STREQUAL "${_gp_build_target}")
+                # if(TARGET "${_gp_find_target}")
+                #     return()
+                # endif()
+                add_library("${_gp_find_target}" ALIAS "${_gp_build_target}")
+            endif()
+        endif()
 
         cpp_return("${_gp_result}")
 
@@ -224,7 +252,22 @@ cpp_class(CMakePackageManager PackageManager)
     #]]
     cpp_member(install_package CMakePackageManager str args)
     function("${install_package}" self _ip_pkg_name)
-        
+
+        # Doesn't work to set rpaths
+        # # Set up some default RPATH information
+        # file(RELATIVE_PATH
+        #     _ip_rel_dir
+        #     "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
+        #     "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+        # )
+        # set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/external/tmp)
+
+        set(
+            CMAKE_INSTALL_PREFIX
+            "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/external"
+            CACHE PATH "" FORCE
+        )
+
         # Get the current CMaize project
         cpp_get_global(_ip_proj CMAIZE_PROJECT_${PROJECT_NAME})
 
@@ -277,40 +320,51 @@ cpp_class(CMakePackageManager PackageManager)
         foreach(_ip_TARGETS_i ${_ip_TARGETS})
             CMaizeProject(get_target "${_ip_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}")
 
-            # doesn't work; "install TARGETS given target "utilities_target" which does not exist."
-            # if("${_ip_pkg_name}" STREQUAL "${_ip_TARGETS_i}")
-            #     set(_ip_TARGETS_i "${_ip_TARGETS_i}_target")
-            # endif()
+            set(
+                _ip_tgt_config
+                "${CMAKE_CURRENT_BINARY_DIR}/${_ip_TARGETS_i}-target.cmake"
+            )
+            set(
+                _ip_tgt_config_install_dest
+                "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+            )
 
             install(
                 TARGETS "${_ip_TARGETS_i}"
                 EXPORT "${_ip_TARGETS_i}-target"
-                RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
-                LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+                RUNTIME DESTINATION "../../../${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
+                LIBRARY DESTINATION "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+                ARCHIVE DESTINATION "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
                 # PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
             )
             install(
                 EXPORT ${_ip_TARGETS_i}-target
                 FILE ${_ip_TARGETS_i}-target.cmake
-                DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+                DESTINATION "${_ip_tgt_config_install_dest}"
                 NAMESPACE "${_ip_NAMESPACE}"
                 COMPONENT ${_ip_TARGETS_i}-target
             )
+
+            # # Writes config file to build directory
+            # CMakePackageManager(_generate_target_config
+            #     "${self}"
+            #     "${_ip_TARGETS_i}"
+            #     "${_ip_tgt_config}"
+            #     "${_ip_tgt_config_install_dest}"
+            # )
 
             # Install the include directories, preserving the directory structure
             BuildTarget(GET "${_ip_tgt_obj_i}" _ip_inc_dir_list include_dirs)
             foreach(_ip_inc_dir_i ${_ip_inc_dir_list})
                 install(
                     DIRECTORY "${_ip_inc_dir_i}"
-                    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+                    DESTINATION "../../../${CMAKE_INSTALL_INCLUDEDIR}"
                     USE_SOURCE_PERMISSIONS
                 )
             endforeach()
         endforeach()
 
         # Writes config file to build directory
-        message("-- DEBUG: _ip_TARGETS: ${_ip_TARGETS}")
         CMakePackageManager(_generate_package_config
             "${self}" _ip_pkg_config_in "${_ip_pkg_name}" ${_ip_TARGETS}
         )
@@ -320,12 +374,19 @@ cpp_class(CMakePackageManager PackageManager)
             "${_ip_pkg_config_in}"
             "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
             INSTALL_DESTINATION
-                "${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+                "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+        )
+        # Create package version file
+        write_basic_package_version_file(
+            "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}ConfigVersion.cmake"
+            VERSION "${_ip_VERSION}"
+            COMPATIBILITY SameMajorVersion
         )
 
         install(
             FILES "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
-            DESTINATION "${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+                  "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}ConfigVersion.cmake"
+            DESTINATION "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
         )
 
     endfunction()
@@ -337,9 +398,119 @@ cpp_class(CMakePackageManager PackageManager)
 
         set(__gpc_targets ${ARGN})
 
+        set(_gpc_file_contents "")
+
+        string(APPEND
+            _gpc_file_contents
+            "include(CMakeFindDependencyMacro)\n\n"
+        )
+
+        # Get the current CMaize project
+        cpp_get_global(__gpc_proj CMAIZE_PROJECT_${PROJECT_NAME})
+        foreach(__gpc_targets_i ${__gpc_targets})
+            CMaizeProject(get_target
+                "${__gpc_proj}" __gpc_tgt_obj "${__gpc_targets_i}"
+            )
+            BuildTarget(GET "${__gpc_tgt_obj}" __gpc_tgt_deps depends)
+
+            list(LENGTH __gpc_tgt_deps __gpc_tgt_deps_len)
+
+            # Appends the 'external/' directory to the CMAKE_PREFIX_PATH
+            # if there are dependencies that were built under the package
+            if(__gpc_tgt_deps_len GREATER 0)
+                string(APPEND
+                    _gpc_file_contents
+                    "set(\n"
+                    "    CMAKE_PREFIX_PATH\n"
+                    "    \"\${CMAKE_PREFIX_PATH}\" \"\${CMAKE_CURRENT_LIST_DIR}/../external\"\n"
+                    "    CACHE STRING \"\" FORCE\n"
+                    ")\n\n"
+                )
+            endif()
+
+            foreach(__gpc_tgt_deps_i ${__gpc_tgt_deps})
+                message(DEBUG "Processing dependency: ${__gpc_tgt_deps_i}")
+
+                # Skip dependency processing if this is not a target managed
+                # by the CMaize project
+                CMaizeProject(check_target
+                    "${__gpc_proj}"
+                    __gpc_is_cmaize_tgt
+                    "${__gpc_tgt_deps_i}"
+                    ALL
+                )
+                if(NOT __gpc_is_cmaize_tgt)
+                    message(
+                        DEBUG
+                        "Skipping ${__gpc_tgt_deps_i}. It is not target "
+                        "managed by CMaize."
+                    )
+                    continue()
+                endif()
+
+                # Skip dependency processing if it is a target defined as a
+                # part of this package
+                cpp_contains(_gpc_dep_is_proj_tgt "${__gpc_tgt_deps_i}" "${__gpc_targets}")
+                if(_gpc_dep_is_proj_tgt)
+                    message(
+                        DEBUG
+                        "Skipping ${__gpc_tgt_deps_i}. It is a target defined "
+                        "by this project."
+                    )
+                    continue()
+                endif()
+
+                # Check if it is a dependency to be built and redirect the
+                # installation to the ``external`` directory
+                CMaizeProject(get_target
+                    "${__gpc_proj}" __gpc_tgt_deps_i_obj "${__gpc_tgt_deps_i}"
+                )
+                
+                cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
+                if("${__gpc_dep_type}" STREQUAL "buildtarget")
+                    CMaizeTarget(target "${__gpc_tgt_deps_i_obj}" __gpc_dep_name)
+
+                    get_target_property(__gpc_dep_lib_out "${__gpc_dep_name}" LIBRARY_OUTPUT_DIRECTORY)
+                    message(DEBUG "${__gpc_dep_name} LIBRARY_OUTPUT_DIRECTORY: ${__gpc_dep_lib_out}")
+                    message(DEBUG "${__gpc_dep_name} LIBRARY_OUTPUT_DIRECTORY: $<__gpc_dep_lib_out>")
+                    message(DEBUG "${__gpc_dep_name} LIBRARY_OUTPUT_DIRECTORY: $<TARGET_FILE_DIR:${__gpc_dep_name}>")
+
+                    # list(APPEND CMAKE_INSTALL_RPATH "$<__gpc_dep_lib_out>")
+                    # list(APPEND CMAKE_INSTALL_RPATH "$<TARGET_FILE_DIR:${__gpc_dep_name}>")
+
+                    install(
+                        TARGETS "${__gpc_dep_name}"
+                        RUNTIME DESTINATION "tmp"
+                        LIBRARY DESTINATION "tmp"
+                    )
+                endif()
+
+                cpp_get_global(
+                    __gpc_dep_obj "__CMAIZE_DEPENDENCY_${__gpc_tgt_deps_i}__"
+                )
+                Dependency(GET
+                    "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
+                )
+
+                if("${__gpc_tgt_deps_i}" STREQUAL "${__gpc_dep_build_tgt_name}")
+                    string(APPEND
+                        _gpc_file_contents
+                        "find_dependency(${__gpc_tgt_deps_i})\n"
+                    )
+                else()
+                    string(APPEND
+                        _gpc_file_contents
+                        "find_dependency(${__gpc_tgt_deps_i} COMPONENTS ${__gpc_dep_build_tgt_name})\n"
+                    )
+                endif()
+            endforeach()
+        endforeach()
+
+        # Add a space between the dependency imports and component imports
+        string(APPEND _gpc_file_contents "\n" )
+
         # Start to generate full list of components if no specific components
         # are given
-        set(_gpc_file_contents "")
         string(APPEND
             _gpc_file_contents
             "list(LENGTH @PROJECT_NAME@_FIND_COMPONENTS " 
@@ -349,9 +520,6 @@ cpp_class(CMakePackageManager PackageManager)
 
         # Append all target names to the component list
         foreach(__gpc_targets_i ${__gpc_targets})
-            # if("${__gpc_pkg_name}" STREQUAL "${__gpc_targets_i}")
-            #     set(__gpc_targets_i "${__gpc_targets_i}_target")
-            # endif()
 
             string(APPEND
                 _gpc_file_contents
@@ -368,8 +536,10 @@ cpp_class(CMakePackageManager PackageManager)
             _gpc_file_contents
             "foreach(component \${@PROJECT_NAME@_FIND_COMPONENTS})\n"
             "    include(\${CMAKE_CURRENT_LIST_DIR}/\${component}-target.cmake)\n"
-            "endforeach()\n"
+            "endforeach()\n\n"
         )
+
+        string(APPEND "check_required_components(${__gpc_pkg_name})\n")
 
         # Write to a file to be configured
         file(WRITE
@@ -392,58 +562,73 @@ cpp_class(CMakePackageManager PackageManager)
     #
     # :param self: CMakePackageManager object
     # :type self: CMakePackageManager
-    # :param __gc_target: Targets to install.
-    # :type __gc_target: list
+    # :param __gtc_target_name: Identifying name of target to install.
+    # :type __gtc_target_name: desc or target
+    # :param __gtc_config_file: Path to the config file.
+    # :type __gtc_config_file: path
+    # :param __gtc_install_dest: Path to the installation destination.
+    # :type __gtc_install_dest: path
     #]]
-    cpp_member(_generate_target_config CMakePackageManager desc)
-    function("${_generate_target_config}" self __gc_target_name)
+    cpp_member(_generate_target_config CMakePackageManager str path desc)
+    function("${_generate_target_config}"
+        self __gtc_target_name __gtc_config_file __gtc_install_dest
+    )
 
-        # Get the current CMaize project
-        cpp_get_global(__gc_proj CMAIZE_PROJECT_${PROJECT_NAME})
+        # # Get the current CMaize project
+        # cpp_get_global(__gtc_proj CMAIZE_PROJECT_${PROJECT_NAME})
 
         set(
-            file_contents 
+            __gtc_file_contents 
             "@PACKAGE_INIT@\n\ninclude(CMakeFindDependencyMacro)\n"
         )
         
-        CMaizeProject(get_target
-            "${__gc_proj}" __gc_tgt_obj "${__gc_targets_i}"
-        )
-        BuildTarget(GET "${__gc_tgt_obj}" __gc_dep_list depends)
+        # CMaizeProject(get_target
+        #     "${__gtc_proj}" __gtc_tgt_obj "${__gtc_target_name}"
+        # )
+        # BuildTarget(GET "${__gtc_tgt_obj}" __gtc_dep_list depends)
 
-        foreach(__gc_dep_i ${__gc_dep_list})
-            CMaizeProject(get_target
-                "${__gc_proj}" __gc_dep_obj "${__gc_dep_i}" ALL
-            )
-            CMaizeTarget(target "${__gc_dep_obj}" __gc_dep_name)
+        # foreach(__gtc_dep_i ${__gtc_dep_list})
+        #     # CMaizeProject(get_target
+        #     #     "${__gtc_proj}" __gtc_dep_obj "${__gtc_dep_i}" ALL
+        #     # )
+        #     # CMaizeTarget(target "${__gtc_dep_obj}" __gtc_dep_name)
             
-            if("${__gc_dep_name}" STREQUAL "${__gc_dep_i}")
-                string(APPEND
-                    file_contents "find_dependency(${__gc_dep_i})\n"
-                )
-            else()
-                string(APPEND
-                    file_contents
-                    "find_dependency(${__gc_dep_i} COMPONENT ${__gc_dep_name})\n"
-                )
-            endif()
-        endforeach()
+        #     if("${__gtc_dep_name}" STREQUAL "${__gtc_dep_i}")
+        #         string(APPEND
+        #             __gtc_file_contents "find_dependency(${__gtc_dep_i})\n"
+        #         )
+        #     else()
+        #         string(APPEND
+        #             __gtc_file_contents
+        #             "find_dependency(${__gtc_dep_i} COMPONENT ${__gtc_dep_name})\n"
+        #         )
+        #     endif()
+        # endforeach()
         
-        BuildTarget(target "${__gc_target}" __gc_tgt_name)
-        string(APPEND
-            file_contents
-            "include(\${CMAKE_CURRENT_LIST_DIR}/${__gc_tgt_name}_targets.cmake)\n"
-        )
+        # # string(APPEND
+        # #     __gtc_file_contents
+        # #     "include(\${CMAKE_CURRENT_LIST_DIR}/${__gtc_target_name}-target.cmake)\n"
+        # # )
         
-        string(APPEND
-            file_contents
-            "check_required_components(${__gc_tgt_name})"
+        # # string(APPEND
+        # #     __gtc_file_contents
+        # #     "check_required_components(${__gtc_target_name})"
+        # # )
+
+        # Write the config file *.in variant
+        set(__gtc_config_file_in "${__gtc_config_file}.in")
+        file(WRITE "${__gtc_config_file_in}" "${__gtc_file_contents}")
+
+        # Configure the file so it is ready for installation
+        configure_package_config_file(
+            "${__gtc_config_file_in}"
+            "${__gtc_config_file}"
+            INSTALL_DESTINATION
+                "${__gtc_install_dest}"
         )
 
-        file(WRITE
-            "${CMAKE_CURRENT_BINARY_DIR}/${_ip_tgt_name}Config.cmake.in"
-            "${file_contents}"
-        )
+        # Install config file
+        install(FILES "${__gtc_config_file}" DESTINATION "${__gtc_install_dest}")
 
     endfunction()
 
