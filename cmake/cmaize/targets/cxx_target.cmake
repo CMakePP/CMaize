@@ -207,6 +207,10 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(target "${self}" _sll_name)
         CXXTarget(GET "${self}" _sll_deps depends)
 
+        # Replace any DEPENDS values specifying CMaizeTarget objects with the
+        # underlying target name
+        cmaize_replace_project_targets(_sll_deps ${_sll_deps})
+
         foreach(_sll_dep_i ${_sll_deps})
             message("-- DEBUG: Linking dependency ${_sll_dep_i} to ${_sll_name}.")
             target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_i}")

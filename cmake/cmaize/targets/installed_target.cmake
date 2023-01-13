@@ -31,7 +31,7 @@ cpp_class(InstalledTarget CMaizeTarget)
     cpp_constructor(CTOR InstalledTarget str path)
     function("${CTOR}" self _ctor_name _ctor_root)
 
-        CMaizeTarget(SET "${self}" _name "${_ctor_name}")
+        CMaizeTarget(CTOR "${self}" "${_ctor_name}")
 
         # Check if the root path exists
         cpp_directory_exists(exists "${_ctor_root}")
