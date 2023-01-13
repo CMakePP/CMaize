@@ -105,6 +105,8 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
         CMaizeProject(add_package_manager "${_fobdc_project}" "${_fobdc_pm}")
     endif()
 
+    message(STATUS "Attempting to find installed ${_fobdc_name}")
+
     # Check if the package is already installed
     CMakePackageManager(find_installed
         "${_fobdc_pm}"
@@ -113,11 +115,14 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
         ${ARGN}
     )
     if(NOT "${_fobdc_tgt}" STREQUAL "")
+        message(STATUS "${_fobdc_name} installation found")
         CMaizeProject(add_target
             "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}" INSTALLED
         )
         cpp_return("")
     endif()
+
+    message(STATUS "Attempting to fetch and build ${_fobdc_name}")
 
     # Prepare to build the package
     CMakePackageManager(get_package
@@ -127,10 +132,15 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
         ${ARGN}
     )
     if(NOT "${_fobdc_tgt}" STREQUAL "")
+        message(DEBUG "CMaize: Adding build target ${_fobdc_name} to ${PROJECT_NAME}")
         CMaizeProject(add_target
             "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}"
         )
-        cpp_return("")
     endif()
+
+    # The command above will throw build errors from inside FetchContent
+    # if the fetch and build fails, so we can assume at this point that
+    # it completed successfully
+    message(STATUS "${_fobdc_name} build complete")
 
 endfunction()
