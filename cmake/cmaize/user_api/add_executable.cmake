@@ -62,7 +62,7 @@ endfunction()
 #]]
 function(cmaize_add_executable _cae_tgt_name)
 
-    message("-- DEBUG: Registering executable target: ${_cae_tgt_name}")
+    message(VERBOSE "CMaize: Registering executable target: ${_cae_tgt_name}")
 
     set(_cae_one_value_args LANGUAGE)
     cmake_parse_arguments(_cae "" "${_cae_one_value_args}" "" ${ARGN})

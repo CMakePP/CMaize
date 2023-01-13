@@ -134,7 +134,7 @@ function("${test_cmake_package_manager}")
     #     CMakePackageManager(has_package "${pm_obj}" result "${ps_obj}")
     #     CMakePackageManager(has_package "${pm_obj}" result "${ps_obj}")
 
-    #     message("-- DEBUG: utilities_FOUND: ${utilities_FOUND}")
+    #     message(DEBUG "utilities_FOUND: ${utilities_FOUND}")
 
     #     ct_assert_equal(FALSE TRUE)
 

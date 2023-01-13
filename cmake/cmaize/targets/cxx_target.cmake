@@ -212,7 +212,7 @@ cpp_class(CXXTarget BuildTarget)
         cmaize_replace_project_targets(_sll_deps ${_sll_deps})
 
         foreach(_sll_dep_i ${_sll_deps})
-            message("-- DEBUG: Linking dependency ${_sll_dep_i} to ${_sll_name}.")
+            message(DEBUG "Linking dependency ${_sll_dep_i} to ${_sll_name}.")
             target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_i}")
         endforeach()
 
