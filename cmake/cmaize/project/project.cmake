@@ -432,8 +432,12 @@ cpp_class(CMaizeProject)
             # Get the collection of targets
             CMaizeProject(GET "${self}" __ct_tgt_map "${__ct_tgt_attr_i}")
 
+            cpp_map(KEYS "${__ct_tgt_map}" __ct_keys)
+            cpp_contains(__ct_found_i "${__ct_NAME}" "${__ct_keys}")
+
             # Check if a target with the same name already exists
-            cpp_map(HAS_KEY "${__ct_tgt_map}" __ct_found_i "${__ct_NAME}")
+            # Doesn't work for some reason
+            # cpp_map(HAS_KEY "${__ct_tgt_map}" __ct_found_i "${__ct_NAME}")
 
             # Return early if target is found
             if(__ct_found_i)
@@ -546,7 +550,7 @@ cpp_class(CMaizeProject)
     cpp_member(_get_target CMaizeProject desc args)
     function("${_get_target}" self  __gt_result)
 
-        set(__gt_options INSTALLED)
+        set(__gt_options INSTALLED ALL)
         set(__gt_one_value_args NAME)
         cmake_parse_arguments(
             __gt "${__gt_options}" "${__gt_one_value_args}" "" ${ARGN}
@@ -562,17 +566,24 @@ cpp_class(CMaizeProject)
 
         # Default to the build target list
         set(__gt_tgt_attr "build_targets")
-        if(__gt_INSTALLED)
+        if(__gt_ALL)
+            # Search both lists
+            list(APPEND __gt_tgt_attr "installed_targets")
+        elseif(__gt_INSTALLED)
             set(__gt_tgt_attr "installed_targets")
         endif()
 
-        # Get the collection of targets
-        CMaizeProject(GET "${self}" __gt_tgt_map "${__gt_tgt_attr}")
+        foreach(__gt_tgt_attr_i ${__gt_tgt_attr})
+            # Get the collection of targets
+            CMaizeProject(GET "${self}" __gt_tgt_map "${__gt_tgt_attr_i}")
 
-        # Find the specified target
-        cpp_map(GET "${__gt_tgt_map}" "${__gt_result}" "${__gt_NAME}")
+            # Find the specified target
+            cpp_map(GET "${__gt_tgt_map}" "${__gt_result}" "${__gt_NAME}")
 
-        cpp_return("${__gt_result}")
+            if(NOT "${${__gt_result}}" STREQUAL "")
+                cpp_return("${__gt_result}")
+            endif()
+        endforeach()
 
     endfunction()
 
