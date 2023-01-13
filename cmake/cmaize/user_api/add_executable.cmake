@@ -74,6 +74,7 @@ function(cmaize_add_executable _cae_tgt_name)
 
     # Decide which language we are building for
     string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE_lower)
+    set(_cae_tgt_obj "")
     if("${_cae_LANGUAGE_lower}" STREQUAL "cxx")
         cmaize_add_cxx_executable(_cae_tgt_obj
             "${_cae_tgt_name}"

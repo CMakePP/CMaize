@@ -76,6 +76,7 @@ function(cmaize_add_library _cal_tgt_name)
 
     # Decide which language we are building for
     string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE_lower)
+    set(_cal_tgt_obj "")
     if("${_cal_LANGUAGE_lower}" STREQUAL "cxx")
         cmaize_add_cxx_library(_cal_tgt_obj
             "${_cal_tgt_name}"
