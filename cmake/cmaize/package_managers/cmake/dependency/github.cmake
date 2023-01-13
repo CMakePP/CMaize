@@ -52,13 +52,13 @@ cpp_class(GitHubDependency Dependency)
         string(FIND "${_bd_url}" ".tgz" _bd_is_tarball)
 
         if("${_bd_is_tarball}" STREQUAL "-1")
-            cpp_fetch_and_available(
+            cmaize_fetch_and_available(
                 "${_bd_name}"
                 GIT_REPOSITORY "${_bd_url}"
                 GIT_TAG "${_bd_version}"
             )
         else()
-            cpp_fetch_and_available("${_bd_name}" URL "${_bd_url}")
+            cmaize_fetch_and_available("${_bd_name}" URL "${_bd_url}")
         endif()
 
         foreach(_bd_pair ${_bd_old_cmake_args})
