@@ -38,10 +38,10 @@ endfunction()
 #[[[
 # User function to install a CMake package.
 #
-# :param _capc_tgt_name: Name of the target to be installed.
-# :type _capc_tgt_name: desc
+# :param _capc_pkg_name: Name of the package to be installed.
+# :type _capc_pkg_name: desc
 #]]
-function(cmaize_add_package_cmake _capc_tgt_name)
+function(cmaize_add_package_cmake _capc_pkg_name)
 
     # Get the CMaize project
     cpp_get_global(_capc_proj CMAIZE_PROJECT_${PROJECT_NAME})
@@ -57,12 +57,9 @@ function(cmaize_add_package_cmake _capc_tgt_name)
         CMaizeProject(add_package_manager "${_capc_proj}" "${_capc_pm_obj}")
     endif()
 
-    # Get the target from the project
-    CMaizeProject(get_target "${_capc_proj}" _capc_tgt_obj "${_capc_tgt_name}")
-
     PackageManager(install_package
         "${_capc_pm_obj}"
-        "${_capc_tgt_obj}"
+        "${_capc_pkg_name}"
         ${ARGN}
     )
 

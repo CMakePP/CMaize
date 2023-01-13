@@ -147,10 +147,6 @@ function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
     _cmaize_glob_files(_cace_source_files "${_cace_SOURCE_DIR}" "${_cace_SOURCE_EXTS}")
     _cmaize_glob_files(_cace_include_files "${_cace_INCLUDE_DIRS}" "${_cace_INCLUDE_EXTS}")
 
-    # Replace any DEPENDS values specifying CMaizeTarget objects with the
-    # underlying target name
-    cmaize_replace_project_targets(_cace_DEPENDS ${_cace_DEPENDS})
-
     CXXExecutable(CTOR _cace_exe_obj "${_cace_tgt_name}")
 
     CXXExecutable(make_target
