@@ -38,4 +38,14 @@ function("${test_get_package_manager}")
 
     endfunction()
 
+    ct_add_section(NAME "two_of_same_instance")
+    function("${two_of_same_instance}")
+
+        get_package_manager_instance(_ni_result_1 "packagemanager")
+        get_package_manager_instance(_ni_result_2 "packagemanager")
+
+        ct_assert_equal(_ni_result_1 "${_ni_result_2}")
+
+    endfunction()
+
 endfunction()

@@ -1,6 +1,9 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
+include(cmaize/project/project)
+include(cmaize/package_managers/get_package_manager)
+
 #[[[
 # User function to install a package.
 #
@@ -53,7 +56,8 @@ function(cmaize_add_package_cmake _capc_pkg_name)
 
     # Create new package manager if it doesn't exist
     if("${_capc_pm_obj}" STREQUAL "")
-        CMakePackageManager(CTOR _capc_pm_obj)      
+        # CMakePackageManager(CTOR _capc_pm_obj)
+        get_package_manager_instance(_capc_pm_obj "CMakePackageManager")
         CMaizeProject(add_package_manager "${_capc_proj}" "${_capc_pm_obj}")
     endif()
 
@@ -79,25 +83,25 @@ endfunction()
 #           was not found.
 # :rtype: PackageManager
 #]]
-function(get_package_manager _gpm_return_pm _gpm_type)
+# function(get_package_manager _gpm_return_pm _gpm_type)
 
-    # Get the list of package managers from the current project
-    cpp_get_global(_gpm_proj CMAIZE_PROJECT_${PROJECT_NAME})
+#     # Get the list of package managers from the current project
+#     cpp_get_global(_gpm_proj CMAIZE_PROJECT_${PROJECT_NAME})
 
-    # Search for the package manager in the project
-    CMaizeProject(GET "${_gpm_proj}" _gpm_pm_list package_managers)
-    set(_gpm_return_pm "")
-    foreach(_gpm_pm_i ${_gpm_pm_list})
-        PackageManager(GET "${_gpm_pm_i}" _gpm_pm_i_type type)
+#     # Search for the package manager in the project
+#     CMaizeProject(GET "${_gpm_proj}" _gpm_pm_list package_managers)
+#     set(_gpm_return_pm "")
+#     foreach(_gpm_pm_i ${_gpm_pm_list})
+#         PackageManager(GET "${_gpm_pm_i}" _gpm_pm_i_type type)
 
-        # If found, return the package manager
-        if("${_gpm_pm_i_type}" STREQUAL "${_gpm_type}")
-            set(_gpm_return_pm "${_gpm_pm_i}")
-            cpp_return("${_gpm_return_pm}")
-        endif()
-    endforeach()
+#         # If found, return the package manager
+#         if("${_gpm_pm_i_type}" STREQUAL "${_gpm_type}")
+#             set(_gpm_return_pm "${_gpm_pm_i}")
+#             cpp_return("${_gpm_return_pm}")
+#         endif()
+#     endforeach()
 
-    set(_gpm_return_pm "")
-    cpp_return("${_gpm_return_pm}")
+#     set(_gpm_return_pm "")
+#     cpp_return("${_gpm_return_pm}")
 
-endfunction()
+# endfunction()

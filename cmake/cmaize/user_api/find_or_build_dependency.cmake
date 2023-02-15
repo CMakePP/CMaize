@@ -2,6 +2,7 @@ include_guard()
 
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/project/project)
+include(cmaize/package_managers/get_package_manager)
 include(cmaize/package_managers/package_managers)
 
 #[[[
@@ -101,7 +102,8 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     # Add a CMakePackageManager to the project if it does not exist yet
     CMaizeProject(get_package_manager "${_fobdc_project}" _fobdc_pm "CMake")
     if("${_fobdc_pm}" STREQUAL "")
-        CMakePackageManager(ctor _fobdc_pm)
+        # CMakePackageManager(ctor _fobdc_pm)
+        get_package_manager_instance(_fobdc_pm "CMakePackageManager")
         CMaizeProject(add_package_manager "${_fobdc_project}" "${_fobdc_pm}")
     endif()
 
