@@ -82,10 +82,10 @@ cpp_class(Dependency)
     function("${find_dependency}" _fd_this _fd_found)
 
         # Check if it was already found? If so short-circuit and return TRUE
-        Dependency(GET "${_fd_this}" "${_fd_found}" found)
-        if("${${_fd_found}}")
-            cpp_return("${_fd_found}")
-        endif()
+        # Dependency(GET "${_fd_this}" "${_fd_found}" found)
+        # if("${${_fd_found}}")
+        #     cpp_return("${_fd_found}")
+        # endif()
 
         # Wasn't found so call find_package to look for it.
         Dependency(_SEARCH_PATHS "${_fd_this}" _fd_paths)

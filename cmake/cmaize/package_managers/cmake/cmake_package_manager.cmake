@@ -170,7 +170,7 @@ cpp_class(CMakePackageManager PackageManager)
             endif()
         endif()
 
-        message(DEBUG "Creating target object for ${_fi_FIND_TARGET}")
+        message(DEBUG "Creating InstalledTarget object for ${_fi_FIND_TARGET}")
         # Create an installed target
         set(_fi_depend_root_path "${${_fi_pkg_name}_DIR}")
         InstalledTarget(ctor
@@ -224,6 +224,9 @@ cpp_class(CMakePackageManager PackageManager)
             endif()
         endif()
 
+        # Create a build target
+        # BuildTarget(CTOR "${_gp_result}" "${_gp_find_target}")
+
         cpp_return("${_gp_result}")
 
     endfunction()
@@ -262,14 +265,24 @@ cpp_class(CMakePackageManager PackageManager)
         # )
         # set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/external/tmp)
 
-        set(
-            CMAKE_INSTALL_PREFIX
-            "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/external"
-            CACHE PATH "" FORCE
-        )
-
         # Get the current CMaize project
         cpp_get_global(_ip_proj CMAIZE_PROJECT_${PROJECT_NAME})
+        cpp_get_global(_ip_top_proj CMAIZE_TOP_PROJECT)
+        CMaizeProject(GET "${_ip_proj}" _ip_proj_name name)
+        CMaizeProject(GET "${_ip_top_proj}" _ip_top_proj_name name)
+
+        set(_ip_destination_prefix ".")
+
+        if("${_ip_proj_name}" STREQUAL "${_ip_top_proj_name}")
+            # set(old_CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
+            set(
+                CMAKE_INSTALL_PREFIX
+                "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/external"
+                CACHE PATH "" FORCE
+            )
+
+            set(_ip_destination_prefix "../../..")
+        endif()
 
         set(_ip_one_value_args NAMESPACE VERSION)
         set(_ip_multi_value_args TARGETS)
@@ -326,39 +339,41 @@ cpp_class(CMakePackageManager PackageManager)
             )
             set(
                 _ip_tgt_config_install_dest
-                "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+                "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
             )
 
             install(
                 TARGETS "${_ip_TARGETS_i}"
                 EXPORT "${_ip_TARGETS_i}-target"
-                RUNTIME DESTINATION "../../../${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
-                LIBRARY DESTINATION "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                ARCHIVE DESTINATION "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                # PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
+                RUNTIME DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
+                LIBRARY DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+                ARCHIVE DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+                # PUBLIC_HEADER DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
             )
-            install(
-                EXPORT ${_ip_TARGETS_i}-target
-                FILE ${_ip_TARGETS_i}-target.cmake
-                DESTINATION "${_ip_tgt_config_install_dest}"
-                NAMESPACE "${_ip_NAMESPACE}"
-                COMPONENT ${_ip_TARGETS_i}-target
-            )
-
-            # # Writes config file to build directory
-            # CMakePackageManager(_generate_target_config
-            #     "${self}"
-            #     "${_ip_TARGETS_i}"
-            #     "${_ip_tgt_config}"
-            #     "${_ip_tgt_config_install_dest}"
+            # install(
+            #     EXPORT ${_ip_TARGETS_i}-target
+            #     FILE ${_ip_TARGETS_i}-target.cmake
+            #     DESTINATION "${_ip_tgt_config_install_dest}"
+            #     NAMESPACE "${_ip_NAMESPACE}"
+            #     COMPONENT ${_ip_TARGETS_i}-target
             # )
+
+            # Writes config file to build directory
+            CMakePackageManager(_generate_target_config
+                "${self}"
+                "${_ip_tgt_obj_i}"
+                "${_ip_TARGETS_i}"
+                "${_ip_NAMESPACE}"
+                "${_ip_tgt_config}"
+                "${_ip_tgt_config_install_dest}"
+            )
 
             # Install the include directories, preserving the directory structure
             BuildTarget(GET "${_ip_tgt_obj_i}" _ip_inc_dir_list include_dirs)
             foreach(_ip_inc_dir_i ${_ip_inc_dir_list})
                 install(
                     DIRECTORY "${_ip_inc_dir_i}"
-                    DESTINATION "../../../${CMAKE_INSTALL_INCLUDEDIR}"
+                    DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}"
                     USE_SOURCE_PERMISSIONS
                 )
             endforeach()
@@ -374,7 +389,7 @@ cpp_class(CMakePackageManager PackageManager)
             "${_ip_pkg_config_in}"
             "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
             INSTALL_DESTINATION
-                "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+                "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
         )
         # Create package version file
         write_basic_package_version_file(
@@ -386,8 +401,14 @@ cpp_class(CMakePackageManager PackageManager)
         install(
             FILES "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
                   "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}ConfigVersion.cmake"
-            DESTINATION "../../../${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+            DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
         )
+
+        # set(
+        #     CMAKE_INSTALL_PREFIX 
+        #     "${old_CMAKE_INSTALL_PREFIX}"
+        #     CACHE PATH "" FORCE
+        # )
 
     endfunction()
 
@@ -467,19 +488,17 @@ cpp_class(CMakePackageManager PackageManager)
                 )
                 
                 cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
+                message(DEBUG "${__gpc_tgt_deps_i} type: ${__gpc_dep_type}")
                 if("${__gpc_dep_type}" STREQUAL "buildtarget")
-                    CMaizeTarget(target "${__gpc_tgt_deps_i_obj}" __gpc_dep_name)
-
-                    get_target_property(__gpc_dep_lib_out "${__gpc_dep_name}" LIBRARY_OUTPUT_DIRECTORY)
-                    message(DEBUG "${__gpc_dep_name} LIBRARY_OUTPUT_DIRECTORY: ${__gpc_dep_lib_out}")
-                    message(DEBUG "${__gpc_dep_name} LIBRARY_OUTPUT_DIRECTORY: $<__gpc_dep_lib_out>")
-                    message(DEBUG "${__gpc_dep_name} LIBRARY_OUTPUT_DIRECTORY: $<TARGET_FILE_DIR:${__gpc_dep_name}>")
-
-                    # list(APPEND CMAKE_INSTALL_RPATH "$<__gpc_dep_lib_out>")
-                    # list(APPEND CMAKE_INSTALL_RPATH "$<TARGET_FILE_DIR:${__gpc_dep_name}>")
+                    cpp_get_global(
+                        __gpc_dep_obj "__CMAIZE_DEPENDENCY_${__gpc_tgt_deps_i}__"
+                    )
+                    Dependency(GET
+                        "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
+                    )
 
                     install(
-                        TARGETS "${__gpc_dep_name}"
+                        TARGETS "${__gpc_dep_build_tgt_name}"
                         RUNTIME DESTINATION "tmp"
                         LIBRARY DESTINATION "tmp"
                     )
@@ -569,19 +588,95 @@ cpp_class(CMakePackageManager PackageManager)
     # :param __gtc_install_dest: Path to the installation destination.
     # :type __gtc_install_dest: path
     #]]
-    cpp_member(_generate_target_config CMakePackageManager str path desc)
+    cpp_member(_generate_target_config CMakePackageManager BuildTarget str str path str)
     function("${_generate_target_config}"
-        self __gtc_target_name __gtc_config_file __gtc_install_dest
+        self __gtc_tgt_obj __gtc_target_name __gtc_namespace __gtc_config_file __gtc_install_dest
     )
 
         # # Get the current CMaize project
         # cpp_get_global(__gtc_proj CMAIZE_PROJECT_${PROJECT_NAME})
 
+        # set(
+        #     __gtc_file_contents 
+        #     "@PACKAGE_INIT@\n\n"
+        # )
         set(
             __gtc_file_contents 
-            "@PACKAGE_INIT@\n\ninclude(CMakeFindDependencyMacro)\n"
+            "##### Generated by CMaize\n\n"
         )
-        
+        string(APPEND
+            __gtc_file_contents 
+            "get_filename_component(PACKAGE_PREFIX_DIR "
+            "\"\${CMAKE_CURRENT_LIST_DIR}/../../..\" ABSOLUTE)\n"
+        )
+
+        BuildTarget(GET "${__gtc_tgt_obj}" __gtc_dep_list depends)
+        CXXTarget(GET "${__gtc_tgt_obj}" __gtc_cxx_std cxx_standard)
+        CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_version VERSION)
+        CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_so_version SOVERSION)
+
+        string(APPEND
+            __gtc_file_contents
+            "
+# Create imported target ${__gtc_namespace}${__gtc_target_name}
+add_library(${__gtc_namespace}${__gtc_target_name} SHARED IMPORTED)
+
+set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
+    INTERFACE_COMPILE_FEATURES \"cxx_std_${__gtc_cxx_std}\"
+    INTERFACE_INCLUDE_DIRECTORIES \"\${PACKAGE_PREFIX_DIR}/include\"
+    INTERFACE_LINK_LIBRARIES "
+        )
+
+        set(__gtc_interface_link_libraries)
+        foreach(__gtc_dep_i ${__gtc_dep_list})
+            # Get the current CMaize project
+            # cpp_get_global(__gtc_proj CMAIZE_PROJECT_${PROJECT_NAME})
+
+            # CMaizeProject(get_target
+            #     "${__gtc_proj}" __gtc_tgt_deps_i_obj "${__gtc_dep_i}"
+            # )
+            cpp_get_global(
+                __gtc_dep_obj "__CMAIZE_DEPENDENCY_${__gtc_dep_i}__"
+            )
+            if("${__gtc_dep_obj}" STREQUAL "")
+                continue()
+            endif()
+            Dependency(GET
+                "${__gtc_dep_obj}" __gtc_dep_find_tgt_name find_target
+            )
+            
+            # CMaizeTarget(target "${__gtc_tgt_deps_i_obj}" __gtc_dep_name)
+
+            list(APPEND __gtc_interface_link_libraries ${__gtc_dep_find_tgt_name})
+        endforeach()
+
+        string(APPEND
+            __gtc_file_contents
+            "\"${__gtc_interface_link_libraries}\"
+)\n"
+        )
+
+        string(APPEND
+            __gtc_file_contents
+            "
+set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/lib/${__gtc_target_name}/lib${__gtc_target_name}.so.${__gtc_version}\")
+
+# Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
+set_property(TARGET ${__gtc_namespace}${__gtc_target_name} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
+    IMPORTED_LOCATION_RELEASE \"\${_CMAIZE_IMPORT_LOCATION}\"
+    IMPORTED_SONAME_RELEASE \"lib${__gtc_target_name}.so.${__gtc_so_version}\"
+)\n"
+        )
+
+        string(APPEND
+            __gtc_file_contents 
+            "
+# Unset variables used
+set(PACKAGE_PREFIX_DIR)
+set(_CMAIZE_IMPORT_LOCATION)"
+        )
+
         # CMaizeProject(get_target
         #     "${__gtc_proj}" __gtc_tgt_obj "${__gtc_target_name}"
         # )
