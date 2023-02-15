@@ -15,6 +15,14 @@ macro(cmaize_project _cp_name)
 
     CMaizeProject(CTOR _cp_project "${_cp_name}" ${ARGN})
 
+    cpp_set_global(CMAIZE_PROJECT "${_cp_project}")
     cpp_set_global(CMAIZE_PROJECT_${PROJECT_NAME} "${_cp_project}")
+
+    # Set the top-level CMaize project
+    cpp_get_global(_cp_top_project CMAIZE_TOP_PROJECT)
+    if("${_cp_top_project}" STREQUAL "")
+        message(DEBUG "Setting ${_cp_name} as the top-level CMaize project")
+        cpp_set_global(CMAIZE_TOP_PROJECT "${_cp_project}")
+    endif()
 
 endmacro()

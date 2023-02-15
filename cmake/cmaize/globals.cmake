@@ -29,6 +29,14 @@ cpp_set_global(
 )
 
 #[[[
+# Top-level CMaize project.
+#]]
+cpp_set_global(
+    CMAIZE_TOP_PROJECT
+    ""
+)
+
+#[[[
 # Languages supported by CMaize.
 #]]
 cpp_set_global(
