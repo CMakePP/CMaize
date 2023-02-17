@@ -488,7 +488,6 @@ cpp_class(CMakePackageManager PackageManager)
                 )
                 
                 cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
-                message(DEBUG "${__gpc_tgt_deps_i} type: ${__gpc_dep_type}")
                 if("${__gpc_dep_type}" STREQUAL "buildtarget")
                     cpp_get_global(
                         __gpc_dep_obj "__CMAIZE_DEPENDENCY_${__gpc_tgt_deps_i}__"

@@ -301,12 +301,8 @@ cpp_class(CMaizeProject)
         # TODO: Should we throw an error here, or maybe just overwrite the
         #       existing target?
         if(__at_found)
-            message(DEBUG "add_target: Target ${__at_NAME} already found")
-
             cpp_return("")
         endif()
-
-        message(DEBUG "add_target: Adding target ${__at_NAME} to ${__at_tgt_attr}")
 
         # Add the target to the list if it doesn't already exist
         CMaizeProject(GET "${self}" __at_tgt_map "${__at_tgt_attr}")
