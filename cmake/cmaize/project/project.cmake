@@ -301,8 +301,12 @@ cpp_class(CMaizeProject)
         # TODO: Should we throw an error here, or maybe just overwrite the
         #       existing target?
         if(__at_found)
+            message(DEBUG "add_target: Target ${__at_NAME} already found")
+
             cpp_return("")
         endif()
+
+        message(DEBUG "add_target: Adding target ${__at_NAME} to ${__at_tgt_attr}")
 
         # Add the target to the list if it doesn't already exist
         CMaizeProject(GET "${self}" __at_tgt_map "${__at_tgt_attr}")
@@ -573,17 +577,22 @@ cpp_class(CMaizeProject)
             set(__gt_tgt_attr "installed_targets")
         endif()
 
+        set("${__gt_result}" "")
         foreach(__gt_tgt_attr_i ${__gt_tgt_attr})
             # Get the collection of targets
             CMaizeProject(GET "${self}" __gt_tgt_map "${__gt_tgt_attr_i}")
 
             # Find the specified target
-            cpp_map(GET "${__gt_tgt_map}" "${__gt_result}" "${__gt_NAME}")
+            cpp_map(GET "${__gt_tgt_map}" __gt_tgt_obj "${__gt_NAME}")
 
-            if(NOT "${${__gt_result}}" STREQUAL "")
+            if(NOT "${__gt_tgt_obj}" STREQUAL "")
+                set("${__gt_result}" "${__gt_tgt_obj}")
+
                 cpp_return("${__gt_result}")
             endif()
         endforeach()
+
+        cpp_return("${__gt_result}")
 
     endfunction()
 

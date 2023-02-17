@@ -11,7 +11,9 @@ function(get_package_manager_instance _gpmi_result _gpmi_type)
     string(TOLOWER "${_gpmi_type}" _gpmi_type_lower)
 
     # Look up if there is an instance of the package manager already
-    cpp_get_global(_gpmi_instance __CMAIZE_SINGLETON_${_gpmi_type_lower}__)
+    cpp_get_global(
+        _gpmi_instance __CMAIZE_PACKAGE_MANAGER_${_gpmi_type_lower}__
+    )
 
     # Return early if an instance exists
     if(NOT "${_gpmi_instance}" STREQUAL "")
@@ -33,7 +35,7 @@ function(get_package_manager_instance _gpmi_result _gpmi_type)
 
     # Store the new package manager instance
     cpp_set_global(
-        __CMAIZE_SINGLETON_${_gpmi_type_lower}__ "${${_gpmi_result}}"
+        __CMAIZE_PACKAGE_MANAGER_${_gpmi_type_lower}__ "${${_gpmi_result}}"
     )
 
     cpp_return("${_gpmi_result}")
