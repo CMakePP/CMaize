@@ -1,7 +1,7 @@
 include_guard()
 
 include(cmakepp_lang/cmakepp_lang)
-include(cmaize/project/project)
+include(cmaize/project/cmaize_project)
 include(cmaize/package_managers/get_package_manager)
 include(cmaize/package_managers/package_managers)
 

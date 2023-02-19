@@ -290,12 +290,7 @@ cpp_class(CMaizeProject)
 
         # Check if a CMaizeTarget with the same name exists already as either
         # a build or installed target
-        CMaizeProject(check_target
-            "${self}"
-            __at_found
-            "${__at_NAME}"
-            ALL
-        )
+        CMaizeProject(check_target "${self}" __at_found "${__at_NAME}" ALL)
 
         # Exit early if a target with the same name already exists
         # TODO: Should we throw an error here, or maybe just overwrite the
