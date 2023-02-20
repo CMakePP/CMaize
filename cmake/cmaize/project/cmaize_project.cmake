@@ -200,8 +200,6 @@ cpp_class(CMaizeProject)
         )
 
         # Package manager already exists, exit early
-        # TODO: Should we throw an error here, or maybe just overwrite the
-        #       existing package manager?
         if(_apm_found)
             cpp_return("")
         endif()

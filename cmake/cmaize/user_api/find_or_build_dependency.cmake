@@ -103,7 +103,7 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     CMaizeProject(get_package_manager "${_fobdc_project}" _fobdc_pm "CMake")
     if("${_fobdc_pm}" STREQUAL "")
         # CMakePackageManager(ctor _fobdc_pm)
-        get_package_manager_instance(_fobdc_pm "CMakePackageManager")
+        get_package_manager_instance(_fobdc_pm "CMake")
         CMaizeProject(add_package_manager "${_fobdc_project}" "${_fobdc_pm}")
     endif()
 

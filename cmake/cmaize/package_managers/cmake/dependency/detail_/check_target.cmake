@@ -32,7 +32,6 @@ function(_cmaize_dependency_check_target _dct_this _dct_type)
     string(APPEND _dct_msg " and that FIND_TARGET is set to the name of the")
     string(APPEND _dct_msg " target set in ${_dct_name}Config.cmake.")
 
-    # TODO: make this a cpp_raise exception
     cpp_raise(TargetNotFound "${_dct_msg}")
 
 endfunction()
