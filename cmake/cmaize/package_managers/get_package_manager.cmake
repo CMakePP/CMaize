@@ -4,6 +4,20 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/package_managers/package_manager)
 include(cmaize/package_managers/cmake/cmake_package_manager)
 
+#[[[
+# Gets an existing instance or creates a new instance of a PackageManager
+# object. This function should be used to ensure that only one instance
+# of each PackageManager subclass can exist at a time.
+#
+# :param _gpmi_result: Return variable for PackageManager instance
+# :type _gpmi_result: PackageManager*
+# :param _gpmi_type: Package manager type to instantiate. Valid types can
+#                    be found in the ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS``
+#                    variable.
+# :type _gpmi_type: desc
+#
+# :returns: PackageManager instance
+#]]
 function(get_package_manager_instance _gpmi_result _gpmi_type)
     cpp_assert_signature("${ARGV}" desc desc)
 
@@ -24,7 +38,7 @@ function(get_package_manager_instance _gpmi_result _gpmi_type)
     # Create an instance of the package manager
     if("${_gpmi_type_lower}" STREQUAL "packagemanager")
         PackageManager(CTOR "${_gpmi_result}")
-    elseif("${_gpmi_type_lower}" STREQUAL "cmakepackagemanager")
+    elseif("${_gpmi_type_lower}" STREQUAL "cmake")
         CMakePackageManager(CTOR "${_gpmi_result}")
     else()
         cpp_raise(
