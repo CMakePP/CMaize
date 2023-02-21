@@ -1,3 +1,6 @@
+include_guard()
+include(cmakepp_lang/cmakepp_lang)
+
 #[[[
 # Replaces CMaizeTarget object names with their underlying CMake target
 # names in the given list. This function only works with CMaizeTarget
