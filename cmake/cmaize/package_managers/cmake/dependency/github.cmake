@@ -9,41 +9,68 @@ cpp_class(GitHubDependency Dependency)
     #[[[
     # :type: bool
     #
-    # Is this a private GitHub Repo?
+    # Is this a private GitHub Repo (TRUE) or not (FALSE)?
     #]]
     cpp_attr(GitHubDependency private FALSE)
 
     #[[[
     # :type: desc
     #
-    # What git tag/hash should we use?
+    # Git tag, branch, or commit hash to use.
     #]]
     cpp_attr(GitHubDependency version master)
 
     #[[[
     # :type: desc
     #
-    # What is the base URL?
+    # Base URL for the GitHub repository. This can be the link to the
+    # repository or the `git clone` HTTPS link, but not the SSH option.
     #]]
     cpp_attr(GitHubDependency url)
 
     cpp_member(build_dependency GitHubDependency)
     function("${build_dependency}" _bd_this)
+    
         GitHubDependency(GET "${_bd_this}" _bd_url url)
         GitHubDependency(GET "${_bd_this}" _bd_private private)
         GitHubDependency(GET "${_bd_this}" _bd_version version)
         GitHubDependency(GET "${_bd_this}" _bd_name name)
         GitHubDependency(GET "${_bd_this}" _bd_cmake_args cmake_args)
 
-        if("${_bd_private}")
+        # TODO: In the future, this might need to be generalized more to
+        #       accommodate those who use multiple accounts with SSH keys
+        #       associated with them. In these situations, the string
+        #       below, "git@github.com:", would look something like
+        #       "git@github-alt-account:", where the user has set up
+        #       "github-alt-account" in their ~/.ssh/config file as a
+        #       "Host" with a different ssh key associated with it. The
+        #       REGEX MATCH below should do this, but the `cmaize_sanitize_url`
+        #       function also must be redesigned for these URLs to be allowed.
+        # string(REGEX MATCH "^git@[A-Za-z0-9_-]:" _bd_is_ssh "${_bd_url}")
+        string(FIND "${_bd_url}" "git@github.com:" _bd_is_ssh)
+
+        # Determine what type of URL to generate to access the repository
+        if(_bd_is_ssh GREATER -1)
+            message(DEBUG "Fetching GitHub repository via SSH: ${_bd_url}")
+            # Don't do anything to the URL
+        elseif("${_bd_private}")
             if("${CMAIZE_GITHUB_TOKEN}" STREQUAL "")
-                message(
-                  FATAL_ERROR
+                cpp_raise(
+                  GitHubTokenMissing
                   "Private GitHub repos require CMAIZE_GITHUB_TOKEN to be set."
                 )
             endif()
+
+            message(DEBUG
+                "Fetching private GitHub repository using the value of "
+                "CMAIZE_GITHUB_TOKEN: "
+                "https://\${CMAIZE_GITHUB_TOKEN}@${_bd_url}"
+            )
             set(_bd_url "https://${CMAIZE_GITHUB_TOKEN}@${_bd_url}")
         else()
+            message(DEBUG
+                "Fetching public GitHub repository: https://${_bd_url}"
+            )
             set(_bd_url "https://${_bd_url}")
         endif()
 
@@ -82,10 +109,35 @@ cpp_class(GitHubDependency Dependency)
         _cmaize_dependency_check_target("${_bd_this}" "build")
         # It's now "found" since it's been added to our build system
         Dependency(SET "${_bd_this}" found TRUE)
+
     endfunction()
 
+    #[[[
+    # Initialize the dependency with project information.
+    #
+    # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # :Keyword Arguments:
+    #    * **BUILD_TARGET** (*desc*) --
+    #      Name of the target when it is built. This usually does not include
+    #      namespaces yet.
+    #    * **FIND_TARGET** (*desc*) --
+    #      Name of the target when it is found using something like CMake's
+    #      ``find_package()`` tool. This typically does include a namespace.
+    #    * **NAME** (*desc*) --
+    #      Name used to identify this dependency. This does not need to match
+    #      the find or build target names, but frequently will match one or
+    #      both.
+    #    * **URL** (*desc*) --
+    #      URL for the GitHub repository. This can be the URL to the
+    #      repository or the HTTPS link used to clone the repository, but
+    #      not the SSH cloning option.
+    #    * **VERSION** (*desc*) --
+    #      Version of the target to find or build.
+    #]]
     cpp_member(init GitHubDependency args)
-    function("${init}" _i_this)
+    function("${init}" self)
+
         set(_i_options PRIVATE)
         set(_i_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
         set(_i_list CMAKE_ARGS)
@@ -94,16 +146,14 @@ cpp_class(GitHubDependency Dependency)
         )
 
         # Clean up the GitHub URL and ensure it is from GitHub
-        message(DEBUG "Sanitizing URL: ${_i_URL}")
         cmaize_sanitize_url(
             _i_URL
             "${_i_URL}"
-            DOMAIN "github.com/"
+            DOMAIN "github.com"
         )
-        message(DEBUG "Sanitized URL: ${_i_URL}")
 
         if("${_i_PRIVATE}")
-            Dependency(SET "${_i_this}" private TRUE)
+            Dependency(SET "${self}" private TRUE)
         endif()
 
         foreach(_i_option_i ${_i_one_value_args})
@@ -112,14 +162,16 @@ cpp_class(GitHubDependency Dependency)
             endif()
             string(TOLOWER "${_i_option_i}" _i_lc_option_i)
             Dependency(
-               SET "${_i_this}" "${_i_lc_option_i}" "${_i_${_i_option_i}}"
+               SET "${self}" "${_i_lc_option_i}" "${_i_${_i_option_i}}"
             )
         endforeach()
 
         if(NOT "${_i_CMAKE_ARGS}" STREQUAL "")
             Dependency(
-                SET "${_i_this}" cmake_args "${_i_CMAKE_ARGS}"
+                SET "${self}" cmake_args "${_i_CMAKE_ARGS}"
             )
         endif()
+
     endfunction()
+
 cpp_end_class()
