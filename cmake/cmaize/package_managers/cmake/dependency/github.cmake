@@ -9,29 +9,21 @@ cpp_class(GitHubDependency Dependency)
     #[[[
     # :type: bool
     #
-    # Is this a private GitHub Repo (TRUE) or not (FALSE)?
+    # Is this a private GitHub Repo (TRUE) or not (FALSE)? Defaults to FALSE.
     #]]
     cpp_attr(GitHubDependency private FALSE)
 
     #[[[
     # :type: desc
     #
-    # Git tag, branch, or commit hash to use.
+    # Git tag, branch, or commit hash to use. Defaults to "master".
     #]]
-    cpp_attr(GitHubDependency version master)
-
-    #[[[
-    # :type: desc
-    #
-    # Base URL for the GitHub repository. This can be the link to the
-    # repository or the `git clone` HTTPS link, but not the SSH option.
-    #]]
-    cpp_attr(GitHubDependency url)
+    cpp_attr(GitHubDependency version "master")
 
     cpp_member(build_dependency GitHubDependency)
     function("${build_dependency}" _bd_this)
     
-        GitHubDependency(GET "${_bd_this}" _bd_url url)
+        GitHubDependency(GET "${_bd_this}" _bd_url location)
         GitHubDependency(GET "${_bd_this}" _bd_private private)
         GitHubDependency(GET "${_bd_this}" _bd_version version)
         GitHubDependency(GET "${_bd_this}" _bd_name name)
@@ -146,31 +138,18 @@ cpp_class(GitHubDependency Dependency)
         )
 
         # Clean up the GitHub URL and ensure it is from GitHub
-        cmaize_sanitize_url(
-            _i_URL
-            "${_i_URL}"
-            DOMAIN "github.com"
-        )
+        cmaize_sanitize_url(_i_URL "${_i_URL}" DOMAIN "github.com")
+        GitHubDependency(SET "${self}" location "${_i_URL}")
 
-        if("${_i_PRIVATE}")
-            Dependency(SET "${self}" private TRUE)
-        endif()
+        GitHubDependency(SET "${self}" name "${_i_NAME}")
+        GitHubDependency(SET "${self}" version "${_i_VERSION}")
+        GitHubDependency(SET "${self}" build_target "${_i_BUILD_TARGET}")
+        GitHubDependency(SET "${self}" find_target "${_i_FIND_TARGET}")
 
-        foreach(_i_option_i ${_i_one_value_args})
-            if("${_i_${_i_option_i}}" STREQUAL "")
-                continue()
-            endif()
-            string(TOLOWER "${_i_option_i}" _i_lc_option_i)
-            Dependency(
-               SET "${self}" "${_i_lc_option_i}" "${_i_${_i_option_i}}"
-            )
-        endforeach()
+        # Set the private attribute if necessary
+        Dependency(SET "${self}" private "${_i_PRIVATE}")
 
-        if(NOT "${_i_CMAKE_ARGS}" STREQUAL "")
-            Dependency(
-                SET "${self}" cmake_args "${_i_CMAKE_ARGS}"
-            )
-        endif()
+        Dependency(SET "${self}" cmake_args "${_i_CMAKE_ARGS}")
 
     endfunction()
 
