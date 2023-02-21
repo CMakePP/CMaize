@@ -105,13 +105,10 @@ cpp_class(CMakePackageManager PackageManager)
 
         # TODO: Move this to a local variable in the package manager
         cpp_get_global(_rd_depend "__CMAIZE_DEPENDENCY_${_rd_pkg_name}__")
-        message(DEBUG "_rd_depend: ${_rd_depend}")
         if("${_rd_depend}" STREQUAL "")
             message(DEBUG "Creating dependency")
             # TODO: Actually make sure it's from GitHub
             GitHubDependency(CTOR _rd_depend)
-            
-            message(DEBUG "_rd_depend: ${_rd_depend}")
 
             Dependency(init "${_rd_depend}"
                 NAME "${_rd_pkg_name}"

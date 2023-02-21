@@ -12,6 +12,7 @@ include(cmakepp_lang/cmakepp_lang)
 # :type __su_result: desc
 # :param __su_url: URL to sanitize.
 # :type __su_url: desc
+# :param **kwargs: Additional keyword arguments may be necessary.
 #
 # :Keyword Arguments:
 #    * **DOMAIN** (*desc*) --
@@ -19,6 +20,9 @@ include(cmakepp_lang/cmakepp_lang)
 #      contained in the URL.
 #
 # :raises InvalidURL: URL is invalid.
+#
+# :returns: The sanitized URL.
+# :rtype: desc
 #]]
 function(cmaize_sanitize_url __su_result __su_url)
 

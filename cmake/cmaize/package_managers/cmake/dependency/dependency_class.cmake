@@ -15,36 +15,147 @@ include(cmaize/utilities/fetch_and_available)
 #
 #]]
 cpp_class(Dependency)
-    ###########################################################################
-    #[[ ---------------------------- Attributes ---------------------------- ]]
-    ###########################################################################
-
-    ## If we are building the dependency this will be the name of the target
+    #[[[
+    # :type: desc
+    #
+    # Name of the target the dependency is being built.
+    #]]
     cpp_attr(Dependency build_target)
 
-    ## CMake variables that need to be set before building the dependency
+    #[[[
+    # :type: list[desc]
+    #
+    # CMake variables that need to be set before building the dependency.
+    #]]
     cpp_attr(Dependency cmake_args)
 
-    ## If we find the dependency this will be the name of the target
+    #[[[
+    # :type: desc
+    #
+    # Name of the target if the dependency is found.
+    #]]
     cpp_attr(Dependency find_target)
 
-    ## Did we find this dependency yet?
+    #[[[
+    # :type: bool
+    #
+    # If the dependency has been found yet (TRUE) or not (FALSE).
+    #]]
     cpp_attr(Dependency found FALSE)
 
-    ## Name of the dependency
+    #[[[
+    # :type: desc
+    #
+    # Name of the dependency.
+    #]]
     cpp_attr(Dependency name)
 
-    ## This is the target (accounting for build vs. find) to link against
+    #[[[
+    # :type: desc
+    #
+    # This is the target (accounting for build vs. find) to link against.
+    # TODO: Is this used anywhere or necessary?
+    #]]
     cpp_attr(Dependency target)
 
-    ## What version of the dependency do we want?
+    #[[[
+    # :type: desc
+    #
+    # The version of the dependency requested.
+    #]]
     cpp_attr(Dependency version)
 
-    ##########################################################################
-    #[[ ---------------------------- Functions ---------------------------- ]]
-    ##########################################################################
+    #[[[
+    # Virtual member to build a dependency.
+    #]]
+    cpp_member(build_dependency Dependency)
+    cpp_virtual_member(build_dependency)
 
-    #[[[ Computes a list of path prefixes which should be used when searching.
+    #[[[
+    # Attempts to locate the dependency.
+    #
+    # :param self: Dependency object
+    # :type self: Dependency
+    # :param _fd_found: Return variable for whether the dependency was found
+    # :type _fd_found: desc
+    #
+    # :returns: Whether the dependency was found (TRUE) or not (FALSE)
+    # :rtype: bool
+    #]]
+    cpp_member(find_dependency Dependency desc)
+    function("${find_dependency}" self _fd_found)
+
+        # Check if it was already found? If so short-circuit and return TRUE
+        Dependency(GET "${self}" "${_fd_found}" found)
+        if("${${_fd_found}}")
+            cpp_return("${_fd_found}")
+        endif()
+
+        # Wasn't found so call find_package to look for it.
+        Dependency(_SEARCH_PATHS "${self}" _fd_paths)
+        Dependency(GET "${self}" _fd_name name)
+        Dependency(GET "${self}" _fd_version version)
+        find_package(
+            "${_fd_name}"
+            CONFIG
+            PATHS "${_fd_paths}"
+            NO_PACKAGE_ROOT_PATH
+            NO_SYSTEM_ENVIRONMENT_PATH
+            NO_CMAKE_PACKAGE_REGISTRY
+            NO_CMAKE_SYSTEM_PATH
+            NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
+        )
+
+        # Is it found now? Record and return the result
+        if("${${_fd_name}_FOUND}")
+            _cmaize_dependency_check_target("${self}" "find")
+            Dependency(SET "${self}" found TRUE)
+            set("${_fd_found}" TRUE PARENT_SCOPE)
+        else()
+            set("${_fd_found}" FALSE PARENT_SCOPE)
+        endif()
+    endfunction()
+
+    #[[[
+    # Initialize the dependency with project information.
+    #
+    # TODO: Many of these optional arguments could be contained in a
+    #       ProjectSpecification and seem necessary, not optional, to include
+    #       for this class to work. I need to look into it more.
+    #
+    # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # :Keyword Arguments:
+    #    * **BUILD_TARGET** (*desc*) --
+    #      Name of the target when it is built. This usually does not include
+    #      namespaces yet.
+    #    * **FIND_TARGET** (*desc*) --
+    #      Name of the target when it is found using something like CMake's
+    #      ``find_package()`` tool. This typically does include a namespace.
+    #    * **NAME** (*desc*) --
+    #      Name used to identify this dependency. This does not need to match
+    #      the find or build target names, but frequently will match one or
+    #      both.
+    #    * **URL** (*desc*) --
+    #      URL used to download the source code, if necessary.
+    #    * **VERSION** (*desc*) --
+    #      Version of the target to find or build.
+    #]]
+    cpp_member(init Dependency args)
+    function("${init}" self)
+
+        set(_i_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
+        cmake_parse_arguments(_i "" "${_i_one_value_args}" "" ${ARGN})
+
+        Dependency(SET "${self}" name "${_i_NAME}")
+        Dependency(SET "${self}" location "${_i_URL}")
+        Dependency(SET "${self}" version "${_i_VERSION}")
+        Dependency(SET "${self}" build_target "${_i_BUILD_TARGET}")
+        Dependency(SET "${self}" find_target "${_i_FIND_TARGET}")
+
+    endfunction()
+
+        #[[[ Computes a list of path prefixes which should be used when searching.
     #
     # This function encapsulates assembling a list of all the prefixes which
     # should be considered when looking for this dependency.
@@ -75,64 +186,5 @@ cpp_class(Dependency)
         cpp_return("${_sp_result}")
     endfunction()
 
-    #[[[ Attempts to locate the dependency
-    #
-    #]]
-    cpp_member(find_dependency Dependency desc)
-    function("${find_dependency}" _fd_this _fd_found)
-
-        # Check if it was already found? If so short-circuit and return TRUE
-        # Dependency(GET "${_fd_this}" "${_fd_found}" found)
-        # if("${${_fd_found}}")
-        #     cpp_return("${_fd_found}")
-        # endif()
-
-        # Wasn't found so call find_package to look for it.
-        Dependency(_SEARCH_PATHS "${_fd_this}" _fd_paths)
-        Dependency(GET "${_fd_this}" _fd_name name)
-        Dependency(GET "${_fd_this}" _fd_version version)
-        find_package(
-            "${_fd_name}"
-            CONFIG
-            PATHS "${_fd_paths}"
-            NO_PACKAGE_ROOT_PATH
-            NO_SYSTEM_ENVIRONMENT_PATH
-            NO_CMAKE_PACKAGE_REGISTRY
-            NO_CMAKE_SYSTEM_PATH
-            NO_CMAKE_SYSTEM_PACKAGE_REGISTRY
-        )
-
-        # Is it found now? Record and return the result
-        if("${${_fd_name}_FOUND}")
-            _cmaize_dependency_check_target("${_fd_this}" "find")
-            Dependency(SET "${_fd_this}" found TRUE)
-            set("${_fd_found}" TRUE PARENT_SCOPE)
-        else()
-            set("${_fd_found}" FALSE PARENT_SCOPE)
-        endif()
-    endfunction()
-
-    #[[[
-    # Virtual member to build a dependency.
-    #]]
-    cpp_member(build_dependency Dependency)
-    cpp_virtual_member(build_dependency)
-
-    #[[[
-    # Initialize the dependency with project information.
-    #]]
-    cpp_member(init Dependency args)
-    function("${init}" self)
-
-        set(_i_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
-        cmake_parse_arguments(_i "" "${_i_one_value_args}" "" ${ARGN})
-
-        Dependency(SET "${self}" name "${_i_NAME}")
-        Dependency(SET "${self}" location "${_i_URL}")
-        Dependency(SET "${self}" version "${_i_VERSION}")
-        Dependency(SET "${self}" build_target "${_i_BUILD_TARGET}")
-        Dependency(SET "${self}" find_target "${_i_FIND_TARGET}")
-
-    endfunction()
 cpp_end_class()
 
