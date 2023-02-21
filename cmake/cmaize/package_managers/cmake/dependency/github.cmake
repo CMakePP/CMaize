@@ -20,6 +20,14 @@ cpp_class(GitHubDependency Dependency)
     #]]
     cpp_attr(GitHubDependency version "master")
 
+    #[[[
+    # Attempts to fetch and build the dependency.
+    #
+    # :param self: Dependency object
+    # :type self: Dependency
+    #
+    # :raises GitHubTokenMissing: CMAIZE_GITHUB_TOKEN variable not defined.
+    #]]
     cpp_member(build_dependency GitHubDependency)
     function("${build_dependency}" _bd_this)
     

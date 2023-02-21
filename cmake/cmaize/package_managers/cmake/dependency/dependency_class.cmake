@@ -4,7 +4,8 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/package_managers/cmake/dependency/detail_/check_target)
 include(cmaize/utilities/fetch_and_available)
 
-#[[[ Models a dependency of the main CMake Project.
+#[[[
+# Models a dependency of the main CMake Project.
 #
 # The base class is for dependencies which behave close to ideal (from the
 # standpoint of CMake). In particular we assume the dependency:
@@ -12,7 +13,6 @@ include(cmaize/utilities/fetch_and_available)
 # - can be found by calling ``find_package`` in ``CONFIG`` mode
 # - added to the main project's build step via CMake's fetch command
 # - exports a CMake target
-#
 #]]
 cpp_class(Dependency)
     #[[[
@@ -39,7 +39,8 @@ cpp_class(Dependency)
     #[[[
     # :type: bool
     #
-    # If the dependency has been found yet (TRUE) or not (FALSE).
+    # If the dependency has been found yet (TRUE) or not (FALSE). Defaults
+    # to FALSE.
     #]]
     cpp_attr(Dependency found FALSE)
 
@@ -155,7 +156,7 @@ cpp_class(Dependency)
 
     endfunction()
 
-        #[[[ Computes a list of path prefixes which should be used when searching.
+    #[[[ Computes a list of path prefixes which should be used when searching.
     #
     # This function encapsulates assembling a list of all the prefixes which
     # should be considered when looking for this dependency.
