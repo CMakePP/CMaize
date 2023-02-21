@@ -2,27 +2,38 @@ include_guard()
 
 include(cmaize/package_managers/cmake/dependency/dependency_class)
 include(cmaize/utilities/fetch_and_available)
+include(cmaize/utilities/sanitize_url)
 
 cpp_class(GitHubDependency Dependency)
 
-    ## Is this a private GitHub Repo?
+    #[[[
+    # :type: bool
+    #
+    # Is this a private GitHub Repo?
+    #]]
     cpp_attr(GitHubDependency private FALSE)
 
-    ## What git tag/hash should we use?
+    #[[[
+    # :type: desc
+    #
+    # What git tag/hash should we use?
+    #]]
     cpp_attr(GitHubDependency version master)
 
-    ## What is the base URL?
+    #[[[
+    # :type: desc
+    #
+    # What is the base URL?
+    #]]
     cpp_attr(GitHubDependency url)
 
-    cpp_member("${build_dependency}" GitHubDependency)
+    cpp_member(build_dependency GitHubDependency)
     function("${build_dependency}" _bd_this)
         GitHubDependency(GET "${_bd_this}" _bd_url url)
         GitHubDependency(GET "${_bd_this}" _bd_private private)
         GitHubDependency(GET "${_bd_this}" _bd_version version)
         GitHubDependency(GET "${_bd_this}" _bd_name name)
         GitHubDependency(GET "${_bd_this}" _bd_cmake_args cmake_args)
-
-        # TODO: make sure URL starts with github.com/
 
         if("${_bd_private}")
             if("${CMAIZE_GITHUB_TOKEN}" STREQUAL "")
@@ -81,6 +92,15 @@ cpp_class(GitHubDependency Dependency)
         cmake_parse_arguments(
             _i "${_i_options}" "${_i_one_value_args}" "${_i_list}" ${ARGN}
         )
+
+        # Clean up the GitHub URL and ensure it is from GitHub
+        message(DEBUG "Sanitizing URL: ${_i_URL}")
+        cmaize_sanitize_url(
+            _i_URL
+            "${_i_URL}"
+            DOMAIN "github.com/"
+        )
+        message(DEBUG "Sanitized URL: ${_i_URL}")
 
         if("${_i_PRIVATE}")
             Dependency(SET "${_i_this}" private TRUE)
