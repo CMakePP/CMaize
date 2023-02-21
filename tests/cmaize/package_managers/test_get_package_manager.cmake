@@ -19,9 +19,9 @@ function("${test_get_package_manager}")
     function("${existing_instance}")
 
         PackageManager(CTOR _ei_instance)
-        cpp_set_global(
-            __CMAIZE_PACKAGE_MANAGER_packagemanager__ "${_ei_instance}"
-        )
+        cpp_get_global(_ei_pm_map __CMAIZE_PACKAGE_MANAGER_MAP__)
+
+        cpp_map(SET "${_ei_pm_map}" "packagemanager" "${_ei_instance}")
 
         get_package_manager_instance(_ei_result "packagemanager")
 

@@ -2,6 +2,7 @@ include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/targets/cmaize_target)
+include(cmaize/package_managers/get_package_manager)
 
 #[[[
 # Base class for the PackageManager class hierarchy.
@@ -41,3 +42,16 @@ cpp_class(PackageManager)
     cpp_virtual_member(install_package)
 
 cpp_end_class()
+
+#[[[
+# Registers a PackageManager instance. This should only be called at the end
+# of the file defining the PackageManager class.
+#]]
+function(_register_package_manager_base_class)
+
+    PackageManager(CTOR __package_manager)
+    register_package_manager("packagemanager" "${__package_manager}")
+    
+endfunction()
+
+_register_package_manager_base_class()

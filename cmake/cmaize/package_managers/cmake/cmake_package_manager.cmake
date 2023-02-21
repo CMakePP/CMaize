@@ -2,6 +2,7 @@ include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/package_managers/package_manager)
+include(cmaize/package_managers/get_package_manager)
 include(cmaize/package_managers/cmake/dependency/dependency)
 include(cmaize/project/project_specification)
 include(cmaize/targets/cmaize_target)
@@ -104,11 +105,15 @@ cpp_class(CMakePackageManager PackageManager)
 
         # TODO: Move this to a local variable in the package manager
         cpp_get_global(_rd_depend "__CMAIZE_DEPENDENCY_${_rd_pkg_name}__")
+        message(DEBUG "_rd_depend: ${_rd_depend}")
         if("${_rd_depend}" STREQUAL "")
+            message(DEBUG "Creating dependency")
             # TODO: Actually make sure it's from GitHub
             GitHubDependency(CTOR _rd_depend)
+            
+            message(DEBUG "_rd_depend: ${_rd_depend}")
 
-            Dependency(INIT "${_rd_depend}"
+            Dependency(init "${_rd_depend}"
                 NAME "${_rd_pkg_name}"
                 ${ARGN}
             )
@@ -131,6 +136,8 @@ cpp_class(CMakePackageManager PackageManager)
     # :param _fi_project_specs: Specifications for the package to build.
     # :type _fi_project_specs: ProjectSpecification
     # :param **kwargs: Additional keyword arguments may be necessary.
+    #
+    # TODO: Document kwargs
     #
     # :returns: CMaizeTarget object representing the found dependency, or a blank
     #           string ("") if it was not found.
@@ -727,3 +734,16 @@ set(_CMAIZE_IMPORT_LOCATION)"
     endfunction()
 
 cpp_end_class()
+
+#[[[
+# Registers a CMakePackageManager instance. This should only be called at the
+# end of the file defining the PackageManager class.
+#]]
+function(_register_package_manager_cmake)
+
+    CMakePackageManager(CTOR __package_manager)
+    register_package_manager("cmake" "${__package_manager}")
+
+endfunction()
+
+_register_package_manager_cmake()
