@@ -7,6 +7,7 @@ ct_add_test(NAME "test_get_package_manager")
 function("${test_get_package_manager}")
     include(cmakepp_lang/cmakepp_lang)
     include(cmaize/package_managers/get_package_manager)
+    include(cmaize/package_managers/package_manager)
 
     ct_add_section(NAME "invalid_instance" EXPECTFAIL)
     function("${invalid_instance}")
