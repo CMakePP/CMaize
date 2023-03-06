@@ -17,7 +17,7 @@ include(cmaize/package_managers/get_package_manager)
 #]]
 function(cmaize_add_package _cap_tgt_name)
 
-    message(VERBOSE "CMaize: Registering install package: ${_cap_tgt_name}")
+    message(VERBOSE "Registering install package: ${_cap_tgt_name}")
 
     set(_cap_one_value_args PACKAGE_MANAGER)
     cmake_parse_arguments(_cap "" "${_cap_one_value_args}" "" ${ARGN})

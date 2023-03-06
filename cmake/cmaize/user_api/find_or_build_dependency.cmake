@@ -104,7 +104,6 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     # TODO: This probably can be eliminated if CMaizeProject(get_package_manager
     # uses get_package_manager_instance under the hood
     if("${_fobdc_pm}" STREQUAL "")
-        # CMakePackageManager(ctor _fobdc_pm)
         get_package_manager_instance(_fobdc_pm "CMake")
         CMaizeProject(add_package_manager "${_fobdc_project}" "${_fobdc_pm}")
     endif()
@@ -136,7 +135,6 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
         ${ARGN}
     )
     if(NOT "${_fobdc_tgt}" STREQUAL "")
-        message(DEBUG "CMaize: Adding build target ${_fobdc_name} to ${PROJECT_NAME}")
         CMaizeProject(add_target
             "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}"
         )
