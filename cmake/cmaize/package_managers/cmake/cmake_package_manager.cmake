@@ -109,14 +109,11 @@ cpp_class(CMakePackageManager PackageManager)
         CMakePackageManager(GET "${self}" _rd_dependencies dependencies)
         cpp_map(GET "${_rd_dependencies}" _rd_depend "${_rd_pkg_name}")
         if("${_rd_depend}" STREQUAL "")
-            message(DEBUG "Creating dependency")
+            message(DEBUG "Registering new dependency to CMakePackageManager: ${_rd_pkg_name}")
             # TODO: Actually make sure it's from GitHub
             GitHubDependency(CTOR _rd_depend)
 
-            Dependency(init "${_rd_depend}"
-                NAME "${_rd_pkg_name}"
-                ${ARGN}
-            )
+            Dependency(init "${_rd_depend}" NAME "${_rd_pkg_name}" ${ARGN})
 
             cpp_map(SET "${_rd_dependencies}" "${_rd_pkg_name}" "${_rd_depend}")
         endif()
@@ -138,7 +135,11 @@ cpp_class(CMakePackageManager PackageManager)
     # :type _fi_project_specs: ProjectSpecification
     # :param **kwargs: Additional keyword arguments may be necessary.
     #
-    # TODO: Document kwargs
+    # :Keyword Arguments:
+    #    * **BUILD_TARGET** (*desc*) --
+    #      Name of the target when it is being built.
+    #    * **FIND_TARGET** (*desc*) --
+    #      Name of the target when it is found with find_package.
     #
     # :returns: CMaizeTarget object representing the found dependency, or a blank
     #           string ("") if it was not found.
@@ -149,7 +150,8 @@ cpp_class(CMakePackageManager PackageManager)
     )
     function("${find_installed}" self _fi_result _fi_project_specs)
 
-        set(_fi_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
+        # set(_fi_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
+        set(_fi_one_value_args BUILD_TARGET FIND_TARGET)
         cmake_parse_arguments(
             _fi "" "${_fi_one_value_args}" "" ${ARGN}
         )
@@ -164,8 +166,10 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         Dependency(find_dependency "${_fi_depend}" _fi_found)
-        message(DEBUG "${_fi_pkg_name}_DIR: ${${_fi_pkg_name}_DIR}")
-        if(NOT "${_fi_found}" OR "${${_fi_pkg_name}_DIR}" STREQUAL "${_fi_pkg_name}_DIR-NOTFOUND")
+        if(
+            NOT "${_fi_found}" OR
+            "${${_fi_pkg_name}_DIR}" STREQUAL "${_fi_pkg_name}_DIR-NOTFOUND"
+        )
             cpp_return("")
         endif()
 
@@ -178,7 +182,6 @@ cpp_class(CMakePackageManager PackageManager)
             endif()
         endif()
 
-        message(DEBUG "Creating InstalledTarget object for ${_fi_FIND_TARGET}")
         # Create an installed target
         set(_fi_depend_root_path "${${_fi_pkg_name}_DIR}")
         InstalledTarget(ctor
@@ -258,6 +261,12 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_member(install_package CMakePackageManager str args)
     function("${install_package}" self _ip_pkg_name)
 
+        set(_ip_one_value_args NAMESPACE VERSION)
+        set(_ip_multi_value_args TARGETS)
+        cmake_parse_arguments(
+            _ip "" "${_ip_one_value_args}" "${_ip_multi_value_args}" ${ARGN}
+        )
+
         # Get the current CMaize project
         cpp_get_global(_ip_proj CMAIZE_PROJECT_${PROJECT_NAME})
         cpp_get_global(_ip_top_proj CMAIZE_TOP_PROJECT)
@@ -275,12 +284,6 @@ cpp_class(CMakePackageManager PackageManager)
 
             set(_ip_destination_prefix "../../..")
         endif()
-
-        set(_ip_one_value_args NAMESPACE VERSION)
-        set(_ip_multi_value_args TARGETS)
-        cmake_parse_arguments(
-            _ip "" "${_ip_one_value_args}" "${_ip_multi_value_args}" ${ARGN}
-        )
 
         # Default to the only target exported in the package being one of the
         # same name as the package
@@ -491,7 +494,6 @@ cpp_class(CMakePackageManager PackageManager)
 
                 CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
                 cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
-                message(DEBUG "__gpc_dep_obj: ${__gpc_dep_obj}")
                 
                 cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
                 if("${__gpc_dep_type}" STREQUAL "buildtarget")
