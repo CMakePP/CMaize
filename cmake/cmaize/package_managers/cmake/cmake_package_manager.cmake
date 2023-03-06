@@ -18,6 +18,14 @@ include(GNUInstallDirs)
 cpp_class(CMakePackageManager PackageManager)
 
     #[[[
+    # :type: cpp_map[desc, Dependency]
+    #
+    # Search paths for ``find_package``. Default paths are used if this
+    # is empty.
+    #]]
+    cpp_attr(CMakePackageManager dependencies)
+
+    #[[[
     # :type: List[path]
     #
     # Search paths for ``find_package``. Default paths are used if this
@@ -40,6 +48,10 @@ cpp_class(CMakePackageManager PackageManager)
 
         # TODO: Add paths from Dependency(_search_paths if there are any
         #       generalizable ones
+
+        # Initialize the dependency map
+        cpp_map(CTOR _ctor_dep_map)
+        CMakePackageManager(SET "${self}" dependencies "${_ctor_dep_map}")
 
     endfunction()
 
@@ -94,8 +106,8 @@ cpp_class(CMakePackageManager PackageManager)
         ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
         ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_version version)
 
-        # TODO: Move this to a local variable in the package manager
-        cpp_get_global(_rd_depend "__CMAIZE_DEPENDENCY_${_rd_pkg_name}__")
+        CMakePackageManager(GET "${self}" _rd_dependencies dependencies)
+        cpp_map(GET "${_rd_dependencies}" _rd_depend "${_rd_pkg_name}")
         if("${_rd_depend}" STREQUAL "")
             message(DEBUG "Creating dependency")
             # TODO: Actually make sure it's from GitHub
@@ -105,7 +117,8 @@ cpp_class(CMakePackageManager PackageManager)
                 NAME "${_rd_pkg_name}"
                 ${ARGN}
             )
-            cpp_set_global("__CMAIZE_DEPENDENCY_${_rd_pkg_name}__" "${_rd_depend}")
+
+            cpp_map(SET "${_rd_dependencies}" "${_rd_pkg_name}" "${_rd_depend}")
         endif()
 
         set("${_rd_result}" "${_rd_depend}")
@@ -254,7 +267,6 @@ cpp_class(CMakePackageManager PackageManager)
         set(_ip_destination_prefix ".")
 
         if("${_ip_proj_name}" STREQUAL "${_ip_top_proj_name}")
-            # set(old_CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
             set(
                 CMAKE_INSTALL_PREFIX
                 "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/external"
@@ -325,10 +337,14 @@ cpp_class(CMakePackageManager PackageManager)
             install(
                 TARGETS "${_ip_TARGETS_i}"
                 EXPORT "${_ip_TARGETS_i}-target"
-                RUNTIME DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
-                LIBRARY DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                ARCHIVE DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                # PUBLIC_HEADER DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
+                RUNTIME DESTINATION 
+                    "${_ip_destination_prefix}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
+                LIBRARY DESTINATION 
+                    "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+                ARCHIVE DESTINATION 
+                    "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+                # PUBLIC_HEADER DESTINATION 
+                #     "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
             )
 
             # Writes config file to build directory
@@ -341,12 +357,14 @@ cpp_class(CMakePackageManager PackageManager)
                 "${_ip_tgt_config_install_dest}"
             )
 
-            # Install the include directories, preserving the directory structure
+            # Install the include directories, preserving the include directory
+            # structure
             BuildTarget(GET "${_ip_tgt_obj_i}" _ip_inc_dir_list include_dirs)
             foreach(_ip_inc_dir_i ${_ip_inc_dir_list})
                 install(
                     DIRECTORY "${_ip_inc_dir_i}"
-                    DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}"
+                    DESTINATION
+                        "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}"
                     USE_SOURCE_PERMISSIONS
                 )
             endforeach()
@@ -372,9 +390,11 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         install(
-            FILES "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
-                  "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}ConfigVersion.cmake"
-            DESTINATION "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
+            FILES
+                "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
+                "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}ConfigVersion.cmake"
+            DESTINATION 
+                "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
         )
 
     endfunction()
@@ -468,12 +488,13 @@ cpp_class(CMakePackageManager PackageManager)
                 CMaizeProject(get_target
                     "${__gpc_proj}" __gpc_tgt_deps_i_obj "${__gpc_tgt_deps_i}"
                 )
+
+                CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
+                cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
+                message(DEBUG "__gpc_dep_obj: ${__gpc_dep_obj}")
                 
                 cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
                 if("${__gpc_dep_type}" STREQUAL "buildtarget")
-                    cpp_get_global(
-                        __gpc_dep_obj "__CMAIZE_DEPENDENCY_${__gpc_tgt_deps_i}__"
-                    )
                     Dependency(GET
                         "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
                     )
@@ -485,9 +506,6 @@ cpp_class(CMakePackageManager PackageManager)
                     )
                 endif()
 
-                cpp_get_global(
-                    __gpc_dep_obj "__CMAIZE_DEPENDENCY_${__gpc_tgt_deps_i}__"
-                )
                 Dependency(GET
                     "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
                 )
@@ -611,16 +629,16 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
 
         set(__gtc_interface_link_libraries)
         foreach(__gtc_dep_i ${__gtc_dep_list})
-            cpp_get_global(
-                __gtc_dep_obj "__CMAIZE_DEPENDENCY_${__gtc_dep_i}__"
-            )
+            CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
+            cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
+
             if("${__gtc_dep_obj}" STREQUAL "")
                 continue()
             endif()
+            
             Dependency(GET
                 "${__gtc_dep_obj}" __gtc_dep_find_tgt_name find_target
             )
-
             list(APPEND __gtc_interface_link_libraries ${__gtc_dep_find_tgt_name})
         endforeach()
 
