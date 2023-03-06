@@ -7,7 +7,7 @@ include(cmaize/package_managers/cmake/dependency/dependency)
 include(cmaize/project/project_specification)
 include(cmaize/targets/cmaize_target)
 include(cmaize/utilities/fetch_and_available)
-
+include(cmaize/utilities/generated_by_cmaize)
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
@@ -379,6 +379,20 @@ cpp_class(CMakePackageManager PackageManager)
 
     endfunction()
 
+    #[[[
+    # Generates a package config file for the provided package. This file
+    # will also attempt to find dependencies for the package.
+    #
+    # :param self: CMakePackageManager object
+    # :type self: CMakePackageManager
+    # :param __gpc_output_file: Identifying name of target to install.
+    # :type __gpc_output_file: str
+    # :param __gpc_pkg_name: Name of the package this Config file is for.
+    # :type __gpc_pkg_name: str
+    # :param *args: List of targets to include in this package. Only provide
+    #               targets that are created by this project.
+    # :type *args: List[target]
+    #]]
     cpp_member(_generate_package_config CMakePackageManager desc str args)
     function("${_generate_package_config}"
         self __gpc_output_file __gpc_pkg_name
@@ -386,10 +400,11 @@ cpp_class(CMakePackageManager PackageManager)
 
         set(__gpc_targets ${ARGN})
 
-        set(_gpc_file_contents "")
+        _cmaize_generated_by_cmaize(__gpc_file_contents)
+        string(APPEND __gpc_file_contents "\n\n")
 
         string(APPEND
-            _gpc_file_contents
+            __gpc_file_contents
             "include(CMakeFindDependencyMacro)\n\n"
         )
 
@@ -407,7 +422,7 @@ cpp_class(CMakePackageManager PackageManager)
             # if there are dependencies that were built under the package
             if(__gpc_tgt_deps_len GREATER 0)
                 string(APPEND
-                    _gpc_file_contents
+                    __gpc_file_contents
                     "set(\n"
                     "    CMAKE_PREFIX_PATH\n"
                     "    \"\${CMAKE_PREFIX_PATH}\" \"\${CMAKE_CURRENT_LIST_DIR}/../external\"\n"
@@ -479,12 +494,12 @@ cpp_class(CMakePackageManager PackageManager)
 
                 if("${__gpc_tgt_deps_i}" STREQUAL "${__gpc_dep_build_tgt_name}")
                     string(APPEND
-                        _gpc_file_contents
+                        __gpc_file_contents
                         "find_dependency(${__gpc_tgt_deps_i})\n"
                     )
                 else()
                     string(APPEND
-                        _gpc_file_contents
+                        __gpc_file_contents
                         "find_dependency(${__gpc_tgt_deps_i} COMPONENTS ${__gpc_dep_build_tgt_name})\n"
                     )
                 endif()
@@ -492,12 +507,12 @@ cpp_class(CMakePackageManager PackageManager)
         endforeach()
 
         # Add a space between the dependency imports and component imports
-        string(APPEND _gpc_file_contents "\n" )
+        string(APPEND __gpc_file_contents "\n" )
 
         # Start to generate full list of components if no specific components
         # are given
         string(APPEND
-            _gpc_file_contents
+            __gpc_file_contents
             "list(LENGTH @PROJECT_NAME@_FIND_COMPONENTS " 
             "@PROJECT_NAME@_FIND_COMPONENTS_len)\n"
             "if(@PROJECT_NAME@_FIND_COMPONENTS_len LESS_EQUAL 0)\n"
@@ -507,18 +522,18 @@ cpp_class(CMakePackageManager PackageManager)
         foreach(__gpc_targets_i ${__gpc_targets})
 
             string(APPEND
-                _gpc_file_contents
+                __gpc_file_contents
                 "    list(APPEND @PROJECT_NAME@_FIND_COMPONENTS "
                 "${__gpc_targets_i})\n"
             )
         endforeach()
 
         # End handling no components given
-        string(APPEND _gpc_file_contents "endif()\n\n")
+        string(APPEND __gpc_file_contents "endif()\n\n")
 
         # Write the loop that includes all specified components
         string(APPEND
-            _gpc_file_contents
+            __gpc_file_contents
             "foreach(component \${@PROJECT_NAME@_FIND_COMPONENTS})\n"
             "    include(\${CMAKE_CURRENT_LIST_DIR}/\${component}-target.cmake)\n"
             "endforeach()\n\n"
@@ -529,7 +544,7 @@ cpp_class(CMakePackageManager PackageManager)
         # Write to a file to be configured
         file(WRITE
             "${CMAKE_CURRENT_BINARY_DIR}/${__gpc_pkg_name}Config.cmake.in"
-            "${_gpc_file_contents}"
+            "${__gpc_file_contents}"
         )
 
         set(
@@ -542,27 +557,35 @@ cpp_class(CMakePackageManager PackageManager)
     endfunction()
 
     #[[[
-    # Generate a package config file for the given target. This function
-    # writes the package config file into the ``CMAKE_CURRENT_BINARY_DIR``.
+    # Generate a target config file for the given target at the provided
+    # location.
     #
     # :param self: CMakePackageManager object
     # :type self: CMakePackageManager
     # :param __gtc_target_name: Identifying name of target to install.
-    # :type __gtc_target_name: desc or target
+    # :type __gtc_target_name: str
+    # :param __gtc_namespace: Namespace for the target.
+    # :type __gtc_namespace: str
     # :param __gtc_config_file: Path to the config file.
     # :type __gtc_config_file: path
     # :param __gtc_install_dest: Path to the installation destination.
     # :type __gtc_install_dest: path
     #]]
-    cpp_member(_generate_target_config CMakePackageManager BuildTarget str str path str)
+    cpp_member(_generate_target_config
+        CMakePackageManager BuildTarget str str path str
+    )
     function("${_generate_target_config}"
-        self __gtc_tgt_obj __gtc_target_name __gtc_namespace __gtc_config_file __gtc_install_dest
+        self
+        __gtc_tgt_obj
+        __gtc_target_name
+        __gtc_namespace
+        __gtc_config_file
+        __gtc_install_dest
     )
 
-        set(
-            __gtc_file_contents 
-            "##### Generated by CMaize\n\n"
-        )
+        _cmaize_generated_by_cmaize(__gtc_file_contents)
+        string(APPEND __gtc_file_contents "\n\n")
+
         string(APPEND
             __gtc_file_contents 
             "get_filename_component(PACKAGE_PREFIX_DIR "
@@ -641,7 +664,10 @@ set(_CMAIZE_IMPORT_LOCATION)"
         )
 
         # Install config file
-        install(FILES "${__gtc_config_file}" DESTINATION "${__gtc_install_dest}")
+        install(
+            FILES "${__gtc_config_file}"
+            DESTINATION "${__gtc_install_dest}"
+        )
 
     endfunction()
 
