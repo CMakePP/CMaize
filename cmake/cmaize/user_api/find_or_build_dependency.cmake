@@ -46,26 +46,26 @@ endfunction()
 #      Package manager to use. Must be a valid package listed in the
 #      ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS`` variable. Defaults to "CMake".
 #]]
-function(cmaize_find_or_build_dependency _fobdc_name)
+function(cmaize_find_or_build_dependency _fobd_name)
 
-    set(_fobdc_one_value_args PACKAGE_MANAGER)
-    cmake_parse_arguments(_fobd "" "${_fobdc_one_value_args}" "" ${ARGN})
+    set(_fobd_one_value_args PACKAGE_MANAGER)
+    cmake_parse_arguments(_fobd "" "${_fobd_one_value_args}" "" ${ARGN})
 
     # Default to CMake package manager if none were given
-    if("${_fobdc_PACKAGE_MANAGER}" STREQUAL "")
-        set(_fobdc_PACKAGE_MANAGER "CMake")
+    if("${_fobd_PACKAGE_MANAGER}" STREQUAL "")
+        set(_fobd_PACKAGE_MANAGER "CMake")
     endif()
 
     # Decide which language we are building for
-    string(TOLOWER "${_fobdc_PACKAGE_MANAGER}" _fobdc_PACKAGE_MANAGER_lower)
+    string(TOLOWER "${_fobd_PACKAGE_MANAGER}" _fobd_PACKAGE_MANAGER_lower)
     set(pm_obj "")
-    if("${_fobdc_PACKAGE_MANAGER_lower}" STREQUAL "cmake")
+    if("${_fobd_PACKAGE_MANAGER_lower}" STREQUAL "cmake")
         cmaize_find_or_build_dependency_cmake(
-            "${_fobdc_name}"
+            "${_fobd_name}"
             ${ARGN}
         )
     elseif()
-        set(msg "Invalid Package Manager: ${_fobdc_PACKAGE_MANAGER}. See ")
+        set(msg "Invalid Package Manager: ${_fobd_PACKAGE_MANAGER}. See ")
         string(APPEND msg "CMAIZE_SUPPORTED_PACKAGE_MANAGERS for a list of")
         string(APPEND msg "supported package manager strings.")
         cpp_raise(
@@ -101,6 +101,8 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
 
     # Add a CMakePackageManager to the project if it does not exist yet
     CMaizeProject(get_package_manager "${_fobdc_project}" _fobdc_pm "CMake")
+    # TODO: This probably can be eliminated if CMaizeProject(get_package_manager
+    # uses get_package_manager_instance under the hood
     if("${_fobdc_pm}" STREQUAL "")
         # CMakePackageManager(ctor _fobdc_pm)
         get_package_manager_instance(_fobdc_pm "CMake")
