@@ -54,10 +54,11 @@ function(cmaize_add_package_cmake _capc_pkg_name)
         "${_capc_proj}" _capc_pm_obj "CMake"
     )
 
+    # TODO: This probably can be eliminated if CMaizeProject(get_package_manager
+    #       uses get_package_manager_instance under the hood
     # Create new package manager if it doesn't exist
     if("${_capc_pm_obj}" STREQUAL "")
-        # CMakePackageManager(CTOR _capc_pm_obj)
-        get_package_manager_instance(_capc_pm_obj "CMakePackageManager")
+        get_package_manager_instance(_capc_pm_obj "CMake")
         CMaizeProject(add_package_manager "${_capc_proj}" "${_capc_pm_obj}")
     endif()
 
