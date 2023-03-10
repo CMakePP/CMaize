@@ -21,9 +21,11 @@ include(cmaize/user_api/add_executable)
 #]]
 macro(cpp_add_tests _cat_test_name)
 
-    set(_cat_options INCLUDE_DIR)
-    set(_cat_lists INCLUDE_DIRS)
-    cmake_parse_arguments(_cat "" "${_cat_options}" "${_cat_lists}" ${ARGN})
+    set(_cat_one_value_args INCLUDE_DIR)
+    set(_cat_multi_value_args INCLUDE_DIRS)
+    cmake_parse_arguments(
+        _cat "" "${_cat_one_value_args}" "${_cat_multi_value_args}" ${ARGN}
+    )
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
     # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
@@ -36,7 +38,7 @@ macro(cpp_add_tests _cat_test_name)
     cmaize_add_tests(
         "${_cat_test_name}"
         INCLUDE_DIRS "${_cat_INCLUDE_DIRS}"
-        ${ARGN}
+        ${_cat_UNPARSED_ARGUMENTS}
     )
 
 endmacro()
@@ -54,7 +56,7 @@ endmacro()
 #]]
 macro(cmaize_add_tests _cat_test_name)
 
-    message("-- DEBUG: Registering test target: ${_cat_test_name}")
+    message(VERBOSE "Registering test target: ${_cat_test_name}")
 
     include(CTest)
     cmaize_add_executable("${_cat_test_name}" ${ARGN})

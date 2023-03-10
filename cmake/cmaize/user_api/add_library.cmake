@@ -2,6 +2,8 @@ include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
 include(cmaize/utilities/glob_files)
+include(cmaize/utilities/replace_project_targets)
+
 
 #[[[
 # User function to build a library target.
@@ -22,9 +24,11 @@ include(cmaize/utilities/glob_files)
 #]]
 function(cpp_add_library _cal_tgt_name)
 
-    set(_cal_options INCLUDE_DIR)
-    set(_cal_lists INCLUDE_DIRS)
-    cmake_parse_arguments(_cal "" "${_cal_options}" "${_cal_lists}" ${ARGN})
+    set(_cal_one_value_args INCLUDE_DIR)
+    set(_cal_multi_value_args INCLUDE_DIRS)
+    cmake_parse_arguments(
+        _cal "" "${_cal_one_value_args}" "${_cal_multi_value_args}" ${ARGN}
+    )
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
     # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
@@ -38,7 +42,7 @@ function(cpp_add_library _cal_tgt_name)
     cmaize_add_library(
         "${_cal_tgt_name}" 
         INCLUDE_DIRS "${_cal_INCLUDE_DIRS}"
-        ${ARGN}
+        ${_cal_UNPARSED_ARGUMENTS}
     )
 
 endfunction()
@@ -60,10 +64,10 @@ endfunction()
 #]]
 function(cmaize_add_library _cal_tgt_name)
 
-    message("-- DEBUG: Registering library target: ${_cal_tgt_name}")
+    message(VERBOSE "Registering library target: ${_cal_tgt_name}")
 
-    set(_cal_options LANGUAGE)
-    cmake_parse_arguments(_cal "" "${_cal_options}" "" ${ARGN})
+    set(_cal_one_value_args LANGUAGE)
+    cmake_parse_arguments(_cal "" "${_cal_one_value_args}" "" ${ARGN})
 
     # Default to CXX if no language is given
     if("${_cal_LANGUAGE}" STREQUAL "")
@@ -72,10 +76,11 @@ function(cmaize_add_library _cal_tgt_name)
 
     # Decide which language we are building for
     string(TOLOWER "${_cal_LANGUAGE}" _cal_LANGUAGE_lower)
+    set(_cal_tgt_obj "")
     if("${_cal_LANGUAGE_lower}" STREQUAL "cxx")
-        cmaize_add_cxx_library(tgt_obj
+        cmaize_add_cxx_library(_cal_tgt_obj
             "${_cal_tgt_name}"
-            ${ARGN}
+            ${_cal_UNPARSED_ARGUMENTS}
         )
     elseif()
         cpp_raise(
@@ -86,7 +91,9 @@ function(cmaize_add_library _cal_tgt_name)
 
     cpp_get_global(_cal_project CMAIZE_PROJECT_${PROJECT_NAME})
     
-    CMaizeProject(add_target "${_cal_project}" "${tgt_obj}")
+    CMaizeProject(add_target
+        "${_cal_project}" "${_cal_tgt_name}" "${_cal_tgt_obj}"
+    )
     CMaizeProject(add_language "${_cal_project}" "${_cal_LANGUAGE}")
 
 endfunction()
@@ -112,10 +119,12 @@ endfunction()
 # :rtype: BuildTarget
 #]]
 function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
-    set(_cacl_options SOURCE_DIR)
-    set(_cacl_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
+    set(_cacl_one_value_args SOURCE_DIR)
+    set(_cacl_multi_value_args INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS DEPENDS)
 
-    cmake_parse_arguments(_cacl "" "${_cacl_options}" "${_cacl_lists}" ${ARGN})
+    cmake_parse_arguments(
+        _cacl "" "${_cacl_one_value_args}" "${_cacl_multi_value_args}" ${ARGN}
+    )
 
     # Determines if the user gave custom source file extensions, otherwise
     # defaulting to CMAKE_CXX_SOURCE_FILE_EXTENSIONS
@@ -146,8 +155,11 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     CXXLibrary(make_target
         "${_cacl_lib_obj}"
         INCLUDES "${_cacl_include_files}"
+        INCLUDE_DIRS "${_cacl_INCLUDE_DIRS}"
         SOURCES "${_cacl_source_files}"
-        ${ARGN}
+        SOURCE_DIR "${_cacl_SOURCE_DIR}"
+        DEPENDS "${_cacl_DEPENDS}"
+        ${_cacl_UNPARSED_ARGUMENTS}
     )
 
     set("${_cacl_tgt_obj}" "${_cacl_lib_obj}")

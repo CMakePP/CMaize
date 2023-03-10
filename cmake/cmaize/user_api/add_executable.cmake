@@ -1,6 +1,7 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
+include(cmaize/utilities/replace_project_targets)
 
 #[[[
 # User function to build a executable target.
@@ -21,9 +22,11 @@ include(cmaize/targets/targets)
 #]]
 function(cpp_add_executable _cae_tgt_name)
 
-    set(_cae_options INCLUDE_DIR)
-    set(_cae_lists INCLUDE_DIRS)
-    cmake_parse_arguments(_cae "" "${_cae_options}" "${_cae_lists}" ${ARGN})
+    set(_cae_one_value_args INCLUDE_DIR)
+    set(_cae_multi_value_args INCLUDE_DIRS)
+    cmake_parse_arguments(
+        _cae "" "${_cae_one_value_args}" "${_cae_multi_value_args}" ${ARGN}
+    )
 
     # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
     # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
@@ -37,7 +40,7 @@ function(cpp_add_executable _cae_tgt_name)
     cmaize_add_executable(
         "${_cae_tgt_name}"
         INCLUDE_DIRS "${_cae_INCLUDE_DIRS}"
-        ${ARGN}
+        ${_cae_UNPARSED_ARGUMENTS}
     )
 
 endfunction()
@@ -59,10 +62,10 @@ endfunction()
 #]]
 function(cmaize_add_executable _cae_tgt_name)
 
-    message("-- DEBUG: Registering executable target: ${_cae_tgt_name}")
+    message(VERBOSE "Registering executable target: ${_cae_tgt_name}")
 
-    set(_cae_options LANGUAGE)
-    cmake_parse_arguments(_cae "" "${_cae_options}" "" ${ARGN})
+    set(_cae_one_value_args LANGUAGE)
+    cmake_parse_arguments(_cae "" "${_cae_one_value_args}" "" ${ARGN})
 
     # Default to CXX if no language is given
     if("${_cae_LANGUAGE}" STREQUAL "")
@@ -71,10 +74,11 @@ function(cmaize_add_executable _cae_tgt_name)
 
     # Decide which language we are building for
     string(TOLOWER "${_cae_LANGUAGE}" _cae_LANGUAGE_lower)
+    set(_cae_tgt_obj "")
     if("${_cae_LANGUAGE_lower}" STREQUAL "cxx")
-        cmaize_add_cxx_executable(tgt_obj
+        cmaize_add_cxx_executable(_cae_tgt_obj
             "${_cae_tgt_name}"
-            ${ARGN}
+            ${_cae_UNPARSED_ARGUMENTS}
         )
     elseif()
         cpp_raise(
@@ -85,7 +89,9 @@ function(cmaize_add_executable _cae_tgt_name)
 
     cpp_get_global(_cae_project CMAIZE_PROJECT_${PROJECT_NAME})
 
-    CMaizeProject(add_target "${_cae_project}" "${tgt_obj}")
+    CMaizeProject(add_target
+        "${_cae_project}" "${_cae_tgt_name}" "${_cae_tgt_obj}"
+    )
     CMaizeProject(add_language "${_cae_project}" "${_cae_LANGUAGE}")
 
 endfunction()
@@ -117,10 +123,12 @@ endfunction()
 # :rtype: BuildTarget
 #]]
 function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
-    set(_cace_options SOURCE_DIR)
-    set(_cace_lists INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS)
+    set(_cace_one_value_args SOURCE_DIR)
+    set(_cace_multi_value_args INCLUDE_DIRS SOURCE_EXTS INCLUDE_EXTS DEPENDS)
 
-    cmake_parse_arguments(_cace "" "${_cace_options}" "${_cace_lists}" ${ARGN})
+    cmake_parse_arguments(
+        _cace "" "${_cace_one_value_args}" "${_cace_multi_value_args}" ${ARGN}
+    )
 
     # Determines if the user gave custom source file extensions, otherwise
     # defaulting to CMAKE_CXX_SOURCE_FILE_EXTENSIONS
@@ -144,8 +152,11 @@ function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
     CXXExecutable(make_target
         "${_cace_exe_obj}"
         INCLUDES "${_cace_include_files}"
+        INCLUDE_DIRS "${_cace_INCLUDE_DIRS}"
         SOURCES "${_cace_source_files}"
-        ${ARGN}
+        SOURCE_DIR "${_cace_SOURCE_DIR}"
+        DEPENDS "${_cace_DEPENDS}"
+        ${_cace_UNPARSED_ARGUMENTS}
     )
 
     set("${_cace_tgt_obj}" "${_cace_exe_obj}")

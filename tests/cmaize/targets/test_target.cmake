@@ -5,7 +5,7 @@ include(cmake_test/cmake_test)
 #]]
 ct_add_test(NAME "test_tgt")
 function("${test_tgt}")
-    include(cmaize/targets/target)
+    include(cmaize/targets/cmaize_target)
 
     #[[[
     # Test ``CMaizeTarget(CTOR`` method.

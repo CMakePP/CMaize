@@ -5,7 +5,7 @@ include(cmake_test/cmake_test)
 #]]
 ct_add_test(NAME "test_project")
 function("${test_project}")
-    include(cmaize/project/project)
+    include(cmaize/project/cmaize_project)
 
     #[[[
     # Test ``CMaizeTarget(CTOR`` method.
@@ -112,13 +112,24 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Add a target
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${tgt_obj}")
 
-            CMaizeProject(GET "${proj_obj}" tgt_list build_targets)
-
+            # Get the build target collection for testing
+            CMaizeProject(GET "${proj_obj}" tgt_dict build_targets)
+            
             # Make sure there is an element in the targets list
-            list(LENGTH tgt_list tgt_list_len)
-            ct_assert_equal(tgt_list_len 1)
+            cpp_map(KEYS "${tgt_dict}" keys_list)
+            list(LENGTH keys_list keys_list_len)
+            ct_assert_equal(keys_list_len 1)
+
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${tgt_dict}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key
+            cpp_map(GET "${tgt_dict}" tmp_tgt_obj "${tgt_name}")
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            ct_assert_equal(tgt_name "${tmp_tgt_obj_name}")
 
         endfunction()
 
@@ -137,17 +148,33 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Add a target
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj}" INSTALLED)
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${tgt_obj}" INSTALLED)
 
-            CMaizeProject(GET "${proj_obj}" build_tgt_list build_targets)
-            CMaizeProject(GET "${proj_obj}" installed_tgt_list installed_targets)
+            CMaizeProject(GET "${proj_obj}" build_tgt_map build_targets)
+            CMaizeProject(GET "${proj_obj}" installed_tgt_map installed_targets)
+            cpp_map(KEYS "${build_tgt_map}" build_tgt_keys_list)
+            cpp_map(KEYS "${installed_tgt_map}" installed_tgt_keys_list)
 
-            # Make sure there is an element in the targets list
-            list(LENGTH build_tgt_list build_tgt_list_len)
-            ct_assert_equal(build_tgt_list_len 0)
+            # Make sure there is no element in the build_targets list
+            list(LENGTH build_tgt_keys_list build_tgt_keys_list_len)
+            ct_assert_equal(build_tgt_keys_list_len 0)
 
-            list(LENGTH installed_tgt_list installed_tgt_list_len)
-            ct_assert_equal(installed_tgt_list_len 1)
+            # Make sure that there is no key in the collection
+            cpp_map(HAS_KEY "${build_tgt_map}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found FALSE)
+
+            # Make sure there is an element in the installed_targets list
+            list(LENGTH installed_tgt_keys_list installed_tgt_keys_list_len)
+            ct_assert_equal(installed_tgt_keys_list_len 1)
+
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${installed_tgt_map}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key
+            cpp_map(GET "${installed_tgt_map}" tmp_tgt_obj "${tgt_name}")
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            ct_assert_equal(tgt_name "${tmp_tgt_obj_name}")
 
         endfunction()
 
@@ -167,19 +194,35 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Duplicate targets should not be successfully added
-            CMaizeProject(add_target "${proj_obj}" "${build_tgt_obj}")
-            CMaizeProject(add_target "${proj_obj}" "${build_tgt_obj}")
-            CMaizeProject(add_target "${proj_obj}" "${installed_tgt_obj}" INSTALLED)
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${installed_tgt_obj}" INSTALLED)
 
-            CMaizeProject(GET "${proj_obj}" build_tgt_list build_targets)
-            CMaizeProject(GET "${proj_obj}" installed_tgt_list installed_targets)
+            CMaizeProject(GET "${proj_obj}" build_tgt_map build_targets)
+            CMaizeProject(GET "${proj_obj}" installed_tgt_map installed_targets)
+            cpp_map(KEYS "${build_tgt_map}" build_tgt_keys_list)
+            cpp_map(KEYS "${installed_tgt_map}" installed_tgt_keys_list)
 
-            # Make sure there is an element in the targets list
-            list(LENGTH build_tgt_list build_tgt_list_len)
-            ct_assert_equal(build_tgt_list_len 1)
+            # Make sure there is an element in the build_targets list
+            list(LENGTH build_tgt_keys_list build_tgt_keys_list_len)
+            ct_assert_equal(build_tgt_keys_list_len 1)
 
-            list(LENGTH installed_tgt_list installed_tgt_list_len)
-            ct_assert_equal(installed_tgt_list_len 0)
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${build_tgt_map}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key
+            cpp_map(GET "${build_tgt_map}" tmp_tgt_obj "${tgt_name}")
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            ct_assert_equal(tgt_name "${tmp_tgt_obj_name}")
+
+            # Make sure there is an element in the installed_targets list
+            list(LENGTH installed_tgt_keys_list installed_tgt_keys_list_len)
+            ct_assert_equal(installed_tgt_keys_list_len 0)
+
+            # Make sure that there is no key in the collection
+            cpp_map(HAS_KEY "${installed_tgt_map}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found FALSE)
 
         endfunction()
 
@@ -195,24 +238,98 @@ function("${test_project}")
 
             BuildTarget(CTOR tgt_obj_1 "${tgt_name}_1")
             BuildTarget(CTOR tgt_obj_2 "${tgt_name}_2")
-            BuildTarget(CTOR tgt_obj_3 "${tgt_name}_3")
 
             CMaizeProject(GET "${proj_obj}" tmp_name name)        
 
             # Add three distinct targets
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_1}")
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_2}")
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_3}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}_1" "${tgt_obj_1}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}_2" "${tgt_obj_2}")
             # Duplicate target should not be successfully added
-            CMaizeProject(add_target "${proj_obj}" "${tgt_obj_1}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}_1" "${tgt_obj_1}")
 
-            CMaizeProject(GET "${proj_obj}" tgt_list build_targets)
+            CMaizeProject(GET "${proj_obj}" tgt_dict build_targets)
+            cpp_map(KEYS "${tgt_dict}" keys_list)
 
             # Make sure there are the corrent number of elements in
             # the targets list
-            list(LENGTH tgt_list tgt_list_len)
-            ct_assert_equal(tgt_list_len 3)
+            list(LENGTH keys_list keys_list_len)
+            ct_assert_equal(keys_list_len 2)
 
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${tgt_dict}" tmp_found "${tgt_name}_1")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key
+            cpp_map(GET "${tgt_dict}" tmp_tgt_obj "${tgt_name}_1")
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            ct_assert_equal(tmp_tgt_obj_name "${tgt_name}_1")
+
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${tgt_dict}" tmp_found "${tgt_name}_2")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key
+            cpp_map(GET "${tgt_dict}" tmp_tgt_obj "${tgt_name}_2")
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            ct_assert_equal(tmp_tgt_obj_name "${tgt_name}_2")
+
+        endfunction()
+
+    endfunction()
+
+    ct_add_section(NAME "test_get_target")
+    function("${test_get_target}")
+        include(cmaize/targets/build_target)
+        include(cmaize/targets/installed_target)
+
+        ct_add_section(NAME "build_target")
+        function("${build_target}")
+
+            set(proj_name "test_project_test_add_target_build_target")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            BuildTarget(CTOR tgt_obj "${tgt_name}")
+
+            # Add the target to the map
+            CMaizeProject(GET "${proj_obj}" _build_targets build_targets)
+            cpp_map(SET "${_build_targets}" "${tgt_name}" "${tgt_obj}")
+
+            CMaizeProject(get_target "${proj_obj}" _tgt_obj "${tgt_name}")
+
+            CMaizeTarget(target "${_tgt_obj}" _tgt_obj_name)
+            ct_assert_equal(tgt_name "${_tgt_obj_name}")
+        
+        endfunction()
+
+        ct_add_section(NAME "installed_target")
+        function("${installed_target}")
+
+            set(proj_name "test_project_test_add_target_installed_target")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            InstalledTarget(CTOR tgt_obj "${tgt_name}")
+
+            # Add the target to the map
+            CMaizeProject(GET
+                "${proj_obj}" _installed_targets installed_targets
+            )
+            cpp_map(SET "${_installed_targets}" "${tgt_name}" "${tgt_obj}")
+
+            CMaizeProject(get_target
+                "${proj_obj}" _tgt_obj "${tgt_name}" INSTALLED
+            )
+
+            CMaizeTarget(target "${_tgt_obj}" _tgt_obj_name)
+            ct_assert_equal(tgt_name "${_tgt_obj_name}")
+        
         endfunction()
 
     endfunction()
@@ -290,11 +407,12 @@ function("${test_project}")
             # Try to add a package manager
             CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj}")
 
-            CMaizeProject(GET "${proj_obj}" pm_list package_managers)
+            CMaizeProject(GET "${proj_obj}" pm_map package_managers)
+            cpp_map(KEYS "${pm_map}" keys_list)
 
-            # Make sure there is an element in the package_managers list
-            list(LENGTH pm_list pm_list_len)
-            ct_assert_equal(pm_list_len 1)
+            # Make sure there is an element in the package_managers dict
+            list(LENGTH keys_list keys_list_len)
+            ct_assert_equal(keys_list_len 1)
 
         endfunction()
 
@@ -314,11 +432,12 @@ function("${test_project}")
             # This should not add the object again
             CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj}")
 
-            CMaizeProject(GET "${proj_obj}" pm_list package_managers)
+            CMaizeProject(GET "${proj_obj}" pm_dict package_managers)
+            cpp_map(KEYS "${pm_dict}" keys_list)
 
-            # Make sure there is an element in the package_managers list
-            list(LENGTH pm_list pm_list_len)
-            ct_assert_equal(pm_list_len 1)
+            # Make sure there is only element in the package_managers dict
+            list(LENGTH keys_list keys_list_len)
+            ct_assert_equal(keys_list_len 1)
 
         endfunction()
 
@@ -341,11 +460,12 @@ function("${test_project}")
             # The different package manager should get added
             CMaizeProject(add_package_manager "${proj_obj}" "${pm_obj_2}")
 
-            CMaizeProject(GET "${proj_obj}" pm_list package_managers)
+            CMaizeProject(GET "${proj_obj}" pm_dict package_managers)
+            cpp_map(KEYS "${pm_dict}" keys_list)
 
-            # Make sure there is an element in the package_managers list
-            list(LENGTH pm_list pm_list_len)
-            ct_assert_equal(pm_list_len 2)
+            # Make sure there are enough elements in the package_managers dict
+            list(LENGTH keys_list keys_list_len)
+            ct_assert_equal(keys_list_len 2)
 
         endfunction()
 

@@ -1,6 +1,6 @@
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
-include(cmaize/targets/target)
+include(cmaize/targets/cmaize_target)
 
 #[[[
 # Wraps a target which must be built as part of the build system.
