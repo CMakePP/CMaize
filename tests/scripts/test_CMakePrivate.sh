@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Exit on error
-set -e
+set -x
 
 source "./utilities.sh"
 
@@ -43,6 +43,7 @@ echo
 
 # ---------- Download/Set up ----------
 
+echo "Making log directory..."
 log_dir=$WORKSPACE/logs/$PACKAGE
 mkdir -p ${log_dir}
 
