@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Exit on error
-set -x
+set -e
 
 source "./utilities.sh"
 

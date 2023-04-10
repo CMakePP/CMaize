@@ -34,9 +34,7 @@ jobs:
         uses: lukka/get-cmake@latest
         with:
           cmakeVersion: ${{ env.cmake_version }}
-          useLocalCache: true         # <--= Use the local cache (default is 'false').
-          useCloudCache: false        # <--= Ditch the cloud cache (default is 'true').
-
+      
       - name: Configure Project
         run: >
           cmake
@@ -55,3 +53,8 @@ jobs:
         run: |
           cd build
           ctest --output-on-failure -L integration_tests --verbose
+
+      - name: Debug Info
+        run: |
+          ls -lah build/tests/scripts
+          ls -lah tests/scripts
