@@ -50,7 +50,7 @@ configure_file(
 foreach(test_i ${test_list})
     _add_integration_test(
         "${test_i}"
-        "${CMAKE_CURRENT_BINARY_DIR}/test_${test_i}.sh;--clean;-DCMAIZE_GITHUB_TOKEN=${CMAIZE_GITHUB_TOKEN}"
+        "${CMAKE_CURRENT_BINARY_DIR}/test_${test_i}.sh;--clean;${CMAIZE_GITHUB_TOKEN}"
     )
 endforeach()
 
