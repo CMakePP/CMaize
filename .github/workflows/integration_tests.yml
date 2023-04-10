@@ -48,11 +48,8 @@ jobs:
 
       - name: Debug Info
         run: |
-          whoami
-          ls -lah
-          ls -lah build
-          ls -lah build/tests
           ls -lah build/tests/scripts
+          ls -lah tests/scripts
 
       - name: Integration Tests
         run: |
