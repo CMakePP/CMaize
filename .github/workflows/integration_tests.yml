@@ -33,7 +33,7 @@ jobs:
       - name: Get latest CMake and Ninja
         uses: lukka/get-cmake@latest
         with:
-          cmakeVersion: ${{ cmake_version }}
+          cmakeVersion: ${{ env.cmake_version }}
           useLocalCache: true         # <--= Use the local cache (default is 'false').
           useCloudCache: false        # <--= Ditch the cloud cache (default is 'true').
 
