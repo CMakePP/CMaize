@@ -1,7 +1,12 @@
 name: CMaize Integration Tests
 
 on:
-  push:
+  # This is correct
+  # push:
+  #   branches:
+  #     - master
+  # This is for testing
+  pull_request:
     branches:
       - master
 
