@@ -46,6 +46,14 @@ jobs:
           -DCMAKE_MESSAGE_LOG_LEVEL=DEBUG
           -DCMAIZE_GITHUB_TOKEN=${{secrets.CMAKEPRIVATE_TOKEN}}
 
+      - name: Debug Info
+        run: |
+          whoami
+          ls -lah
+          ls -lah build
+          ls -lah build/tests
+          ls -lah build/tests/scripts
+
       - name: Integration Tests
         run: |
           cd build
