@@ -1,5 +1,7 @@
 include(FetchContent)
 
+add_subdirectory(scripts)
+
 FetchContent_Declare(
     cmake_test
     GIT_REPOSITORY https://github.com/CMakePP/CMakeTest
