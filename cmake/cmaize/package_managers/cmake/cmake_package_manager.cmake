@@ -652,16 +652,38 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
 )\n"
         )
 
+        if ("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".so")
+            set(__gtc_libname_w_version
+                "lib${__gtc_target_name}.so.${__gtc_version}"
+            )
+            set(__gtc_soname "lib${__gtc_target_name}.so.${__gtc_so_version}")
+        elseif("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".dylib")
+            set(__gtc_libname_w_version
+                "lib${__gtc_target_name}.${__gtc_version}.dylib"
+            )
+            set(__gtc_soname
+                "lib${__gtc_target_name}.${__gtc_so_version}.dylib"
+            )
+        else()
+            string(APPEND __gtc_msg "Shared libraries with the")
+            string(APPEND __gtc_msg "${CMAKE_SHARED_LIBRARY_SUFFIX} suffix")
+            string(APPEND __gtc_msg "are not supported yet.")
+            cpp_raise(
+                UnsupportedLibraryType
+                "${__gtc_msg}"
+            )
+        endif()
+
         string(APPEND
             __gtc_file_contents
             "
-set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/lib/${__gtc_target_name}/lib${__gtc_target_name}.so.${__gtc_version}\")
+set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/lib/${__gtc_target_name}/${__gtc_libname_w_version}\")
 
 # Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
 set_property(TARGET ${__gtc_namespace}${__gtc_target_name} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
     IMPORTED_LOCATION_RELEASE \"\${_CMAIZE_IMPORT_LOCATION}\"
-    IMPORTED_SONAME_RELEASE \"lib${__gtc_target_name}.so.${__gtc_so_version}\"
+    IMPORTED_SONAME_RELEASE \"${__gtc_soname}\"
 )\n"
         )
 
