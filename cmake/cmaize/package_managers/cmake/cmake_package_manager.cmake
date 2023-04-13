@@ -633,8 +633,9 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
 
         set(__gtc_interface_link_libraries)
         foreach(__gtc_dep_i ${__gtc_dep_list})
-            CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
-            cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
+            CMakePackageManager(GET "${self}" __gtc_dep_map dependencies)
+            cpp_map(KEYS "${__gtc_dep_map}" __gtc_keys)
+            cpp_map(GET "${__gtc_dep_map}" __gtc_dep_obj "${__gtc_dep_i}")
 
             if("${__gtc_dep_obj}" STREQUAL "")
                 continue()
