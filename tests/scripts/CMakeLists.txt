@@ -18,12 +18,12 @@ list(APPEND test_list
     CMaizePublicDepend2_w_CMaizePublicDepend
     CMaizePublicDepend2_w_CMakePublic
     CMaizePublicDepend2_w_all_deps
-    # CMakePrivate
-    # CMaizePrivateDepend
-    # CMaizePrivateDepend2
-    # CMaizePrivateDepend2_w_CMaizePrivateDepend
-    # CMaizePrivateDepend2_w_CMakePrivate
-    # CMaizePrivateDepend2_w_all_deps
+    CMakePrivate
+    CMaizePrivateDepend
+    CMaizePrivateDepend2
+    CMaizePrivateDepend2_w_CMaizePrivateDepend
+    CMaizePrivateDepend2_w_CMakePrivate
+    CMaizePrivateDepend2_w_all_deps
 )
 
 # Move all of the test scripts to the build directory
