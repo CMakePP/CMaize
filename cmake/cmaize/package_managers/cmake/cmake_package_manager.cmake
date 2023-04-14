@@ -653,6 +653,8 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
 )\n"
         )
 
+        # Based on the shared library suffix, generate the correct versioned
+        # library name and soname that CMake will install
         if ("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".so")
             set(__gtc_libname_w_version
                 "lib${__gtc_target_name}.so.${__gtc_version}"
