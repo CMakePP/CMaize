@@ -51,7 +51,7 @@ jobs:
 
       - name: Integration Tests
         run: |
-          cd build
+          cd build/tests/scripts
           ctest --output-on-failure -L integration_tests --verbose
 
       - name: Debug Info
