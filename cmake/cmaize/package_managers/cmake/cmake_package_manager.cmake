@@ -633,8 +633,9 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
 
         set(__gtc_interface_link_libraries)
         foreach(__gtc_dep_i ${__gtc_dep_list})
-            CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
-            cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
+            CMakePackageManager(GET "${self}" __gtc_dep_map dependencies)
+            cpp_map(KEYS "${__gtc_dep_map}" __gtc_keys)
+            cpp_map(GET "${__gtc_dep_map}" __gtc_dep_obj "${__gtc_dep_i}")
 
             if("${__gtc_dep_obj}" STREQUAL "")
                 continue()
@@ -652,16 +653,40 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
 )\n"
         )
 
+        # Based on the shared library suffix, generate the correct versioned
+        # library name and soname that CMake will install
+        if ("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".so")
+            set(__gtc_libname_w_version
+                "lib${__gtc_target_name}.so.${__gtc_version}"
+            )
+            set(__gtc_soname "lib${__gtc_target_name}.so.${__gtc_so_version}")
+        elseif("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".dylib")
+            set(__gtc_libname_w_version
+                "lib${__gtc_target_name}.${__gtc_version}.dylib"
+            )
+            set(__gtc_soname
+                "lib${__gtc_target_name}.${__gtc_so_version}.dylib"
+            )
+        else()
+            string(APPEND __gtc_msg "Shared libraries with the")
+            string(APPEND __gtc_msg "${CMAKE_SHARED_LIBRARY_SUFFIX} suffix")
+            string(APPEND __gtc_msg "are not supported yet.")
+            cpp_raise(
+                UnsupportedLibraryType
+                "${__gtc_msg}"
+            )
+        endif()
+
         string(APPEND
             __gtc_file_contents
             "
-set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/lib/${__gtc_target_name}/lib${__gtc_target_name}.so.${__gtc_version}\")
+set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/lib/${__gtc_target_name}/${__gtc_libname_w_version}\")
 
 # Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
 set_property(TARGET ${__gtc_namespace}${__gtc_target_name} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
     IMPORTED_LOCATION_RELEASE \"\${_CMAIZE_IMPORT_LOCATION}\"
-    IMPORTED_SONAME_RELEASE \"lib${__gtc_target_name}.so.${__gtc_so_version}\"
+    IMPORTED_SONAME_RELEASE \"${__gtc_soname}\"
 )\n"
         )
 
