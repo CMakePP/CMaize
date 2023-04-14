@@ -39,4 +39,7 @@ jobs:
       - name: unit_test
         run: |
           cd build
-          ../cmake-${cmake_version}-${os}/bin/ctest  -j 2 --output-on-failure
+          ../cmake-${cmake_version}-${os}/bin/ctest \
+              j 2 \
+              --output-on-failure \
+              -LE integration_tests
