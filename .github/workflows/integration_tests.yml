@@ -4,11 +4,11 @@ on:
   # This is correct
   # push:
   #   branches:
-  #     - master
+  #     - dev
   # This is for testing
   pull_request:
     branches:
-      - master
+      - dev
 
   # Allows manual triggering with the "Run workflow" button
   workflow_dispatch:
