@@ -1,11 +1,16 @@
 name: CMaize Integration Tests
 
 on:
-  # This is correct
-  push:
+  # # This is correct
+  # push:
+  #   branches:
+  #     - dev
+  pull_request:
     branches:
       - dev
-  # This is for testing
+    types:
+      - closed
+  # # This is for testing
   # pull_request:
   #   branches:
   #     - dev
@@ -13,8 +18,13 @@ on:
   # Allows manual triggering with the "Run workflow" button
   workflow_dispatch:
 
+# Hopefully allow merging to the master branch
+permissions:
+  contents: write
+
 jobs:
   integration-tests:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -48,3 +58,13 @@ jobs:
         run: |
           cd build/tests/scripts
           ctest --output-on-failure -L integration_tests --verbose
+
+      - name: Merge to Production Branch
+        if: success() && env.cmake_version == 'latestrc'
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: dev
+          target_branch: master
+          message: Merge 'dev' -> 'master'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
