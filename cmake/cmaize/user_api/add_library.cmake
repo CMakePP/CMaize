@@ -137,7 +137,7 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     # defaulting to CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
     list(LENGTH _cacl_INCLUDE_EXTS _cacl_INCLUDE_EXTS_n)
     if(NOT "${_cacl_INCLUDE_EXTS_n}" GREATER 0)
-        set(_cacl_INCLUDE_EXTS "${CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS}")
+        cpp_get_global(_cacl_INCLUDE_EXTS CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS)
     endif()
 
     _cmaize_glob_files(_cacl_source_files "${_cacl_SOURCE_DIR}" "${_cacl_SOURCE_EXTS}")

@@ -141,7 +141,7 @@ function(cmaize_add_cxx_executable _cace_tgt_obj _cace_tgt_name)
     # defaulting to CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
     list(LENGTH _cace_INCLUDE_EXTS _cace_INCLUDE_EXTS_n)
     if(NOT "${_cace_INCLUDE_EXTS_n}" GREATER 0)
-        set(_cace_INCLUDE_EXTS "${CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS}")
+        cpp_get_global(_cacl_INCLUDE_EXTS CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS)
     endif()
 
     _cmaize_glob_files(_cace_source_files "${_cace_SOURCE_DIR}" "${_cace_SOURCE_EXTS}")
