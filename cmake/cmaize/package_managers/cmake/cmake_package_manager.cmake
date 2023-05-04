@@ -561,6 +561,10 @@ cpp_class(CMakePackageManager PackageManager)
             "endforeach()\n\n"
         )
 
+        # Potentially add an additional check for imported target names
+        # From: https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1?permalink_comment_id=3200539#gistcomment-3200539
+        # pkg_check_modules(libname REQUIRED IMPORTED_TARGET libname)
+
         string(APPEND "check_required_components(${__gpc_pkg_name})\n")
 
         # Write to a file to be configured
@@ -606,6 +610,14 @@ cpp_class(CMakePackageManager PackageManager)
     )
 
         _cmaize_generated_by_cmaize(__gtc_file_contents)
+        string(APPEND __gtc_file_contents "\n")
+        
+        string(APPEND
+            __gtc_file_contents
+            "
+if(TARGET ${__gtc_namespace}${__gtc_target_name})
+    return()
+endif()")      
         string(APPEND __gtc_file_contents "\n\n")
 
         string(APPEND
