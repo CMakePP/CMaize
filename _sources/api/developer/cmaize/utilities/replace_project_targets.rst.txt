@@ -1,0 +1,23 @@
+
+########################################
+cmaize.utilities/replace_project_targets
+########################################
+
+.. module:: cmaize.utilities/replace_project_targets
+
+
+.. function:: cmaize_replace_project_targets(_rpt_result)
+
+   Replaces CMaizeTarget object names with their underlying CMake target
+   names in the given list. This function only works with CMaizeTarget
+   objects in the current CMaize project.
+   
+   :param _rpt_result: Return variable.
+   :type _rpt_result: desc
+   :param args: List of target names.
+   :type args: list[desc]
+   
+   :returns: CMaizeTarget list with target names replaced.
+   :rtype: list[desc]
+   
+

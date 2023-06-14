@@ -1,0 +1,71 @@
+
+###############################################
+cmaize.package_managers/cmake/dependency/github
+###############################################
+
+.. module:: cmaize.package_managers/cmake/dependency/github
+
+
+.. py:class:: GitHubDependency
+
+   Bases: :class:`Dependency`
+   
+   
+   **Methods**
+
+   .. py:method:: build_dependency()
+
+      Attempts to fetch and build the dependency.
+      
+      :param self: Dependency object
+      :type self: Dependency
+      
+      :raises GitHubTokenMissing: CMAIZE_GITHUB_TOKEN variable not defined.
+      
+
+
+   .. py:method:: init([, ...])
+
+      Initialize the dependency with project information.
+      
+      :param **kwargs: Additional keyword arguments may be necessary.
+      
+      :Keyword Arguments:
+         * **BUILD_TARGET** (*desc*) --
+           Name of the target when it is built. This usually does not include
+           namespaces yet.
+         * **FIND_TARGET** (*desc*) --
+           Name of the target when it is found using something like CMake's
+           ``find_package()`` tool. This typically does include a namespace.
+         * **NAME** (*desc*) --
+           Name used to identify this dependency. This does not need to match
+           the find or build target names, but frequently will match one or
+           both.
+         * **URL** (*desc*) --
+           URL for the GitHub repository. This can be the URL to the
+           repository or the HTTPS link used to clone the repository, but
+           not the SSH cloning option.
+         * **VERSION** (*desc*) --
+           Version of the target to find or build.
+      
+
+   **Attributes**
+
+   .. py:attribute:: private
+      :value: FALSE
+
+      :type: bool
+      
+      Is this a private GitHub Repo (TRUE) or not (FALSE)? Defaults to FALSE.
+      
+
+
+   .. py:attribute:: version
+      :value: "master"
+
+      :type: desc
+      
+      Git tag, branch, or commit hash to use. Defaults to "master".
+      
+
+

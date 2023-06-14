@@ -1,0 +1,195 @@
+
+###################################################
+cmaize.package_managers/cmake/cmake_package_manager
+###################################################
+
+.. module:: cmaize.package_managers/cmake/cmake_package_manager
+
+
+.. py:class:: CMakePackageManager
+
+   Bases: :class:`PackageManager`
+   
+   CMake package manager going through ``find_package`` and ``FetchContent``.
+   
+   **Additional Constructors**
+
+   .. py:method:: CTOR()
+
+      Default constructor of CMakePackageManager.
+      
+      :param self: The constructed object.
+      :type self: CMakePackageManager
+      
+
+   **Methods**
+
+   .. py:method:: add_paths([, ...])
+
+      Adds new search paths for the package manager.
+      
+      These paths are stored in the ``search_paths`` attribute. Duplicate
+      paths will be ignored.
+      
+      :param *args: Path or paths to add to the search path.
+      :type *args: path or List[path]
+      
+
+
+   .. py:method:: register_dependency(_rd_result, _rd_proj_specs[, ...])
+
+      Register the dependency with the package manager. This does not search
+      for or build the dependency, but makes it known to the package manager
+      for future searching and building.
+      
+      :param _rd_result: Returned dependency.
+      :type _rd_result: Dependency*
+      :param _rd_name: Name of the dependency.
+      :type _rd_name: desc
+      :param **kwargs: Additional keyword arguments may be necessary.
+      
+      :returns: Dependency object created and initialized.
+      :rtype: Dependency
+      
+
+      :param _rd_proj_specs: 
+
+      :type _rd_proj_specs: ProjectSpecification
+
+
+   .. py:method:: find_installed(_fi_result, _fi_project_specs[, ...])
+
+      Finds an installed package.
+      
+      This function uses CMake's ``find_package`` in config mode to search for
+      the packages on your system.
+      
+      :param _fi_result: Return value for the installed target.
+      :type _fi_result: InstalledTarget*
+      :param _fi_project_specs: Specifications for the package to build.
+      :type _fi_project_specs: ProjectSpecification
+      :param **kwargs: Additional keyword arguments may be necessary.
+      
+      :Keyword Arguments:
+         * **BUILD_TARGET** (*desc*) --
+           Name of the target when it is being built.
+         * **FIND_TARGET** (*desc*) --
+           Name of the target when it is found with find_package.
+      
+      :returns: CMaizeTarget object representing the found dependency, or a blank
+                string ("") if it was not found.
+      :rtype: InstalledTarget
+      
+
+
+   .. py:method:: get_package(_gp_result, _gp_proj_specs[, ...])
+
+      Get the requested package if it is installed. This is currently mostly
+      unimplemented and should not yet be used.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param _gp_result: Resulting target object return variable
+      :type _gp_result: InstalledTarget*
+      :param _gp_proj_specs: Specifications for the package to build.
+      :type _gp_proj_specs: ProjectSpecification
+      
+      :returns: Resulting target from the package manager
+      :rtype: InstalledTarget
+      
+
+
+   .. py:method:: install_package(_ip_pkg_name[, ...])
+
+      Install a given target in the project.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param _ip_target: CMaizeTarget to install
+      :type _ip_target: BuildTarget*
+      :param **kwargs: Additional keyword arguments may be necessary.
+      
+      :Keyword Arguments:
+         * **NAMESPACE** (*desc*) --
+           Namespace to prepend to the target name. Include the delimiter when
+           providing a namespace (for example, give "MyNamespace::", not just
+           "MyNamespace"). If no namespace is given, "${PROJECT_NAME}::" is
+           used.
+         * **VERSION** (*desc*) --
+           Version of the package. This sets the VERSION and SOVERSION
+           properties of the target to the full version and major version,
+           respectively. Currently, only semantic versioning
+           (https://semver.org) is supported. Defaults to the value of
+           ``${PROJECT_VERSION}`` or "0.1.0" if PROJECT_VERSION is also emtpy.
+      
+
+      :param _ip_pkg_name: 
+
+      :type _ip_pkg_name: str
+
+
+   .. py:method:: _generate_package_config(__gpc_output_file, __gpc_pkg_name[, ...])
+
+      Generates a package config file for the provided package. This file
+      will also attempt to find dependencies for the package.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param __gpc_output_file: Identifying name of target to install.
+      :type __gpc_output_file: str
+      :param __gpc_pkg_name: Name of the package this Config file is for.
+      :type __gpc_pkg_name: str
+      :param *args: List of targets to include in this package. Only provide
+                    targets that are created by this project.
+      :type *args: List[target]
+      
+
+
+   .. py:method:: _generate_target_config(__gtc_tgt_obj, __gtc_target_name, __gtc_namespace, __gtc_config_file, __gtc_install_dest)
+
+      Generate a target config file for the given target at the provided
+      location.
+      
+      :param self: CMakePackageManager object
+      :type self: CMakePackageManager
+      :param __gtc_target_name: Identifying name of target to install.
+      :type __gtc_target_name: str
+      :param __gtc_namespace: Namespace for the target.
+      :type __gtc_namespace: str
+      :param __gtc_config_file: Path to the config file.
+      :type __gtc_config_file: path
+      :param __gtc_install_dest: Path to the installation destination.
+      :type __gtc_install_dest: path
+      
+
+      :param __gtc_tgt_obj: 
+
+      :type __gtc_tgt_obj: BuildTarget
+
+   **Attributes**
+
+   .. py:attribute:: dependencies
+
+      :type: cpp_map[desc, Dependency]
+      
+      Search paths for ``find_package``. Default paths are used if this
+      is empty.
+      
+
+
+   .. py:attribute:: search_paths
+
+      :type: List[path]
+      
+      Search paths for ``find_package``. Default paths are used if this
+      is empty.
+      
+
+
+
+.. function:: _register_package_manager_cmake()
+
+   Registers a CMakePackageManager instance. This should only be called at the
+   end of the file defining the PackageManager class.
+   
+

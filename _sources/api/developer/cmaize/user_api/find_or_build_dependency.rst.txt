@@ -1,0 +1,61 @@
+
+########################################
+cmaize.user_api/find_or_build_dependency
+########################################
+
+.. module:: cmaize.user_api/find_or_build_dependency
+
+
+.. function:: cpp_find_or_build_dependency(_fobd_name)
+
+   Add a dependency to the project.
+   
+   .. warning::
+   
+      ``cpp_find_or_build_dependency()`` is depricated.
+      ``cmaize_find_or_build_dependency()`` should be used to add a dependency
+      to the project.
+   
+   :param _fobd_name: Name of the dependency.
+   :type _fobd_name: desc
+   :param **kwargs: Additional keyword arguments may be necessary.
+   
+
+
+.. function:: cmaize_find_or_build_dependency(_fobd_name **kwargs)
+
+   Add a dependency to the project.
+   
+   TODO: Add more versioning options, such as an ``EXACT`` keyword to allow
+         the user to specify that only the given version should be found.
+         As it stands, it finds any version or the exact version if ``VERSION`` is given.
+         I propose providing the following options: 1) any available version if no version
+         keyword is given; 2) the provided version, or greater; or 3) the exact
+         version if both ``VERSION`` and ``EXACT`` are provided.
+   
+   :param _fobdc_name: Name of the dependency.
+   :type _fobdc_name: desc
+   :param **kwargs: Additional keyword arguments may be necessary.
+   
+   :Keyword Arguments:
+      * **VERSION** (*desc*) --
+        Version of the project to find. Defaults to no version ("").
+      * **PACKAGE_MANAGER** (*desc*) --
+        Package manager to use. Must be a valid package listed in the
+        ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS`` variable. Defaults to "CMake".
+   
+
+
+.. function:: cmaize_find_or_build_dependency_cmake(_fobdc_name **kwargs)
+
+   User function to find an installed package or fetch and build the package
+   using CMake as the package management system.
+   
+   This means that tools such as ``find_package`` and ``FetchContent`` built
+   into CMake will be used to manage packages while using this method.
+   
+   :param _fobdc_name: Name of the dependency to find or build.
+   :type _fobdc_name: desc
+   :param **kwargs: Additional keyword arguments may be necessary.
+   
+

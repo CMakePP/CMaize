@@ -20,28 +20,11 @@ cmaize.user_api/add_package
    
 
 
-.. function:: cmaize_add_package_cmake(_capc_tgt_name)
+.. function:: cmaize_add_package_cmake(_capc_pkg_name)
 
    User function to install a CMake package.
    
-   :param _capc_tgt_name: Name of the target to be installed.
-   :type _capc_tgt_name: desc
-   
-
-
-.. function:: get_package_manager(_gpm_return_pm _gpm_type)
-
-   Get an existing package manager from the current project.
-   
-   :param _gpm_return_pm: Return variable for the package manager
-   :type _gpm_return_pm: PackageManager*
-   :param _gpm_name: Name of the type of package manager to use. Supported
-                     package manager names can be found in
-                     ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS``.
-   :type _gpm_name: desc
-   
-   :returns: Package manager of the requested type. Will be empty if one
-             was not found.
-   :rtype: PackageManager
+   :param _capc_pkg_name: Name of the package to be installed.
+   :type _capc_pkg_name: desc
    
 

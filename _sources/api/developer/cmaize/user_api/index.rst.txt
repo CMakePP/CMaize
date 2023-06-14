@@ -11,5 +11,6 @@ cmaize.user_api
    add_package
    add_tests
    cmaize_project
+   find_or_build_dependency
    user_api
 

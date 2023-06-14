@@ -1,0 +1,7 @@
+
+###################################################
+cmaize.package_managers/cmake/dependency/dependency
+###################################################
+
+.. module:: cmaize.package_managers/cmake/dependency/dependency
+

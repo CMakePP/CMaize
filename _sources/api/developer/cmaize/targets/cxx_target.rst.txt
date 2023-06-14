@@ -48,10 +48,10 @@ cmaize.targets/cxx_target
       :param self: CXXTarget object
       :type self: CXXTarget
       :param _al_access_level: Returned access level.
-      :type _al_access_level: str*
+      :type _al_access_level: desc*
       
       :returns: CMake access level of the target.
-      :rtype: str
+      :rtype: desc
       
 
 

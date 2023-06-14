@@ -6,10 +6,10 @@ cpp
 .. toctree:: 
    :maxdepth: 2
 
-   cpp
-   cpp_impl
    dependency/index.rst
    fetch/index.rst
    targets/index.rst
    user_api/index.rst
+   cpp
+   cpp_impl
 

@@ -1,0 +1,143 @@
+
+#########################################################
+cmaize.package_managers/cmake/dependency/dependency_class
+#########################################################
+
+.. module:: cmaize.package_managers/cmake/dependency/dependency_class
+
+
+.. py:class:: Dependency
+
+   Models a dependency of the main CMake Project.
+   
+   The base class is for dependencies which behave close to ideal (from the
+   standpoint of CMake). In particular we assume the dependency:
+   
+   - can be found by calling ``find_package`` in ``CONFIG`` mode
+   - added to the main project's build step via CMake's fetch command
+   - exports a CMake target
+   
+   **Methods**
+
+   .. py:method:: build_dependency()
+
+      Virtual member to build a dependency.
+      
+
+
+   .. py:method:: find_dependency(_fd_found)
+
+      Attempts to locate the dependency.
+      
+      :param self: Dependency object
+      :type self: Dependency
+      :param _fd_found: Return variable for whether the dependency was found
+      :type _fd_found: desc
+      
+      :returns: Whether the dependency was found (TRUE) or not (FALSE)
+      :rtype: bool
+      
+
+
+   .. py:method:: init([, ...])
+
+      Initialize the dependency with project information.
+      
+      TODO: Many of these optional arguments could be contained in a
+            ProjectSpecification and seem necessary, not optional, to include
+            for this class to work. I need to look into it more.
+      
+      :param **kwargs: Additional keyword arguments may be necessary.
+      
+      :Keyword Arguments:
+         * **BUILD_TARGET** (*desc*) --
+           Name of the target when it is built. This usually does not include
+           namespaces yet.
+         * **FIND_TARGET** (*desc*) --
+           Name of the target when it is found using something like CMake's
+           ``find_package()`` tool. This typically does include a namespace.
+         * **NAME** (*desc*) --
+           Name used to identify this dependency. This does not need to match
+           the find or build target names, but frequently will match one or
+           both.
+         * **URL** (*desc*) --
+           URL used to download the source code, if necessary.
+         * **VERSION** (*desc*) --
+           Version of the target to find or build.
+      
+
+
+   .. py:method:: _search_paths(_sp_result)
+
+      Computes a list of path prefixes which should be used when searching.
+      
+      This function encapsulates assembling a list of all the prefixes which
+      should be considered when looking for this dependency.
+      
+      :param _sp_this: The Dependency instance being used to assemble the paths.
+      :type _sp_this: Dependency
+      :param _sp_result: Name for variable which will hold the result.
+      :type _sp_result: desc
+      
+
+   **Attributes**
+
+   .. py:attribute:: build_target
+
+      :type: desc
+      
+      Name of the target the dependency is being built.
+      
+
+
+   .. py:attribute:: cmake_args
+
+      :type: list[desc]
+      
+      CMake variables that need to be set before building the dependency.
+      
+
+
+   .. py:attribute:: find_target
+
+      :type: desc
+      
+      Name of the target if the dependency is found.
+      
+
+
+   .. py:attribute:: found
+      :value: FALSE
+
+      :type: bool
+      
+      If the dependency has been found yet (TRUE) or not (FALSE). Defaults
+      to FALSE.
+      
+
+
+   .. py:attribute:: name
+
+      :type: desc
+      
+      Name of the dependency.
+      
+
+
+   .. py:attribute:: target
+
+      :type: desc
+      
+      This is the target (accounting for build vs. find) to link against.
+      TODO: Is this used anywhere or necessary?
+      
+
+
+   .. py:attribute:: version
+
+      :type: desc
+      
+      The version of the dependency requested.
+      
+
+

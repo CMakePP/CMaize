@@ -14,7 +14,7 @@ cmaize.targets/installed_target
    
    **Additional Constructors**
 
-   .. py:method:: CTOR(root)
+   .. py:method:: CTOR(_ctor_name, _ctor_root)
 
       Instantiate a target for a resource that is already installed.
       
@@ -29,6 +29,14 @@ cmaize.targets/installed_target
       
       :raises DirectoryNotFound: Root directory was not found.
       
+
+      :param _ctor_name: 
+
+      :type _ctor_name: str
+
+      :param _ctor_root: 
+
+      :type _ctor_root: path
 
    **Attributes**
 

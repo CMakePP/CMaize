@@ -6,13 +6,13 @@ cmaize
 .. toctree:: 
    :maxdepth: 2
 
-   cmaize
-   cmaize_impl
-   globals
    package_managers/index.rst
    project/index.rst
    targets/index.rst
    toolchain/index.rst
    user_api/index.rst
    utilities/index.rst
+   cmaize
+   cmaize_impl
+   globals
 

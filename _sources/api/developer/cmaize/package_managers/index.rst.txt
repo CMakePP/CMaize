@@ -6,7 +6,8 @@ cmaize.package_managers
 .. toctree:: 
    :maxdepth: 2
 
-   cmake_package_manager
+   cmake/index.rst
+   get_package_manager
    package_manager
    package_managers
 

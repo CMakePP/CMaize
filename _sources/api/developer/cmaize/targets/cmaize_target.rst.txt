@@ -1,9 +1,9 @@
 
-#####################
-cmaize.targets/target
-#####################
+############################
+cmaize.targets/cmaize_target
+############################
 
-.. module:: cmaize.targets/target
+.. module:: cmaize.targets/cmaize_target
 
 
 .. py:class:: CMaizeTarget
@@ -12,7 +12,7 @@ cmaize.targets/target
    
    **Additional Constructors**
 
-   .. py:method:: CTOR(tgt_name)
+   .. py:method:: CTOR(_ctor_name)
 
       Creates a ``CMaizeTarget`` object to manage a target of the given name.
       
@@ -29,26 +29,16 @@ cmaize.targets/target
       :type self: CMaizeTarget
       :param tgt_name: Name of the target. This should not duplicate any other
                        target name already in scope.
-      :type tgt_name: str
-      :returns: ``self`` will be set to the newly constructed ``CMaizeTarget``
-                object.
-      :rtype: CMaizeTarget
-      
-
-
-   .. py:method:: CTOR(tgt_name)
-
-      Creates a ``CMaizeTarget`` object based on an existing CMake target.
-      
-      :param self: CMaizeTarget object constructed.
-      :type self: CMaizeTarget
-      :param tgt_name: Name of the existing target.
-      :type tgt_name: str
+      :type tgt_name: desc or target
       
       :returns: ``self`` will be set to the newly constructed ``CMaizeTarget``
                 object.
       :rtype: CMaizeTarget
       
+
+      :param _ctor_name: 
+
+      :type _ctor_name: str
 
    **Methods**
 
@@ -59,11 +49,11 @@ cmaize.targets/target
       :param self: CMaizeTarget object
       :type self: CMaizeTarget
       :param return_target: Name of the CMake target.
-      :type return_target: str*
+      :type return_target: desc*
       
       :returns: Sets ``return_target`` to the name of the CMake target
                 represented by this class.
-      :rtype: str*
+      :rtype: desc
       
 
 
@@ -76,7 +66,7 @@ cmaize.targets/target
       :param has_property: Return variable for if the target has the property.
       :type has_property: bool*
       :param property_name: Name of the property to check for.
-      :type property_name: str
+      :type property_name: desc
       
       :returns: Sets ``has_property`` according to if the target has the
                 requested property (True) or not (False).
@@ -93,10 +83,10 @@ cmaize.targets/target
       :param property_value: Return variable for the property value.
       :type property_value: str*
       :param property_name: Name of the property to check for.
-      :type property_name: str
+      :type property_name: desc
       
       :returns: Sets ``property_value`` to the value of the property.
-      :rtype: str*
+      :rtype: str
       
       :raises PropertyNotFound: Property does not exist in the target.
       

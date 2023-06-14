@@ -1,96 +1,50 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>cmaize.targets/target &mdash; CMaize 1.0.0alpha documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>cmaize.targets/cmaize_target &mdash; CMaize 1.0.0alpha documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script src="../../../../_static/sphinx_highlight.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="cmaize.targets/targets" href="targets.html" />
-    <link rel="prev" title="cmaize.targets/installed_target" href="installed_target.html" /> 
+    <link rel="next" title="cmaize.targets/cxx_executable" href="cxx_executable.html" />
+    <link rel="prev" title="cmaize.targets/build_target" href="build_target.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../../index.html" class="icon icon-home"> CMaize
           
-
-          
+          <a href="../../../../index.html" class="icon icon-home">
+            CMaize
           </a>
-
-          
-            
-            
               <div class="version">
                 1.0.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
@@ -98,25 +52,25 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.targets</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="build_target.html">cmaize.targets/build_target</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.targets/cmaize_target</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_executable.html">cmaize.targets/cxx_executable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_interface_library.html">cmaize.targets/cxx_interface_library</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_library.html">cmaize.targets/cxx_library</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_target.html">cmaize.targets/cxx_target</a></li>
 <li class="toctree-l4"><a class="reference internal" href="installed_target.html">cmaize.targets/installed_target</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.targets/target</a></li>
 <li class="toctree-l4"><a class="reference internal" href="targets.html">cmaize.targets/targets</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">cmaize.user_api</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">cmaize.utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
 </ul>
 </li>
 </ul>
@@ -126,87 +80,43 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../dependencies/index.html">Declaring Dependencies</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../index.html">CMaize</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../../index.html">API</a> &raquo;</li>
-        
-          <li><a href="../index.html">cmaize</a> &raquo;</li>
-        
-          <li><a href="index.html">cmaize.targets</a> &raquo;</li>
-        
-      <li>cmaize.targets/target</li>
-    
-    
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
+          <li class="breadcrumb-item"><a href="index.html">cmaize.targets</a></li>
+      <li class="breadcrumb-item active">cmaize.targets/cmaize_target</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
-            <a href="../../../../_sources/api/developer/cmaize/targets/target.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../../../../_sources/api/developer/cmaize/targets/cmaize_target.rst.txt" rel="nofollow"> View page source</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <section id="module-cmaize.targets-target">
-<span id="cmaize-targets-target"></span><h1>cmaize.targets/target<a class="headerlink" href="#module-cmaize.targets-target" title="Permalink to this heading">¶</a></h1>
+             
+  <section id="module-cmaize.targets-cmaize_target">
+<span id="cmaize-targets-cmaize-target"></span><h1>cmaize.targets/cmaize_target<a class="headerlink" href="#module-cmaize.targets-cmaize_target" title="Permalink to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.targets/target.</span></span><span class="sig-name descname"><span class="pre">CMaizeTarget</span></span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.targets/cmaize_target.</span></span><span class="sig-name descname"><span class="pre">CMaizeTarget</span></span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="Permalink to this definition"></a></dt>
 <dd><p>Base class for an entire hierarchy of build and install target classes.</p>
 <p><strong>Additional Constructors</strong></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget.CTOR">
-<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget.CTOR" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget.CTOR">
+<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ctor_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget.CTOR" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code> object to manage a target of the given name.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -220,9 +130,10 @@ analog and instantiate that.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object constructed.</p></li>
-<li><p><strong>tgt_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the target. This should not duplicate any other
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object constructed.</p></li>
+<li><p><strong>tgt_name</strong> (<em>desc</em><em> or </em><em>target</em>) – Name of the target. This should not duplicate any other
 target name already in scope.</p></li>
+<li><p><strong>_ctor_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -230,42 +141,21 @@ target name already in scope.</p></li>
 object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget">CMaizeTarget</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tgt_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code> object based on an existing CMake target.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object constructed.</p></li>
-<li><p><strong>tgt_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the existing target.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">self</span></code> will be set to the newly constructed <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code>
-object.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget">CMaizeTarget</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget">CMaizeTarget</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <p><strong>Methods</strong></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget.target">
-<span class="sig-name descname"><span class="pre">target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget.target" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget.target">
+<span class="sig-name descname"><span class="pre">target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget.target" title="Permalink to this definition"></a></dt>
 <dd><p>Get the CMake target name that the <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code> class represents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
-<li><p><strong>return_target</strong> (<em>str*</em>) – Name of the CMake target.</p></li>
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
+<li><p><strong>return_target</strong> (<em>desc*</em>) – Name of the CMake target.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -273,21 +163,21 @@ object.</p>
 represented by this class.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str*</p>
+<dd class="field-odd"><p>desc</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget.has_property">
-<span class="sig-name descname"><span class="pre">has_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">has_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget.has_property" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget.has_property">
+<span class="sig-name descname"><span class="pre">has_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">has_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget.has_property" title="Permalink to this definition"></a></dt>
 <dd><p>Check if the target has the requested property.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
 <li><p><strong>has_property</strong> (<em>bool*</em>) – Return variable for if the target has the property.</p></li>
-<li><p><strong>property_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the property to check for.</p></li>
+<li><p><strong>property_name</strong> (<em>desc</em>) – Name of the property to check for.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -301,22 +191,22 @@ requested property (True) or not (False).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget.get_property">
-<span class="sig-name descname"><span class="pre">get_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">property_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget.get_property" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget.get_property">
+<span class="sig-name descname"><span class="pre">get_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">property_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget.get_property" title="Permalink to this definition"></a></dt>
 <dd><p>Get the requested property for the <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
 <li><p><strong>property_value</strong> (<em>str*</em>) – Return variable for the property value.</p></li>
-<li><p><strong>property_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Name of the property to check for.</p></li>
+<li><p><strong>property_name</strong> (<em>desc</em>) – Name of the property to check for.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Sets <code class="docutils literal notranslate"><span class="pre">property_value</span></code> to the value of the property.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str*</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>PropertyNotFound</strong> – Property does not exist in the target.</p>
@@ -325,14 +215,14 @@ requested property (True) or not (False).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget.set_property">
-<span class="sig-name descname"><span class="pre">set_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_sp_property_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget.set_property" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget.set_property">
+<span class="sig-name descname"><span class="pre">set_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_sp_property_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget.set_property" title="Permalink to this definition"></a></dt>
 <dd><p>Sets a single property to the given value, creating the property if it
 does not exist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
 <li><p><strong>_sp_property_name</strong> (<em>desc</em>) – Name of the property to set.</p></li>
 <li><p><strong>args</strong> (<em>args</em>) – Values of the property. This uses all additional
 arguments provided to the function as the value
@@ -344,8 +234,8 @@ TODO: Verify how to document this parameter properly</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget.set_properties">
-<span class="sig-name descname"><span class="pre">set_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_sp_properties</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget.set_properties" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget.set_properties">
+<span class="sig-name descname"><span class="pre">set_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_sp_properties</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget.set_properties" title="Permalink to this definition"></a></dt>
 <dd><p>Sets the given properties to the given values.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -357,7 +247,7 @@ below for a concise way of using this function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-target.CMaizeTarget" title="cmaize.targets/target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object</p></li>
 <li><p><strong>_sp_properties</strong> (<em>cpp_map</em>) – Property names and values.</p></li>
 </ul>
 </dd>
@@ -387,8 +277,8 @@ below for a concise way of using this function.</p>
 
 <p><strong>Attributes</strong></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cmaize.targets-target.CMaizeTarget._name">
-<span class="sig-name descname"><span class="pre">_name</span></span><a class="headerlink" href="#cmaize.targets-target.CMaizeTarget._name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cmaize.targets-cmaize_target.CMaizeTarget._name">
+<span class="sig-name descname"><span class="pre">_name</span></span><a class="headerlink" href="#cmaize.targets-cmaize_target.CMaizeTarget._name" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
@@ -403,50 +293,33 @@ below for a concise way of using this function.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="targets.html" class="btn btn-neutral float-right" title="cmaize.targets/targets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="installed_target.html" class="btn btn-neutral float-left" title="cmaize.targets/installed_target" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="build_target.html" class="btn btn-neutral float-left" title="cmaize.targets/build_target" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cxx_executable.html" class="btn btn-neutral float-right" title="cmaize.targets/cxx_executable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, CMakePP Team.
-
-    </p>
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

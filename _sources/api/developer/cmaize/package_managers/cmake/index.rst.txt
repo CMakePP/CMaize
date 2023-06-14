@@ -1,0 +1,12 @@
+
+#############################
+cmaize.package_managers/cmake
+#############################
+
+.. toctree:: 
+   :maxdepth: 2
+
+   dependency/index.rst
+   cmake
+   cmake_package_manager
+

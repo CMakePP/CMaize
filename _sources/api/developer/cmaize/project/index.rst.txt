@@ -6,7 +6,7 @@ cmaize.project
 .. toctree:: 
    :maxdepth: 2
 
-   project
+   cmaize_project
    project_specification
    projects
 

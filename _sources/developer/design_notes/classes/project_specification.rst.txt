@@ -8,7 +8,7 @@ dependency or the project that the CMaize build system is being written
 for). This includes things like where the source code lives, the version
 to build, and specific options for configuring and compiling.
 ``ProjectSpecification`` instances will ultimately be used to request
-packages from the ``PackageManager`` and inform ``Target`` classes.
+packages from the ``PackageManager`` and inform ``CMaizeTarget`` classes.
 
 Usage
 =====

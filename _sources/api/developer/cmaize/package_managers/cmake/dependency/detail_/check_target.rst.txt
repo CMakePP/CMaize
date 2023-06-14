@@ -1,0 +1,24 @@
+
+#############################################################
+cmaize.package_managers/cmake/dependency/detail_/check_target
+#############################################################
+
+.. module:: cmaize.package_managers/cmake/dependency/detail_/check_target
+
+
+.. function:: _cmaize_dependency_check_target(_dct_this _dct_type)
+
+   Ensures that the specified dependency's target exists.
+   
+   This function will assert that the build or find target exists. If the target
+   does not exist this function will raise an informative error.
+   
+   :param _dct_name: The Dependency we are handling
+   :type _dct_name: Dependency
+   :param _dct_type: Either "build" or "find" depending on whether we are
+                     building or finding the dependency.
+   :type _dct_type: desc
+   
+   :raises TargetNotFound: Given dependency target does not exist.
+   
+

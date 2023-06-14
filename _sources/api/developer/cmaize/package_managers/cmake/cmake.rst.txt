@@ -1,0 +1,7 @@
+
+###################################
+cmaize.package_managers/cmake/cmake
+###################################
+
+.. module:: cmaize.package_managers/cmake/cmake
+

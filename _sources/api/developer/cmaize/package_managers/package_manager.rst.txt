@@ -18,13 +18,20 @@ cmaize.package_managers/package_manager
       
 
 
-   .. py:method:: get_package()
+   .. py:method:: find_installed()
 
-      Virtual member function to get the package using the package manager.
+      Virtual member function to get an installed package target.
       
 
 
-   .. py:method:: install_package()
+   .. py:method:: fetch_package()
+
+      Virtual member function to get the package source and prepare a
+      build target.
+      
+
+
+   .. py:method:: install_package([, ...])
 
       Virtual member to install a package.
       
@@ -32,10 +39,18 @@ cmaize.package_managers/package_manager
    **Attributes**
 
    .. py:attribute:: type
+      :value: "None"
 
       :type: desc
       
-      Type of package manager being used.
+      Type of the package manager being used. Defaults to "None".
       
 
+
+
+.. function:: _register_package_manager_base_class()
+
+   Registers a PackageManager instance. This should only be called at the end
+   of the file defining the PackageManager class.
+   
 

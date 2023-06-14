@@ -1,0 +1,33 @@
+
+#############################
+cmaize.utilities/sanitize_url
+#############################
+
+.. module:: cmaize.utilities/sanitize_url
+
+
+.. function:: cmaize_sanitize_url(__su_result __su_url **kwargs)
+
+   Sanitizes and checks a URL.
+   
+   This function removes any preceeding scheme identifier (https://) and
+   optionally ensures that the given website domain is contained in the
+   URL.
+   
+   :param __su_result: Return variable for sanitized URL.
+   :type __su_result: desc
+   :param __su_url: URL to sanitize.
+   :type __su_url: desc
+   :param **kwargs: Additional keyword arguments may be necessary.
+   
+   :Keyword Arguments:
+      * **DOMAIN** (*desc*) --
+        Domain of the URL. It will be verified that this domain is
+        contained in the URL.
+   
+   :raises InvalidURL: URL is invalid.
+   
+   :returns: The sanitized URL.
+   :rtype: desc
+   
+

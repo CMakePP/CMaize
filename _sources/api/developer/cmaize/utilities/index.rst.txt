@@ -6,7 +6,11 @@ cmaize.utilities
 .. toctree:: 
    :maxdepth: 2
 
+   fetch_and_available
+   generated_by_cmaize
    glob_files
+   replace_project_targets
+   sanitize_url
    split_version
    utilities
 

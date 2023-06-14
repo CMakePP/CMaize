@@ -24,10 +24,10 @@ cmaize.targets/cxx_interface_library
       :param self: CXXInterfaceLibrary object
       :type self: CXXInterfaceLibrary
       :param _al_result: Return variable holding the access level result.
-      :type _al_result: str*
+      :type _al_result: desc*
       
       :returns: Access level of the target.
-      :rtype: str
+      :rtype: desc
       
 
 

@@ -6,43 +6,59 @@ cmaize.globals
 .. module:: cmaize.globals
 
 
-.. data:: CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
+.. function:: cpp_set_global(CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS "H;h;HPP;hpp;HXX;hxx;HH;hh")
+
+
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
 
    File extensions for CXX header files. This is the counterpart to
    ``CMAKE_CXX_SOURCE_FILE_EXTENSIONS``.
    
 
-   :Default value: H h HPP hpp HXX hxx HH hh
 
-   :type: list
+.. function:: cpp_set_global(CMAIZE_GITHUB_TOKEN "${CPP_GITHUB_TOKEN}")
 
 
-.. data:: CMAIZE_PROJECT
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+
+   GitHub token used to access private repositories. It is defaulted to the
+   value of the old ``CPP_GITHUB_TOKEN`` for backwards compatability and
+   will be a blank string ("") if ``CPP_GITHUB_TOKEN`` does not exist.
+   
+
+
+.. function:: cpp_set_global(CMAIZE_PROJECT "")
+
+
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
 
    Current CMaize project.
    
 
-   :Default value: 
 
-   :type: str
+.. function:: cpp_set_global(CMAIZE_TOP_PROJECT "")
 
 
-.. data:: CMAIZE_SUPPORTED_LANGUAGES
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
+
+   Top-level CMaize project.
+   
+
+
+.. function:: cpp_set_global(CMAIZE_SUPPORTED_LANGUAGES CXX)
+
+
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
 
    Languages supported by CMaize.
    
 
-   :Default value: CXX
 
-   :type: str
+.. function:: cpp_set_global(CMAIZE_SUPPORTED_PACKAGE_MANAGERS CMake)
 
 
-.. data:: CMAIZE_SUPPORTED_PACKAGE_MANAGERS
+   .. warning:: This is a generic command invocation. It is not a function or macro definition.
 
    Package manager options supported by CMaize.
    
-
-   :Default value: CMake
-
-   :type: str
 

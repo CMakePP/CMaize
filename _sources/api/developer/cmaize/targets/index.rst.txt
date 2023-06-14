@@ -7,11 +7,11 @@ cmaize.targets
    :maxdepth: 2
 
    build_target
+   cmaize_target
    cxx_executable
    cxx_interface_library
    cxx_library
    cxx_target
    installed_target
-   target
    targets
 
