@@ -9,3 +9,4 @@ This part is for developers of CMaize.
 
    conventions
    design_notes/index
+   cmake_package_manager/index

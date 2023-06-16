@@ -89,11 +89,11 @@ cpp_class(CMakePackageManager PackageManager)
     # for or build the dependency, but makes it known to the package manager
     # for future searching and building.
     #
-    # :param _rd_result: Returned dependency.
+    # :param _rd_result: The registered version of the dependency.
     # :type _rd_result: Dependency*
-    # :param _rd_name: Name of the dependency.
-    # :type _rd_name: desc
-    # :param **kwargs: Additional keyword arguments may be necessary.
+    # :param _rd_proj_specs: The dependency's specifications.
+    # :type _rd_proj_specs: ProjectSpecification
+    # :param **kwargs: Additional arguments to forward to Dependency's ctor.
     #
     # :returns: Dependency object created and initialized.
     # :rtype: Dependency
@@ -214,7 +214,7 @@ cpp_class(CMakePackageManager PackageManager)
             "${self}"
             _gp_depend
             "${_gp_proj_specs}"
-            ${ARGN}    
+            ${ARGN}
         )
 
         Dependency(BUILD_DEPENDENCY "${_gp_depend}")
@@ -241,8 +241,8 @@ cpp_class(CMakePackageManager PackageManager)
     #
     # :param self: CMakePackageManager object
     # :type self: CMakePackageManager
-    # :param _ip_target: CMaizeTarget to install
-    # :type _ip_target: BuildTarget*
+    # :param _ip_pkg_name: The name of the package to install
+    # :type _ip_pkg_name: str
     # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
@@ -277,6 +277,7 @@ cpp_class(CMakePackageManager PackageManager)
 
         set(_ip_destination_prefix ".")
 
+        # Is this the top-level project?
         if("${_ip_proj_name}" STREQUAL "${_ip_top_proj_name}")
             set(
                 CMAKE_INSTALL_PREFIX
@@ -342,13 +343,13 @@ cpp_class(CMakePackageManager PackageManager)
             install(
                 TARGETS "${_ip_TARGETS_i}"
                 EXPORT "${_ip_TARGETS_i}-target"
-                RUNTIME DESTINATION 
+                RUNTIME DESTINATION
                     "${_ip_destination_prefix}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
-                LIBRARY DESTINATION 
+                LIBRARY DESTINATION
                     "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                ARCHIVE DESTINATION 
+                ARCHIVE DESTINATION
                     "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                # PUBLIC_HEADER DESTINATION 
+                # PUBLIC_HEADER DESTINATION
                 #     "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
             )
 
@@ -398,7 +399,7 @@ cpp_class(CMakePackageManager PackageManager)
             FILES
                 "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
                 "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}ConfigVersion.cmake"
-            DESTINATION 
+            DESTINATION
                 "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
         )
 
@@ -496,7 +497,7 @@ cpp_class(CMakePackageManager PackageManager)
 
                 CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
                 cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
-                
+
                 cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
                 if("${__gpc_dep_type}" STREQUAL "buildtarget")
                     Dependency(GET
@@ -535,7 +536,7 @@ cpp_class(CMakePackageManager PackageManager)
         # are given
         string(APPEND
             __gpc_file_contents
-            "list(LENGTH @PROJECT_NAME@_FIND_COMPONENTS " 
+            "list(LENGTH @PROJECT_NAME@_FIND_COMPONENTS "
             "@PROJECT_NAME@_FIND_COMPONENTS_len)\n"
             "if(@PROJECT_NAME@_FIND_COMPONENTS_len LESS_EQUAL 0)\n"
         )
@@ -611,17 +612,17 @@ cpp_class(CMakePackageManager PackageManager)
 
         _cmaize_generated_by_cmaize(__gtc_file_contents)
         string(APPEND __gtc_file_contents "\n")
-        
+
         string(APPEND
             __gtc_file_contents
             "
 if(TARGET ${__gtc_namespace}${__gtc_target_name})
     return()
-endif()")      
+endif()")
         string(APPEND __gtc_file_contents "\n\n")
 
         string(APPEND
-            __gtc_file_contents 
+            __gtc_file_contents
             "get_filename_component(PACKAGE_PREFIX_DIR "
             "\"\${CMAKE_CURRENT_LIST_DIR}/../../..\" ABSOLUTE)\n"
         )
@@ -652,7 +653,7 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
             if("${__gtc_dep_obj}" STREQUAL "")
                 continue()
             endif()
-            
+
             Dependency(GET
                 "${__gtc_dep_obj}" __gtc_dep_find_tgt_name find_target
             )
@@ -703,7 +704,7 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
         )
 
         string(APPEND
-            __gtc_file_contents 
+            __gtc_file_contents
             "
 # Unset variables used
 set(PACKAGE_PREFIX_DIR)

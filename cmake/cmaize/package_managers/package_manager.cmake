@@ -18,12 +18,27 @@ cpp_class(PackageManager)
 
     #[[[
     # Virtual member to check if the package exists in the package manager.
+    #
+    # :param self: Handle to the current instance.
+    # :type self: PackageManager
+    #
     #]]
     cpp_member(has_package PackageManager desc ProjectSpecification)
     cpp_virtual_member(has_package)
 
     #[[[
     # Virtual member function to get an installed package target.
+    #
+    # :param result: The installed form of the requested package.
+    # :type result: InstalledTarget*
+    #
+    # :param project_specs: The details of the package we want to find.
+    # :type project_specs: ProjectSpecificiation
+    #
+    # The derived class is responsible for finding the package based on the
+    # specifications in ``project_specs``. If the package has not been installed
+    # already the implementation should return an empty string.
+    #
     #]]
     cpp_member(find_installed PackageManager desc ProjectSpecification)
     cpp_virtual_member(find_installed)
@@ -37,6 +52,9 @@ cpp_class(PackageManager)
 
     #[[[
     # Virtual member to install a package.
+    #
+    #
+    #
     #]]
     cpp_member(install_package PackageManager str args)
     cpp_virtual_member(install_package)
@@ -51,7 +69,7 @@ function(_register_package_manager_base_class)
 
     PackageManager(CTOR __package_manager)
     register_package_manager("packagemanager" "${__package_manager}")
-    
+
 endfunction()
 
 _register_package_manager_base_class()
