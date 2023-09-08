@@ -8,7 +8,6 @@
 
 import os
 
-
 # -- Project information -----------------------------------------------------
 
 project = u'CMaize'
@@ -19,7 +18,7 @@ author = u'CMakePP Team'
 # The short X.Y version
 version = u'1.0.0'
 # The full version, including alpha/beta/rc tags
-release = u'1.0.0alpha'
+release = version
 
 ##############################################################################
 #           Shouldn't need to change anything below this point               #
@@ -35,11 +34,8 @@ release = u'1.0.0alpha'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autosectionlabel',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
@@ -66,7 +62,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -159,15 +155,4 @@ texinfo_documents = [
      author, project, 'One line description of project.', 'Miscellaneous'),
 ]
 
-
 # -- Extension configuration -------------------------------------------------
-
-# -- Options for intersphinx extension ---------------------------------------
-
-# Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
-
-# -- Options for todo extension ----------------------------------------------
-
-# If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True

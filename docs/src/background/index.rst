@@ -13,21 +13,15 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
+.. _cmaize_background:
 
-###############
-Getting Started
-###############
-
-For users wanting to build a project which uses CMaize, see
-:ref:`building_a_project_that_uses_cmaize`. Users interested in adopting CMaize
-should instead see :ref:`using_cmaize_as_your_build_system`.
-Finally, if you are unfamiliar with CMake, you may want to check out this
-:ref:`quick_introduction_to_cmake`.
+#################
+CMaize Background
+#################
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   quick_intro_to_cmake
-   building/index
-   using_cmaize_as_build_system/index
+   terminology
+   build_phases
+   statement_of_need

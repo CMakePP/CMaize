@@ -88,7 +88,7 @@ Including CMaize
 ^^^^^^^^^^^^^^^^
 
 We also need to include CMaize. This is described more in
-:ref:`Automatically Downloading and Including CMaize`.
+:ref:`automatically_downloading_and_including_cmaize`.
 
 .. code-block:: cmake
 
