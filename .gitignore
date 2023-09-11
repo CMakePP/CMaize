@@ -4,6 +4,8 @@
 
 # Build directories
 **/*build*/
+## API documentation build directory
+docs/src/api/developer/
 
 # Install directories
 **/*install*/
