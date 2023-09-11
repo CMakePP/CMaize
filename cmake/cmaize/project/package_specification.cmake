@@ -5,57 +5,57 @@ include(cmaize/toolchain/toolchain)
 include(cmaize/utilities/utilities)
 
 #[[[
-# The ``ProjectSpecification`` class is envisioned as holding all of the
-# details about how to build a project ("project" being a catchall for a
+# The ``PackageSpecification`` class is envisioned as holding all of the
+# details about how to build a package ("package" being a catchall for a
 # dependency or the project that the CMaize build system is being written
 # for). This includes things like where the source code lives, the version
 # to build, and specific options for configuring and compiling.
-# ``ProjectSpecification`` instances will ultimately be used to request
+# ``PackageSpecification`` instances will ultimately be used to request
 # packages from the ``PackageManager``.
 #]]
-cpp_class(ProjectSpecification)
+cpp_class(PackageSpecification)
     
     #[[[
     # :type: str
     #
-    # Name of project or dependency as a string.
+    # Name of package as a string.
     #]]
-    cpp_attr(ProjectSpecification name)
+    cpp_attr(PackageSpecification name)
 
     #[[[
     # :type: str
     #
-    # Version of project or dependency as a string.
+    # Version of package as a string.
     #]]
-    cpp_attr(ProjectSpecification version)
+    cpp_attr(PackageSpecification version)
 
     #[[[
     # :type: str
     #
     # First version number component of the ``version`` attribute.
     #]]
-    cpp_attr(ProjectSpecification major_version)
+    cpp_attr(PackageSpecification major_version)
 
     #[[[
     # :type: str
     #
     # Second version number component of the ``version`` attribute.
     #]]
-    cpp_attr(ProjectSpecification minor_version)
+    cpp_attr(PackageSpecification minor_version)
 
     #[[[
     # :type: str
     #
     # Third version number component of the ``version`` attribute.
     #]]
-    cpp_attr(ProjectSpecification patch_version)
+    cpp_attr(PackageSpecification patch_version)
 
     #[[[
     # :type: str
     #
     # Fourth version number component of the ``version`` attribute.
     #]]
-    cpp_attr(ProjectSpecification tweak_version)
+    cpp_attr(PackageSpecification tweak_version)
 
     #[[[
     # :type: str
@@ -78,48 +78,48 @@ cpp_class(ProjectSpecification)
     #    <https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#build-configurations>`__
     #    for more information on the details of making this switch.
     #]]
-    cpp_attr(ProjectSpecification build_type)
+    cpp_attr(PackageSpecification build_type)
 
     #[[[
     # :type: Toolchain
     #
     # User-specified and autopopulated toolchain file values.
     #]]
-    cpp_attr(ProjectSpecification toolchain)
+    cpp_attr(PackageSpecification toolchain)
 
     #[[[
     # :type: cpp_map
     #
-    # Project configure options.
+    # Package configure options.
     #
     # This is initialized to an empty map for users to fill.
     #]]
-    cpp_attr(ProjectSpecification configure_options)
+    cpp_attr(PackageSpecification configure_options)
 
     #[[[
     # :type: cpp_map
     #
-    # Project compile options.
+    # Package compile options.
     #
     # This is initialized to an empty map for users to fill.
     #]]
-    cpp_attr(ProjectSpecification compile_options)
+    cpp_attr(PackageSpecification compile_options)
 
     #[[[
-    # Default constructor for ProjectSpecification object with only
+    # Default constructor for PackageSpecification object with only
     # autopopulated options available.
     #
-    # :param self: ProjectSpecification object constructed.
-    # :type self: ProjectSpecification
+    # :param self: PackageSpecification object constructed.
+    # :type self: PackageSpecification
     # :returns: ``self`` will be set to the newly constructed
-    #           ``ProjectSpecification`` object.
-    # :rtype: ProjectSpecification
+    #           ``PackageSpecification`` object.
+    # :rtype: PackageSpecification
     #]]
-    cpp_constructor(CTOR ProjectSpecification)
+    cpp_constructor(CTOR PackageSpecification)
     function("${CTOR}" self)
 
-        # Initialize the ProjectSpecification object
-        ProjectSpecification(__initialize "${self}")
+        # Initialize the PackageSpecification object
+        PackageSpecification(__initialize "${self}")
 
     endfunction()
 
@@ -130,17 +130,17 @@ cpp_class(ProjectSpecification)
     # ``string(<HASH>`` function defined `here
     # <https://cmake.org/cmake/help/latest/command/string.html#hashing>`__.
     #
-    # :param self: ``ProjectSpecification`` object to hash.
-    # :type self: ProjectSpecification
-    # :param return_hash: Hashed ``ProjectSpecification``
+    # :param self: ``PackageSpecification`` object to hash.
+    # :type self: PackageSpecification
+    # :param return_hash: Hashed ``PackageSpecification``
     # :type return_hash: str
     # :param hash_type: Hash algorithm to use
     # :type hash_type: str
     #
-    # :returns: Hashed ``ProjectSpecification`` object
+    # :returns: Hashed ``PackageSpecification`` object
     # :rtype: str
     #]]
-    cpp_member(hash ProjectSpecification str str)
+    cpp_member(hash PackageSpecification str str)
     function("${hash}" self return_hash hash_type)
 
         cpp_serialize(self_serialized "${self}")
@@ -152,76 +152,76 @@ cpp_class(ProjectSpecification)
     endfunction()
 
     #[[[
-    # Overload to ``set_version()`` method to catch when the project version
+    # Overload to ``set_version()`` method to catch when the package version
     # string is blank.
     #
     # .. note::
     #    
     #    This override is required because of a bug in CMakePPLang.
     #    Currently, CMakePPLang cannot differentiate between
-    #    ``ProjectSpecification(set_version "${ps_obj}")`` and 
-    #    ``ProjectSpecification(set_version "${ps_obj}" "")``. Sometimes the
+    #    ``PackageSpecification(set_version "${ps_obj}")`` and 
+    #    ``PackageSpecification(set_version "${ps_obj}" "")``. Sometimes the
     #    ``PROJECT_VERSION`` variable used in ``__initialize`` to determine
-    #    a default project version is blank, so this ensures we do not get
+    #    a default package version is blank, so this ensures we do not get
     #    an error about not including the version argument for
-    #    ``cpp_member(set_version ProjectSpecification str)`` calls.
+    #    ``cpp_member(set_version PackageSpecification str)`` calls.
     #
-    # :param self: ``ProjectSpecification`` object.
-    # :type self: ProjectSpecification
+    # :param self: ``PackageSpecification`` object.
+    # :type self: PackageSpecification
     #]]
-    cpp_member(set_version ProjectSpecification)
+    cpp_member(set_version PackageSpecification)
     function("${set_version}" self)
 
-        ProjectSpecification(SET "${self}" version "")
-        ProjectSpecification(SET "${self}" major_version "")
-        ProjectSpecification(SET "${self}" minor_version "")
-        ProjectSpecification(SET "${self}" patch_version "")
-        ProjectSpecification(SET "${self}" tweak_version "")
+        PackageSpecification(SET "${self}" version "")
+        PackageSpecification(SET "${self}" major_version "")
+        PackageSpecification(SET "${self}" minor_version "")
+        PackageSpecification(SET "${self}" patch_version "")
+        PackageSpecification(SET "${self}" tweak_version "")
 
     endfunction()
 
     #[[[
-    # Set the project version variable and splits the version into 
+    # Set the package version variable and splits the version into 
     # major, minor, patch, and tweak components.
     #
-    # :param self: ``ProjectSpecification`` object.
-    # :type self: ProjectSpecification
-    # :param project_version: Full project version string.
-    # :type project_version: str
+    # :param self: ``PackageSpecification`` object.
+    # :type self: PackageSpecification
+    # :param package_version: Full package version string.
+    # :type package_version: str
     #]]
-    cpp_member(set_version ProjectSpecification str)
-    function("${set_version}" self project_version)
+    cpp_member(set_version PackageSpecification str)
+    function("${set_version}" self package_version)
 
-        cmaize_split_version(major minor patch tweak "${project_version}")
+        cmaize_split_version(major minor patch tweak "${package_version}")
 
-        ProjectSpecification(SET "${self}" version "${project_version}")
-        ProjectSpecification(SET "${self}" major_version "${major}")
-        ProjectSpecification(SET "${self}" minor_version "${minor}")
-        ProjectSpecification(SET "${self}" patch_version "${patch}")
-        ProjectSpecification(SET "${self}" tweak_version "${tweak}")
+        PackageSpecification(SET "${self}" version "${package_version}")
+        PackageSpecification(SET "${self}" major_version "${major}")
+        PackageSpecification(SET "${self}" minor_version "${minor}")
+        PackageSpecification(SET "${self}" patch_version "${patch}")
+        PackageSpecification(SET "${self}" tweak_version "${tweak}")
 
     endfunction()
 
     #[[[
-    # Initialize project attributes with default values.
+    # Initialize package attributes with default values.
     #
-    # :param self: ``ProjectSpecification`` object to initialize.
-    # :type self: ProjectSpecification
+    # :param self: ``PackageSpecification`` object to initialize.
+    # :type self: PackageSpecification
     #]]
-    cpp_member(__initialize ProjectSpecification)
+    cpp_member(__initialize PackageSpecification)
     function("${__initialize}" self)
 
         # Get the name from the most recent ``project()`` call
-        ProjectSpecification(SET "${self}" name "${PROJECT_NAME}")
+        PackageSpecification(SET "${self}" name "${PROJECT_NAME}")
         
         # Get the version from the most recent ``project()`` call
-        ProjectSpecification(set_version "${self}" "${PROJECT_VERSION}")
+        PackageSpecification(set_version "${self}" "${PROJECT_VERSION}")
 
-        ProjectSpecification(SET "${self}" build_type "${CMAKE_BUILD_TYPE}")
+        PackageSpecification(SET "${self}" build_type "${CMAKE_BUILD_TYPE}")
 
         # Initialize toolchain using CMAKE_TOOLCHAIN_FILE variable
         Toolchain(CTOR my_toolchain "${CMAKE_TOOLCHAIN_FILE}")
-        ProjectSpecification(SET "${self}" toolchain "${my_toolchain}")
+        PackageSpecification(SET "${self}" toolchain "${my_toolchain}")
 
         # Set the configure_options map to an empty map
         cpp_map(CTOR tmp_configure_options)

@@ -2,7 +2,7 @@ include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/targets/cmaize_target)
-include(cmaize/project/project_specification)
+include(cmaize/project/package_specification)
 include(cmaize/utilities/utilities)
 
 #[[[
@@ -35,7 +35,7 @@ cpp_class(CMaizeProject)
     cpp_attr(CMaizeProject name)
 
     #[[[
-    # :type: ProjectSpecification
+    # :type: PackageSpecification
     #
     # Details about the project.
     #]]
@@ -84,7 +84,7 @@ cpp_class(CMaizeProject)
     #    * **VERSION** (*desc*) --
     #      Version string of non-negative integers of the form
     #      ``<major>[.<minor>[.<patch>[.<tweak>] ] ]``. Populates the
-    #      version attributes of the ``ProjectSpecification``. Parallels
+    #      version attributes of the ``PackageSpecification``. Parallels
     #      the ``VERSION <version>`` keyword for CMake ``project()``
     #      (`link <cmake_project_>`__), and the value is passed to
     #      a CMake ``project()`` call if the project does not exist yet.
@@ -151,9 +151,9 @@ cpp_class(CMaizeProject)
             )
         endif()
 
-        # Create a project specification that defaults to the values set
+        # Create a package specification that defaults to the values set
         # in the above ``project()`` call
-        ProjectSpecification(CTOR proj_spec)
+        PackageSpecification(CTOR proj_spec)
         CMaizeProject(SET "${self}" specification "${proj_spec}")
 
     endfunction()
