@@ -54,10 +54,10 @@ cmaize.package_managers/cmake/cmake_package_manager
 
       :param _rd_proj_specs: 
 
-      :type _rd_proj_specs: ProjectSpecification
+      :type _rd_proj_specs: PackageSpecification
 
 
-   .. py:method:: find_installed(_fi_result, _fi_project_specs[, ...])
+   .. py:method:: find_installed(_fi_result, _fi_package_specs[, ...])
 
       Finds an installed package.
       
@@ -66,8 +66,8 @@ cmaize.package_managers/cmake/cmake_package_manager
       
       :param _fi_result: Return value for the installed target.
       :type _fi_result: InstalledTarget*
-      :param _fi_project_specs: Specifications for the package to build.
-      :type _fi_project_specs: ProjectSpecification
+      :param _fi_package_specs: Specifications for the package to build.
+      :type _fi_package_specs: PackageSpecification
       :param **kwargs: Additional keyword arguments may be necessary.
       
       :Keyword Arguments:
@@ -92,7 +92,7 @@ cmaize.package_managers/cmake/cmake_package_manager
       :param _gp_result: Resulting target object return variable
       :type _gp_result: InstalledTarget*
       :param _gp_proj_specs: Specifications for the package to build.
-      :type _gp_proj_specs: ProjectSpecification
+      :type _gp_proj_specs: PackageSpecification
       
       :returns: Resulting target from the package manager
       :rtype: InstalledTarget

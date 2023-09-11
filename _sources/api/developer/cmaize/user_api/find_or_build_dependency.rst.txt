@@ -39,7 +39,7 @@ cmaize.user_api/find_or_build_dependency
    
    :Keyword Arguments:
       * **VERSION** (*desc*) --
-        Version of the project to find. Defaults to no version ("").
+        Version of the package to find. Defaults to no version ("").
       * **PACKAGE_MANAGER** (*desc*) --
         Package manager to use. Must be a valid package listed in the
         ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS`` variable. Defaults to "CMake".

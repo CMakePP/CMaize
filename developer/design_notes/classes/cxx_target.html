@@ -11,11 +11,11 @@
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -57,7 +57,7 @@
 <li class="toctree-l4"><a class="reference internal" href="build_target.html">BuildTarget Class</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">CXX Build Target Classes</a></li>
 <li class="toctree-l4"><a class="reference internal" href="installed_target.html">InstalledTarget Class</a></li>
-<li class="toctree-l4"><a class="reference internal" href="project_specification.html">ProjectSpecification Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_specification.html">PackageSpecification Class</a></li>
 <li class="toctree-l4"><a class="reference internal" href="target.html">CMaizeTarget Class</a></li>
 <li class="toctree-l4"><a class="reference internal" href="toolchain.html">Toolchain Class</a></li>
 </ul>
@@ -98,14 +98,14 @@
            <div itemprop="articleBody">
              
   <section id="cxx-build-target-classes">
-<h1>CXX Build Target Classes<a class="headerlink" href="#cxx-build-target-classes" title="Permalink to this heading"></a></h1>
+<h1>CXX Build Target Classes<a class="headerlink" href="#cxx-build-target-classes" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> class contains much of the process of building a
 CXX target, except for the creation of the different target types (for
 example, CMake’s <code class="docutils literal notranslate"><span class="pre">add_library()</span></code> vs <code class="docutils literal notranslate"><span class="pre">add_executable()</span></code> calls).
 <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> is the common parent class for the concrete CXX build targets,
 <code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code>, <code class="docutils literal notranslate"><span class="pre">CXXInterfaceLibrary</span></code>, and <code class="docutils literal notranslate"><span class="pre">CXXExecutable</span></code>.</p>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
 <p>The concrete build target classes, <code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code>, <code class="docutils literal notranslate"><span class="pre">CXXInterfaceLibrary</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">CXXExecutable</span></code> should be instantiated with unique target name
 strings. Once instantiated, a call to <code class="docutils literal notranslate"><span class="pre">CXXTarget(make_target</span></code> will set

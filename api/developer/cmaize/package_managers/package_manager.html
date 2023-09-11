@@ -11,11 +11,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -104,41 +104,41 @@
            <div itemprop="articleBody">
              
   <section id="module-cmaize.package_managers-package_manager">
-<span id="cmaize-package-managers-package-manager"></span><h1>cmaize.package_managers/package_manager<a class="headerlink" href="#module-cmaize.package_managers-package_manager" title="Permalink to this heading"></a></h1>
+<span id="cmaize-package-managers-package-manager"></span><h1>cmaize.package_managers/package_manager<a class="headerlink" href="#module-cmaize.package_managers-package_manager" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/package_manager.</span></span><span class="sig-name descname"><span class="pre">PackageManager</span></span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/package_manager.</span></span><span class="sig-name descname"><span class="pre">PackageManager</span></span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager" title="Link to this definition"></a></dt>
 <dd><p>Base class for the PackageManager class hierarchy.</p>
 <p><strong>Methods</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.has_package">
-<span class="sig-name descname"><span class="pre">has_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.has_package" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">has_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.has_package" title="Link to this definition"></a></dt>
 <dd><p>Virtual member to check if the package exists in the package manager.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.find_installed">
-<span class="sig-name descname"><span class="pre">find_installed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.find_installed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">find_installed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.find_installed" title="Link to this definition"></a></dt>
 <dd><p>Virtual member function to get an installed package target.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.fetch_package">
-<span class="sig-name descname"><span class="pre">fetch_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.fetch_package" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fetch_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.fetch_package" title="Link to this definition"></a></dt>
 <dd><p>Virtual member function to get the package source and prepare a
 build target.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.install_package">
-<span class="sig-name descname"><span class="pre">install_package</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.install_package" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">install_package</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.install_package" title="Link to this definition"></a></dt>
 <dd><p>Virtual member to install a package.</p>
 </dd></dl>
 
 <p><strong>Attributes</strong></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.package_managers-package_manager.PackageManager.type">
-<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;None&quot;</span></em><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.type" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;None&quot;</span></em><a class="headerlink" href="#cmaize.package_managers-package_manager.PackageManager.type" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>desc</p>
@@ -151,7 +151,7 @@ build target.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.package_managers-package_manager._register_package_manager_base_class">
-<span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/package_manager.</span></span><span class="sig-name descname"><span class="pre">_register_package_manager_base_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager._register_package_manager_base_class" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/package_manager.</span></span><span class="sig-name descname"><span class="pre">_register_package_manager_base_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-package_manager._register_package_manager_base_class" title="Link to this definition"></a></dt>
 <dd><p>Registers a PackageManager instance. This should only be called at the end
 of the file defining the PackageManager class.</p>
 </dd></dl>

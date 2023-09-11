@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -86,7 +86,7 @@
            <div itemprop="articleBody">
              
   <section id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h1>
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
 <p>CMaize greatly simplifies the process of creating a build system for projects
 by allowing users to create a single <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file at the root of
 their project. This file handles the finding and building of the projects
@@ -94,7 +94,7 @@ their project. This file handles the finding and building of the projects
 of the project. Many projects can be built using only the commands provided in
 CMaize’s user API. Here is a brief overview of the features CMaize provides:</p>
 <section id="add-executable">
-<h2>Add Executable<a class="headerlink" href="#add-executable" title="Permalink to this heading"></a></h2>
+<h2>Add Executable<a class="headerlink" href="#add-executable" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">cpp_add_executable</span></code> command allows you to add an executable by providing
 the executable’s source directories, include directories, and dependencies:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cpp_add_executable</span><span class="p">(</span>
@@ -109,7 +109,7 @@ the executable’s source directories, include directories, and dependencies:</p
 and include directories and find or build all of the executable’s dependencies.</p>
 </section>
 <section id="add-library">
-<h2>Add Library<a class="headerlink" href="#add-library" title="Permalink to this heading"></a></h2>
+<h2>Add Library<a class="headerlink" href="#add-library" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">cpp_add_library</span></code> command allows you to add a library by providing the
 library’s source and include directories and all of the library’s dependencies:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cpp_add_library</span><span class="p">(</span>
@@ -126,7 +126,7 @@ packaging files for your library, configure an install target, and
 and find or build all of the library’s dependencies.</p>
 </section>
 <section id="add-test">
-<h2>Add Test<a class="headerlink" href="#add-test" title="Permalink to this heading"></a></h2>
+<h2>Add Test<a class="headerlink" href="#add-test" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">cpp_add_tests</span></code> command allows you to add tests to your project by
 providing the source directory for the tests and the tests’ dependencies:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">cpp_add_tests</span><span class="p">(</span>
@@ -140,7 +140,7 @@ providing the source directory for the tests and the tests’ dependencies:</p>
 find or build the dependencies, and create an executable that runs the tests.</p>
 </section>
 <section id="find-or-build-dependency">
-<h2>Find or Build Dependency<a class="headerlink" href="#find-or-build-dependency" title="Permalink to this heading"></a></h2>
+<h2>Find or Build Dependency<a class="headerlink" href="#find-or-build-dependency" title="Link to this heading"></a></h2>
 <p>The real power of CMaize is that it makes it easy to integrate dependencies into
 your project’s build system. For example, if one of your project’s libraries
 depends on a dependency <cite>name_of_dependency</cite> you can use the

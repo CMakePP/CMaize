@@ -11,15 +11,15 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="cmaize.project/project_specification" href="project_specification.html" />
+    <link rel="next" title="cmaize.project/package_specification" href="package_specification.html" />
     <link rel="prev" title="cmaize.project" href="index.html" /> 
 </head>
 
@@ -55,7 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.project</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.project/cmaize_project</a></li>
-<li class="toctree-l4"><a class="reference internal" href="project_specification.html">cmaize.project/project_specification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_specification.html">cmaize.project/package_specification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="projects.html">cmaize.project/projects</a></li>
 </ul>
 </li>
@@ -103,10 +103,10 @@
            <div itemprop="articleBody">
              
   <section id="module-cmaize.project-cmaize_project">
-<span id="cmaize-project-cmaize-project"></span><h1>cmaize.project/cmaize_project<a class="headerlink" href="#module-cmaize.project-cmaize_project" title="Permalink to this heading"></a></h1>
+<span id="cmaize-project-cmaize-project"></span><h1>cmaize.project/cmaize_project<a class="headerlink" href="#module-cmaize.project-cmaize_project" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.project/cmaize_project.</span></span><span class="sig-name descname"><span class="pre">CMaizeProject</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.project/cmaize_project.</span></span><span class="sig-name descname"><span class="pre">CMaizeProject</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject" title="Link to this definition"></a></dt>
 <dd><p>The <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> provides a workspace to collect information about a
 project, using that information to build and package the project.</p>
 <p>This object will <strong>not</strong> create a CMake project if one does not already
@@ -123,7 +123,7 @@ in most cases.</p>
 <p><strong>Additional Constructors</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.CTOR">
-<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ctor_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.CTOR" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ctor_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.CTOR" title="Link to this definition"></a></dt>
 <dd><p>Creates a <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object. A CMake project of the same name
 must already be created through a <code class="docutils literal notranslate"><span class="pre">project()</span></code> call and must be
 the active project.</p>
@@ -140,7 +140,7 @@ named in <code class="docutils literal notranslate"><span class="pre">PROJECT_NA
 <li><p><strong>VERSION</strong> (<em>desc</em>) –
 Version string of non-negative integers of the form
 <code class="docutils literal notranslate"><span class="pre">&lt;major&gt;[.&lt;minor&gt;[.&lt;patch&gt;[.&lt;tweak&gt;]</span> <span class="pre">]</span> <span class="pre">]</span></code>. Populates the
-version attributes of the <code class="docutils literal notranslate"><span class="pre">ProjectSpecification</span></code>. Parallels
+version attributes of the <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code>. Parallels
 the <code class="docutils literal notranslate"><span class="pre">VERSION</span> <span class="pre">&lt;version&gt;</span></code> keyword for CMake <code class="docutils literal notranslate"><span class="pre">project()</span></code>
 (<a class="reference external" href="https://cmake.org/cmake/help/latest/command/project.html">link</a>), and the value is passed to
 a CMake <code class="docutils literal notranslate"><span class="pre">project()</span></code> call if the project does not exist yet.</p></li>
@@ -178,7 +178,7 @@ given project name.</p>
 <p><strong>Methods</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.add_language">
-<span class="sig-name descname"><span class="pre">add_language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_al_language</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.add_language" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_al_language</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.add_language" title="Link to this definition"></a></dt>
 <dd><p>Add a language to the project. Duplicate languages will be removed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -192,7 +192,7 @@ given project name.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.add_package_manager">
-<span class="sig-name descname"><span class="pre">add_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_apm_pm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.add_package_manager" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_apm_pm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.add_package_manager" title="Link to this definition"></a></dt>
 <dd><p>Add a package manager to the project. Duplicate package manager types
 will not be added.</p>
 <dl class="field-list simple">
@@ -207,7 +207,7 @@ will not be added.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.add_target">
-<span class="sig-name descname"><span class="pre">add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_at_target_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_at_target</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.add_target" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_at_target_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_at_target</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.add_target" title="Link to this definition"></a></dt>
 <dd><p>Add a target to the project. Duplicate objects will be removed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -236,7 +236,7 @@ them. This keyword argument is <strong>required</strong>.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject._add_target">
-<span class="sig-name descname"><span class="pre">_add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__at_target</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._add_target" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__at_target</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._add_target" title="Link to this definition"></a></dt>
 <dd><p>Add a target to the project. Duplicate objects will not be added.</p>
 <p>This internal implementation exists so a required keyword argument is
 not part of the public interface, as well as to handle both <code class="docutils literal notranslate"><span class="pre">desc</span></code> and
@@ -270,7 +270,7 @@ them. This keyword argument is <strong>required</strong>.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.check_package_manager">
-<span class="sig-name descname"><span class="pre">check_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cpm_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_cpm_pm_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.check_package_manager" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">check_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cpm_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_cpm_pm_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.check_package_manager" title="Link to this definition"></a></dt>
 <dd><p>Checks if a package manager with the same type is already added to
 this project.</p>
 <dl class="field-list simple">
@@ -293,7 +293,7 @@ this project.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.check_target">
-<span class="sig-name descname"><span class="pre">check_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ct_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ct_target_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.check_target" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">check_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ct_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_ct_target_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.check_target" title="Link to this definition"></a></dt>
 <dd><p>Checks if a target with the same name is already added to this project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -329,7 +329,7 @@ project. This keyword argument is <strong>required</strong>.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject._check_target">
-<span class="sig-name descname"><span class="pre">_check_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__ct_found</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._check_target" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_check_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__ct_found</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._check_target" title="Link to this definition"></a></dt>
 <dd><p>Checks if a target with the same name is already added to this project.
 This defaults to build targets.</p>
 <p>This internal implementation exists so a required keyword argument is
@@ -371,7 +371,7 @@ project. This keyword argument is <strong>required</strong>.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.get_package_manager">
-<span class="sig-name descname"><span class="pre">get_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gpm_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gpm_pm_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.get_package_manager" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gpm_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gpm_pm_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.get_package_manager" title="Link to this definition"></a></dt>
 <dd><p>Get a package manager of the requested type stored in the project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -394,7 +394,7 @@ no package manager with the matching type was found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.get_target">
-<span class="sig-name descname"><span class="pre">get_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gt_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gt_target_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.get_target" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gt_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gt_target_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.get_target" title="Link to this definition"></a></dt>
 <dd><p>Get a CMaizeTarget with the requested identifying name stored in the project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -428,7 +428,7 @@ no target with the matching type was found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject._get_target">
-<span class="sig-name descname"><span class="pre">_get_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__gt_result</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._get_target" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_get_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__gt_result</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._get_target" title="Link to this definition"></a></dt>
 <dd><p>Get a CMaizeTarget with the requested identifying name stored in the project.</p>
 <p>This internal implementation exists so a required keyword argument is
 not part of the public interface, as well as to handle both <code class="docutils literal notranslate"><span class="pre">desc</span></code> and
@@ -468,7 +468,7 @@ no target with the matching type was found.</p>
 <p><strong>Attributes</strong></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.name">
-<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.name" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.name" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>desc</p>
@@ -479,10 +479,10 @@ no target with the matching type was found.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.specification">
-<span class="sig-name descname"><span class="pre">specification</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.specification" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">specification</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.specification" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="project_specification.html#cmaize.project-project_specification.ProjectSpecification" title="cmaize.project/project_specification.ProjectSpecification">ProjectSpecification</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="package_specification.html#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification">PackageSpecification</a></p>
 </dd>
 </dl>
 <p>Details about the project.</p>
@@ -490,7 +490,7 @@ no target with the matching type was found.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.languages">
-<span class="sig-name descname"><span class="pre">languages</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.languages" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">languages</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.languages" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[desc]</p>
@@ -501,7 +501,7 @@ no target with the matching type was found.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.package_managers">
-<span class="sig-name descname"><span class="pre">package_managers</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.package_managers" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">package_managers</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.package_managers" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="../package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager" title="cmaize.package_managers/package_manager.PackageManager">PackageManager</a>]</p>
@@ -512,7 +512,7 @@ no target with the matching type was found.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.build_targets">
-<span class="sig-name descname"><span class="pre">build_targets</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.build_targets" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">build_targets</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.build_targets" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="../targets/build_target.html#cmaize.targets-build_target.BuildTarget" title="cmaize.targets/build_target.BuildTarget">BuildTarget</a>]</p>
@@ -523,7 +523,7 @@ no target with the matching type was found.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.installed_targets">
-<span class="sig-name descname"><span class="pre">installed_targets</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.installed_targets" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">installed_targets</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.installed_targets" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="../targets/installed_target.html#cmaize.targets-installed_target.InstalledTarget" title="cmaize.targets/installed_target.InstalledTarget">InstalledTarget</a>]</p>
@@ -541,7 +541,7 @@ no target with the matching type was found.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="cmaize.project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="project_specification.html" class="btn btn-neutral float-right" title="cmaize.project/project_specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="package_specification.html" class="btn btn-neutral float-right" title="cmaize.project/package_specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

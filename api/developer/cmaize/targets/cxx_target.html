@@ -11,11 +11,11 @@
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -108,16 +108,16 @@
            <div itemprop="articleBody">
              
   <section id="module-cmaize.targets-cxx_target">
-<span id="cmaize-targets-cxx-target"></span><h1>cmaize.targets/cxx_target<a class="headerlink" href="#module-cmaize.targets-cxx_target" title="Permalink to this heading"></a></h1>
+<span id="cmaize-targets-cxx-target"></span><h1>cmaize.targets/cxx_target<a class="headerlink" href="#module-cmaize.targets-cxx_target" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.targets/cxx_target.</span></span><span class="sig-name descname"><span class="pre">CXXTarget</span></span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.targets/cxx_target.</span></span><span class="sig-name descname"><span class="pre">CXXTarget</span></span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BuildTarget</span></code></p>
 <p>Wraps a target which must be built as part of the build system.</p>
 <p><strong>Methods</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget.make_target">
-<span class="sig-name descname"><span class="pre">make_target</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.make_target" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">make_target</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.make_target" title="Link to this definition"></a></dt>
 <dd><p>Create the target and configure its properties so it is ready to build.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -141,7 +141,7 @@ standard to <code class="docutils literal notranslate"><span class="pre">cxx_std
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget._access_level">
-<span class="sig-name descname"><span class="pre">_access_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_al_access_level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._access_level" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_access_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_al_access_level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._access_level" title="Link to this definition"></a></dt>
 <dd><p>Abstracts out CMake’s access level concept (public, interface, or
 private).</p>
 <dl class="field-list simple">
@@ -162,7 +162,7 @@ private).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget._set_compile_features">
-<span class="sig-name descname"><span class="pre">_set_compile_features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_compile_features" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_set_compile_features</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_compile_features" title="Link to this definition"></a></dt>
 <dd><p>Sets the CXX standard and other compiler features on the CMake target.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -173,7 +173,7 @@ private).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget._set_include_directories">
-<span class="sig-name descname"><span class="pre">_set_include_directories</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_include_directories" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_set_include_directories</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_include_directories" title="Link to this definition"></a></dt>
 <dd><p>Set the target include directories. This adds the include directories
 as PUBLIC and source directories as PRIVATE. This allows for both
 public and private headers to be found.</p>
@@ -190,7 +190,7 @@ public and private headers to be found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget._set_link_libraries">
-<span class="sig-name descname"><span class="pre">_set_link_libraries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_link_libraries" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_set_link_libraries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_link_libraries" title="Link to this definition"></a></dt>
 <dd><p>Set the link libraries for the target. Uses the <code class="docutils literal notranslate"><span class="pre">depends</span></code> list
 to determine what targets to link.</p>
 <dl class="field-list simple">
@@ -202,7 +202,7 @@ to determine what targets to link.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget._set_public_headers">
-<span class="sig-name descname"><span class="pre">_set_public_headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_public_headers" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_set_public_headers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_public_headers" title="Link to this definition"></a></dt>
 <dd><p>Set the public headers on the target. It is set to all include files
 on this object.</p>
 <dl class="field-list simple">
@@ -214,7 +214,7 @@ on this object.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget._set_sources">
-<span class="sig-name descname"><span class="pre">_set_sources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_sources" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_set_sources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget._set_sources" title="Link to this definition"></a></dt>
 <dd><p>Set the sources for the target. Sources are set with the PRIVATE
 accessor so they are not propogated.</p>
 <dl class="field-list simple">
@@ -227,7 +227,7 @@ accessor so they are not propogated.</p>
 <p><strong>Attributes</strong></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget.cxx_standard">
-<span class="sig-name descname"><span class="pre">cxx_standard</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;${CMAKE_CXX_STANDARD}&quot;</span></em><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.cxx_standard" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">cxx_standard</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;${CMAKE_CXX_STANDARD}&quot;</span></em><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.cxx_standard" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
@@ -243,7 +243,7 @@ if it is set when the target is created.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget.source_dir">
-<span class="sig-name descname"><span class="pre">source_dir</span></span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.source_dir" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">source_dir</span></span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.source_dir" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>path</p>
@@ -254,7 +254,7 @@ if it is set when the target is created.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_target.CXXTarget.sources">
-<span class="sig-name descname"><span class="pre">sources</span></span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.sources" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sources</span></span><a class="headerlink" href="#cmaize.targets-cxx_target.CXXTarget.sources" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[path]</p>

@@ -11,11 +11,11 @@
     <script src="../../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../../../../_static/jquery.js"></script>
-        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
-        <script src="../../../../../_static/doctools.js"></script>
-        <script src="../../../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -105,16 +105,16 @@
            <div itemprop="articleBody">
              
   <section id="module-cmaize.package_managers-cmake-cmake_package_manager">
-<span id="cmaize-package-managers-cmake-cmake-package-manager"></span><h1>cmaize.package_managers/cmake/cmake_package_manager<a class="headerlink" href="#module-cmaize.package_managers-cmake-cmake_package_manager" title="Permalink to this heading"></a></h1>
+<span id="cmaize-package-managers-cmake-cmake-package-manager"></span><h1>cmaize.package_managers/cmake/cmake_package_manager<a class="headerlink" href="#module-cmaize.package_managers-cmake-cmake_package_manager" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/cmake/cmake_package_manager.</span></span><span class="sig-name descname"><span class="pre">CMakePackageManager</span></span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/cmake/cmake_package_manager.</span></span><span class="sig-name descname"><span class="pre">CMakePackageManager</span></span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PackageManager</span></code></p>
 <p>CMake package manager going through <code class="docutils literal notranslate"><span class="pre">find_package</span></code> and <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code>.</p>
 <p><strong>Additional Constructors</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.CTOR">
-<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.CTOR" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.CTOR" title="Link to this definition"></a></dt>
 <dd><p>Default constructor of CMakePackageManager.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -126,7 +126,7 @@
 <p><strong>Methods</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.add_paths">
-<span class="sig-name descname"><span class="pre">add_paths</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.add_paths" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add_paths</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.add_paths" title="Link to this definition"></a></dt>
 <dd><p>Adds new search paths for the package manager.</p>
 <p>These paths are stored in the <code class="docutils literal notranslate"><span class="pre">search_paths</span></code> attribute. Duplicate
 paths will be ignored.</p>
@@ -140,7 +140,7 @@ paths will be ignored.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.register_dependency">
-<span class="sig-name descname"><span class="pre">register_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_rd_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_rd_proj_specs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.register_dependency" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">register_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_rd_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_rd_proj_specs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.register_dependency" title="Link to this definition"></a></dt>
 <dd><p>Register the dependency with the package manager. This does not search
 for or build the dependency, but makes it known to the package manager
 for future searching and building.</p>
@@ -151,7 +151,7 @@ for future searching and building.</p>
 <li><p><strong>_rd_name</strong> (<em>desc</em>) – Name of the dependency.</p></li>
 <li><p><strong>**kwargs</strong> – <p>Additional keyword arguments may be necessary.</p>
 </p></li>
-<li><p><strong>_rd_proj_specs</strong> (<a class="reference internal" href="../../project/project_specification.html#cmaize.project-project_specification.ProjectSpecification" title="cmaize.project/project_specification.ProjectSpecification"><em>ProjectSpecification</em></a>) – </p></li>
+<li><p><strong>_rd_proj_specs</strong> (<a class="reference internal" href="../../project/package_specification.html#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -165,7 +165,7 @@ for future searching and building.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.find_installed">
-<span class="sig-name descname"><span class="pre">find_installed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fi_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_fi_project_specs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.find_installed" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">find_installed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fi_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_fi_package_specs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.find_installed" title="Link to this definition"></a></dt>
 <dd><p>Finds an installed package.</p>
 <p>This function uses CMake’s <code class="docutils literal notranslate"><span class="pre">find_package</span></code> in config mode to search for
 the packages on your system.</p>
@@ -173,7 +173,7 @@ the packages on your system.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>_fi_result</strong> (<em>InstalledTarget*</em>) – Return value for the installed target.</p></li>
-<li><p><strong>_fi_project_specs</strong> (<a class="reference internal" href="../../project/project_specification.html#cmaize.project-project_specification.ProjectSpecification" title="cmaize.project/project_specification.ProjectSpecification"><em>ProjectSpecification</em></a>) – Specifications for the package to build.</p></li>
+<li><p><strong>_fi_package_specs</strong> (<a class="reference internal" href="../../project/package_specification.html#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – Specifications for the package to build.</p></li>
 <li><p><strong>**kwargs</strong> – <p>Additional keyword arguments may be necessary.</p>
 </p></li>
 </ul>
@@ -198,7 +198,7 @@ string (“”) if it was not found.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.get_package">
-<span class="sig-name descname"><span class="pre">get_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gp_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gp_proj_specs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.get_package" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gp_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gp_proj_specs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.get_package" title="Link to this definition"></a></dt>
 <dd><p>Get the requested package if it is installed. This is currently mostly
 unimplemented and should not yet be used.</p>
 <dl class="field-list simple">
@@ -206,7 +206,7 @@ unimplemented and should not yet be used.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager" title="cmaize.package_managers/cmake/cmake_package_manager.CMakePackageManager"><em>CMakePackageManager</em></a>) – CMakePackageManager object</p></li>
 <li><p><strong>_gp_result</strong> (<em>InstalledTarget*</em>) – Resulting target object return variable</p></li>
-<li><p><strong>_gp_proj_specs</strong> (<a class="reference internal" href="../../project/project_specification.html#cmaize.project-project_specification.ProjectSpecification" title="cmaize.project/project_specification.ProjectSpecification"><em>ProjectSpecification</em></a>) – Specifications for the package to build.</p></li>
+<li><p><strong>_gp_proj_specs</strong> (<a class="reference internal" href="../../project/package_specification.html#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – Specifications for the package to build.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -220,7 +220,7 @@ unimplemented and should not yet be used.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.install_package">
-<span class="sig-name descname"><span class="pre">install_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ip_pkg_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.install_package" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">install_package</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ip_pkg_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.install_package" title="Link to this definition"></a></dt>
 <dd><p>Install a given target in the project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -252,7 +252,7 @@ respectively. Currently, only semantic versioning
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager._generate_package_config">
-<span class="sig-name descname"><span class="pre">_generate_package_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__gpc_output_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gpc_pkg_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager._generate_package_config" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_generate_package_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__gpc_output_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gpc_pkg_name</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager._generate_package_config" title="Link to this definition"></a></dt>
 <dd><p>Generates a package config file for the provided package. This file
 will also attempt to find dependencies for the package.</p>
 <dl class="field-list simple">
@@ -271,7 +271,7 @@ targets that are created by this project.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager._generate_target_config">
-<span class="sig-name descname"><span class="pre">_generate_target_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__gtc_tgt_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_target_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_namespace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_config_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_install_dest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager._generate_target_config" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_generate_target_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__gtc_tgt_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_target_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_namespace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_config_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__gtc_install_dest</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager._generate_target_config" title="Link to this definition"></a></dt>
 <dd><p>Generate a target config file for the given target at the provided
 location.</p>
 <dl class="field-list simple">
@@ -291,7 +291,7 @@ location.</p>
 <p><strong>Attributes</strong></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.dependencies">
-<span class="sig-name descname"><span class="pre">dependencies</span></span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.dependencies" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">dependencies</span></span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.dependencies" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>cpp_map[desc, <a class="reference internal" href="dependency/dependency_class.html#cmaize.package_managers-cmake-dependency-dependency_class.Dependency" title="cmaize.package_managers/cmake/dependency/dependency_class.Dependency">Dependency</a>]</p>
@@ -303,7 +303,7 @@ is empty.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.search_paths">
-<span class="sig-name descname"><span class="pre">search_paths</span></span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.search_paths" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">search_paths</span></span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager.CMakePackageManager.search_paths" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[path]</p>
@@ -317,7 +317,7 @@ is empty.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.package_managers-cmake-cmake_package_manager._register_package_manager_cmake">
-<span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/cmake/cmake_package_manager.</span></span><span class="sig-name descname"><span class="pre">_register_package_manager_cmake</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager._register_package_manager_cmake" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cmaize.package_managers/cmake/cmake_package_manager.</span></span><span class="sig-name descname"><span class="pre">_register_package_manager_cmake</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.package_managers-cmake-cmake_package_manager._register_package_manager_cmake" title="Link to this definition"></a></dt>
 <dd><p>Registers a CMakePackageManager instance. This should only be called at the
 end of the file defining the PackageManager class.</p>
 </dd></dl>

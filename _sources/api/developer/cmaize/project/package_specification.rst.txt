@@ -1,33 +1,33 @@
 
 ####################################
-cmaize.project/project_specification
+cmaize.project/package_specification
 ####################################
 
-.. module:: cmaize.project/project_specification
+.. module:: cmaize.project/package_specification
 
 
-.. py:class:: ProjectSpecification
+.. py:class:: PackageSpecification
 
-   The ``ProjectSpecification`` class is envisioned as holding all of the
-   details about how to build a project ("project" being a catchall for a
+   The ``PackageSpecification`` class is envisioned as holding all of the
+   details about how to build a package ("package" being a catchall for a
    dependency or the project that the CMaize build system is being written
    for). This includes things like where the source code lives, the version
    to build, and specific options for configuring and compiling.
-   ``ProjectSpecification`` instances will ultimately be used to request
+   ``PackageSpecification`` instances will ultimately be used to request
    packages from the ``PackageManager``.
    
    **Additional Constructors**
 
    .. py:method:: CTOR()
 
-      Default constructor for ProjectSpecification object with only
+      Default constructor for PackageSpecification object with only
       autopopulated options available.
       
-      :param self: ProjectSpecification object constructed.
-      :type self: ProjectSpecification
+      :param self: PackageSpecification object constructed.
+      :type self: PackageSpecification
       :returns: ``self`` will be set to the newly constructed
-                ``ProjectSpecification`` object.
-      :rtype: ProjectSpecification
+                ``PackageSpecification`` object.
+      :rtype: PackageSpecification
       
 
    **Methods**
@@ -40,57 +40,57 @@ cmaize.project/project_specification
       ``string(<HASH>`` function defined `here
       <https://cmake.org/cmake/help/latest/command/string.html#hashing>`__.
       
-      :param self: ``ProjectSpecification`` object to hash.
-      :type self: ProjectSpecification
-      :param return_hash: Hashed ``ProjectSpecification``
+      :param self: ``PackageSpecification`` object to hash.
+      :type self: PackageSpecification
+      :param return_hash: Hashed ``PackageSpecification``
       :type return_hash: str
       :param hash_type: Hash algorithm to use
       :type hash_type: str
       
-      :returns: Hashed ``ProjectSpecification`` object
+      :returns: Hashed ``PackageSpecification`` object
       :rtype: str
       
 
 
    .. py:method:: set_version()
 
-      Overload to ``set_version()`` method to catch when the project version
+      Overload to ``set_version()`` method to catch when the package version
       string is blank.
       
       .. note::
          
          This override is required because of a bug in CMakePPLang.
          Currently, CMakePPLang cannot differentiate between
-         ``ProjectSpecification(set_version "${ps_obj}")`` and 
-         ``ProjectSpecification(set_version "${ps_obj}" "")``. Sometimes the
+         ``PackageSpecification(set_version "${ps_obj}")`` and 
+         ``PackageSpecification(set_version "${ps_obj}" "")``. Sometimes the
          ``PROJECT_VERSION`` variable used in ``__initialize`` to determine
-         a default project version is blank, so this ensures we do not get
+         a default package version is blank, so this ensures we do not get
          an error about not including the version argument for
-         ``cpp_member(set_version ProjectSpecification str)`` calls.
+         ``cpp_member(set_version PackageSpecification str)`` calls.
       
-      :param self: ``ProjectSpecification`` object.
-      :type self: ProjectSpecification
+      :param self: ``PackageSpecification`` object.
+      :type self: PackageSpecification
       
 
 
-   .. py:method:: set_version(project_version)
+   .. py:method:: set_version(package_version)
 
-      Set the project version variable and splits the version into 
+      Set the package version variable and splits the version into 
       major, minor, patch, and tweak components.
       
-      :param self: ``ProjectSpecification`` object.
-      :type self: ProjectSpecification
-      :param project_version: Full project version string.
-      :type project_version: str
+      :param self: ``PackageSpecification`` object.
+      :type self: PackageSpecification
+      :param package_version: Full package version string.
+      :type package_version: str
       
 
 
    .. py:method:: __initialize()
 
-      Initialize project attributes with default values.
+      Initialize package attributes with default values.
       
-      :param self: ``ProjectSpecification`` object to initialize.
-      :type self: ProjectSpecification
+      :param self: ``PackageSpecification`` object to initialize.
+      :type self: PackageSpecification
       
 
    **Attributes**
@@ -99,7 +99,7 @@ cmaize.project/project_specification
 
       :type: str
       
-      Name of project or dependency as a string.
+      Name of package as a string.
       
 
 
@@ -107,7 +107,7 @@ cmaize.project/project_specification
 
       :type: str
       
-      Version of project or dependency as a string.
+      Version of package as a string.
       
 
 
@@ -179,7 +179,7 @@ cmaize.project/project_specification
 
       :type: cpp_map
       
-      Project configure options.
+      Package configure options.
       
       This is initialized to an empty map for users to fill.
       
@@ -189,7 +189,7 @@ cmaize.project/project_specification
 
       :type: cpp_map
       
-      Project compile options.
+      Package compile options.
       
       This is initialized to an empty map for users to fill.
       

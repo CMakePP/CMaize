@@ -11,11 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -98,7 +98,7 @@
            <div itemprop="articleBody">
              
   <section id="cmake-option-variables">
-<h1>CMake Option Variables<a class="headerlink" href="#cmake-option-variables" title="Permalink to this heading"></a></h1>
+<h1>CMake Option Variables<a class="headerlink" href="#cmake-option-variables" title="Link to this heading"></a></h1>
 <p>This page collects CMake variables that can be used as options to the <cite>cmake</cite>
 command to control the resulting build.  Projects are strongly encouraged to use
 these variables when relevant and under no circumstance should a project
@@ -109,10 +109,10 @@ CMake regardless of whether or not they used CMaize. Note that the inopportune
 word there is <strong>should</strong>; you’ll find a plethora of counterexamples (said
 counterexamples are bugs and should be reported).</p>
 <section id="controlling-cmake">
-<h2>Controlling CMake<a class="headerlink" href="#controlling-cmake" title="Permalink to this heading"></a></h2>
+<h2>Controlling CMake<a class="headerlink" href="#controlling-cmake" title="Link to this heading"></a></h2>
 <p>The variables in this section control CMake’s behavior.</p>
 <section id="cmake-toolchain-file">
-<h3>CMAKE_TOOLCHAIN_FILE<a class="headerlink" href="#cmake-toolchain-file" title="Permalink to this heading"></a></h3>
+<h3>CMAKE_TOOLCHAIN_FILE<a class="headerlink" href="#cmake-toolchain-file" title="Link to this heading"></a></h3>
 <p>Used to tell CMake to read the input variables from a file. In other words,
 instead of having to pass a bunch of <code class="docutils literal notranslate"><span class="pre">-D&lt;variable&gt;=&lt;value&gt;</span></code> flags to the
 <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command, you can put them in a file and CMake will read them in. The
@@ -120,16 +120,16 @@ variables must be specified in the file using CMake’s set syntax:
 <code class="docutils literal notranslate"><span class="pre">set(&lt;variable&gt;</span> <span class="pre">&lt;value&gt;)</span></code>.</p>
 </section>
 <section id="cmake-install-prefix">
-<h3>CMAKE_INSTALL_PREFIX<a class="headerlink" href="#cmake-install-prefix" title="Permalink to this heading"></a></h3>
+<h3>CMAKE_INSTALL_PREFIX<a class="headerlink" href="#cmake-install-prefix" title="Link to this heading"></a></h3>
 <p>This is the directory to use as the root of the installation.  This defaults to
 something like <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code> on Unix-like operating systems.</p>
 </section>
 </section>
 <section id="finding-dependencies">
-<h2>Finding Dependencies<a class="headerlink" href="#finding-dependencies" title="Permalink to this heading"></a></h2>
+<h2>Finding Dependencies<a class="headerlink" href="#finding-dependencies" title="Link to this heading"></a></h2>
 <p>Variables in this section are used by CMake when it looks for a dependency.</p>
 <section id="cmake-prefix-path">
-<h3>CMAKE_PREFIX_PATH<a class="headerlink" href="#cmake-prefix-path" title="Permalink to this heading"></a></h3>
+<h3>CMAKE_PREFIX_PATH<a class="headerlink" href="#cmake-prefix-path" title="Link to this heading"></a></h3>
 <p>This is a list of paths that CMake should search in order to locate a package.
 For dependencies which follow modern CMake practices this should be the path to
 the directory containing the <code class="docutils literal notranslate"><span class="pre">XXXConfig.cmake</span></code> file. For dependencies still
@@ -137,7 +137,7 @@ relying on <code class="docutils literal notranslate"><span class="pre">FindXXX.
 library directories.</p>
 </section>
 <section id="xxx-root">
-<h3>XXX_ROOT<a class="headerlink" href="#xxx-root" title="Permalink to this heading"></a></h3>
+<h3>XXX_ROOT<a class="headerlink" href="#xxx-root" title="Link to this heading"></a></h3>
 <p>Many of the old <code class="docutils literal notranslate"><span class="pre">FindXXX.cmake</span></code> modules used such variables as hints for
 where a dependency <code class="docutils literal notranslate"><span class="pre">XXX</span></code> is installed.  CMake has now adopted such variables
 as part of the standard and <code class="docutils literal notranslate"><span class="pre">find_package</span></code> automatically considers such
@@ -147,40 +147,40 @@ the dependency’s name; however, since determining the case can be annoying,
 CMaize additionally will honor the all uppercase and all lowercase variants.</p>
 </section>
 <section id="cmake-module-path">
-<h3>CMAKE_MODULE_PATH<a class="headerlink" href="#cmake-module-path" title="Permalink to this heading"></a></h3>
+<h3>CMAKE_MODULE_PATH<a class="headerlink" href="#cmake-module-path" title="Link to this heading"></a></h3>
 <p>This is where CMake looks for other CMake modules. This is only relevant if your
 dependency is a CMake module that has not been installed.</p>
 </section>
 </section>
 <section id="compilation">
-<h2>Compilation<a class="headerlink" href="#compilation" title="Permalink to this heading"></a></h2>
+<h2>Compilation<a class="headerlink" href="#compilation" title="Link to this heading"></a></h2>
 <p>The variables in this section influence what gets compiled and how it gets
 compiled.</p>
 <section id="build-shared-libraries">
-<h3>BUILD_SHARED_LIBRARIES<a class="headerlink" href="#build-shared-libraries" title="Permalink to this heading"></a></h3>
+<h3>BUILD_SHARED_LIBRARIES<a class="headerlink" href="#build-shared-libraries" title="Link to this heading"></a></h3>
 <p>This can be used to control whether or not the resulting libraries will be
 shared or static.  Note that this is only honored if package maintainers do not
 force a library to be static/shared.</p>
 </section>
 <section id="build-testing">
-<h3>BUILD_TESTING<a class="headerlink" href="#build-testing" title="Permalink to this heading"></a></h3>
+<h3>BUILD_TESTING<a class="headerlink" href="#build-testing" title="Link to this heading"></a></h3>
 <p>If set to a true value CMake will build unittests, otherwise the unittests will
 be skipped.</p>
 </section>
 <section id="cmake-build-type">
-<h3>CMAKE_BUILD_TYPE<a class="headerlink" href="#cmake-build-type" title="Permalink to this heading"></a></h3>
+<h3>CMAKE_BUILD_TYPE<a class="headerlink" href="#cmake-build-type" title="Link to this heading"></a></h3>
 <p>Used to switch between various build types (debug, release, <em>etc.</em>). CMake by
 default recognizes <cite>Debug</cite>, <cite>Release</cite>, <cite>MinSizeRel</cite>, and <cite>RelWithDebInfo</cite>, but
 CMake projects are free to define additional build types if they so choose.</p>
 </section>
 <section id="cmake-xxx-compiler">
-<h3>CMAKE_XXX_COMPILER<a class="headerlink" href="#cmake-xxx-compiler" title="Permalink to this heading"></a></h3>
+<h3>CMAKE_XXX_COMPILER<a class="headerlink" href="#cmake-xxx-compiler" title="Link to this heading"></a></h3>
 <p>Here <code class="docutils literal notranslate"><span class="pre">XXX</span></code> can be <code class="docutils literal notranslate"><span class="pre">CXX</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>, or <code class="docutils literal notranslate"><span class="pre">Fortran</span></code>.  This variable can be used
 to specify the compiler for language <code class="docutils literal notranslate"><span class="pre">XXX</span></code>.  It is strongly recommended that
 you use full paths otherwise weirdness can occur.</p>
 </section>
 <section id="cmake-xxx-flags">
-<h3>CMAKE_XXX_FLAGS<a class="headerlink" href="#cmake-xxx-flags" title="Permalink to this heading"></a></h3>
+<h3>CMAKE_XXX_FLAGS<a class="headerlink" href="#cmake-xxx-flags" title="Link to this heading"></a></h3>
 <p>Again <code class="docutils literal notranslate"><span class="pre">XXX</span></code> can be <code class="docutils literal notranslate"><span class="pre">CXX</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>, or <code class="docutils literal notranslate"><span class="pre">Fortran</span></code>.  This variable can be used
 to hold a list of flags that should be given to the <code class="docutils literal notranslate"><span class="pre">XXX</span></code> compiler.</p>
 </section>

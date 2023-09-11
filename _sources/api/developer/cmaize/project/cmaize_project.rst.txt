@@ -45,7 +45,7 @@ cmaize.project/cmaize_project
          * **VERSION** (*desc*) --
            Version string of non-negative integers of the form
            ``<major>[.<minor>[.<patch>[.<tweak>] ] ]``. Populates the
-           version attributes of the ``ProjectSpecification``. Parallels
+           version attributes of the ``PackageSpecification``. Parallels
            the ``VERSION <version>`` keyword for CMake ``project()``
            (`link <cmake_project_>`__), and the value is passed to
            a CMake ``project()`` call if the project does not exist yet.
@@ -319,7 +319,7 @@ cmaize.project/cmaize_project
 
    .. py:attribute:: specification
 
-      :type: ProjectSpecification
+      :type: PackageSpecification
       
       Details about the project.
       

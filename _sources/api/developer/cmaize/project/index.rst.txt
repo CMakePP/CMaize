@@ -7,6 +7,6 @@ cmaize.project
    :maxdepth: 2
 
    cmaize_project
-   project_specification
+   package_specification
    projects
 

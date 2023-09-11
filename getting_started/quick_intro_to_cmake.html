@@ -11,11 +11,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -100,21 +100,21 @@
            <div itemprop="articleBody">
              
   <section id="quick-introduction-to-cmake">
-<h1>Quick Introduction to CMake<a class="headerlink" href="#quick-introduction-to-cmake" title="Permalink to this heading"></a></h1>
+<h1>Quick Introduction to CMake<a class="headerlink" href="#quick-introduction-to-cmake" title="Link to this heading"></a></h1>
 <p>This chapter is geared towards users who have not used CMake before. If you have
 used CMake previously feel free to skip this chapter.</p>
 <section id="about-cmake">
-<h2>About CMake<a class="headerlink" href="#about-cmake" title="Permalink to this heading"></a></h2>
+<h2>About CMake<a class="headerlink" href="#about-cmake" title="Link to this heading"></a></h2>
 <p>Let’s start with some basic background on CMake.</p>
 <section id="what-is-cmake">
-<h3>What is CMake?<a class="headerlink" href="#what-is-cmake" title="Permalink to this heading"></a></h3>
+<h3>What is CMake?<a class="headerlink" href="#what-is-cmake" title="Link to this heading"></a></h3>
 <p>CMake stands for “Cross platform Make” and is a tool to facilitate building
 packages on a variety of platforms.  The CMake suite of programs contains a
 number of programs, but for our present purposes the only one you need to be
 aware of is the literal CMake program, <code class="docutils literal notranslate"><span class="pre">cmake</span></code>.</p>
 </section>
 <section id="obtaining-cmake">
-<h3>Obtaining CMake<a class="headerlink" href="#obtaining-cmake" title="Permalink to this heading"></a></h3>
+<h3>Obtaining CMake<a class="headerlink" href="#obtaining-cmake" title="Link to this heading"></a></h3>
 <p>CMake’s official website is <a class="reference external" href="https://cmake.org/">here</a> and contains links
 to download and install the CMake package. CMake is also readily available in
 most package managers.  Most modern packages that rely on CMake require at least
@@ -122,14 +122,14 @@ CMake version 3.0, but you’ll need at least version 3.14 to build CMaize-based
 projects.</p>
 </section>
 <section id="building-cmake">
-<h3>Building CMake<a class="headerlink" href="#building-cmake" title="Permalink to this heading"></a></h3>
+<h3>Building CMake<a class="headerlink" href="#building-cmake" title="Link to this heading"></a></h3>
 <p>For now follow CMake’s instructions as I’m too lazy to write my own.</p>
 </section>
 </section>
 <section id="using-cmake">
-<h2>Using CMake<a class="headerlink" href="#using-cmake" title="Permalink to this heading"></a></h2>
+<h2>Using CMake<a class="headerlink" href="#using-cmake" title="Link to this heading"></a></h2>
 <section id="basic-cmake-usage">
-<h3>Basic CMake Usage<a class="headerlink" href="#basic-cmake-usage" title="Permalink to this heading"></a></h3>
+<h3>Basic CMake Usage<a class="headerlink" href="#basic-cmake-usage" title="Link to this heading"></a></h3>
 <p>Now that you have the CMake package installed on your system you can run the
 <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command.  Let’s say you just downloaded some package
 <code class="docutils literal notranslate"><span class="pre">an_awesome_package</span></code>.  If you look at the file structure of
@@ -168,7 +168,7 @@ project.  That said, typically you are home free once the <code class="docutils 
 completed.</p>
 </section>
 <section id="realistic-usage">
-<h3>Realistic Usage<a class="headerlink" href="#realistic-usage" title="Permalink to this heading"></a></h3>
+<h3>Realistic Usage<a class="headerlink" href="#realistic-usage" title="Link to this heading"></a></h3>
 <p>The usage in the previous section is somewhat idealized.  Generally speaking you
 will need to provide more information.  CMake defines a lot of options and we
 have collected them for you on the <a class="reference internal" href="building/cmake_option_vars.html#cmake-option-variables"><span class="std std-ref">CMake Option Variables</span></a> page.  Two of
@@ -202,7 +202,7 @@ build documentation for any package specific options that are available.</p>
 </section>
 </section>
 <section id="building-and-installing">
-<h2>Building and Installing<a class="headerlink" href="#building-and-installing" title="Permalink to this heading"></a></h2>
+<h2>Building and Installing<a class="headerlink" href="#building-and-installing" title="Link to this heading"></a></h2>
 <p>With the package configured, all that remains is to actually build it and to
 install it.  The commands to do this are similar and both are executed in the
 same directory as the top-level <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>.  Building is done by:</p>

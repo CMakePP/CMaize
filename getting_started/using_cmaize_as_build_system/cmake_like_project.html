@@ -11,11 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -99,11 +99,11 @@
            <div itemprop="articleBody">
              
   <section id="example-project-using-cmake-style-structure">
-<h1>Example Project using CMake Style Structure<a class="headerlink" href="#example-project-using-cmake-style-structure" title="Permalink to this heading"></a></h1>
+<h1>Example Project using CMake Style Structure<a class="headerlink" href="#example-project-using-cmake-style-structure" title="Link to this heading"></a></h1>
 <p>This chapter provides an overview of a project structured in a style that
 is common to CMake projects that uses CMaize as its build system.</p>
 <section id="project-overview">
-<h2>Project Overview<a class="headerlink" href="#project-overview" title="Permalink to this heading"></a></h2>
+<h2>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">ExampleCMakeProject</span></code> is a simple C++ project that consists of the following
 components:</p>
 <ul class="simple">
@@ -133,11 +133,11 @@ for each executable and library. A subdirectory is also created the project’s
 tests.</p>
 </section>
 <section id="creating-the-cmakelists-txt-file">
-<h2>Creating the CMakeLists.txt File<a class="headerlink" href="#creating-the-cmakelists-txt-file" title="Permalink to this heading"></a></h2>
+<h2>Creating the CMakeLists.txt File<a class="headerlink" href="#creating-the-cmakelists-txt-file" title="Link to this heading"></a></h2>
 <p>Here we will cover the contents of the <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file at the root of
 the project.</p>
 <section id="the-basics">
-<h3>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this heading"></a></h3>
+<h3>The Basics<a class="headerlink" href="#the-basics" title="Link to this heading"></a></h3>
 <p>First we must start with the basics. We need to declare the minimum required
 version of CMake, the name and version of the project, the language of the
 project, and the C++ standard of the project.</p>
@@ -156,7 +156,7 @@ project, and the C++ standard of the project.</p>
 </div>
 </section>
 <section id="including-cmaize">
-<h3>Including CMaize<a class="headerlink" href="#including-cmaize" title="Permalink to this heading"></a></h3>
+<h3>Including CMaize<a class="headerlink" href="#including-cmaize" title="Link to this heading"></a></h3>
 <p>We also need to include CMaize. This is described more in
 <a class="reference internal" href="obtaining_cmaize.html#automatically-downloading-and-including-cmaize"><span class="std std-ref">Automatically Downloading and Including CMaize</span></a>.</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Include CMaize automatically</span>
@@ -165,7 +165,7 @@ project, and the C++ standard of the project.</p>
 </div>
 </section>
 <section id="adding-the-travelcostutils-library">
-<h3>Adding the TravelCostUtils Library<a class="headerlink" href="#adding-the-travelcostutils-library" title="Permalink to this heading"></a></h3>
+<h3>Adding the TravelCostUtils Library<a class="headerlink" href="#adding-the-travelcostutils-library" title="Link to this heading"></a></h3>
 <p>Now we will add our <code class="docutils literal notranslate"><span class="pre">travel_cost_utils</span></code> library. We need to specify the target
 name, its source directory, and its include directory:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Add our travel_cost_utils library</span>
@@ -178,7 +178,7 @@ name, its source directory, and its include directory:</p>
 </div>
 </section>
 <section id="adding-the-travelcostcalc-executable">
-<h3>Adding the TravelCostCalc Executable<a class="headerlink" href="#adding-the-travelcostcalc-executable" title="Permalink to this heading"></a></h3>
+<h3>Adding the TravelCostCalc Executable<a class="headerlink" href="#adding-the-travelcostcalc-executable" title="Link to this heading"></a></h3>
 <p>Here we add our <code class="docutils literal notranslate"><span class="pre">travel_cost_calc</span></code> executable. We simply need to specify
 the target name, its source directory, and its dependencies:</p>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Add the travel_cost_calc executable</span>
@@ -191,7 +191,7 @@ the target name, its source directory, and its dependencies:</p>
 </div>
 </section>
 <section id="adding-tests">
-<h3>Adding Tests<a class="headerlink" href="#adding-tests" title="Permalink to this heading"></a></h3>
+<h3>Adding Tests<a class="headerlink" href="#adding-tests" title="Link to this heading"></a></h3>
 <p>Now we will add our tests. First, we’ll create an <code class="docutils literal notranslate"><span class="pre">if</span></code> block so that our tests
 are only built if the <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> argument is set to <code class="docutils literal notranslate"><span class="pre">ON</span></code> (or some other
 “truthy” value):</p>
@@ -264,7 +264,7 @@ the name of the target exported by Catch2.</p>
 </section>
 </section>
 <section id="building-the-project">
-<h2>Building the Project<a class="headerlink" href="#building-the-project" title="Permalink to this heading"></a></h2>
+<h2>Building the Project<a class="headerlink" href="#building-the-project" title="Link to this heading"></a></h2>
 <p>The project can be built by running the following commands at the root of the
 project:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the build system</span>
@@ -276,7 +276,7 @@ cmake<span class="w"> </span>--build<span class="w"> </span>build
 </div>
 </section>
 <section id="running-the-executable-and-tests">
-<h2>Running the Executable and Tests<a class="headerlink" href="#running-the-executable-and-tests" title="Permalink to this heading"></a></h2>
+<h2>Running the Executable and Tests<a class="headerlink" href="#running-the-executable-and-tests" title="Link to this heading"></a></h2>
 <p>We can run our executable and our tests with the following commands:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the executable</span>
 ./build/travel_cost_calc
@@ -287,7 +287,7 @@ cmake<span class="w"> </span>--build<span class="w"> </span>build
 </div>
 </section>
 <section id="final-project-code">
-<h2>Final Project Code<a class="headerlink" href="#final-project-code" title="Permalink to this heading"></a></h2>
+<h2>Final Project Code<a class="headerlink" href="#final-project-code" title="Link to this heading"></a></h2>
 <p>This final example project can be viewed and downloaded
 <a class="reference external" href="https://github.com/CMaizeExamples/ExampleCMakeProject">here</a>.</p>
 </section>
