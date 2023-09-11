@@ -36,14 +36,12 @@ and terminology which applies to other build systems as well.
 
 .. glossary::
 
-   build targets
    build target
       This is a generic term for anything built during the
       :term:`build process`. Typical examples of build targets are things
       like libraries, executables, and auto-generated source code. Build targets
       may be combined/consumed to create more build targets.
 
-   build phases
    build phase
       The :term:`build process` is typically decomposed into several steps.
       Each step is referred to as a "build phase". See :ref:`build_phases` for
@@ -57,14 +55,12 @@ and terminology which applies to other build systems as well.
       finished, working software product you actually want. Compiling may or may
       not be involved.
 
-   build systems
    build system
-      The "build system" is the set of :term:`build tools` and code needed to
-      actually carry out the :term:`build process` for a particular
+      The "build system" is the set of :term:`build tools<build tool>` and code
+      needed to actually carry out the :term:`build process` for a particular
       :term:`project`. In the context of CMake the build system is comprised
       of ``cmake`` and the project's ``CMakeLists.txt`` files.
 
-   build tools
    build tool
       A "build tool" is a program designed to facilitate carrying out the
       :term:`build process`. In the context of CMake, examples of build tools
@@ -76,10 +72,10 @@ and terminology which applies to other build systems as well.
       :math:`B`, if :math:`B` can not be built without :math:`A`. :math:`A` is
       typically an already installed :term:`package` or another build target.
 
-   packages
    package
       The output of building a :term:`project` is a package. A package
-      typically includes a proper subset of the :term:`build targets`
+      typically includes a proper subset of the
+      :term:`build targets <build target>`
       produced during the :term:`build process` as well as files containing
       metadata about the package. The metadata is usually designed to aid a
       :term:`package manager` in finding the package later.
@@ -93,14 +89,13 @@ and terminology which applies to other build systems as well.
       to satisfy a dependency. Package management is built in to CMake via the
       ``find_package`` command and the ``FetchContent`` module.
 
-   projects
    project
       Conceptually a "project" is the input (usually source code) to a
       :term:`build system`. In practice CMake, uses the term project to
       refer to not just the input to the build system, but also the workspace in
       which the :term:`build process` is occurring. In other words, to CMake,
       a project is not just the source code being built, but also the
-      :term:`build targets` produced from the build process.
+      :term:`build targets <build target>` produced from the build process.
 
 ****************************
 Computer Science Terminology
@@ -115,3 +110,11 @@ Computer Science Terminology
       In practice, a component's API usually amounts to one or more coding
       language bindings that allow the component to be manipulated directly from
       the source code of another software component.
+
+   DRY
+      Short for "Don't Repeat Yourself", the DRY principle stipulates that it
+      is better to introduce an abstraction for getting/setting state than it
+      is to rewrite that state. Of particular relevance when discussing CMake,
+      copy/pasting runs afoul of DRY because developers may need to change
+      multiple build systems if a bug is found, a new best practice is
+      introduced, or a new feature is added.

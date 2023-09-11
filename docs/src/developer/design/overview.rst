@@ -27,15 +27,19 @@ What is CMaize?
 ***************
 
 CMaize is a CMake module designed to streamline writing
-:term:`build systems` for scientific software. Initial focus is on
-C++-based :term:`projects`, but support for any language CMake supports
+:term:`build systems <build system>` for scientific software. Initial focus is
+on
+C++-based :term:`projects <project>`, but support for any language CMake
+supports
 is straightforward.
 
 **********************
 Why do we need CMaize?
 **********************
 
-For full discussion see :ref:`statement_of_need`.
+.. note::
+
+   For full discussion see :ref:`statement_of_need`.
 
 The vast majority of build systems written for CMake are verbose and highly
 redundant. Generally speaking, it seems that the broader CMake community has
@@ -43,8 +47,7 @@ accepted that this "is simply the way CMake build systems are" and has stopped
 trying to improve them. Evidence for this claim comes from tutorials prominently
 showcasing boilerplate code, the growing reliance on template repositories, and
 the tried and true technique of copy/paste-ing CMake scripts from one project
-into another. All of these approaches run afoul of the
-`"Don't Repeat Yourself (DRY)" <https://tinyurl.com/28x7h46c>`__ paradigm and
+into another. All of these approaches run afoul of the :term:`DRY` paradigm and
 subsequently suffer from the same problems proponents of DRY seek
 to avoid, *e.g.*, multiple sources of truth, lack of synchronization,
 and coupling the logic of distinct units of code.
@@ -82,7 +85,8 @@ cmake-based build system
 cmake-based workflows
    CMake is the de facto build tool for C++-based projects. Most consumers who
    intend to compile a C++ based project from source, will have some familiarity
-   with CMake's :term:`build phases` and the corresponding CMake commands.
+   with CMake's :term:`build phases <build phase>` and the corresponding CMake
+   commands.
    We want CMaize to integrate as seamlessly as possible into existing CMake-
    based workflows. Ideally consumers building projects with CMaize build
    systems won't even know it!
@@ -97,6 +101,38 @@ minimize redundancy
    - A lot of the redundancy build system maintainers face comes from
      finding, building, and installing packages (including the package
      the project results in).
+
+.. _target_support:
+
+target support
+   Most of writing a build system is defining :term:`targets <build target>` and
+   explaining how they depend on one another. In particular, CMaize needs to
+   be able to support:
+
+   - external packages
+   - libraries
+   - executables
+
+   The aforementioned target types will need to be supported in multiple
+   languages as well.
+
+
+.. _package_manager_support:
+
+package manager support
+   Managing targets which refer to external packages is complicated and arguably
+   the hardest part of writing a build system. In practice, managing external
+   packages should really be the role of a :term:`package manager`. While
+   CMake has integrated support for package management (mainly through the
+   `FetchContent` module and the
+   `find_package <https://tinyurl.com/4c7ak8pt>`_ function), this support
+   places most of the onous on the user and does not play nicely with other
+   package managers (such as ``pip``).
+
+   - Many (if not most) C++ projects are designed for use with CMake's internal
+     package manager.
+   - Consideration :ref:`cmake_based_build_system` means that external package
+     managers will need to be handled "under the hood" of CMaize.
 
 .. _object_oriented:
 
@@ -114,34 +150,6 @@ object-oriented
      (quotes on avoid because the CMakePP Language is developed and maintained
      by the same organization as CMaize...).
 
-.. _target_support:
-
-target support
-   :term:`Targets <target>`
-
-.. _package_manager_support:
-
-package manager support
-   Arguably the hardest part of writing a build system is dependency management.
-   Managing dependency distributions (*i.e.*, packages) has traditionally been
-   the role of a :term:`package manager`.
-   CMake has integrated :term:`package manager` support; however, CMake's
-   package manager support does not always play nicely with widely used package
-   managers, particularly those designed for non-C++ languages (*e.g.*,
-   ``pip``). In practice, modern scientific C++ projects increasingly want to
-   interact with external package managers, either because they want their
-   project to be buildable via those package managers and/or because they want
-   to use those package managers to build dependencies.
-
-   - Note that because of the :ref:`cmake_based_build_system` consideration it
-     is unlikely that C++ developers will migrate to alternative build systems
-     and CMaize is thus faced with integrating package manager support into
-     CMake.
-
-
-
-
-
 ************
 Architecture
 ************
@@ -155,12 +163,26 @@ Architecture
 
 :numref:`fig_architecture` illustrates the overall architecture of CMaize.
 Following from :ref:`cmake_based_build_system` all CMaize infrastructure is
-built on traditional CMake.
+built on traditional CMake (denoted by the box labeled "CMake" at the bottom
+of :numref:`fig_architecture`). While not shown, classes in the "Components"
+box are written using the `CMakePP Language`, which itself is built off of
+the traditional CMake language.
+
+.. attention::
+
+   In the following subsections we introduce the major components of CMaize.
+   Many of these components are named for the primary class responsible for
+   the component. To distinguish between the class and the component we adopt
+   the convention that the component is referred to with normal text whereas the
+   class is referred to in a code snippet. For example, CMaizeProject refers to
+   the component and ``CMaizeProject`` refers to the class.
 
 User API
 ========
 
-Main discussion: :ref:`designing_cmaizes_user_api`.
+.. note::
+
+   Main discussion: :ref:`designing_cmaizes_user_api`.
 
 Considerations :ref:`cmake_based_workflows` and :ref:`object_oriented` together
 require us to write a functional-style user API over top of the classes CMaize
@@ -169,33 +191,63 @@ information and forwarding it to the underlying classes. Since users interact
 exclusively with CMaize through the User API component, and the User API
 is only charged with collecting information, it also helps address the
 :ref:`minimize_redundancy` consideration by encapsulating the majority of the
+needed calls to traditional CMake needed
 
 CMaizeProject
 =============
 
-Main discussion: :ref:`designing_cmaizes_cmaizeproject_component`.
+.. note::
 
-Behind the scenes CMaize will rely on four components, each of which is
-associated with a class. The component associated with the ``CMaizeProject``
-class will be responsible for tracking project information, including version,
-dependencies, targets, etc. In addition to serving as a workspace of sorts,
-the main purpose of the ``CMaizeProject`` class is to collect enough information
-so that we can automatically generate a...
+   Main discussion: :ref:`designing_cmaizes_cmaizeproject_component`.
+
+The CMaizeProject component is responsible for tracking project information,
+including version, dependencies, targets, etc. of the current project. In
+addition to serving as a workspace of sorts, ``CMaizeProject`` objects also
+collect all of the information needed to eventually package the project.
 
 PackageSpecification
 ====================
 
-Main discussion: :ref:`designing_cmaizes_packagespecification_component`.
+.. note::
+
+   Main discussion: :ref:`designing_cmaizes_packagespecification_component`.
+
+Packages typically have different "iterations". Different iterations arise
+from different versions of the source code, different compile options, and
+from different iterations of the dependencies. ``PackageSpecification`` objects
+are meant to encapsulate the details necessary to tell one iteration of a
+package from another.
 
 PackageManager
 ==============
 
-Main discussion: :ref:`designing_cmaizes_packagemanager_component`.
+.. note::
+
+   Main discussion: :ref:`designing_cmaizes_packagemanager_component`.
+
+Superficially, ``PackageManager`` objects map ``PackageSpecification`` objects
+to packages. In practice, the requested package may not actually exist yet
+and the ``PackageManager`` object may either need to build the package or tell
+the user it can not find it. The PackageManager component is charged with
+encapsulating the logic for finding or building packages. Of note, the
+PackageManager component is charged with being able to rely on established
+package managers for obtaining packages.
 
 Target
 ======
 
-Main discussion: :ref:`designing_cmaizes_target_component`.
+.. note::
+
+   Main discussion: :ref:`designing_cmaizes_target_component`.
+
+Thinking of a ``PackageManager`` as a map, ``PackageSpecification`` objects
+are the keys and ``Target`` objects are the values. Thus ``Target`` objects
+are charged with describing the actual package. This includes, for example,
+knowing where the libraries and header files are located, as well as supporting
+the consumption of the package. The reason this component is called the Target
+component, and not say the Package component, is because the component
+is actually charged with describing the pieces of the package. Put another way,
+a package is just a collection of targets.
 
 *******
 Summary
@@ -206,16 +258,26 @@ Summary
    written entirely in CMake.
 
 :ref:`cmake_based_workflows`
-   Consumers interact with ``CMakeLists.txt`` written with CMaize no differently
-   than they would with ``CMakeLists.txt`` written with CMake alone. Therefore,
-   CMaize-based build systems seamlessly integrate into existing workflows.
+   CMaize is distributed as a CMake module and is designed to be included in
+   a ``CMakeLists.txt`` file. In turn, the person or tool building the project
+   still interacts with the project using the traditional CMake-based workflow.
 
 :ref:`minimize_redundancy`
-   The user API is charged with collecting the package's information and then
-   mapping that to the usual CMake calls.
+   The user API is charged with collecting the package's information via a
+   series of functional-style calls and mapping it to the traditional CMake
+   calls. So although all of CMake's usual verboseness and redundancy is still
+   present, it is encapsulated under CMaize and the developer's build system
+   obeys :term:`DRY`.
 
-:ref:`object_oriented`
-   CMaize has adopted the `CMakePP Language`_ under the hood.
+:ref:`target_support`
+   CMaize's Target component is responsible for being able to generically
+   handle any build targets the user may want to define. These include external
+   packages as well as build targets needed by the current project.
 
 :ref:`package_manager_support`
-   This is covered by the PackageManager component.
+   Interacting with CMake's internal package manager, as well as external
+   package managers, is covered by the PackageManager component.
+
+:ref:`object_oriented`
+   The guts of CMaize is object-oriented. Internally, CMaize has adopted the
+   `CMakePP Language`_.
