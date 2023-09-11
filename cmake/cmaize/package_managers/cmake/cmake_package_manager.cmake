@@ -156,12 +156,12 @@ cpp_class(CMakePackageManager PackageManager)
             _fi "" "${_fi_one_value_args}" "" ${ARGN}
         )
 
-        PackageSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
+        PackageSpecification(GET "${_fi_package_specs}" _fi_pkg_name name)
 
         CMakePackageManager(register_dependency
             "${self}"
             _fi_depend
-            "${_fi_project_specs}"
+            "${_fi_package_specs}"
             ${ARGN}
         )
 
