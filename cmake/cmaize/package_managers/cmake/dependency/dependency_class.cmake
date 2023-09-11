@@ -121,7 +121,7 @@ cpp_class(Dependency)
     # Initialize the dependency with project information.
     #
     # TODO: Many of these optional arguments could be contained in a
-    #       ProjectSpecification and seem necessary, not optional, to include
+    #       PackageSpecification and seem necessary, not optional, to include
     #       for this class to work. I need to look into it more.
     #
     # :param **kwargs: Additional keyword arguments may be necessary.

@@ -4,7 +4,7 @@ include(cmakepp_lang/cmakepp_lang)
 include(cmaize/package_managers/package_manager)
 include(cmaize/package_managers/get_package_manager)
 include(cmaize/package_managers/cmake/dependency/dependency)
-include(cmaize/project/project_specification)
+include(cmaize/project/package_specification)
 include(cmaize/targets/cmaize_target)
 include(cmaize/utilities/fetch_and_available)
 include(cmaize/utilities/generated_by_cmaize)
@@ -99,12 +99,12 @@ cpp_class(CMakePackageManager PackageManager)
     # :rtype: Dependency
     #]]
     cpp_member(register_dependency
-        CMakePackageManager desc ProjectSpecification args
+        CMakePackageManager desc PackageSpecification args
     )
     function("${register_dependency}" self _rd_result _rd_proj_specs)
 
-        ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
-        ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_version version)
+        PackageSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
+        PackageSpecification(GET "${_rd_proj_specs}" _rd_pkg_version version)
 
         CMakePackageManager(GET "${self}" _rd_dependencies dependencies)
         cpp_map(GET "${_rd_dependencies}" _rd_depend "${_rd_pkg_name}")
@@ -132,7 +132,7 @@ cpp_class(CMakePackageManager PackageManager)
     # :param _fi_result: Return value for the installed target.
     # :type _fi_result: InstalledTarget*
     # :param _fi_project_specs: Specifications for the package to build.
-    # :type _fi_project_specs: ProjectSpecification
+    # :type _fi_project_specs: PackageSpecification
     # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
@@ -146,7 +146,7 @@ cpp_class(CMakePackageManager PackageManager)
     # :rtype: InstalledTarget
     #]]
     cpp_member(find_installed
-        CMakePackageManager desc ProjectSpecification args
+        CMakePackageManager desc PackageSpecification args
     )
     function("${find_installed}" self _fi_result _fi_project_specs)
 
@@ -156,7 +156,7 @@ cpp_class(CMakePackageManager PackageManager)
             _fi "" "${_fi_one_value_args}" "" ${ARGN}
         )
 
-        ProjectSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
+        PackageSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
 
         CMakePackageManager(register_dependency
             "${self}"
@@ -202,12 +202,12 @@ cpp_class(CMakePackageManager PackageManager)
     # :param _gp_result: Resulting target object return variable
     # :type _gp_result: InstalledTarget*
     # :param _gp_proj_specs: Specifications for the package to build.
-    # :type _gp_proj_specs: ProjectSpecification
+    # :type _gp_proj_specs: PackageSpecification
     #
     # :returns: Resulting target from the package manager
     # :rtype: InstalledTarget
     #]]
-    cpp_member(get_package CMakePackageManager str ProjectSpecification args)
+    cpp_member(get_package CMakePackageManager str PackageSpecification args)
     function("${get_package}" self _gp_result _gp_proj_specs)
 
         CMakePackageManager(register_dependency

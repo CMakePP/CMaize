@@ -95,9 +95,9 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     cpp_get_global(_fobdc_project CMAIZE_PROJECT_${PROJECT_NAME})
 
     # Create the project specification
-    ProjectSpecification(ctor _fobdc_project_specs)
-    ProjectSpecification(SET "${_fobdc_project_specs}" name "${_fobdc_name}")
-    ProjectSpecification(set_version "${_fobdc_project_specs}" "${_fobdc_VERSION}")
+    PackageSpecification(ctor _fobdc_project_specs)
+    PackageSpecification(SET "${_fobdc_project_specs}" name "${_fobdc_name}")
+    PackageSpecification(set_version "${_fobdc_project_specs}" "${_fobdc_VERSION}")
 
     # Add a CMakePackageManager to the project if it does not exist yet
     CMaizeProject(get_package_manager "${_fobdc_project}" _fobdc_pm "CMake")
