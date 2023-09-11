@@ -131,8 +131,8 @@ cpp_class(CMakePackageManager PackageManager)
     #
     # :param _fi_result: Return value for the installed target.
     # :type _fi_result: InstalledTarget*
-    # :param _fi_project_specs: Specifications for the package to build.
-    # :type _fi_project_specs: PackageSpecification
+    # :param _fi_package_specs: Specifications for the package to build.
+    # :type _fi_package_specs: PackageSpecification
     # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
@@ -148,7 +148,7 @@ cpp_class(CMakePackageManager PackageManager)
     cpp_member(find_installed
         CMakePackageManager desc PackageSpecification args
     )
-    function("${find_installed}" self _fi_result _fi_project_specs)
+    function("${find_installed}" self _fi_result _fi_package_specs)
 
         # set(_fi_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
         set(_fi_one_value_args BUILD_TARGET FIND_TARGET)

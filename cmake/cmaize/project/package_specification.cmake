@@ -6,7 +6,7 @@ include(cmaize/utilities/utilities)
 
 #[[[
 # The ``PackageSpecification`` class is envisioned as holding all of the
-# details about how to build a project ("project" being a catchall for a
+# details about how to build a package ("package" being a catchall for a
 # dependency or the project that the CMaize build system is being written
 # for). This includes things like where the source code lives, the version
 # to build, and specific options for configuring and compiling.
@@ -18,14 +18,14 @@ cpp_class(PackageSpecification)
     #[[[
     # :type: str
     #
-    # Name of project or dependency as a string.
+    # Name of package as a string.
     #]]
     cpp_attr(PackageSpecification name)
 
     #[[[
     # :type: str
     #
-    # Version of project or dependency as a string.
+    # Version of package as a string.
     #]]
     cpp_attr(PackageSpecification version)
 
@@ -90,7 +90,7 @@ cpp_class(PackageSpecification)
     #[[[
     # :type: cpp_map
     #
-    # Project configure options.
+    # Package configure options.
     #
     # This is initialized to an empty map for users to fill.
     #]]
@@ -99,7 +99,7 @@ cpp_class(PackageSpecification)
     #[[[
     # :type: cpp_map
     #
-    # Project compile options.
+    # Package compile options.
     #
     # This is initialized to an empty map for users to fill.
     #]]
@@ -152,7 +152,7 @@ cpp_class(PackageSpecification)
     endfunction()
 
     #[[[
-    # Overload to ``set_version()`` method to catch when the project version
+    # Overload to ``set_version()`` method to catch when the package version
     # string is blank.
     #
     # .. note::
@@ -162,7 +162,7 @@ cpp_class(PackageSpecification)
     #    ``PackageSpecification(set_version "${ps_obj}")`` and 
     #    ``PackageSpecification(set_version "${ps_obj}" "")``. Sometimes the
     #    ``PROJECT_VERSION`` variable used in ``__initialize`` to determine
-    #    a default project version is blank, so this ensures we do not get
+    #    a default package version is blank, so this ensures we do not get
     #    an error about not including the version argument for
     #    ``cpp_member(set_version PackageSpecification str)`` calls.
     #
@@ -181,20 +181,20 @@ cpp_class(PackageSpecification)
     endfunction()
 
     #[[[
-    # Set the project version variable and splits the version into 
+    # Set the package version variable and splits the version into 
     # major, minor, patch, and tweak components.
     #
     # :param self: ``PackageSpecification`` object.
     # :type self: PackageSpecification
-    # :param project_version: Full project version string.
-    # :type project_version: str
+    # :param package_version: Full package version string.
+    # :type package_version: str
     #]]
     cpp_member(set_version PackageSpecification str)
-    function("${set_version}" self project_version)
+    function("${set_version}" self package_version)
 
-        cmaize_split_version(major minor patch tweak "${project_version}")
+        cmaize_split_version(major minor patch tweak "${package_version}")
 
-        PackageSpecification(SET "${self}" version "${project_version}")
+        PackageSpecification(SET "${self}" version "${package_version}")
         PackageSpecification(SET "${self}" major_version "${major}")
         PackageSpecification(SET "${self}" minor_version "${minor}")
         PackageSpecification(SET "${self}" patch_version "${patch}")
@@ -203,7 +203,7 @@ cpp_class(PackageSpecification)
     endfunction()
 
     #[[[
-    # Initialize project attributes with default values.
+    # Initialize package attributes with default values.
     #
     # :param self: ``PackageSpecification`` object to initialize.
     # :type self: PackageSpecification
