@@ -6,7 +6,7 @@ include(cmake_test/cmake_test)
 ct_add_test(NAME "test_cmake_package_manager")
 function("${test_cmake_package_manager}")
     include(cmaize/package_managers/cmake/cmake)
-    include(cmaize/project/project_specification)
+    include(cmaize/project/package_specification)
 
     ct_add_section(NAME "type_is_cmake")
     function("${type_is_cmake}")
@@ -110,9 +110,9 @@ function("${test_cmake_package_manager}")
     # ct_add_section(NAME "can_find_git")
     # function("${can_find_git}")
 
-    #     ProjectSpecification(CTOR ps_obj)
-    #     ProjectSpecification(SET "${ps_obj}" name "Git")
-    #     ProjectSpecification(SET "${ps_obj}" version "2.17.1")
+    #     PackageSpecification(CTOR ps_obj)
+    #     PackageSpecification(SET "${ps_obj}" name "Git")
+    #     PackageSpecification(SET "${ps_obj}" version "2.17.1")
 
     #     CMakePackageManager(CTOR pm_obj)
 
@@ -125,8 +125,8 @@ function("${test_cmake_package_manager}")
     # ct_add_section(NAME "can_find_git")
     # function("${can_find_git}")
 
-    #     ProjectSpecification(CTOR ps_obj)
-    #     ProjectSpecification(SET "${ps_obj}" name "utilities")
+    #     PackageSpecification(CTOR ps_obj)
+    #     PackageSpecification(SET "${ps_obj}" name "utilities")
 
     #     CMakePackageManager(CTOR pm_obj)
     #     CMakePackageManager(add_paths "${pm_obj}" "/home/zachcran/programs/cmakepp_workspace/test_repos/nwx_utilities/install")

@@ -36,8 +36,8 @@ function("${test_project}")
 
             CMaizeProject(GET "${proj_obj}" result_name name)
             CMaizeProject(GET "${proj_obj}" specs specification)
-            ProjectSpecification(GET "${specs}" spec_name name)
-            ProjectSpecification(GET "${specs}" spec_version version)
+            PackageSpecification(GET "${specs}" spec_name name)
+            PackageSpecification(GET "${specs}" spec_version version)
 
             # Test name
             ct_assert_equal(result_name "${proj_name}")
@@ -74,8 +74,8 @@ function("${test_project}")
             CMaizeProject(GET "${proj_obj}" result_name name)
             CMaizeProject(GET "${proj_obj}" result_languages languages)
             CMaizeProject(GET "${proj_obj}" specs specification)
-            ProjectSpecification(GET "${specs}" spec_name name)
-            ProjectSpecification(GET "${specs}" spec_version version)
+            PackageSpecification(GET "${specs}" spec_name name)
+            PackageSpecification(GET "${specs}" spec_version version)
 
             # Test name
             ct_assert_equal(result_name "${proj_name}")

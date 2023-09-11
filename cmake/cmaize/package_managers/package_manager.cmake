@@ -19,20 +19,20 @@ cpp_class(PackageManager)
     #[[[
     # Virtual member to check if the package exists in the package manager.
     #]]
-    cpp_member(has_package PackageManager desc ProjectSpecification)
+    cpp_member(has_package PackageManager desc PackageSpecification)
     cpp_virtual_member(has_package)
 
     #[[[
     # Virtual member function to get an installed package target.
     #]]
-    cpp_member(find_installed PackageManager desc ProjectSpecification)
+    cpp_member(find_installed PackageManager desc PackageSpecification)
     cpp_virtual_member(find_installed)
 
     #[[[
     # Virtual member function to get the package source and prepare a
     # build target.
     #]]
-    cpp_member(fetch_package PackageManager desc ProjectSpecification)
+    cpp_member(fetch_package PackageManager desc PackageSpecification)
     cpp_virtual_member(fetch_package)
 
     #[[[
