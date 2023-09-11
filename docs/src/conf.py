@@ -35,6 +35,8 @@ release = version
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx_rtd_theme',
+    'sphinxcontrib.bibtex',
     'sphinx.ext.doctest',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
@@ -72,6 +74,7 @@ exclude_patterns = []
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+numfig = True
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -80,11 +83,16 @@ pygments_style = 'sphinx'
 #
 html_theme = 'sphinx_rtd_theme'
 
+html_logo = 'assets/logo.png'
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'vcs_pageview_mode' : 'edit',
+    'logo_only' : True
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -101,6 +109,13 @@ html_theme = 'sphinx_rtd_theme'
 #
 # html_sidebars = {}
 
+# Allows the edit on GitHub button to make editing the docs easier.
+html_context = {
+  'display_github': True,
+  'github_user': 'CMakePP',
+  'github_repo': 'CMaize',
+  'github_version': 'master/docs/source/',
+}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
@@ -156,3 +171,11 @@ texinfo_documents = [
 ]
 
 # -- Extension configuration -------------------------------------------------
+
+# -- Options for bibtex --------------------------------------------------------
+
+bibtex_bibfiles = [
+    'bibliography/references.bib'
+]
+bibtex_reference_style = 'super'
+bibtex_default_style = 'plain'

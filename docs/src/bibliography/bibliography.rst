@@ -13,20 +13,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-###########################
-CMaize Design Documentation
-###########################
+##########
+References
+##########
 
-Topics in this section record the design decisions underlying CMaize. If you're
-trying to understand why a piece of CMaize "is the way it is" you've come to the
-right place.
-
-.. toctree::
-   :maxdepth: 2
-
-   overview
-   user_api
-   cmaize_project
-   package_specification
-   package_manager
-   target
+.. bibliography::

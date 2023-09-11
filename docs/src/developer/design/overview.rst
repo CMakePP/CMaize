@@ -13,6 +13,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
+.. _overview_of_cmaizes_design:
+
 ###########################
 Overview of CMaize's Design
 ###########################
@@ -25,8 +27,8 @@ What is CMaize?
 ***************
 
 CMaize is a CMake module designed to streamline writing
-:ref:`term_build_system`\ s for scientific software. Initial focus is on
-C++-based :ref:`term_project`\ s, but support for any language CMake supports
+:term:`build systems` for scientific software. Initial focus is on
+C++-based :term:`projects`, but support for any language CMake supports
 is straightforward.
 
 **********************
@@ -53,7 +55,7 @@ but this is not often done. We speculate that the primary hurdle to developing
 such abstractions is lack of support. Most support for scientific software is
 aimed at method development and not at software maintenance/sustainability. As
 a result build systems are low priority. This is why CMaize is needed. CMaize
-will be a reusable, :ref:`term_build_tool` built on top of CMake designed to
+will be a reusable, :term:`build tool` built on top of CMake designed to
 streamline writing build systems, particularly build systems of scientific
 software.
 
@@ -80,10 +82,21 @@ cmake-based build system
 cmake-based workflows
    CMake is the de facto build tool for C++-based projects. Most consumers who
    intend to compile a C++ based project from source, will have some familiarity
-   with CMake's :ref:`term_build_phase`\ s and the corresponding CMake commands.
+   with CMake's :term:`build phases` and the corresponding CMake commands.
    We want CMaize to integrate as seamlessly as possible into existing CMake-
    based workflows. Ideally consumers building projects with CMaize build
    systems won't even know it!
+
+.. _minimize_redundancy:
+
+minimize redundancy
+   Ultimately the goal of CMaize is to aid developers in writing a streamlined
+   build system. Key to this effort is minimizing the redundancy that comes
+   from traditional CMake-based build systems.
+
+   - A lot of the redundancy build system maintainers face comes from
+     finding, building, and installing packages (including the package
+     the project results in).
 
 .. _object_oriented:
 
@@ -91,128 +104,98 @@ object-oriented
    Current computer science wisdom holds that abstractions are conceptually
    easier to implement using object-oriented programming.
 
-   - CMake is a functional language, thus :ref:`cmake_based_build_system` means
-     that if CMaize adopts object-oriented paradigms it needs to be done "under
-     the hood" to be :ref:`term_api` compatible with CMake.
+   - CMake is a functional language, thus the :ref:`cmake_based_build_system`
+     consideration means that if CMaize adopts object-oriented paradigms, it
+     needs to don so "under the hood" to remain :term:`API` compatible with
+     CMake.
    - CMaize developers can "avoid" having to write an object-oriented extension
      to CMake by using the
      `CMakePP Language <https://github.com/CMakePP/CMakePPLang>`_
      (quotes on avoid because the CMakePP Language is developed and maintained
      by the same organization as CMaize...).
 
+.. _target_support:
+
+target support
+   :term:`Targets <target>`
+
 .. _package_manager_support:
 
 package manager support
-   CMake has integrated :ref:`term_package_manager` support; however, CMake's
+   Arguably the hardest part of writing a build system is dependency management.
+   Managing dependency distributions (*i.e.*, packages) has traditionally been
+   the role of a :term:`package manager`.
+   CMake has integrated :term:`package manager` support; however, CMake's
    package manager support does not always play nicely with widely used package
    managers, particularly those designed for non-C++ languages (*e.g.*,
    ``pip``). In practice, modern scientific C++ projects increasingly want to
-   interact with external package managers, either because they want to be
-   buildable via those package managers and/or because they want to use those
-   package managers to build dependencies.
+   interact with external package managers, either because they want their
+   project to be buildable via those package managers and/or because they want
+   to use those package managers to build dependencies.
 
-   - Note that because of :ref:`cmake_based_build_system` it is unlikely that
-     C++ developers will migrate to alternative build systems and CMaize is
-     thus faced with integrating package manager support into CMake.
-   - A lot of the redundancy build system maintainers face comes from
-     finding, building, and installing packages (including the package
-     the project results in).
+   - Note that because of the :ref:`cmake_based_build_system` consideration it
+     is unlikely that C++ developers will migrate to alternative build systems
+     and CMaize is thus faced with integrating package manager support into
+     CMake.
 
-Expected Workflow Considerations
-================================
 
-The next set of considerations, in order, represent the major components of a
-user's build system when written with CMaize. Generally speaking these
-considerations directly address what CMake should do in each
-of the :ref:`term_build_phase`\ s. That said CMake will parse the entire
-build system during the :ref:`configure_phase`, even the components applying to
-later phases.
 
-.. _project_meta_data:
 
-project meta data
-   Following from :ref:`cmake_based_build_system` the build system the user
-   writes with CMaize should be pure CMake. CMake strongly suggests that the
-   first things a user do are:
-
-   1. Set the minimum version of CMake needed.
-
-      - This is a call to CMake's
-        `cmake_minimum_required <https://tinyurl.com/3w6n75ec>`_
-        command.
-
-   2. Define the :ref:`term_project`.
-
-      - This is a call to CMake's
-        `project <https://cmake.org/cmake/help/latest/command/project.html>`__
-        command.
-
-.. _obtain_cmaize:
-
-obtain CMaize
-   With obligatory CMake boilerplate out of the way, the user is free to start
-   using CMaize. Since CMaize is unlikely to be included with CMake
-   distributions any time soon, the first step is to obtain CMaize. The current
-   best practice for obtaining CMake modules is through
-   `FetchContent <https://tinyurl.com/yubmtj8m>`_, *i.e.*:
-
-   1. `FetchContent_Declare <https://tinyurl.com/yzxm6y2d>`_
-   2. `FetchContent_MakeAvailable <https://tinyurl.com/mtteytj7>`_
-   3. `include(cmaize) <https://tinyurl.com/p2r8xut2>`__
-
-.. _declare_build_options:
-
-declare build options
-   In addition to build options defined by CMake (*e.g.*, ``CMAKE_BUILD_TYPE``,
-   ``BUILD_TESTING``, and ``BUILD_SHARED_LIBS``), most projects have additional
-   options affecting the exact details of the build. Examples include:
-
-   - Enable/disable optional dependencies
-   - Enable/disable optional features
-
-.. _find_dependencies:
-
-find dependencies
-   With build parameters known and CMaize obtained (and in scope) users can now
-   start writing their build system using CMaize. To that end, the first thing
-   most builds do is find the needed dependencies.
-
-   - Finding dependencies can be limited to only searching for already installed
-     dependencies or it can also include building the dependencies if they are
-     not found (as long as we know where we built them, they are "found").
-
-.. _define_project_components:
-
-define project components
-   With dependencies in tow we can now start defining the components of the
-   project. Here "components" refers to pieces of the overall project. Exactly
-   what the components are depends on the project, but they are typically
-   things like libraries or executables.
-
-.. _test_project_components:
-
-test project components
-   Once all of the components are defined, the user typically then declares
-   tests which should be run on the components.
-
-   - Tests often require their own dependencies and components. Testing
-     dependencies and components are only respectively found/built if testing
-     is enabled.
-
-.. _install_the_project:
-
-install the project
-   If the tests are successful (or were skipped) its on to package installation.
-   Installation typically requires specifying which components are part of the
-   package.
 
 ************
-Proposed API
+Architecture
 ************
 
-At this point in the design discussion what arguably matters most is what the
-CMaize user sees. Subsequent design discussions can focus on how the API is
-implemented.
+.. _fig_architecture:
+
+.. figure:: assets/overview.png
+   :align: center
+
+   Overall architecture of CMaize.
+
+:numref:`fig_architecture` illustrates the overall architecture of CMaize.
+Following from :ref:`cmake_based_build_system` all CMaize infrastructure is
+built on traditional CMake.
+
+User API
+========
+
+Main discussion: :ref:`designing_cmaizes_user_api`.
+
+Considerations :ref:`cmake_based_workflows` and :ref:`object_oriented` together
+require us to write a functional-style user API over top of the classes CMaize
+relies on. The "User API" component is responsible for collecting the project's
+information and forwarding it to the underlying classes. Since users interact
+exclusively with CMaize through the User API component, and the User API
+is only charged with collecting information, it also helps address the
+:ref:`minimize_redundancy` consideration by encapsulating the majority of the
+
+CMaizeProject
+=============
+
+Main discussion: :ref:`designing_cmaizes_cmaizeproject_component`.
+
+Behind the scenes CMaize will rely on four components, each of which is
+associated with a class. The component associated with the ``CMaizeProject``
+class will be responsible for tracking project information, including version,
+dependencies, targets, etc. In addition to serving as a workspace of sorts,
+the main purpose of the ``CMaizeProject`` class is to collect enough information
+so that we can automatically generate a...
+
+PackageSpecification
+====================
+
+Main discussion: :ref:`designing_cmaizes_packagespecification_component`.
+
+PackageManager
+==============
+
+Main discussion: :ref:`designing_cmaizes_packagemanager_component`.
+
+Target
+======
+
+Main discussion: :ref:`designing_cmaizes_target_component`.
 
 *******
 Summary
@@ -227,37 +210,12 @@ Summary
    than they would with ``CMakeLists.txt`` written with CMake alone. Therefore,
    CMaize-based build systems seamlessly integrate into existing workflows.
 
+:ref:`minimize_redundancy`
+   The user API is charged with collecting the package's information and then
+   mapping that to the usual CMake calls.
+
 :ref:`object_oriented`
    CMaize has adopted the `CMakePP Language`_ under the hood.
 
 :ref:`package_manager_support`
-   All APIs dealing with build targets allow the user to provide a package
-   manager.
-
-:ref:`project_meta_data`
-   This consideration primarily impacts CMaize in that build system developers
-   will have to do it in CMake directly.
-
-:ref:`obtain_cmaize`
-   Like :ref:`project_meta_data`, this step primarily impacts CMaize in that
-   it can not be abstracted away and must be present in the boilerplate.
-
-:ref:`declare_build_options`
-   For version 1.0.0 of CMaize we advocate for using CMake's
-   `option <https://tinyurl.com/529f5zn7>`_ command. In later versions of
-   CMaize we may decide to capture these options in the ``PackageSpecification``
-
-:ref:`find_dependencies`
-   This responsibility will ultimately be punted to the ``PackageManager``,
-   though we must provide the user a functional API to pass the info to the
-   ``PackageManager``. We propose the ``cmaize_find_or_build_dependency``
-   commands.
-
-:ref:`define_project_components`
-   ``cmaize_add_xxx`` commands have been proposed for these purposes.
-
-:ref:`test_project_components`
-   ``cmaize_add_tests`` command has been proposed for this.
-
-:ref:`install_the_project`
-    ``cmaize_add_package`` command is responsible for this.
+   This is covered by the PackageManager component.

@@ -48,3 +48,4 @@ Information for developers looking to help develop CMaize can be found in
    developer/index
    declaring_targets/index
    dependencies/index
+   bibliography/bibliography
