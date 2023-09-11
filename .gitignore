@@ -1,11 +1,14 @@
-# Common CLion build directories
-cmake-build-*
-
-# CLion settings
+# IDE settings
 .idea/
+.vscode/
 
 # Build directories
-build
+**/*build*/
+## API documentation build directory
+docs/src/api/developer/
 
-# Python Virtual Environments
-venv/
+# Install directories
+**/*install*/
+
+# Python virtual environments
+**/*venv*/

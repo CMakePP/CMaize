@@ -10,6 +10,6 @@ This chapter describes the design of different classes that make up CMaize.
    build_target
    cxx_target
    installed_target
-   project_specification
+   package_specification
    target
    toolchain
