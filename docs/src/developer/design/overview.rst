@@ -131,8 +131,8 @@ package manager support
 
    - Many (if not most) C++ projects are designed for use with CMake's internal
      package manager.
-   - Consideration :ref:`cmake_based_build_system` means that external package
-     managers will need to be handled "under the hood" of CMaize.
+   - Consideration :ref:`cmake_based_build_system` means that CMake-based APIs
+     will be needed for each external package manager.
 
 .. _object_oriented:
 
