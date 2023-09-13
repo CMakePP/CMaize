@@ -142,9 +142,9 @@ object-oriented
 
    - CMake is a functional language, thus the :ref:`cmake_based_build_system`
      consideration means that if CMaize adopts object-oriented paradigms, it
-     needs to don so "under the hood" to remain :term:`API` compatible with
+     needs to do so "under the hood" to remain :term:`API` compatible with
      CMake.
-   - CMaize developers can "avoid" having to write an object-oriented extension
+   - CMaize developers can "avoid" writing an object-oriented extension
      to CMake by using the
      `CMakePP Language <https://github.com/CMakePP/CMakePPLang>`_
      (quotes on avoid because the CMakePP Language is developed and maintained
@@ -191,7 +191,7 @@ information and forwarding it to the underlying classes. Since users interact
 exclusively with CMaize through the User API component, and the User API
 is only charged with collecting information, it also helps address the
 :ref:`minimize_redundancy` consideration by encapsulating the majority of the
-needed calls to traditional CMake needed
+needed calls to traditional CMake.
 
 CMaizeProject
 =============
@@ -245,7 +245,7 @@ are the keys and ``Target`` objects are the values. Thus ``Target`` objects
 are charged with describing the actual package. This includes, for example,
 knowing where the libraries and header files are located, as well as supporting
 the consumption of the package. The reason this component is called the Target
-component, and not say the Package component, is because the component
+component, and not the Package component, is because the component
 is actually charged with describing the pieces of the package. Put another way,
 a package is just a collection of targets.
 
