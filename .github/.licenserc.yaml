@@ -20,6 +20,7 @@ header:
   paths-ignore:
     - .github/
     - docs/Makefile
+    - docs/src/bibliography/*.bib
     - docs/requirements.txt
     - LICENSE
 
