@@ -22,8 +22,11 @@ Designing CMaize's User API
 user :term:`API` written over top of the object-oriented core. This page
 describes the design of CMaize's user API.
 
-TODO: Complete this page. Current content was originally part of overview, but
-then I decided to break it off.
+*******************
+What is a User API?
+*******************
+
+When a user wants to write a :term:`build system` using CMaize
 
 ***********************
 User API Considerations
@@ -36,84 +39,180 @@ functional-style and cmake-based
    decided that the user-facing API of CMaize needed to be written in
    traditional CMake and should assume functional-style programming.
 
-Expected Workflow Considerations
-================================
+.. _cmake_to_cmaize:
 
-The next set of considerations, in order, represent the major steps we expect
-a CMaize-based build system to take. Generally speaking these
-considerations directly address what CMake should do in each
-of the :term:`build phase`\ s. That said CMake will parse the entire
-build system during the :ref:`configure_phase`, even the components applying to
-later phases.
+CMake to CMaize
+   Somewhat of a corollary to the :ref:`functional_style_and_cmake_based`
+   consideration, user adoption of CMaize is facilitated by having the
+   conversion from an existing CMake-based build system to a CMaize-based build
+   system be as easy as possible.
 
-.. _project_meta_data:
+   - Generally speaking most CMake :term:`build systems <build system>` follow
+     the same flow:
 
-project meta data
-   Following from the :ref:`functional_style_and_cmake_based` consideration, the
-   build system the user writes with CMaize should be pure CMake and invoked by
-   CMake. CMake requires that the first things
-   a user do are:
+      #. Declare the :term:`project`'s meta data including name, version, etc.
+      #. Declare configuration options
+      #. Find the dependencies
+      #. Setup the :term:`project`'s targets
+      #. Install the targets
+
+.. _ua_minimize_redundancy:
+
+minimize redundancy
+   One of the motivating considerations for creating CMaize was
+   :ref:`minimize_redundancy`. Satisfying this consideration is the job of
+   CMaize's user API since ultimately any CMaize-based build system will be
+   written using the user API.
+
+.. _ua_package_manager:
+
+package manager
+   Building/packaging a dependency/project can be a complicated endeavor. From
+   :ref:`overview_of_cmaizes_design`, it has been established that CMaize will
+   have :term:`package manager` support. In many cases CMaize serves as a
+   unified API for collecting build system data and shuttling it to the package
+   manager. It is thus essential that the user API collects all of the data
+   necessary to drive the API.
+
+*****************
+Proposed User API
+*****************
+
+This section introduces a high-level overview of CMaize's user API. The
+functions comprising the user API are grouped into categories based on the
+steps presented in consideration :ref:`cmake_to_cmaize`. Most of the following
+subsections are simply summaries of more detailed design discussions (links to
+those design discussions are provided) and do not explicitly touch on all
+considerations. This is particularly pertinent in the subsections dealing with
+declaring and building dependencies and targets. Here there is a great amount
+of complexity hidden under the hood.
+
+Project Setup
+=============
+
+Following from the :ref:`functional_style_and_cmake_based` consideration, the
+build system the user writes with CMaize should be pure CMake and invoked by
+CMake. CMake requires that the first things a build system do are:
 
    1. Set the minimum version of CMake needed.
-
-      - This is a call to CMake's
-        `cmake_minimum_required <https://tinyurl.com/3w6n75ec>`_
-        command.
-
    2. Define the :term:`project`.
 
-      - This is a call to CMake's
-        `project <https://cmake.org/cmake/help/latest/command/project.html>`__
-        command.
+In turn, the first several lines of a CMaize-based build system will be:
 
-.. _obtain_cmaize:
+.. code-block:: CMake
 
-obtain CMaize
-   With obligatory CMake boilerplate out of the way, the user is free to start
-   using CMaize. Since CMaize is unlikely to be included with CMake
-   distributions any time soon, the first step is to obtain CMaize. The current
-   best practice for obtaining CMake modules is through
-   `FetchContent <https://tinyurl.com/yubmtj8m>`_, *i.e.*:
+   cmake_minimum_required(...)
+   project(...)
 
-   1. `FetchContent_Declare <https://tinyurl.com/yzxm6y2d>`_
-   2. `FetchContent_MakeAvailable <https://tinyurl.com/mtteytj7>`_
-   3. `include(cmaize) <https://tinyurl.com/p2r8xut2>`__
+The next step is to obtain CMaize. This is done through ``FetchContent``.
+Since CMaize is not in scope yet obtaining CMaize amounts to
+more CMake boilerplate that CMaize can not reduce. The relevant code is:
 
-.. _declare_build_options:
+.. code-block:: CMake
 
-declare build options
-   With CMaize obtained (and in scope), users can start writing their build
-   system with CMaize, instead of CMake. Typically the first step in writing a
-   build system is to define build options needed beyond those defined by CMake
-   (*e.g.*, ``CMAKE_BUILD_TYPE``, ``BUILD_TESTING``, and ``BUILD_SHARED_LIBS``).
-   Examples include:
+   include(FetchContent)
+   FetchContent_Declare(
+       cmaize
+       GIT_REPOSITORY https://github.com/CMakePP/CMaize
+   )
+   FetchContent_MakeAvailable(cmaize)
+   include(cmaize/cmaize)
 
-   - Enable/disable optional dependencies
-   - Enable/disable optional features
+Build Options
+=============
 
-.. _find_dependencies:
+At this point we have CMaize and the user is encouraged to use CMaize's APIs
+as much as possible from this point forward (though we note that since CMaize
+relies on traditional CMake targets it is possible to mix and match traditional
+CMake and CMaize). The next step in most build systems is to present the user
+with a list of configurable options (beyond those intrinsic to CMake itself).
+Each option typically has three parts:
 
-find dependencies
-   With build parameters known we can start looking for dependencies.
+#. The variable name storing the option's value.
+#. A default value.
+#. A description.
 
-   - Finding dependencies can be limited to only searching for already installed
-     dependencies, or it can also include having the build system build the
-     dependencies if they are not found (as long as we know where we will build
-     them, then they are "found").
-   - Finding/building dependencies needs to be done in concert with the
-     :ref:`package_manager_support` consideration.
+Using CMaize the proposed API for declaring build options is:
 
-.. _define_project_components:
+.. code-block:: CMake
+
+   cmaize_option(enable_feature0 "Feature 0 is used to do something" FALSE)
+   cmaize_option(target_platform "What GPU type to target?" NVIDIA)
+
+This API is identical to CMake's
+`option <https://cmake.org/cmake/help/latest/command/option.html>`_ command
+except that CMaize allows options to have value types other than boolean. This
+is useful for avoiding lots of options like `enable_vendor0`, `enable_vendor1`,
+etc. (the build system can present a single option ``vendor`` and the user
+can specify the vendor with a string).
+
+We also propose the ``cmaize_option_list`` command to minimize needing to type
+``cmaize_option``. Using ``cmaize_option_list`` the above snippet would be:
+
+.. code-block:: CMake
+
+   cmaize_option_list(
+      enable_feature0 "Feature 0 is used to do something" FALSE
+      target_platform "What GPU type to target?" NVIDIA
+   )
+
+In practice ``cmaize_option_list`` simply wraps looping over
+"name, description, value" triples and feeding them to ``cmaize_option``.
+
+Find Dependencies
+=================
+
+Full discussion: :ref:`designing_cmaize_find_or_build_dependency`.
+
+With configuration settings out of the way the next step is to find
+dependencies. For dependencies which rely on CMake- (or CMaize-) based build
+systems the default package manager will rely on `FetchContent`_ and the
+proposed APIs include the more pertinent options to `FetchContent`_:
+
+.. code-block:: CMake
+
+   # For building a dependency if it can not be found
+   cmaize_find_or_build_dependency(
+      <name>
+      URL <where_on_the_internet_to_download_from>
+      VERSION <the_version_you_want>
+      BUILD_TARGET <target_to_build>
+      FIND_TARGET <target_representing_package>
+      CMAKE_ARGS <configuration_options_to_set>
+   )
+
+   #Or if the build system wants to insist that a dependency must already exist
+   cmake_find_dependency(
+      <name>
+      VERSION <the_version_you_want>
+      FIND_TARGET <target_representing_package>
+      CMAKE_ARGS <options_it_should_have_been_configured_with>
+   )
+
+Generally speaking it must be possible to supply these functions with
+whatever information is necessary to find/build the dependency in the target
+state. Following from the :ref:`ua_package_manager` consideration, the exact
+information needed will be specified by the backend package manager.
+
+
+Since 3.19 CMake natively supports reading JSON files, could read
+dependency information in from a JSON file. Easier to reuse info in CI.
+
+Project Build Targets
+=====================
 
 define build targets
    With dependencies found, the user can now start defining the
-   :term:`build target`\ s of the project. Targets are typically things like
-   libraries or executables.
+   :term:`build targets <build target>` of the project. Targets are typically
+   things like libraries or executables.
 
-   - The project's targets should also be built/installed in concert with a
-     package manager (see consideration :ref:`package_manager_support`).
+   - Projects may have multiple targets
+   - The project's targets should also be built/installed in a manner supported
+     by the backend package manager (see consideration
 
-.. _test_project_components:
+Test Project
+============
+
 
 test project components
    Once all of the targets are defined, the user declares tests which should be
@@ -124,11 +223,11 @@ test project components
      is enabled.
    - Again, the package manager should be kept in the loop.
 
-.. _install_the_project:
+Install Project
+===============
 
-install the project
-   If the tests are successful (or were skipped) it's on to :term:`package`
-   installation. Installation typically requires specifying which targets are
+If the tests are successful (or were skipped) it's on to :term:`package`
+installation. Installation typically requires specifying which targets are
    part of the package, generating the packaging files, and then literally
    moving the targets and files to their final location.
 
@@ -138,31 +237,3 @@ install the project
 *******
 Summary
 *******
-
-:ref:`project_meta_data`
-   This consideration primarily impacts CMaize since build system developers
-   will have to do it in CMake directly.
-
-:ref:`obtain_cmaize`
-   Like :ref:`project_meta_data`, this step primarily impacts CMaize since
-   it can not be abstracted away and must be present in the boilerplate.
-
-:ref:`declare_build_options`
-   For version 1.0.0 of CMaize we advocate for using CMake's
-   `option <https://tinyurl.com/529f5zn7>`_ command. In later versions of
-   CMaize we may decide to capture these options in the ``PackageSpecification``
-
-:ref:`find_dependencies`
-   This responsibility will ultimately be the responsibility of the ``PackageManager``,
-   though we must provide the user a functional API to pass the info to the
-   ``PackageManager``. We propose the ``cmaize_find_or_build_dependency``
-   commands.
-
-:ref:`define_project_components`
-   ``cmaize_add_xxx`` commands have been proposed for these purposes.
-
-:ref:`test_project_components`
-   ``cmaize_add_tests`` command has been proposed for this.
-
-:ref:`install_the_project`
-    ``cmaize_add_package`` command is responsible for this.
