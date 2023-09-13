@@ -18,7 +18,7 @@ User API Considerations
 .. _functional_style_and_cmake_based:
 
 functional-style and cmake-based
-   Stemming from design discussions :ref:`overview_of_cmaizes_design` it was
+   Stemming from design discussions at :ref:`overview_of_cmaizes_design`, it was
    decided that the user-facing API of CMaize needed to be written in
    traditional CMake and should assume functional-style programming.
 
@@ -35,9 +35,9 @@ later phases.
 .. _project_meta_data:
 
 project meta data
-   Following from the :ref:`functional_style_and_cmake_based` consideration the
+   Following from the :ref:`functional_style_and_cmake_based` consideration, the
    build system the user writes with CMaize should be pure CMake and invoked by
-   CMake. CMake requires (technically strongly suggests) that the first things
+   CMake. CMake requires that the first things
    a user do are:
 
    1. Set the minimum version of CMake needed.
@@ -92,7 +92,7 @@ find dependencies
 .. _define_project_components:
 
 define build targets
-   With dependencies in tow, the user can now start defining the
+   With dependencies found, the user can now start defining the
    :term:`build target`\ s of the project. Targets are typically things like
    libraries or executables.
 
@@ -126,11 +126,11 @@ Summary
 *******
 
 :ref:`project_meta_data`
-   This consideration primarily impacts CMaize in that build system developers
+   This consideration primarily impacts CMaize since build system developers
    will have to do it in CMake directly.
 
 :ref:`obtain_cmaize`
-   Like :ref:`project_meta_data`, this step primarily impacts CMaize in that
+   Like :ref:`project_meta_data`, this step primarily impacts CMaize since
    it can not be abstracted away and must be present in the boilerplate.
 
 :ref:`declare_build_options`
@@ -139,7 +139,7 @@ Summary
    CMaize we may decide to capture these options in the ``PackageSpecification``
 
 :ref:`find_dependencies`
-   This responsibility will ultimately be punted to the ``PackageManager``,
+   This responsibility will ultimately be the responsibility of the ``PackageManager``,
    though we must provide the user a functional API to pass the info to the
    ``PackageManager``. We propose the ``cmaize_find_or_build_dependency``
    commands.
