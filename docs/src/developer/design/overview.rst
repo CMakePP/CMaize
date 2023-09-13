@@ -144,11 +144,7 @@ object-oriented
      consideration means that if CMaize adopts object-oriented paradigms, it
      needs to do so "under the hood" to remain :term:`API` compatible with
      CMake.
-   - CMaize developers can "avoid" writing an object-oriented extension
-     to CMake by using the
-     `CMakePP Language <https://github.com/CMakePP/CMakePPLang>`_
-     (quotes on avoid because the CMakePP Language is developed and maintained
-     by the same organization as CMaize...).
+
 
 ************
 Architecture
@@ -164,9 +160,11 @@ Architecture
 :numref:`fig_architecture` illustrates the overall architecture of CMaize.
 Following from :ref:`cmake_based_build_system` all CMaize infrastructure is
 built on traditional CMake (denoted by the box labeled "CMake" at the bottom
-of :numref:`fig_architecture`). While not shown, classes in the "Components"
-box are written using the `CMakePP Language`, which itself is built off of
-the traditional CMake language.
+of :numref:`fig_architecture`). Classes in the "Components"
+box are written using the
+`CMakePP Language <https://github.com/CMakePP/CMakePPLang>`_, which is a CMake
+module providing the infrastructure necessary to write object-oriented CMake
+scripts.
 
 .. attention::
 
@@ -279,5 +277,5 @@ Summary
    package managers, is covered by the PackageManager component.
 
 :ref:`object_oriented`
-   The guts of CMaize is object-oriented. Internally, CMaize has adopted the
-   `CMakePP Language`_.
+   The internals of CMaize are object-oriented. Internally, CMaize has adopted
+   the `CMakePP Language`_.
