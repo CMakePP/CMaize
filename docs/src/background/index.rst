@@ -24,4 +24,5 @@ CMaize Background
 
    terminology
    build_phases
+   cmake_package_manager
    statement_of_need

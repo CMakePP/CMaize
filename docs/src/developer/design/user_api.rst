@@ -22,11 +22,27 @@ Designing CMaize's User API
 user :term:`API` written over top of the object-oriented core. This page
 describes the design of CMaize's user API.
 
-*******************
-What is a User API?
-*******************
+**************************
+What is CMaize's User API?
+**************************
 
-When a user wants to write a :term:`build system` using CMaize
+To be used as a :term:`build system` CMaize will provide interfaces for
+controlling behavior of the :term:`build phases <build phase>`. These interfaces
+are how the user will implement their :term:`project's <project>`
+:term:`build system` and define the user :term:`API` of CMaize.
+
+********************************
+Why Does CMaize Need a User API?
+********************************
+
+At a fundamental level, CMaize needs a user API because CMaize will have users
+and the users need to be able to interface with CMaize. The more pertinent
+question is why do we need a functional-style user API modeled after CMake?
+To that end, we want to design CMaize's user :term:`API` in a manner which
+simplifies writing the :term:`build system` for a :term:`project`. At the
+same time we also want to facilitate converting existing CMake-based build
+systems to CMaize-based build systems. Since CMake is a functional language,
+having a functional-style user API facilitates the conversion.
 
 ***********************
 User API Considerations
@@ -72,41 +88,46 @@ package manager
    have :term:`package manager` support. In many cases CMaize serves as a
    unified API for collecting build system data and shuttling it to the package
    manager. It is thus essential that the user API collects all of the data
-   necessary to drive the API.
+   necessary to drive the package manager.
 
 *****************
 Proposed User API
 *****************
 
+.. _fig_user_api:
+
+.. figure:: assets/user_api.png
+   :align: center
+
+   Anticipated control flow of a CMaize-base build system.
+
 This section introduces a high-level overview of CMaize's user API. The
 functions comprising the user API are grouped into categories based on the
-steps presented in consideration :ref:`cmake_to_cmaize`. Most of the following
+steps presented in consideration :ref:`cmake_to_cmaize` and shown in
+:numref:`fig_user_api`. Most of the following
 subsections are simply summaries of more detailed design discussions (links to
 those design discussions are provided) and do not explicitly touch on all
 considerations. This is particularly pertinent in the subsections dealing with
-declaring and building dependencies and targets. Here there is a great amount
-of complexity hidden under the hood.
+declaring and building dependencies and targets.
 
 Project Setup
 =============
 
 Following from the :ref:`functional_style_and_cmake_based` consideration, the
 build system the user writes with CMaize should be pure CMake and invoked by
-CMake. CMake requires that the first things a build system do are:
-
-   1. Set the minimum version of CMake needed.
-   2. Define the :term:`project`.
-
-In turn, the first several lines of a CMaize-based build system will be:
+running CMake on a ``CMakeLists.txt`` file. CMake requires that the first lines
+of code be:
 
 .. code-block:: CMake
 
+   # Ellipses elide project-specific data and are not part of the API.
    cmake_minimum_required(...)
    project(...)
 
 The next step is to obtain CMaize. This is done through ``FetchContent``.
-Since CMaize is not in scope yet obtaining CMaize amounts to
-more CMake boilerplate that CMaize can not reduce. The relevant code is:
+Since CMaize is not in scope yet, obtaining CMaize must be done with the
+interfaces provided by traditional CMake and CMaize can not be used to
+reduce the boilerplate. The code needed to obtain, and load, CMaize is:
 
 .. code-block:: CMake
 
@@ -118,36 +139,52 @@ more CMake boilerplate that CMaize can not reduce. The relevant code is:
    FetchContent_MakeAvailable(cmaize)
    include(cmaize/cmaize)
 
+At this point we have CMaize loaded and in scope and encourage the user to use
+CMaize's APIs as much as possible from this point forward. That said, we note
+that CMaize will rely on traditional CMake targets, so it is possible to mix
+and match traditional CMake and CMaize code.
+
 Build Options
 =============
 
-At this point we have CMaize and the user is encouraged to use CMaize's APIs
-as much as possible from this point forward (though we note that since CMaize
-relies on traditional CMake targets it is possible to mix and match traditional
-CMake and CMaize). The next step in most build systems is to present the user
-with a list of configurable options (beyond those intrinsic to CMake itself).
-Each option typically has three parts:
+The next step for most :term:`build systems <build system>` is to define the
+:term:`build process` options (beyond those intrinsic to CMake itself). Each
+option has three parts:
 
 #. The variable name storing the option's value.
-#. A default value.
 #. A description.
+#. A default value.
 
-Using CMaize the proposed API for declaring build options is:
+In traditional CMake the description is primarily intended for use by CMake's
+:term:`GUI` and the value is restricted to being a boolean. In our experience
+users typically build CMake programs through the :term:`CLI`, which makes the
+description somewhat of a superfluous input; however, we still see value in
+including it in the :term:`API` because, one, we need it to call CMake's
+`option <https://cmake.org/cmake/help/latest/command/option.html>`_ command,
+and two, it serves as metadata CMaize can leverage (for example to auto-generate
+build documentation). Allowing options to have values, other than boolean, is
+useful to avoid having to have a series of options like: ``enable_vendor0``,
+``enable_vendor1``, *etc*. Instead the :term:`build system` can simply define a
+single option, say ``vendor``, which can just be set to a string denoting the
+vendor to enable.
+
+With the above considerations in mind, the proposed CMaize API is:
 
 .. code-block:: CMake
 
    cmaize_option(enable_feature0 "Feature 0 is used to do something" FALSE)
    cmaize_option(target_platform "What GPU type to target?" NVIDIA)
 
-This API is identical to CMake's
-`option <https://cmake.org/cmake/help/latest/command/option.html>`_ command
-except that CMaize allows options to have value types other than boolean. This
-is useful for avoiding lots of options like `enable_vendor0`, `enable_vendor1`,
-etc. (the build system can present a single option ``vendor`` and the user
-can specify the vendor with a string).
+Aside from the function name and the fact ``cmaize_option`` accepts values other
+than booleans, the API is identical to the API CMake uses for its `option`_
+command. This is by design and stems from the :ref:`cmake_to_cmaize`
+consideration.
 
-We also propose the ``cmaize_option_list`` command to minimize needing to type
-``cmaize_option``. Using ``cmaize_option_list`` the above snippet would be:
+In addition to ``cmaize_option`` we also propose the ``cmaize_option_list``
+command for setting multiple options at once. Here the motivation is that some
+:term:`projects <project>` end up needing to define a lot of options, which
+in turn would lead to many calls to ``cmaize_option``. Using
+``cmaize_option_list`` the above snippet would be:
 
 .. code-block:: CMake
 
@@ -156,18 +193,40 @@ We also propose the ``cmaize_option_list`` command to minimize needing to type
       target_platform "What GPU type to target?" NVIDIA
    )
 
-In practice ``cmaize_option_list`` simply wraps looping over
-"name, description, value" triples and feeding them to ``cmaize_option``.
+While this won't necessarily cut down on the number of lines (we still expect
+that most build systems will declare one option per line), it is cleaner since
+it avoids having to repeat ``cmaize_option`` on each line. In practice
+``cmaize_option_list`` simply wraps looping over "name, description, value"
+triples and feeding them to ``cmaize_option``.
 
 Find Dependencies
 =================
 
 Full discussion: :ref:`designing_cmaize_find_or_build_dependency`.
 
-With configuration settings out of the way the next step is to find
-dependencies. For dependencies which rely on CMake- (or CMaize-) based build
-systems the default package manager will rely on `FetchContent`_ and the
-proposed APIs include the more pertinent options to `FetchContent`_:
+Configuration settings can include many aspects of a build including what
+dependencies are needed. With the configuration options established the next
+step of most builds is to find dependencies. While there a plethora of
+edge cases when it comes to finding dependencies, in most cases CMaize "just"
+needs to know where to look. CMake already provides mechanisms for users to
+provide hints for finding packages (*e.g.* ``CMAKE_PREFIX_PATH``) which CMaize
+can leverage. The output of finding a dependency is a CMake target which can be
+consumed by other CMake targets.
+
+If a package is not found, a :term:`build system` has two options: error out or
+try to build the package. Modern CMake simplifies the process of building
+dependencies which also rely on CMake-based build systems (including those using
+CMaize-based build systems) through CMake's `FetchContent`_ module. While there
+are again a lot of edge cases, for most dependencies CMaize can build the
+dependency if it knows:
+
+- where to obtain the dependency from,
+- the target version of the dependency,
+- values for the configuration options, and
+- the package manager to use (if not :ref:`cmakes_package_manager`).
+
+From these considerations, we propose the following user APIs for finding and
+building dependencies with CMaize:
 
 .. code-block:: CMake
 
@@ -189,26 +248,54 @@ proposed APIs include the more pertinent options to `FetchContent`_:
       CMAKE_ARGS <options_it_should_have_been_configured_with>
    )
 
-Generally speaking it must be possible to supply these functions with
-whatever information is necessary to find/build the dependency in the target
-state. Following from the :ref:`ua_package_manager` consideration, the exact
-information needed will be specified by the backend package manager.
+In practice, following from the :ref:`ua_package_manager` consideration, these
+functions are envisioned as wrappers over a :term:`package manager`. The main
+goal of the user API is to collect the information needed for the package
+manager to build the dependency and for CMaize to use the dependency the package
+manager builds.
 
+Define Build Targets
+====================
 
-Since 3.19 CMake natively supports reading JSON files, could read
-dependency information in from a JSON file. Easier to reuse info in CI.
+Full discussion: :ref:`designing_cmaizes_add_target_functions`.
 
-Project Build Targets
-=====================
+Once we have found or built all of the :term:`project's <project>` dependencies
+we can move on to building the :term:`build targets <build target>`. Generally
+speaking, the information needed to build a target depends on the coding
+language of the target. For the purposes of this high-level discussion we focus
+on C++; build targets for most other coding languages will have similar needs.
+For a typical C++ target we need to specify the:
 
-define build targets
-   With dependencies found, the user can now start defining the
-   :term:`build targets <build target>` of the project. Targets are typically
-   things like libraries or executables.
+- name of the build target,
+- source files defining the build target's implementation,
+- header files defining the build target's public :term:`API`, and
+- build target's dependencies (including other build targets).
 
-   - Projects may have multiple targets
-   - The project's targets should also be built/installed in a manner supported
-     by the backend package manager (see consideration
+The proposed CMaize APIs are:
+
+.. code-block:: CMake
+
+   # Declaring a build target for a (C++) library
+   cmaize_add_library(
+      <name>
+      SOURCE_DIR <where_the_source_files_are_located>
+      INCLUDE_DIRS <directories_containing_header_files>
+      DEPENDS <dependency0> <dependency1> ...
+   )
+
+   # Declaring a build target for a (C++) executable is similar
+   cmaize_add_executable(
+      <name>
+      SOURCE_DIR <where_the_source_files_are_located>
+      INCLUDE_DIRS <directories_containing_header_files>
+      DEPENDS <dependency0> <dependency1>
+   )
+
+Like the "Find Dependencies" step before it, the APIs for defining build targets
+are designed primarily for collecting information pertaining to the build
+target. Unlike the "Find Dependencies" step the backend of API calls for
+defining build targets is CMake. The result of calling these methods are
+properly configured CMake targets.
 
 Test Project
 ============
