@@ -300,15 +300,61 @@ properly configured CMake targets.
 Test Project
 ============
 
+After targets are built the next step is to test that they were built correctly.
+Testing build targets with CMake often requires:
 
-test project components
-   Once all of the targets are defined, the user declares tests which should be
-   run on the targets.
+- finding dependencies of the testing framework,
+- building testing targets which consume the project's build targets, and
+- registering the tests with CTest.
 
-   - Tests often require their own dependencies and targets. Dependencies and
-     targets pertaining to testing should only be found/built if testing
-     is enabled.
-   - Again, the package manager should be kept in the loop.
+It is also worth noting that tests are often built conditionally (e.g., a
+:term:`build system` typically does not build the tests of dependencies built
+during the "Find Dependencies" step). To that end CMake defines the
+``BUILD_TESTING`` variable; when set to ``TRUE`` tests are built, otherwise they
+are not. Proposed CMaize APIs for testing a project:
+
+.. code-block:: CMake
+
+   cmaize_find_or_build_test_dependency(
+       <name>
+       URL <where_on_the_internet_to_download_from>
+       VERSION <the_version_you_want>
+       BUILD_TARGET <target_to_build>
+       FIND_TARGET <target_representing_package>
+       CMAKE_ARGS <configuration_options_to_set>
+   )
+
+   cmaize_add_test_library(
+       <name>
+       SOURCE_DIR <where_the_source_files_are_located>
+       INCLUDE_DIRS <directories_containing_header_files>
+       DEPENDS <dependency0> <dependency1> ...
+   )
+
+   cmaize_add_test_executable(
+       <name>
+       SOURCE_DIR <where_the_source_files_are_located>
+       INCLUDE_DIRS <directories_containing_header_files>
+       DEPENDS <dependency0> <dependency1> ...
+   )
+
+   # This is actually CTest's add_test command
+   add_test(NAME <name> COMMAND)
+
+   # This is a convenience function for the common scenario where the
+   # add_test call simply calls the executable arising from the
+   # cmaize_add_test_executable
+   cmaize_add_test(
+       <name>
+       SOURCE_DIR <where_the_source_files_are_located>
+       INCLUDE_DIRS <directories_containing_header_files>
+       DEPENDS <dependency0> <dependency1> ...
+   )
+
+All of the test functions are thin wrappers around the non-test functions of
+the same name (e.g., ``cmaize_add_test_library`` wraps ``cmaize_add_library``),
+which hide the logic for including the CTest CMake module, and checking that
+``BUILD_TESTING`` is enabled (if it's not the functions are no-ops).
 
 Install Project
 ===============
