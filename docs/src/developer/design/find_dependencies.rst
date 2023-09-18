@@ -15,8 +15,8 @@
 
 .. _designing_cmaize_find_or_build_dependency:
 
-#############################################
-Designing ``cmaize_find_or_build_dependency``
-#############################################
+####################################################
+Designing CMaize's Find or Build Dependency Function
+####################################################
 
 TODO: Write me!!!

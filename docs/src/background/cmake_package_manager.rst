@@ -32,6 +32,9 @@ CMaize was designed from the onset to support package managers under a CMake-\
 based :term:`API`. Key to this effort is establishing a package manager
 component (see :ref:`designing_cmaizes_packagemanager_component`).
 By default the package manager component uses what we call CMake's built-in
-package manager functions, `find_package` and `FetchContent`. Admittedly, these functions are not usually discussed in this
+package manager functions, `find_package` and `FetchContent`. Admittedly, these
+functions are not usually discussed in this
 manner and the purpose of this page is to explain how CMaize maps CMake's
 existing functions to a package manager.
+
+TODO: Finish me!!!

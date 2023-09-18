@@ -28,8 +28,8 @@ What is CMaize's User API?
 
 To be used as a :term:`build system`, CMaize will provide interfaces for
 controlling behavior of the :term:`build phases <build phase>`. These interfaces
-are how the user will implement their :term:`project's <project>`
-:term:`build system` and define the user :term:`API` of CMaize.
+define the user :term:`API` of CMaize and determine how the user will
+implement their :term:`project's <project>`:term:`build system`.
 
 ********************************
 Why Does CMaize Need a User API?
@@ -48,17 +48,25 @@ having a functional-style user API facilitates the conversion.
 User API Considerations
 ***********************
 
-.. _functional_style_and_cmake_based:
+.. _ua_cmake_based:
 
-functional-style and cmake-based
-   Stemming from design discussions at :ref:`overview_of_cmaizes_design`, it was
-   decided that the user-facing API of CMaize needed to be written in
-   traditional CMake and should assume functional-style programming.
+cmake-based
+   Stemming from the :ref:`cmake_based_build_system` consideration raised as
+   part of the design discussions at :ref:`overview_of_cmaizes_design`, it was
+   decided that the user-facing :term:`API` of CMaize needed to be written in
+   traditional CMake.
+
+.. _functional_style:
+
+functional style
+   CMake is a functional-style language. Therefore based on the
+   :ref:`ua_cmake_based` consideration, the user :term:`API` should adhere to
+   functional-style programming.
 
 .. _cmake_to_cmaize:
 
 CMake to CMaize
-   Somewhat of a corollary to the :ref:`functional_style_and_cmake_based`
+   Somewhat of a corollary to the :ref:`ua_cmake_based`
    consideration, user adoption of CMaize is facilitated by having the
    conversion from an existing CMake-based build system to a CMaize-based build
    system be as easy as possible.
@@ -113,7 +121,7 @@ declaring and building dependencies and targets.
 Project Setup
 =============
 
-Following from the :ref:`functional_style_and_cmake_based` consideration, the
+Following from the :ref:`ua_cmake_based` consideration, the
 build system the user writes with CMaize should be pure CMake and invoked by
 running CMake on a ``CMakeLists.txt`` file. CMake requires that the first lines
 of code be:
@@ -368,29 +376,45 @@ moving the targets and files to their final location. The main considerations
 for installing are:
 
 - Collecting sufficient information to be able to install the package including:
-  where it goes, which pieces get installed, and what the runtime dependencies
-  are.
+
+   - where it goes,
+   - which pieces get installed, and
+   - what the runtime dependencies are.
+
 - Installation should be done in a manner which considers the package manager.
 
 The proposed installation :term:`API` is:
 
 .. code-block:: CMake
 
-   cmaize_add_package(<name> NAMESPACE <namespace>)
+   cmaize_add_package(
+       <name>
+       NAMESPACE <namespace>
+       TARGETS <target0> <target1> ...
+   )
 
 Each of the user API calls proceeding ``cmaize_add_package`` record the
 information provided. In turn when it comes time to write the packaging files
 and install the package, CMaize can do so in a largely automatic manner simply
-by inspecting the information which was already provided. The only piece of
-information which has not been been provided yet is the namespace to use in
-the package files (CMake recommends appending a prefix to installed targets to
-avoid naming collisions).
+by inspecting the information which was already provided. If the user wants to
+fine-tune the package installation there are a number of options they can supply
+including:
+
+- the namespace to use in the package files (CMake allows prepending a prefix to
+  an installed target's name to avoid naming collisions), and
+- the specific targets to install (by default only the target with the same
+  name as ``<name>`` is installed).
 
 *******
 Summary
 *******
 
-:ref:`functional_style_and_cmake_based`
+:ref:`ua_cmake_based`
+   CMaize's user :term:`API` is designed to be invoked directly from the
+   :term:`project's <project>` ``CMakeLists.txt`` as part of the usual CMake
+   build procedure.
+
+:ref:`functional_style`
    All user-facing APIs are designed to be functional in nature so as to
    seamlessly integrate with traditional CMake-based build systems.
 
