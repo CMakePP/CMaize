@@ -28,3 +28,4 @@ This part is for developers of CMaize.
    conventions
    cmaize_initialization
    design_notes/index
+   faqs
