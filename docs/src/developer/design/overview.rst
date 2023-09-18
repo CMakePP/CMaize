@@ -79,7 +79,6 @@ cmake-based build system
    - By having CMaize be written purely in CMake, we ensure that tooling built
      for CMake continues to work for projects which use CMaize as well. Of
      particular note are most integrated development environments.
-
 .. _cmake_based_workflows:
 
 cmake-based workflows
