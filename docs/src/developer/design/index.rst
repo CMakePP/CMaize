@@ -26,8 +26,9 @@ right place.
 
    overview
    user_api
-   cmaize_project
+   find_dependencies
    add_target
+   cmaize_project
    package_specification
    package_manager
    target

@@ -216,7 +216,9 @@ consumed by other CMake targets.
 If a package is not found, a :term:`build system` has two options: error out or
 try to build the package. Modern CMake simplifies the process of building
 dependencies which also rely on CMake-based build systems (including those using
-CMaize-based build systems) through CMake's `FetchContent`_ module. While there
+CMaize-based build systems) through CMake's
+`FetchContent <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_
+module. While there
 are again a lot of edge cases, for most dependencies CMaize can build the
 dependency if it knows:
 
@@ -361,12 +363,51 @@ Install Project
 
 If the tests are successful (or were skipped) it's on to :term:`package`
 installation. Installation typically requires specifying which targets are
-   part of the package, generating the packaging files, and then literally
-   moving the targets and files to their final location.
+part of the package, generating the packaging files, and then literally
+moving the targets and files to their final location. The main considerations
+for installing are:
 
-   - Installation should also be done in a manner which considers the
-     package manager.
+- Collecting sufficient information to be able to install the package including:
+  where it goes, which pieces get installed, and what the runtime dependencies
+  are.
+- Installation should be done in a manner which considers the package manager.
+
+The proposed installation :term:`API` is:
+
+.. code-block:: CMake
+
+   cmaize_add_package(<name> NAMESPACE <namespace>)
+
+Each of the user API calls proceeding ``cmaize_add_package`` record the
+information provided. In turn when it comes time to write the packaging files
+and install the package, CMaize can do so in a largely automatic manner simply
+by inspecting the information which was already provided. The only piece of
+information which has not been been provided yet is the namespace to use in
+the package files (CMake recommends appending a prefix to installed targets to
+avoid naming collisions).
 
 *******
 Summary
 *******
+
+:ref:`functional_style_and_cmake_based`
+   All user-facing APIs are designed to be functional in nature so as to
+   seamlessly integrate with traditional CMake-based build systems.
+
+:ref:`cmake_to_cmaize`
+   Where possible the user-facing CMaize APIs rely on the same keywords and
+   structure as the CMake APIs they wrap. Converting a CMake-based build system
+   to a CMaize-based build system, should therefore almost be a refactoring
+   effort as opposed to a complete rewrite.
+
+:ref:`ua_minimize_redundancy`
+   We have specifically designed the CMaize API to be as succinct as possible
+   by relying on intelligent defaults and recording information. The latter is
+   in particular very important for minimizing redundancy as a lot of CMake's
+   verbosity comes from having to resupply the same information to many
+   different function calls.
+
+:ref:`ua_package_manager`
+   Most of the user APIs wrap interactions with a :term:`package manager`. It is
+   the package manager which does the heavy lifting of finding, building, and
+   installing dependencies and/or build :term:`build targets<build target>`.
