@@ -26,4 +26,5 @@ This part is for developers of CMaize.
 
    design/index
    conventions
+   cmaize_initialization
    design_notes/index

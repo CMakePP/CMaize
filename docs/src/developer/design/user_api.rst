@@ -144,6 +144,9 @@ CMaize's APIs as much as possible from this point forward. That said, we note
 that CMaize will rely on traditional CMake targets, so it is possible to mix
 and match traditional CMake and CMaize code.
 
+It is worth noting that the ``include(cmaize/cmaize)`` line actually initializes
+CMaize (full details can be found at :ref:`cmaize_initialization`).
+
 Build Options
 =============
 
