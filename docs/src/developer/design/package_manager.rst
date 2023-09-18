@@ -32,5 +32,5 @@ finding packages
 
 building packages
    The design discussion in :ref:`designing_cmaizes_user_api` decided that the
-   package manager would be responsible for actually building packages that
+   package manager would be responsible for building packages that
    the :term:`project` depends on.
