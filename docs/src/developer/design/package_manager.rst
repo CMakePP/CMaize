@@ -19,3 +19,18 @@ Designing CMaize's PackageManager Component
 ###########################################
 
 TODO: Write me!!!
+
+
+*****************************
+PackageManager Considerations
+*****************************
+
+finding packages
+   The design discussion in :ref:`designing_cmaizes_user_api` decided that the
+   package manager would be responsible for finding packages that meet the
+   specifications needed by the :term:`project`.
+
+building packages
+   The design discussion in :ref:`designing_cmaizes_user_api` decided that the
+   package manager would be responsible for building packages that
+   the :term:`project` depends on.

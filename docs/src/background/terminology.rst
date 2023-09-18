@@ -111,6 +111,10 @@ Computer Science Terminology
       language bindings that allow the component to be manipulated directly from
       the source code of another software component.
 
+   CLI
+      A Command Line Interface (CLI) is a mechanism for a user to interact with
+      a program in a traditional terminal environment.
+
    DRY
       Short for "Don't Repeat Yourself", the DRY principle stipulates that it
       is better to introduce an abstraction for getting/setting state than it
@@ -118,3 +122,7 @@ Computer Science Terminology
       copy/pasting runs afoul of DRY because developers may need to change
       multiple build systems if a bug is found, a new best practice is
       introduced, or a new feature is added.
+
+   GUI
+      A Graphical User Interface (GUI) is a mechanism for a user to interact
+      with a program via a traditional window-based environment.
