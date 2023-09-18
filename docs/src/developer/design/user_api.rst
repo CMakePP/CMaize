@@ -26,7 +26,7 @@ describes the design of CMaize's user API.
 What is CMaize's User API?
 **************************
 
-To be used as a :term:`build system` CMaize will provide interfaces for
+To be used as a :term:`build system`, CMaize will provide interfaces for
 controlling behavior of the :term:`build phases <build phase>`. These interfaces
 are how the user will implement their :term:`project's <project>`
 :term:`build system` and define the user :term:`API` of CMaize.
@@ -36,11 +36,11 @@ Why Does CMaize Need a User API?
 ********************************
 
 At a fundamental level, CMaize needs a user API because CMaize will have users
-and the users need to be able to interface with CMaize. The more pertinent
-question is why do we need a functional-style user API modeled after CMake?
+who need to be able to interface with CMaize. The more pertinent
+question is, "Why do we need a functional-style user API modeled after CMake?"
 To that end, we want to design CMaize's user :term:`API` in a manner which
 simplifies writing the :term:`build system` for a :term:`project`. At the
-same time we also want to facilitate converting existing CMake-based build
+same time, we want to facilitate converting existing CMake-based build
 systems to CMaize-based build systems. Since CMake is a functional language,
 having a functional-style user API facilitates the conversion.
 
@@ -155,7 +155,7 @@ option has three parts:
 #. A description.
 #. A default value.
 
-In traditional CMake the description is primarily intended for use by CMake's
+In traditional CMake, the description is primarily intended for use by CMake's
 :term:`GUI` and the value is restricted to being a boolean. In our experience
 users typically build CMake programs through the :term:`CLI`, which makes the
 description somewhat of a superfluous input; however, we still see value in
@@ -180,10 +180,10 @@ than booleans, the API is identical to the API CMake uses for its `option`_
 command. This is by design and stems from the :ref:`cmake_to_cmaize`
 consideration.
 
-In addition to ``cmaize_option`` we also propose the ``cmaize_option_list``
+In addition to ``cmaize_option``, we also propose the ``cmaize_option_list``
 command for setting multiple options at once. Here the motivation is that some
-:term:`projects <project>` end up needing to define a lot of options, which
-in turn would lead to many calls to ``cmaize_option``. Using
+:term:`projects <project>` need to define many options, which
+would lead to many calls to ``cmaize_option``. Using
 ``cmaize_option_list`` the above snippet would be:
 
 .. code-block:: CMake
@@ -195,7 +195,7 @@ in turn would lead to many calls to ``cmaize_option``. Using
 
 While this won't necessarily cut down on the number of lines (we still expect
 that most build systems will declare one option per line), it is cleaner since
-it avoids having to repeat ``cmaize_option`` on each line. In practice
+it avoids having to repeat ``cmaize_option`` on each line. In practice,
 ``cmaize_option_list`` simply wraps looping over "name, description, value"
 triples and feeding them to ``cmaize_option``.
 
@@ -204,8 +204,8 @@ Find Dependencies
 
 Full discussion: :ref:`designing_cmaize_find_or_build_dependency`.
 
-Configuration settings can include many aspects of a build including what
-dependencies are needed. With the configuration options established the next
+Configuration settings describe many aspects of a build, including what
+dependencies are needed. With the configuration options established, the next
 step of most builds is to find dependencies. While there a plethora of
 edge cases when it comes to finding dependencies, in most cases CMaize "just"
 needs to know where to look. CMake already provides mechanisms for users to
@@ -219,7 +219,7 @@ dependencies which also rely on CMake-based build systems (including those using
 CMaize-based build systems) through CMake's
 `FetchContent <https://cmake.org/cmake/help/latest/module/FetchContent.html>`_
 module. While there
-are again a lot of edge cases, for most dependencies CMaize can build the
+are many edge cases again, generally CMaize can build the
 dependency if it knows:
 
 - where to obtain the dependency from,
@@ -261,10 +261,10 @@ Define Build Targets
 
 Full discussion: :ref:`designing_cmaizes_add_target_functions`.
 
-Once we have found or built all of the :term:`project's <project>` dependencies
+Once we have found or built all of the :term:`project's <project>` dependencies,
 we can move on to building the :term:`build targets <build target>`. Generally
 speaking, the information needed to build a target depends on the coding
-language of the target. For the purposes of this high-level discussion we focus
+language of the target. For the purposes of this high-level discussion, we focus
 on C++; build targets for most other coding languages will have similar needs.
 For a typical C++ target we need to specify the:
 
@@ -295,14 +295,14 @@ The proposed CMaize APIs are:
 
 Like the "Find Dependencies" step before it, the APIs for defining build targets
 are designed primarily for collecting information pertaining to the build
-target. Unlike the "Find Dependencies" step the backend of API calls for
-defining build targets is CMake. The result of calling these methods are
+target. Unlike the "Find Dependencies" step, the backend of API calls for
+defining build targets is CMake. The results of calling these methods are
 properly configured CMake targets.
 
 Test Project
 ============
 
-After targets are built the next step is to test that they were built correctly.
+After targets are built, the next step is to test that they were built correctly.
 Testing build targets with CMake often requires:
 
 - finding dependencies of the testing framework,
@@ -361,9 +361,9 @@ which hide the logic for including the CTest CMake module, and checking that
 Install Project
 ===============
 
-If the tests are successful (or were skipped) it's on to :term:`package`
+If the tests are successful (or were skipped), the next step is :term:`package`
 installation. Installation typically requires specifying which targets are
-part of the package, generating the packaging files, and then literally
+part of the package, generating the packaging files, and then
 moving the targets and files to their final location. The main considerations
 for installing are:
 
