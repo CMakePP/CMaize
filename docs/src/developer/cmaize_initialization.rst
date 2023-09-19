@@ -17,9 +17,8 @@ module, ``cmaize/cmaize.cmake`` via ``include(cmaize/cmaize)``.
 
    1. An early exit if ``cmaize_impl.cmake`` has already been loaded.
    2. Asserting the user is using a build directory.
-   3. Defining CMaize
-      `global configuration options <https://tinyurl.com/y63thveu>`__
-   3. Bringing the CMaize classes, user API, and utility functions into scope.
+   3. Defining CMaize `global configuration options <https://tinyurl.com/y63thveu>`__
+   4. Bringing the CMaize classes, user API, and utility functions into scope.
 
 2. Create a ``CMaizeProject`` for the most recent call to CMake's ``project``
    command.

@@ -79,6 +79,7 @@ cmake-based build system
    - By having CMaize be written purely in CMake, we ensure that tooling built
      for CMake continues to work for projects which use CMaize as well. Of
      particular note are most integrated development environments.
+
 .. _cmake_based_workflows:
 
 cmake-based workflows
@@ -144,6 +145,22 @@ object-oriented
      needs to do so "under the hood" to remain :term:`API` compatible with
      CMake.
 
+.. _recursive:
+
+recursive
+   Most CMake-based build systems are recursive. More specifically it is often
+   the case that a build system opts to build one or more dependencies,
+   each of which may also rely on a CMake-based build system. Within the
+   CMake-based build systems of each of those dependencies there may be even
+   more dependencies with CMake-based build systems, etc.
+
+   - Given the recursive nature it is important for all aspects of the build
+     system to "think globally, but act locally."
+   - As a CMake-based build system runs, there is only ever one "active"
+     project. The active project is the project whose build system control is
+     currently within.
+   - Upon recursing into the CMake-based build system of a dependency the
+     active project becomes the dependency.
 
 ************
 Architecture
@@ -198,8 +215,9 @@ CMaizeProject
    Main discussion: :ref:`designing_cmaizes_cmaizeproject_component`.
 
 The CMaizeProject component is responsible for tracking project information,
-including version, dependencies, targets, etc. of the current project. In
-addition to serving as a workspace of sorts, ``CMaizeProject`` objects also
+including version, dependencies, targets, etc. of the active project (see
+consideration :ref:`recursive`). In addition to serving as a workspace of
+sorts, ``CMaizeProject`` objects also
 collect all of the information needed to eventually package the project.
 
 PackageSpecification
@@ -278,3 +296,8 @@ Summary
 :ref:`object_oriented`
    The internals of CMaize are object-oriented. Internally, CMaize has adopted
    the `CMakePP Language`_.
+
+:ref:`recursive`
+   The CMaizeProject component collects the information for the active project.
+   All CMaize functions (as well as all CMake functions) are implemented in a
+   manner consistent with "think globally, act locally".

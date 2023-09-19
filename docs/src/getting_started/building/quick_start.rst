@@ -69,11 +69,12 @@ a build fails we recommend you consider the following tips:
     a file, but it gets stuck some times.
 
 * If the dependency you are building is hosted on a private GitHub repository
-  then you will need to set :term:`CMAIZE_GITHUB_TOKEN` to a valid token.
+  then you will need to set ``CMAIZE_GITHUB_TOKEN`` to a valid token.
 
   * The token needs to be generated to minimally have read access to the
     repository.
-  * See :term:`CMAIZE_GITHUB_TOKEN` for more information on generating tokens.
+  * See `here <https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/>`_
+    for more information on generating tokens.
 
 If your problem still persists check out our page
 :ref:`faqs_and_common_build_problems` to see if this a common problem.
