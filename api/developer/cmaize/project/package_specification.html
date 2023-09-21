@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cmaize.project/package_specification &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>cmaize.project/package_specification &mdash; CMaize 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../../../_static/documentation_options.js?v=8d563738"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -31,8 +31,9 @@
 
           
           
-          <a href="../../../../index.html" class="icon icon-home">
-            CMaize
+          <a href="../../../../index.html">
+            
+              <img src="../../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -48,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../background/index.html">CMaize Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
@@ -73,6 +75,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../developer/index.html">Developing CMaize</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../declaring_targets/index.html">Declaring Build Targets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography/bibliography.html">References</a></li>
 </ul>
 
         </div>
@@ -94,7 +97,7 @@
           <li class="breadcrumb-item"><a href="index.html">cmaize.project</a></li>
       <li class="breadcrumb-item active">cmaize.project/package_specification</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../../_sources/api/developer/cmaize/project/package_specification.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/api/developer/cmaize/project/package_specification.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -145,15 +148,15 @@ autopopulated options available.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object to hash.</p></li>
-<li><p><strong>return_hash</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Hashed <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code></p></li>
-<li><p><strong>hash_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Hash algorithm to use</p></li>
+<li><p><strong>return_hash</strong> (<em>str</em>) – Hashed <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code></p></li>
+<li><p><strong>hash_type</strong> (<em>str</em>) – Hash algorithm to use</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Hashed <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -190,7 +193,7 @@ major, minor, patch, and tweak components.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object.</p></li>
-<li><p><strong>package_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – Full package version string.</p></li>
+<li><p><strong>package_version</strong> (<em>str</em>) – Full package version string.</p></li>
 </ul>
 </dd>
 </dl>
@@ -213,7 +216,7 @@ major, minor, patch, and tweak components.</p>
 <span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.name" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p>Name of package as a string.</p>
@@ -224,7 +227,7 @@ major, minor, patch, and tweak components.</p>
 <span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.version" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p>Version of package as a string.</p>
@@ -235,7 +238,7 @@ major, minor, patch, and tweak components.</p>
 <span class="sig-name descname"><span class="pre">major_version</span></span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.major_version" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p>First version number component of the <code class="docutils literal notranslate"><span class="pre">version</span></code> attribute.</p>
@@ -246,7 +249,7 @@ major, minor, patch, and tweak components.</p>
 <span class="sig-name descname"><span class="pre">minor_version</span></span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.minor_version" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p>Second version number component of the <code class="docutils literal notranslate"><span class="pre">version</span></code> attribute.</p>
@@ -257,7 +260,7 @@ major, minor, patch, and tweak components.</p>
 <span class="sig-name descname"><span class="pre">patch_version</span></span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.patch_version" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p>Third version number component of the <code class="docutils literal notranslate"><span class="pre">version</span></code> attribute.</p>
@@ -268,7 +271,7 @@ major, minor, patch, and tweak components.</p>
 <span class="sig-name descname"><span class="pre">tweak_version</span></span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.tweak_version" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p>Fourth version number component of the <code class="docutils literal notranslate"><span class="pre">version</span></code> attribute.</p>
@@ -279,7 +282,7 @@ major, minor, patch, and tweak components.</p>
 <span class="sig-name descname"><span class="pre">build_type</span></span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.build_type" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 <p>Specifies the build type.</p>

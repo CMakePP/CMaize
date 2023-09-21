@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Obtaining CMaize &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>Obtaining CMaize &mdash; CMaize 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../_static/documentation_options.js?v=8d563738"></script>
         <script src="../../_static/doctools.js?v=888ff710"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -31,8 +31,9 @@
 
           
           
-          <a href="../../index.html" class="icon icon-home">
-            CMaize
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -48,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../background/index.html">CMaize Background</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting Started</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../quick_intro_to_cmake.html">Quick Introduction to CMake</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../building/index.html">Building a Project That Uses CMaize</a></li>
@@ -66,6 +68,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../developer/index.html">Developing CMaize</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../declaring_targets/index.html">Declaring Build Targets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
 </ul>
 
         </div>
@@ -86,7 +89,7 @@
           <li class="breadcrumb-item"><a href="index.html">Using CMaize as Your Build System</a></li>
       <li class="breadcrumb-item active">Obtaining CMaize</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/getting_started/using_cmaize_as_build_system/obtaining_cmaize.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/getting_started/using_cmaize_as_build_system/obtaining_cmaize.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -95,11 +98,9 @@
            <div itemprop="articleBody">
              
   <section id="obtaining-cmaize">
-<h1>Obtaining CMaize<a class="headerlink" href="#obtaining-cmaize" title="Link to this heading"></a></h1>
-<p>The easiest and most common way to use CMaize in your project is by
-<a class="reference internal" href="#automatically-downloading-and-including-cmaize"><span class="std std-ref">Automatically Downloading and Including CMaize</span></a>.</p>
+<span id="id1"></span><h1>Obtaining CMaize<a class="headerlink" href="#obtaining-cmaize" title="Link to this heading"></a></h1>
 <section id="automatically-downloading-and-including-cmaize">
-<h2>Automatically Downloading and Including CMaize<a class="headerlink" href="#automatically-downloading-and-including-cmaize" title="Link to this heading"></a></h2>
+<span id="id2"></span><h2>Automatically Downloading and Including CMaize<a class="headerlink" href="#automatically-downloading-and-including-cmaize" title="Link to this heading"></a></h2>
 <p>As a convenience to your users you can make it so that your build system
 automatically downloads CMaize and includes it. The easiest way to do this is
 to put the following CMake script in a file <code class="docutils literal notranslate"><span class="pre">cmake/get_cmaize.cmake</span></code>:</p>

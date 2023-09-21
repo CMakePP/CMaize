@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terminology and Abbreviations &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Build Phases" href="build_phases.html" />
+    <link rel="prev" title="CMaize Background" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CMaize Background</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Terminology and Abbreviations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-terminology">CMake Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#computer-science-terminology">Computer Science Terminology</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developing CMaize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">CMaize Background</a></li>
+      <li class="breadcrumb-item active">Terminology and Abbreviations</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/background/terminology.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="terminology-and-abbreviations">
+<h1>Terminology and Abbreviations<a class="headerlink" href="#terminology-and-abbreviations" title="Link to this heading"></a></h1>
+<p>The point of this page is to define the terminology and abbreviations used
+through CMaize and its documentation. Terms/abbreviations are grouped into
+categories and then listed alphabetically.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Maintainers of CMaize’s documentation are encouraged to stick to these
+terms/abbreviations. All terms/abbreviations should be linked back to
+minimally on their first usage on a page.</p>
+</div>
+<section id="cmake-terminology">
+<h2>CMake Terminology<a class="headerlink" href="#cmake-terminology" title="Link to this heading"></a></h2>
+<p>As a disclaimer we decided to not distinguish between CMake-specific terminology
+and terminology which applies to other build systems as well.</p>
+<dl class="simple glossary">
+<dt id="term-build-target">build target<a class="headerlink" href="#term-build-target" title="Link to this term"></a></dt><dd><p>This is a generic term for anything built during the
+<a class="reference internal" href="#term-build-process"><span class="xref std std-term">build process</span></a>. Typical examples of build targets are things
+like libraries, executables, and auto-generated source code. Build targets
+may be combined/consumed to create more build targets.</p>
+</dd>
+<dt id="term-build-phase">build phase<a class="headerlink" href="#term-build-phase" title="Link to this term"></a></dt><dd><p>The <a class="reference internal" href="#term-build-process"><span class="xref std std-term">build process</span></a> is typically decomposed into several steps.
+Each step is referred to as a “build phase”. See <a class="reference internal" href="build_phases.html#build-phases"><span class="std std-ref">Build Phases</span></a> for
+details on the typical CMake build phases.</p>
+</dd>
+<dt id="term-build-process">build process<a class="headerlink" href="#term-build-process" title="Link to this term"></a></dt><dd><p>Historically the “build process” (often abbreviated as “the build”) was
+the process of building binary files from source code. In modern parlance
+it is now the more general process of going from some initial source
+distribution (say a tar ball, zip archive, or a git repository) to the
+finished, working software product you actually want. Compiling may or may
+not be involved.</p>
+</dd>
+<dt id="term-build-system">build system<a class="headerlink" href="#term-build-system" title="Link to this term"></a></dt><dd><p>The “build system” is the set of <a class="reference internal" href="#term-build-tool"><span class="xref std std-term">build tools</span></a> and code
+needed to actually carry out the <a class="reference internal" href="#term-build-process"><span class="xref std std-term">build process</span></a> for a particular
+<a class="reference internal" href="#term-project"><span class="xref std std-term">project</span></a>. In the context of CMake the build system is comprised
+of <code class="docutils literal notranslate"><span class="pre">cmake</span></code> and the project’s <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> files.</p>
+</dd>
+<dt id="term-build-tool">build tool<a class="headerlink" href="#term-build-tool" title="Link to this term"></a></dt><dd><p>A “build tool” is a program designed to facilitate carrying out the
+<a class="reference internal" href="#term-build-process"><span class="xref std std-term">build process</span></a>. In the context of CMake, examples of build tools
+are <code class="docutils literal notranslate"><span class="pre">cmake</span></code>, <code class="docutils literal notranslate"><span class="pre">ctest</span></code>, as well as the build tools <code class="docutils literal notranslate"><span class="pre">cmake</span></code> relies on,
+<em>e.g.</em>, <code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">ninja</span></code>.</p>
+</dd>
+<dt id="term-dependency">dependency<a class="headerlink" href="#term-dependency" title="Link to this term"></a></dt><dd><p>An object, <span class="math notranslate nohighlight">\(A\)</span>, is a dependency of a <a class="reference internal" href="#term-build-target"><span class="xref std std-term">build target</span></a>,
+<span class="math notranslate nohighlight">\(B\)</span>, if <span class="math notranslate nohighlight">\(B\)</span> can not be built without <span class="math notranslate nohighlight">\(A\)</span>. <span class="math notranslate nohighlight">\(A\)</span> is
+typically an already installed <a class="reference internal" href="#term-package"><span class="xref std std-term">package</span></a> or another build target.</p>
+</dd>
+<dt id="term-package">package<a class="headerlink" href="#term-package" title="Link to this term"></a></dt><dd><p>The output of building a <a class="reference internal" href="#term-project"><span class="xref std std-term">project</span></a> is a package. A package
+typically includes a proper subset of the
+<a class="reference internal" href="#term-build-target"><span class="xref std std-term">build targets</span></a>
+produced during the <a class="reference internal" href="#term-build-process"><span class="xref std std-term">build process</span></a> as well as files containing
+metadata about the package. The metadata is usually designed to aid a
+<a class="reference internal" href="#term-package-manager"><span class="xref std std-term">package manager</span></a> in finding the package later.</p>
+</dd>
+<dt id="term-package-manager">package manager<a class="headerlink" href="#term-package-manager" title="Link to this term"></a></dt><dd><p>Package managers may be part of a <a class="reference internal" href="#term-build-tool"><span class="xref std std-term">build tool</span></a> or they may be
+independent programs. Regardless of their origin, a “package manager” is
+a program or tool which can facilitate finding, building, and tracking of
+<a class="reference internal" href="#term-package"><span class="xref std std-term">package</span></a>. Many times it is the package manager which is
+responsible for determining if a particular package instance can be used
+to satisfy a dependency. Package management is built in to CMake via the
+<code class="docutils literal notranslate"><span class="pre">find_package</span></code> command and the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module.</p>
+</dd>
+<dt id="term-project">project<a class="headerlink" href="#term-project" title="Link to this term"></a></dt><dd><p>Conceptually a “project” is the input (usually source code) to a
+<a class="reference internal" href="#term-build-system"><span class="xref std std-term">build system</span></a>. In practice CMake, uses the term project to
+refer to not just the input to the build system, but also the workspace in
+which the <a class="reference internal" href="#term-build-process"><span class="xref std std-term">build process</span></a> is occurring. In other words, to CMake,
+a project is not just the source code being built, but also the
+<a class="reference internal" href="#term-build-target"><span class="xref std std-term">build targets</span></a> produced from the build process.</p>
+</dd>
+</dl>
+</section>
+<section id="computer-science-terminology">
+<h2>Computer Science Terminology<a class="headerlink" href="#computer-science-terminology" title="Link to this heading"></a></h2>
+<dl class="simple glossary">
+<dt id="term-API">API<a class="headerlink" href="#term-API" title="Link to this term"></a></dt><dd><p>The application programming interface (API) of a software component is the
+set of interfaces it exposes which enable the software component to be
+called by other software components.
+In practice, a component’s API usually amounts to one or more coding
+language bindings that allow the component to be manipulated directly from
+the source code of another software component.</p>
+</dd>
+<dt id="term-CLI">CLI<a class="headerlink" href="#term-CLI" title="Link to this term"></a></dt><dd><p>A Command Line Interface (CLI) is a mechanism for a user to interact with
+a program in a traditional terminal environment.</p>
+</dd>
+<dt id="term-DRY">DRY<a class="headerlink" href="#term-DRY" title="Link to this term"></a></dt><dd><p>Short for “Don’t Repeat Yourself”, the DRY principle stipulates that it
+is better to introduce an abstraction for getting/setting state than it
+is to rewrite that state. Of particular relevance when discussing CMake,
+copy/pasting runs afoul of DRY because developers may need to change
+multiple build systems if a bug is found, a new best practice is
+introduced, or a new feature is added.</p>
+</dd>
+<dt id="term-GUI">GUI<a class="headerlink" href="#term-GUI" title="Link to this term"></a></dt><dd><p>A Graphical User Interface (GUI) is a mechanism for a user to interact
+with a program via a traditional window-based environment.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="CMaize Background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="build_phases.html" class="btn btn-neutral float-right" title="Build Phases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

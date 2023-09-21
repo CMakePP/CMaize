@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cmaize.project/cmaize_project &mdash; CMaize 1.0.0alpha documentation</title>
+  <title>cmaize.project/cmaize_project &mdash; CMaize 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -13,7 +13,7 @@
   
         <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../../_static/documentation_options.js?v=d4e7da7a"></script>
+        <script src="../../../../_static/documentation_options.js?v=8d563738"></script>
         <script src="../../../../_static/doctools.js?v=888ff710"></script>
         <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -31,8 +31,9 @@
 
           
           
-          <a href="../../../../index.html" class="icon icon-home">
-            CMaize
+          <a href="../../../../index.html">
+            
+              <img src="../../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
@@ -48,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../background/index.html">CMaize Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
@@ -73,6 +75,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../developer/index.html">Developing CMaize</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../declaring_targets/index.html">Declaring Build Targets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography/bibliography.html">References</a></li>
 </ul>
 
         </div>
@@ -94,7 +97,7 @@
           <li class="breadcrumb-item"><a href="index.html">cmaize.project</a></li>
       <li class="breadcrumb-item active">cmaize.project/cmaize_project</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../../../_sources/api/developer/cmaize/project/cmaize_project.rst.txt" rel="nofollow"> View page source</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/api/developer/cmaize/project/cmaize_project.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -286,7 +289,7 @@ this project.</p>
 <dd class="field-even"><p>Package manager found (TRUE) or not (FALSE).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -322,7 +325,7 @@ project. This keyword argument is <strong>required</strong>.</p></li>
 <dd class="field-odd"><p>CMaizeTarget found (TRUE) or not (FALSE).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -364,7 +367,7 @@ project. This keyword argument is <strong>required</strong>.</p></li>
 <dd class="field-odd"><p>CMaizeTarget found (TRUE) or not (FALSE).</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -493,7 +496,7 @@ no target with the matching type was found.</p>
 <span class="sig-name descname"><span class="pre">languages</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.languages" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[desc]</p>
+<dd class="field-odd"><p>list[desc]</p>
 </dd>
 </dl>
 <p>Languages used in the project. Defaults to an empty list.</p>
@@ -504,7 +507,7 @@ no target with the matching type was found.</p>
 <span class="sig-name descname"><span class="pre">package_managers</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.package_managers" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="../package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager" title="cmaize.package_managers/package_manager.PackageManager">PackageManager</a>]</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="../package_managers/package_manager.html#cmaize.package_managers-package_manager.PackageManager" title="cmaize.package_managers/package_manager.PackageManager">PackageManager</a>]</p>
 </dd>
 </dl>
 <p>Package managers used by the project.</p>
@@ -515,7 +518,7 @@ no target with the matching type was found.</p>
 <span class="sig-name descname"><span class="pre">build_targets</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.build_targets" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="../targets/build_target.html#cmaize.targets-build_target.BuildTarget" title="cmaize.targets/build_target.BuildTarget">BuildTarget</a>]</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="../targets/build_target.html#cmaize.targets-build_target.BuildTarget" title="cmaize.targets/build_target.BuildTarget">BuildTarget</a>]</p>
 </dd>
 </dl>
 <p>Targets that will be built as part of the project.</p>
@@ -526,7 +529,7 @@ no target with the matching type was found.</p>
 <span class="sig-name descname"><span class="pre">installed_targets</span></span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.installed_targets" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a>[<a class="reference internal" href="../targets/installed_target.html#cmaize.targets-installed_target.InstalledTarget" title="cmaize.targets/installed_target.InstalledTarget">InstalledTarget</a>]</p>
+<dd class="field-odd"><p>list[<a class="reference internal" href="../targets/installed_target.html#cmaize.targets-installed_target.InstalledTarget" title="cmaize.targets/installed_target.InstalledTarget">InstalledTarget</a>]</p>
 </dd>
 </dl>
 <p>Targets the project uses that are already installed on the system.</p>
