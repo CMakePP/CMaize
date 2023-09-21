@@ -19,3 +19,11 @@ Designing CMaize's Target Component
 ###################################
 
 TODO: Write me!!!
+
+*******************************
+Target Component Considerations
+*******************************
+
+dependency tracking
+   :ref:`designing_cmaizes_cmaizeproject_component` established that each
+   target will track the targets it depends on.
