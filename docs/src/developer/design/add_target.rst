@@ -62,11 +62,10 @@ Add Target Terminology
 **********************
 
 CMaize will be dealing with targets associated with multiple coding languages.
-Generally speaking most of these coding languages have terms to describe
-similar concepts; however, they disagree on what those terms are. In order to
-provide a unified description we define the following terms and will use these
-terms throughout this page regardless of what the coding-language appropriate
-terms are.
+Most coding languages organize code similarly, but differ in what they term
+those organizational units. In order to provide a unified description we define
+the following terms. We use these terms throughout this page regardless of what
+the coding-language appropriate terms are.
 
 .. glossary::
 
@@ -76,9 +75,10 @@ terms are.
 
    library
       A collection of functionality distributed as a single packaged entity.
+      Libraries are designed for consumption by other packages.
 
    source file
-      A file containing code. For languages like C++, "source file" includes
+      Any file containing code. For languages like C++, "source file" includes
       header files.
 
 As a slight aside, we choose these terms in order to conform to CMake's already
@@ -88,14 +88,20 @@ existing :term:`API`.
 Add Target Function Considerations
 **********************************
 
+.. _at_recording_targets:
+
 recording targets
    The primary motivation for the add target functions is to serve as a
    mechanism for recording the details of the target.
 
+.. _at_succinctness:
+
 succinctness
-   A lot of the information CMake's add target functions require can be gleamed
-   from other sources. Requiring the user to restate the information is
+   A lot of the information CMake's add target functions require can be
+   gleaned from other sources. Requiring the user to restate the information is
    verbose and violates :term:`DRY`.
+
+.. _at_coding_languages:
 
 coding language
    Exactly what targets can be built/found depend on the coding language(s) of
@@ -104,14 +110,18 @@ coding language
    C/C++ code.
 
    - Targeted coding languages include: C, C++, CMake, Fortran, Python, and
-     extensions of the aforementioned languages (e.g., CUDA and OpenMP).
+     extensions of the aforementioned languages (e.g., CMaize, CUDA and OpenMP).
+
+.. _at_target_sources:
 
 target sources
    Targets are usually associated with :term:`source files<source file>`.
 
    - As a corollary we note that source files usually fall into two categories,
-     public and private. With public needing to be redistributed with the
-     target and private being consumed in building the target.
+     public and private. Public source files need to be redistributed with the
+     target, whereas private source files are consumed in building the target.
+
+.. _at_conditional_targets:
 
 conditional targets
    Many projects contain targets which are only conditionally built. These
@@ -129,3 +139,171 @@ conditional targets
    - needs to be conditionally built, linked to, tested, and packaged. In other
      words, when CMaize is given a list of targets, CMaize needs to skip
      conditional targets which are not currently enabled.
+
+**********************************
+Design of the Add Target Functions
+**********************************
+
+.. _fig_add_target_functions:
+
+.. figure:: assets/add_target.png
+   :align: center
+
+   The user API for defining targets. Also shown is how the inputs to the user
+   API ultimately map to underlying objects. a) Functions related to creating
+   an executable. b) Functions related to creating a library. c) Conditional
+   functions wrapping functions from a) and b).
+
+:numref:`fig_add_target_functions` summarizes the functions implementing the
+front end of CMaize's target component. As part of the user :term:`API`, the
+front end is function-based (see :ref:`functional_style`). Each box in
+:numref:`fig_add_target_function` represents a function ("snake_case" labels),
+section of a function (boxes labeled with phrases), or an object
+("UpperCamelCase" labels). Nested boxes represent the parts of the function.
+
+As mentioned above, one of the main considerations for CMaize's add target
+functions is :ref:`at_recording_targets`. In :numref:`fig_add_target_functions`
+recording the target information is done in the boxes labeled "Notify Project".
+The other major consideration for CMaize's add target functions is
+:ref:`at_succinctness`. Succinctness is the motivation for the dispatch steps.
+To clarify, CMaize is able to avoid requiring the user to specify some of the
+target's properties (e.g., language, header-only) simply by analyzing the
+:term:`source files <source file>` the user provides. Conceivably it is possible
+to glean even more details (for example the C++/Python version used) from the
+source file contents; however, CMaize currently makes no attempt to do so.
+
+While the API of the add target functions is language agnostic, consideration
+:ref:`at_coding_language` means the backend can not be. As shown in
+:numref:`fig_add_target_function`, both ``cmaize_add_executable`` and
+``cmaize_add_library`` ultimately dispatch to language-specific target objects.
+In this sense, CMaize's add target functions can be thought of as factory
+routines.
+
+***************
+Add Target APIs
+***************
+
+The APIs for ``cmaize_add_executable`` and ``cmaize_add_library`` were
+briefly introduced in the :ref:`designing_cmaizes_user_api` section. Generally
+speaking the two functions work similarly aside from the fact that
+``cmaize_add_executable``/\ ``cmaize_add_library`` will ultimately map to
+CMake's ``add_executable``/\ ``add_library`` function, respectively (the calls
+to the CMake functions happen inside the target objects). Given the similar APIs
+we presently limit our focus to ``cmaize_add_library``:
+
+.. code-block:: CMake
+
+   # A typical C++ invocation
+   cmaize_add_library(
+       <target name>
+       SOURCE_DIR <directory containing private source files>
+       INCLUDE_DIRS <directory(s) containing public source files>
+       DEPENDS <name of dependency 0> <name of dependency 1>
+   )
+
+   # A typical Python invocation
+   cmaize_add_library(
+       <target name>
+       INCLUDE_DIRS <directory(s) containing the Python library>
+       DEPENDS <name of dependency 0> <name of dependency 1>
+   )
+
+As shown neither invocation directly says anything about the coding language
+of the target. CMaize will determine this by looking at the file extensions
+(e.g., ``*.py`` will signals a Python library, whereas ``*.h`` and ``*.cpp``
+signal a C++ library; file extension mappings are managed by
+`global configuration options`_). Compared to CMake's ``add_library`` command
+CMaize's API does not require:
+
+- individual source files to be declared,
+- a separate call to ``target_include_directories`` (which requires include
+  files to be specified), nor does it require
+- labeling of interface libraries.
+
+Having to only specify directories, as opposed to source files, leads to much
+more succinct interface than the CMake versions (it also largely negates the
+need for separate ``CMakeLists.txt`` files for each target).
+
+.. note::
+
+   Experienced CMake developers may be aware of the pitfalls pertaining to
+   ``file(GLOB`` vs. listing individual source files (see for example
+   `here <https://tinyurl.com/3u6wrw86>`__). Under the hood CMaize takes care
+   to make sure that adding/deleting files will rerun CMake to pick up the
+   changes. Unfortunately, there is some overhead associated with our current
+   strategy. If/when a new implementation is pursued it will not break the
+   current API, i.e., CMaize's APIs remain committed to specifying target
+   source files by directory.
+
+The final consideration, :ref:`at_conditional_targets`, is addressed by a series
+of functions which wrap ``cmaize_add_executable`` and ``cmaize_add_library``.
+Respectively ``cmaize_add_optional_executable`` and
+``cmaize_add_optional_library`` extend ``cmaize_add_executable`` and
+``cmaize_add_library`` to associate a control variable with the target. The
+APIs are:
+
+.. code-block:: CMake
+
+   cmaize_add_optional_executable(
+       <same API as cmaize_add_executable>
+       ENABLED_BY <variable>
+   )
+
+   cmaize_add_optional_library(
+       <same API as cmaize_add_library>
+       ENABLED_BY <variable>
+   )
+
+In the above code snippet ``<variable>`` is the CMake variable controlling the
+inclusion of a the optional target. When ``<variable>`` contains a truth-y
+value the target is included in the project, otherwise it is ignored. Since
+most packages will have test components, which are usually optional, we also
+propose the convenience functions:
+
+.. code-block:: CMake
+
+   cmaize_add_test_executable(
+       <same API as cmaize_add_executable>
+   )
+
+   cmaize_add_test_library(
+       <same API as cmaize_add_library>
+   )
+
+   cmaize_add_test(
+      <same API as cmaize_add_test_executable>
+   )
+
+CMake defines the "ENABLED_BY" variable for tests to be ``BUILD_TESTING``.
+``cmaize_add_test_executable``/\ ``cmaize_add_test_library`` respectively wrap
+``cmaize_add_optional_executable``/\ ``cmaize_add_optional_library`` and
+hardcode the "ENABLED_BY" variable to be ``BUILD_TESTING``.
+``cmaize_add_test`` is a convenience wrapper around
+``cmaize_add_test_executable`` which also automatically registers the resulting
+executable with CTest.
+
+*******
+Summary
+*******
+
+:ref:`at_recording_targets`
+   All functions meant to be called by users of CMaize will record the target's
+   information in the active project.
+
+:ref:`at_succinctness`
+   CMaize analyzes source code to determine language and library type. Beyond
+   that the APIs are designed to require as little information as possible,
+   e.g., directories instead of files.
+
+:ref:`at_coding_languages`
+   CMaize's various add target functions serve as factory functions for creating
+   language-specific target objects.
+
+:ref:`at_target_sources`
+   Users provide CMaize with directories, not individual source files. This
+   facilitates CMaize picking up new files automatically.
+
+:ref:`at_conditional_targets`
+   A series of convenience functions are provided which associate a control flow
+   variable with a target. When the control flow variable has a truth-y value
+   the target is built, linked against, installed, etc. Otherwise it is skipped.

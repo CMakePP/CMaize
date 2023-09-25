@@ -24,6 +24,17 @@ TODO: Write me!!!
 Target Component Considerations
 *******************************
 
+.. _tc_language_specific:
+
+language specific
+   :ref:`designing_cmaizes_add_target_functions` required the language-specific
+   aspects of target creation to be managed by the various target classes.
+
+language agnostic
+   While perhaps seemingly at odds with :ref:`tc_language_specific`, we also
+   note that from the perspective of CMake and CMaize the language of the target
+   is really only relevant in building the target.
+
 dependency tracking
    :ref:`designing_cmaizes_cmaizeproject_component` established that each
    target will track the targets it depends on.
