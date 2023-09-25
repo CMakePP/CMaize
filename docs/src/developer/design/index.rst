@@ -25,9 +25,5 @@ right place.
    :maxdepth: 2
 
    overview
-   user_api
-   find_dependencies
-   add_target
-   cmaize_project
-   package_manager
-   target
+   user_api/index
+   classes/index

@@ -25,7 +25,7 @@ for user-facing functions for declaring and adding targets to the build system.
 What Are the CMaize Add Target Functions?
 *****************************************
 
-CMaize's user-facing :term:`API`` is comprised of functions designed to
+CMaize's user-facing :term:`API` is comprised of functions designed to
 integrate easily into CMake-style build systems. CMaize's add target functions
 are the pieces of the user :term:`API` through which users can define
 :term:`build targets<build target>`, i.e., the libraries, executables, etc.
@@ -157,7 +157,7 @@ Design of the Add Target Functions
 :numref:`fig_add_target_functions` summarizes the functions implementing the
 front end of CMaize's target component. As part of the user :term:`API`, the
 front end is function-based (see :ref:`functional_style`). Each box in
-:numref:`fig_add_target_function` represents a function ("snake_case" labels),
+:numref:`fig_add_target_functions` represents a function ("snake_case" labels),
 section of a function (boxes labeled with phrases), or an object
 ("UpperCamelCase" labels). Nested boxes represent the parts of the function.
 
@@ -173,8 +173,8 @@ to glean even more details (for example the C++/Python version used) from the
 source file contents; however, CMaize currently makes no attempt to do so.
 
 While the API of the add target functions is language agnostic, consideration
-:ref:`at_coding_language` means the backend can not be. As shown in
-:numref:`fig_add_target_function`, both ``cmaize_add_executable`` and
+:ref:`at_coding_languages` means the backend can not be. As shown in
+:numref:`fig_add_target_functions`, both ``cmaize_add_executable`` and
 ``cmaize_add_library`` ultimately dispatch to language-specific target objects.
 In this sense, CMaize's add target functions can be thought of as factory
 routines.
@@ -195,25 +195,25 @@ we presently limit our focus to ``cmaize_add_library``:
 
    # A typical C++ invocation
    cmaize_add_library(
-       <target name>
-       SOURCE_DIR <directory containing private source files>
-       INCLUDE_DIRS <directory(s) containing public source files>
-       DEPENDS <name of dependency 0> <name of dependency 1>
+       "<target name>"
+       SOURCE_DIR "<directory containing private source files>"
+       INCLUDE_DIRS "<directory(s) containing public source files>"
+       DEPENDS "<name of dependency 0>" "<name of dependency 1>"
    )
 
    # A typical Python invocation
    cmaize_add_library(
-       <target name>
-       INCLUDE_DIRS <directory(s) containing the Python library>
-       DEPENDS <name of dependency 0> <name of dependency 1>
+       "<target name>"
+       INCLUDE_DIRS "<directory(s) containing the Python library>"
+       DEPENDS "<name of dependency 0>" "<name of dependency 1>"
    )
 
 As shown neither invocation directly says anything about the coding language
 of the target. CMaize will determine this by looking at the file extensions
 (e.g., ``*.py`` will signals a Python library, whereas ``*.h`` and ``*.cpp``
 signal a C++ library; file extension mappings are managed by
-`global configuration options`_). Compared to CMake's ``add_library`` command
-CMaize's API does not require:
+`global configuration options <https://tinyurl.com/y63thveu>`_). Compared to
+CMake's ``add_library`` command CMaize's API does not require:
 
 - individual source files to be declared,
 - a separate call to ``target_include_directories`` (which requires include
@@ -245,13 +245,13 @@ APIs are:
 .. code-block:: CMake
 
    cmaize_add_optional_executable(
-       <same API as cmaize_add_executable>
-       ENABLED_BY <variable>
+       "<same API as cmaize_add_executable>"
+       ENABLED_BY "<variable>"
    )
 
    cmaize_add_optional_library(
-       <same API as cmaize_add_library>
-       ENABLED_BY <variable>
+       "<same API as cmaize_add_library>"
+       ENABLED_BY "<variable>"
    )
 
 In the above code snippet ``<variable>`` is the CMake variable controlling the
@@ -263,15 +263,15 @@ propose the convenience functions:
 .. code-block:: CMake
 
    cmaize_add_test_executable(
-       <same API as cmaize_add_executable>
+       "<same API as cmaize_add_executable>"
    )
 
    cmaize_add_test_library(
-       <same API as cmaize_add_library>
+       "<same API as cmaize_add_library>"
    )
 
    cmaize_add_test(
-      <same API as cmaize_add_test_executable>
+      "<same API as cmaize_add_test_executable>"
    )
 
 CMake defines the "ENABLED_BY" variable for tests to be ``BUILD_TESTING``.
