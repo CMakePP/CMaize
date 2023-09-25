@@ -20,16 +20,16 @@ FAQs and Common Build Problems
 ##############################
 
 For private repos CMAIZE_GITHUB_TOKEN must be a valid token
-===========================================================
+***********************************************************
 
 Cause
-^^^^^
+=====
 
 CMaize is trying to clone a private GitHub repository and you have not provided
 CMaize with a valid GitHub authentication token.
 
 Solution
-^^^^^^^^
+========
 
 Assuming you have permission to read the repository and have generated a GitHub
 authentication token (see `creating a personal access token <https://help.github

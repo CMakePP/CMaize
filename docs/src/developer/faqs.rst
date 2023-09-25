@@ -12,10 +12,15 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-.. _designing_cmaizes_packagespecification_component:
+##############
+Developer FAQs
+##############
 
-#################################################
-Designing CMaize's PackageSpecification Component
-#################################################
+*************************************************
+How do I Add a New CMaize Configuration Variable?
+*************************************************
 
-TODO: Write me!!!
+The definition of the variable goes into ``cmake/cmaize/globals.cmake``. As long
+as you document the variable in ``cmake/cmaize/globals.cmake`` it will be
+picked up by CMinx and added to the
+`documentation <https://tinyurl.com/y63thveu>`__.

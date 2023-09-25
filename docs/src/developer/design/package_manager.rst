@@ -28,7 +28,10 @@ PackageManager Considerations
 finding packages
    The design discussion in :ref:`designing_cmaizes_user_api` decided that the
    package manager would be responsible for finding packages that meet the
-   specifications needed by the :term:`project`.
+   specifications needed by the :term:`project`. From the
+   :ref:`designing_cmaizes_cmaizeproject_component` discussion it was decided
+   that the specifications will be represented by ``PackageSpecification``
+   objects.
 
 building packages
    The design discussion in :ref:`designing_cmaizes_user_api` decided that the

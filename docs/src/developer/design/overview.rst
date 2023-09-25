@@ -145,6 +145,22 @@ object-oriented
      needs to do so "under the hood" to remain :term:`API` compatible with
      CMake.
 
+.. _recursive:
+
+recursive
+   Most CMake-based build systems are recursive. More specifically it is often
+   the case that a build system opts to build one or more dependencies,
+   each of which may also rely on a CMake-based build system. Within the
+   CMake-based build systems of each of those dependencies there may be even
+   more dependencies with CMake-based build systems, etc.
+
+   - Given the recursive nature it is important for all aspects of the build
+     system to "think globally, but act locally."
+   - As a CMake-based build system runs, there is only ever one "active"
+     project. The active project is the project whose build system control is
+     currently within.
+   - Upon recursing into the CMake-based build system of a dependency the
+     active project becomes the dependency.
 
 ************
 Architecture
@@ -199,22 +215,11 @@ CMaizeProject
    Main discussion: :ref:`designing_cmaizes_cmaizeproject_component`.
 
 The CMaizeProject component is responsible for tracking project information,
-including version, dependencies, targets, etc. of the current project. In
-addition to serving as a workspace of sorts, ``CMaizeProject`` objects also
-collect all of the information needed to eventually package the project.
-
-PackageSpecification
-====================
-
-.. note::
-
-   Main discussion: :ref:`designing_cmaizes_packagespecification_component`.
-
-Packages typically have different "iterations". Different iterations arise
-from different versions of the source code, different compile options, and
-from different iterations of the dependencies. ``PackageSpecification`` objects
-are meant to encapsulate the details necessary to tell one iteration of a
-package from another.
+including version, dependencies, targets, etc. of the active project (see
+consideration :ref:`recursive`). In addition to serving as a workspace of
+sorts, ``CMaizeProject`` objects also
+collect all of the information needed to eventually package the project, which
+in turn addresses the :ref:`recursive` consideration.
 
 PackageManager
 ==============
@@ -223,7 +228,7 @@ PackageManager
 
    Main discussion: :ref:`designing_cmaizes_packagemanager_component`.
 
-Superficially, ``PackageManager`` objects map ``PackageSpecification`` objects
+Superficially, ``PackageManager`` objects map project configurations
 to packages. In practice, the requested package may not actually exist yet
 and the ``PackageManager`` object may either need to build the package or tell
 the user it can not find it. The PackageManager component is charged with
@@ -238,8 +243,8 @@ Target
 
    Main discussion: :ref:`designing_cmaizes_target_component`.
 
-Thinking of a ``PackageManager`` as a map, ``PackageSpecification`` objects
-are the keys and ``Target`` objects are the values. Thus ``Target`` objects
+Thinking of a ``PackageManager`` as a map, project configurations are the keys
+and ``Target`` objects are the values. Thus ``Target`` objects
 are charged with describing the actual package. This includes, for example,
 knowing where the libraries and header files are located, as well as supporting
 the consumption of the package. The reason this component is called the Target
@@ -279,3 +284,9 @@ Summary
 :ref:`object_oriented`
    The internals of CMaize are object-oriented. Internally, CMaize has adopted
    the `CMakePP Language`_.
+
+:ref:`recursive`
+   The CMaizeProject component collects the information for the active project
+   including the information needed for the project to be consumed by downstream
+   users. All CMaize functions (as well as all CMake functions) are implemented
+   in a manner consistent with "think globally, act locally".
