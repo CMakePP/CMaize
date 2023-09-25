@@ -706,7 +706,7 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
         string(APPEND
             __gtc_file_contents
             "
-set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/lib/${__gtc_target_name}/${__gtc_libname_w_version}\")
+set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/${CMAKE_INSTALL_LIBDIR}/${__gtc_target_name}/${__gtc_libname_w_version}\")
 
 # Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
 set_property(TARGET ${__gtc_namespace}${__gtc_target_name} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
