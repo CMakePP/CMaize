@@ -48,7 +48,7 @@ information to a number of functions.
 One of the main considerations for writing CMaize is
 :ref:`minimizing the redundancy<minimize_redundancy>` found in typical
 CMake-based :term:`build systems <build system>`. To this end, the CMaizeProject
-component is designed to collect the the project's properties into a single
+component is designed to collect the project's properties into a single
 source of truth. With access to a project's properties it is easier for CMaize
 to automatically propagate the project's information to multiple CMake
 functions.
@@ -148,7 +148,7 @@ the downstream project needs to find the current
 project, the downstream project will need the ability to uniquely distinguish
 among package iterations (instances of a package that differ in configuration
 and/or version). This requires tagging the package with some subset of a
-``CMaizeProject`` object's state and  to this end we introduce
+``CMaizeProject`` object's state and to this end we introduce
 the ``PackageSpecification`` class.
 
 Keeping with :term:`DRY` we want each piece of state in the CMaizeProject
