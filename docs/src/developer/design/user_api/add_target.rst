@@ -71,7 +71,7 @@ the coding-language appropriate terms are.
 
    executable
       A program meant to be run by a user. It may be compiled or it may not be,
-      e.g., a Python script with a ``main`` function.
+      e.g., a Python script.
 
    library
       A collection of functionality distributed as a single packaged entity.
@@ -97,16 +97,24 @@ recording targets
 .. _at_succinctness:
 
 succinctness
-   A lot of the information CMake's add target functions require can be
+   A lot of the information required by CMake's add target functions can be
    gleaned from other sources. Requiring the user to restate the information is
    verbose and violates :term:`DRY`.
+
+.. _at_maintaining_best_practices:
+
+maintaining best practices
+   The best practice for how to set up a target will depend on a
+   number of parameters including: the coding language, the build type, and
+   the intended hardware architecture. Ideally CMaize will automate the creation
+   of targets adhering to best practices.
 
 .. _at_coding_languages:
 
 coding language
    Exactly what targets can be built/found depend on the coding language(s) of
    the project. For example, shared/static :term:`libraries <library>` do not
-   exist in the context of building a Python code, but do exist when building
+   exist in the context of building Python code, but do exist when building
    C/C++ code.
 
    - Targeted coding languages include: C, C++, CMake, Fortran, Python, and
@@ -204,7 +212,7 @@ we presently limit our focus to ``cmaize_add_library``:
    # A typical Python invocation
    cmaize_add_library(
        "<target name>"
-       INCLUDE_DIRS "<directory(s) containing the Python library>"
+       SOURCE_DIR "<directory containing the Python library>"
        DEPENDS "<name of dependency 0>" "<name of dependency 1>"
    )
 
@@ -294,6 +302,13 @@ Summary
    CMaize analyzes source code to determine language and library type. Beyond
    that the APIs are designed to require as little information as possible,
    e.g., directories instead of files.
+
+:ref:`at_maintaining_best_practices`
+   Following from the :ref:`at_succinctness` consideration, the add target APIs
+   place an emphasis on specifying the source file assets associated with the
+   target and leaving CMaize to work out the remaining properties of the target.
+   In turn, it becomes CMaize's responsibility to set the targets up following
+   best practices, thereby removing the burden from the caller.
 
 :ref:`at_coding_languages`
    CMaize's various add target functions serve as factory functions for creating
