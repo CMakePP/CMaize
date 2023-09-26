@@ -71,7 +71,7 @@ the coding-language appropriate terms are.
 
    executable
       A program meant to be run by a user. It may be compiled or it may not be,
-      e.g., a Python script with a ``main`` function.
+      e.g., a Python script.
 
    library
       A collection of functionality distributed as a single packaged entity.
@@ -97,7 +97,7 @@ recording targets
 .. _at_succinctness:
 
 succinctness
-   A lot of the information CMake's add target functions require can be
+   A lot of the information required by CMake's add target functions can be
    gleaned from other sources. Requiring the user to restate the information is
    verbose and violates :term:`DRY`.
 
@@ -106,7 +106,7 @@ succinctness
 coding language
    Exactly what targets can be built/found depend on the coding language(s) of
    the project. For example, shared/static :term:`libraries <library>` do not
-   exist in the context of building a Python code, but do exist when building
+   exist in the context of building Python code, but do exist when building
    C/C++ code.
 
    - Targeted coding languages include: C, C++, CMake, Fortran, Python, and
