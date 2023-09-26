@@ -115,6 +115,15 @@ Computer Science Terminology
       A Command Line Interface (CLI) is a mechanism for a user to interact with
       a program in a traditional terminal environment.
 
+   DAG
+      A directed acyclic graph (DAG) is, as the name implies, a mathematical
+      graph whose nodes are connected with one-way edges such that there are
+      no loops. One of the most common representations for describing control
+      flow/dependency is with a DAG. For control flow, nodes represent code
+      units and the directions of the edges represent which code unit calls the
+      other. For dependencies, nodes represent objects and the directions of the
+      edges represent which objects a particular object needs.
+
    DRY
       Short for "Don't Repeat Yourself", the DRY principle stipulates that it
       is better to introduce an abstraction for getting/setting state than it
