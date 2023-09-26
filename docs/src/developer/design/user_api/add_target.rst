@@ -101,6 +101,14 @@ succinctness
    gleaned from other sources. Requiring the user to restate the information is
    verbose and violates :term:`DRY`.
 
+.. _at_maintaining_best_practices:
+
+maintaining best practices
+   The best practice for how to set up a target will depend on a
+   number of parameters including: the coding language, the build type, and
+   the intended hardware architecture. Ideally CMaize will automate the creation
+   of targets adhering to best practices.
+
 .. _at_coding_languages:
 
 coding language
@@ -294,6 +302,13 @@ Summary
    CMaize analyzes source code to determine language and library type. Beyond
    that the APIs are designed to require as little information as possible,
    e.g., directories instead of files.
+
+:ref:`at_maintaining_best_practices`
+   Following from the :ref:`at_succinctness` consideration, the add target APIs
+   place an emphasis on specifying the source file assets associated with the
+   target and leaving CMaize to work out the remaining properties of the target.
+   In turn, it becomes CMaize's responsibility to set the targets up following
+   best practices, thereby removing the burden from the caller.
 
 :ref:`at_coding_languages`
    CMaize's various add target functions serve as factory functions for creating
