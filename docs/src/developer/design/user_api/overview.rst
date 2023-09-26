@@ -14,9 +14,9 @@
 
 .. _designing_cmaizes_user_api:
 
-###########################
-Designing CMaize's User API
-###########################
+####################################
+Overview of CMaize's User API Design
+####################################
 
 :ref:`overview_of_cmaizes_design` called for CMaize to have a functional-style
 user :term:`API` written over top of the object-oriented core. This page

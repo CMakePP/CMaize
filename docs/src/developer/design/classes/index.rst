@@ -12,10 +12,16 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-.. _designing_cmaizes_add_target_functions:
+###################
+CMaize Class Design
+###################
 
-#######################################
-Designing CMaize's Add Target Functions
-#######################################
+Design documentation in this section records the process of designing the
+classes underlying CMaize.
 
-TODO: Write me!!!
+.. toctree::
+   :maxdepth: 2
+
+   cmaize_project
+   package_manager
+   target
