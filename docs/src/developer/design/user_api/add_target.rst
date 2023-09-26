@@ -212,7 +212,7 @@ we presently limit our focus to ``cmaize_add_library``:
    # A typical Python invocation
    cmaize_add_library(
        "<target name>"
-       INCLUDE_DIRS "<directory(s) containing the Python library>"
+       SOURCE_DIR "<directory containing the Python library>"
        DEPENDS "<name of dependency 0>" "<name of dependency 1>"
    )
 
