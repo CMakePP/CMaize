@@ -22,6 +22,7 @@ classes underlying CMaize.
 .. toctree::
    :maxdepth: 2
 
+
    cmaize_project
    package_manager
    target
