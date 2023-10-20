@@ -12,20 +12,10 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-###################
-CMaize Class Design
-###################
+.. _designing_cmaizes_cmake_target_classes:
 
-Design documentation in this section records the process of designing the
-classes underlying CMaize.
+#######################################
+Designing CMaize's CMake Target Classes
+#######################################
 
-.. toctree::
-   :maxdepth: 2
-
-
-   cmaize_project
-   package_manager
-   target
-   cxx_target
-   python_target
-   cmake_target
+TODO: Fill me out!
