@@ -143,7 +143,7 @@ Code factorization --- including consideration :ref:`tc_cmake_based_targets`,
 which means all CMaize targets must have corresponding CMake targets --- is
 the motivation for the common base class ``CMaizeTarget``. To address
 :ref:`tc_lazy_cmake_target_creation` the ``BuildTarget`` class has a virtual
-function ``make_target``. Calling ``make_target`` triggers the building of
+function ``make_target``. Calling ``make_target`` triggers the creation of
 the CMake target.
 
 *******
