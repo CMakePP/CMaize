@@ -36,7 +36,9 @@ Why Do We Need C++ Target Classes?
 CMaize's C++ target classes will provide an object-oriented representation of
 CMake's native C++ targets. C++ target objects are needed to ensure that C++
 targets can be treated in a manner that is compatible with CMaize's target
-support for coding languages not supported by traditional CMake.
+support for coding languages not supported by traditional CMake. CMaize's target
+classes also help extract away much of the repetition resulting from using
+CMake's C++ targets directly.
 
 *************************
 C++ Target Considerations
@@ -79,6 +81,22 @@ The above workflow is for C++ libraries, but is nearly identical to that of
 an executable except that when building an executable step 1 calls
 ``add_executable`` instead of ``add_library``.
 
+This leads to the following considerations:
+
+.. _ct_cmake_target_creation:
+
+CMake target creation
+   :ref:`designing_cmaizes_target_component` called for each CMaize target to
+   have an underlying CMake target. The various C++ target classes will be
+   responsible for actually creating and initializing those targets.
+
+.. _ct_cxx_libraries_and_executables:
+
+C++ libraries and executables
+    Software written in C++ is comprised of two types of objects: libraries and
+    executables. The C++ target classes must be able to represent executables
+    and libraries.
+
 .. _ct_header_only_libraries:
 
 header-only libraries
@@ -98,3 +116,58 @@ abstract base
    C++ executable. The CMaize objects should factor out the common routines and
    abstract away the differences. From an object-oriented design standpoint this
    suggests a common abstract base class.
+
+Out of Scope
+============
+
+installing packages
+   The above workflow for creating C++ targets showed installation for
+   completeness; however, actually installing the targets is the responsibility
+   of the package manager.
+
+*****************
+C++ Target Design
+*****************
+
+.. _fig_cxx_target_design:
+
+.. figure:: assets/cxx_targets.png
+   :align: center
+
+   The classes implementing CMaize's target component for C++ targets.
+
+:numref:`fig_cxx_target_design` is a class diagram for the classes responsible
+for modeling C++ targets. Following from consideration :ref:`ct_abstract_base`
+we have introduced the ``CXXTarget`` class to factor out the common
+infrastructure. The ``CXXTarget`` class implements the ``make_target`` function
+defined by the ``BuildTarget`` class in terms of a series of virtual protected
+member functions, i.e, ``_create_target``, ``_set_compile_features``,
+``_set_include_directories``, ``_set_link_libraries``, and ``_set_sources``.
+
+Following from the :ref:`ct_cxx_libraries_and_executables` consideration, we
+derive from ``CXXTarget`` the ``CXXExecutable`` and ``CXXLibrary`` classes.
+These classes simply override ``_create_target`` so that it calls
+``add_executable`` or ``add_library``, respectively. Finally, to address the
+:ref:`ct_header_only_libraries` consideration we derive the
+``CXXInterfaceLibrary`` class from the ``CXXLibrary`` class.
+
+*******
+Summary
+*******
+
+:ref:`ct_cmake_target_creation`
+   The literal CMake targets are created by the derived classes when overriding
+   ``CXXTarget``'s ``_create_target`` function.
+
+:ref:`ct_cxx_libraries_and_executables`
+   The ``CXXLibrary`` and ``CXXExecutable`` classes respectively model a C++
+   library and a C++ executable.
+
+:ref:`ct_header_only_libraries`
+   The ``CXXInterfaceLibrary`` class derives from the ``CXXLibrary`` class and
+   modifies the workflows so that the underlying CMake calls are consistent with
+   declaring a header-only library.
+
+:ref:`ct_abstract_base`
+   The ``CXXTarget`` class has been introduced to factor out common
+   infrastructure.

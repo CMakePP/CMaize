@@ -37,3 +37,7 @@ building packages
    The design discussion in :ref:`designing_cmaizes_user_api` decided that the
    package manager would be responsible for building packages that
    the :term:`project` depends on.
+
+installing packages
+   Brought up in :ref:`designing_cmaizes_cxx_target_classes`, the package
+   manager is responsible for installing the built packages.
