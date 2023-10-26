@@ -151,6 +151,27 @@ These classes simply override ``_create_target`` so that it calls
 :ref:`ct_header_only_libraries` consideration we derive the
 ``CXXInterfaceLibrary`` class from the ``CXXLibrary`` class.
 
+Proposed API
+============
+
+To create a C++ library:
+
+.. code-block:: CMake
+
+   set(include_files ...) # Somehow get a list of header files
+   set(source_files ...)  # Somehow get a list of source files
+
+   # Create a library called "my_first_cmaize_cxx_library" and assign it to the
+   # variable cxx_library
+   CXXLibrary(CTOR cxx_library "my_first_cmaize_cxx_library")
+
+   # Actually create the CMake target powering the library
+   CXXLibrary(make_target
+       "${cxx_library}"
+       INCLUDES "${include_files}"
+       SOURCES "${source_files}"
+   )
+
 *******
 Summary
 *******
