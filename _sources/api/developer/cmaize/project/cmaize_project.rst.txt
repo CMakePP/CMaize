@@ -42,24 +42,6 @@ cmaize.project/cmaize_project
       :type _ctor_name: desc
       
       :Keyword Arguments:
-         * **VERSION** (*desc*) --
-           Version string of non-negative integers of the form
-           ``<major>[.<minor>[.<patch>[.<tweak>] ] ]``. Populates the
-           version attributes of the ``PackageSpecification``. Parallels
-           the ``VERSION <version>`` keyword for CMake ``project()``
-           (`link <cmake_project_>`__), and the value is passed to
-           a CMake ``project()`` call if the project does not exist yet.
-         * **DESCRIPTION** (*desc*) --
-           Description of the project. Parallels the 
-           ``DESCRIPTION <project-description-string>`` keyword for 
-           CMake ``project()`` (`link <cmake_project_>`__), and the value
-           is passed to a CMake ``project()`` call if the project does not
-           exist yet.
-         * **HOMEPAGE_URL** (*desc*) --
-           Homepage URL for the project. Parallels the
-           ``HOMEPAGE_URL <url-string>`` keyword for CMake ``project()``
-           (`link <cmake_project_>`__), and the value is passed to
-           a CMake ``project()`` call if the project does not exist yet.
          * **LANGUAGES** (*list[desc]*) --
            Languages supported by the project. These languages are passed to
            the LANGUAGES keyword of the CMake ``project()`` call if the project
@@ -117,7 +99,7 @@ cmaize.project/cmaize_project
          * **INSTALLED** (*bool*) --
            Flag to indicate that the target being added is already installed
            on the system.
-         * **NAME** (*desc* or *target*) -- 
+         * **NAME** (*desc* or *target*) --
            Identifying name for the target. This can match name of either the
            CMake target or CMaizeTarget object, but is required to do match
            them. This keyword argument is **required**.
@@ -146,7 +128,7 @@ cmaize.project/cmaize_project
          * **INSTALLED** (*bool*) --
            Flag to indicate that the target being added is already installed
            on the system.
-         * **NAME** (*desc* or *target*) -- 
+         * **NAME** (*desc* or *target*) --
            Identifying name for the target. This can match name of either the
            CMake target or CMaizeTarget object, but is required to do match
            them. This keyword argument is **required**.
@@ -192,7 +174,7 @@ cmaize.project/cmaize_project
          * **ALL** (*bool*) --
            Flag to indicate that both the build and installed targets should
            be checked.
-         * **NAME** (*desc* or *target*) -- 
+         * **NAME** (*desc* or *target*) --
            Identifying name for a target contained in the current Cmaize
            project. This keyword argument is **required**.
       
@@ -226,7 +208,7 @@ cmaize.project/cmaize_project
          * **ALL** (*bool*) --
            Flag to indicate that both the build and installed targets should
            be checked.
-         * **NAME** (*desc* or *target*) -- 
+         * **NAME** (*desc* or *target*) --
            Identifying name for a target contained in the current Cmaize
            project. This keyword argument is **required**.
       
@@ -267,7 +249,7 @@ cmaize.project/cmaize_project
       :Keyword Arguments:
          * **INSTALLED** (*bool*) --
            Flag to indicate that the installed targets should be searched.
-         * **NAME** (*desc* or *target*) -- 
+         * **NAME** (*desc* or *target*) --
            Identifying name for a target contained in the current Cmaize
            project. This keyword argument is **required**.
       
@@ -298,7 +280,7 @@ cmaize.project/cmaize_project
       :Keyword Arguments:
          * **INSTALLED** (*bool*) --
            Flag to indicate that the installed targets should be searched.
-         * **NAME** (*desc* or *target*) -- 
+         * **NAME** (*desc* or *target*) --
            Identifying name for a target contained in the current Cmaize
            project. This keyword argument is **required**.
       

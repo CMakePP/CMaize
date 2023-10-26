@@ -19,7 +19,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Designing CMaize’s User API" href="user_api.html" />
+    <link rel="next" title="Design of CMaize’s User API" href="user_api/index.html" />
     <link rel="prev" title="CMaize Design Documentation" href="index.html" /> 
 </head>
 
@@ -62,17 +62,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="user_api.html">Designing CMaize’s User API</a></li>
-<li class="toctree-l3"><a class="reference internal" href="find_dependencies.html">Designing CMaize’s Find or Build Dependency Function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="add_target.html">Designing CMaize’s Add Target Functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cmaize_project.html">Designing CMaize’s CMaizeProject Component</a></li>
-<li class="toctree-l3"><a class="reference internal" href="package_specification.html">Designing CMaize’s PackageSpecification Component</a></li>
-<li class="toctree-l3"><a class="reference internal" href="package_manager.html">Designing CMaize’s PackageManager Component</a></li>
-<li class="toctree-l3"><a class="reference internal" href="target.html">Designing CMaize’s Target Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_api/index.html">Design of CMaize’s User API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes/index.html">CMaize Class Design</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faqs.html">Developer FAQs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../declaring_targets/index.html">Declaring Build Targets</a></li>
@@ -223,6 +220,23 @@ CMake.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="simple" id="recursive">
+<dt>recursive</dt><dd><p>Most CMake-based build systems are recursive. More specifically it is often
+the case that a build system opts to build one or more dependencies,
+each of which may also rely on a CMake-based build system. Within the
+CMake-based build systems of each of those dependencies there may be even
+more dependencies with CMake-based build systems, etc.</p>
+<ul class="simple">
+<li><p>Given the recursive nature it is important for all aspects of the build
+system to “think globally, but act locally.”</p></li>
+<li><p>As a CMake-based build system runs, there is only ever one “active”
+project. The active project is the project whose build system control is
+currently within.</p></li>
+<li><p>Upon recursing into the CMake-based build system of a dependency the
+active project becomes the dependency.</p></li>
+</ul>
+</dd>
+</dl>
 </section>
 <section id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
@@ -253,7 +267,7 @@ the component and <code class="docutils literal notranslate"><span class="pre">C
 <h3>User API<a class="headerlink" href="#user-api" title="Link to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Main discussion: <a class="reference internal" href="user_api.html#designing-cmaizes-user-api"><span class="std std-ref">Designing CMaize’s User API</span></a>.</p>
+<p>Main discussion: <a class="reference internal" href="user_api/overview.html#designing-cmaizes-user-api"><span class="std std-ref">Overview of CMaize’s User API Design</span></a>.</p>
 </div>
 <p>Considerations <a class="reference internal" href="#cmake-based-workflows"><span class="std std-ref">cmake-based workflows</span></a> and <a class="reference internal" href="#object-oriented"><span class="std std-ref">object-oriented</span></a> together
 require us to write a functional-style user API over top of the classes CMaize
@@ -268,32 +282,22 @@ needed calls to traditional CMake.</p>
 <h3>CMaizeProject<a class="headerlink" href="#cmaizeproject" title="Link to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Main discussion: <a class="reference internal" href="cmaize_project.html#designing-cmaizes-cmaizeproject-component"><span class="std std-ref">Designing CMaize’s CMaizeProject Component</span></a>.</p>
+<p>Main discussion: <a class="reference internal" href="classes/cmaize_project.html#designing-cmaizes-cmaizeproject-component"><span class="std std-ref">Designing CMaize’s CMaizeProject Component</span></a>.</p>
 </div>
 <p>The CMaizeProject component is responsible for tracking project information,
-including version, dependencies, targets, etc. of the current project. In
-addition to serving as a workspace of sorts, <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> objects also
-collect all of the information needed to eventually package the project.</p>
-</section>
-<section id="packagespecification">
-<h3>PackageSpecification<a class="headerlink" href="#packagespecification" title="Link to this heading"></a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Main discussion: <a class="reference internal" href="package_specification.html#designing-cmaizes-packagespecification-component"><span class="std std-ref">Designing CMaize’s PackageSpecification Component</span></a>.</p>
-</div>
-<p>Packages typically have different “iterations”. Different iterations arise
-from different versions of the source code, different compile options, and
-from different iterations of the dependencies. <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> objects
-are meant to encapsulate the details necessary to tell one iteration of a
-package from another.</p>
+including version, dependencies, targets, etc. of the active project (see
+consideration <a class="reference internal" href="#recursive"><span class="std std-ref">recursive</span></a>). In addition to serving as a workspace of
+sorts, <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> objects also
+collect all of the information needed to eventually package the project, which
+in turn addresses the <a class="reference internal" href="#recursive"><span class="std std-ref">recursive</span></a> consideration.</p>
 </section>
 <section id="packagemanager">
 <h3>PackageManager<a class="headerlink" href="#packagemanager" title="Link to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Main discussion: <a class="reference internal" href="package_manager.html#designing-cmaizes-packagemanager-component"><span class="std std-ref">Designing CMaize’s PackageManager Component</span></a>.</p>
+<p>Main discussion: <a class="reference internal" href="classes/package_manager.html#designing-cmaizes-packagemanager-component"><span class="std std-ref">Designing CMaize’s PackageManager Component</span></a>.</p>
 </div>
-<p>Superficially, <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> objects map <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> objects
+<p>Superficially, <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> objects map project configurations
 to packages. In practice, the requested package may not actually exist yet
 and the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> object may either need to build the package or tell
 the user it can not find it. The PackageManager component is charged with
@@ -305,10 +309,10 @@ package managers for obtaining packages.</p>
 <h3>Target<a class="headerlink" href="#target" title="Link to this heading"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Main discussion: <a class="reference internal" href="target.html#designing-cmaizes-target-component"><span class="std std-ref">Designing CMaize’s Target Component</span></a>.</p>
+<p>Main discussion: <a class="reference internal" href="classes/target.html#designing-cmaizes-target-component"><span class="std std-ref">Designing CMaize’s Target Component</span></a>.</p>
 </div>
-<p>Thinking of a <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> as a map, <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> objects
-are the keys and <code class="docutils literal notranslate"><span class="pre">Target</span></code> objects are the values. Thus <code class="docutils literal notranslate"><span class="pre">Target</span></code> objects
+<p>Thinking of a <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> as a map, project configurations are the keys
+and <code class="docutils literal notranslate"><span class="pre">Target</span></code> objects are the values. Thus <code class="docutils literal notranslate"><span class="pre">Target</span></code> objects
 are charged with describing the actual package. This includes, for example,
 knowing where the libraries and header files are located, as well as supporting
 the consumption of the package. The reason this component is called the Target
@@ -343,6 +347,11 @@ package managers, is covered by the PackageManager component.</p>
 <dt><a class="reference internal" href="#object-oriented"><span class="std std-ref">object-oriented</span></a></dt><dd><p>The internals of CMaize are object-oriented. Internally, CMaize has adopted
 the <a class="reference external" href="https://github.com/CMakePP/CMakePPLang">CMakePP Language</a>.</p>
 </dd>
+<dt><a class="reference internal" href="#recursive"><span class="std std-ref">recursive</span></a></dt><dd><p>The CMaizeProject component collects the information for the active project
+including the information needed for the project to be consumed by downstream
+users. All CMaize functions (as well as all CMake functions) are implemented
+in a manner consistent with “think globally, act locally”.</p>
+</dd>
 </dl>
 </section>
 </section>
@@ -352,7 +361,7 @@ the <a class="reference external" href="https://github.com/CMakePP/CMakePPLang">
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="CMaize Design Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="user_api.html" class="btn btn-neutral float-right" title="Designing CMaize’s User API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="user_api/index.html" class="btn btn-neutral float-right" title="Design of CMaize’s User API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

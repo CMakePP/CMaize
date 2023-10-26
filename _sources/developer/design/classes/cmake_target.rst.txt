@@ -12,10 +12,10 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-.. _designing_cmaizes_target_component:
+.. _designing_cmaizes_cmake_target_classes:
 
-###################################
-Designing CMaize's Target Component
-###################################
+#######################################
+Designing CMaize's CMake Target Classes
+#######################################
 
-TODO: Write me!!!
+TODO: Fill me out!

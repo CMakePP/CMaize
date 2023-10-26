@@ -177,6 +177,14 @@ the source code of another software component.</p>
 <dt id="term-CLI">CLI<a class="headerlink" href="#term-CLI" title="Link to this term"></a></dt><dd><p>A Command Line Interface (CLI) is a mechanism for a user to interact with
 a program in a traditional terminal environment.</p>
 </dd>
+<dt id="term-DAG">DAG<a class="headerlink" href="#term-DAG" title="Link to this term"></a></dt><dd><p>A directed acyclic graph (DAG) is, as the name implies, a mathematical
+graph whose nodes are connected with one-way edges such that there are
+no loops. One of the most common representations for describing control
+flow/dependency is with a DAG. For control flow, nodes represent code
+units and the directions of the edges represent which code unit calls the
+other. For dependencies, nodes represent objects and the directions of the
+edges represent which objects a particular object needs.</p>
+</dd>
 <dt id="term-DRY">DRY<a class="headerlink" href="#term-DRY" title="Link to this term"></a></dt><dd><p>Short for “Don’t Repeat Yourself”, the DRY principle stipulates that it
 is better to introduce an abstraction for getting/setting state than it
 is to rewrite that state. Of particular relevance when discussing CMake,

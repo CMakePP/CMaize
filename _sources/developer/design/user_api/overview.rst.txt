@@ -14,9 +14,9 @@
 
 .. _designing_cmaizes_user_api:
 
-###########################
-Designing CMaize's User API
-###########################
+####################################
+Overview of CMaize's User API Design
+####################################
 
 :ref:`overview_of_cmaizes_design` called for CMaize to have a functional-style
 user :term:`API` written over top of the object-oriented core. This page
@@ -151,6 +151,9 @@ At this point we have CMaize loaded and in scope and encourage the user to use
 CMaize's APIs as much as possible from this point forward. That said, we note
 that CMaize will rely on traditional CMake targets, so it is possible to mix
 and match traditional CMake and CMaize code.
+
+It is worth noting that the ``include(cmaize/cmaize)`` line actually initializes
+CMaize (full details can be found at :ref:`cmaize_initialization`).
 
 Build Options
 =============

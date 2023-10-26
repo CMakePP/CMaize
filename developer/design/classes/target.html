@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing CMaize’s Target Component &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Designing CMaize’s C++ Target Classes" href="cxx_target.html" />
+    <link rel="prev" title="Designing CMaize’s PackageManager Component" href="package_manager.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../background/index.html">CMaize Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">Design of CMaize’s User API</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">CMaize Class Design</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">Designing CMaize’s CMaizeProject Component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_manager.html">Designing CMaize’s PackageManager Component</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s Target Component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cxx_target.html">Designing CMaize’s C++ Target Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="python_target.html">Designing CMaize’s Python Target Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake_target.html">Designing CMaize’s CMake Target Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faqs.html">Developer FAQs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Developing CMaize</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">CMaize Design Documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">CMaize Class Design</a></li>
+      <li class="breadcrumb-item active">Designing CMaize’s Target Component</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/design/classes/target.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="designing-cmaize-s-target-component">
+<span id="designing-cmaizes-target-component"></span><h1>Designing CMaize’s Target Component<a class="headerlink" href="#designing-cmaize-s-target-component" title="Link to this heading"></a></h1>
+<p>This page records the design process of CMaize’s target component.</p>
+<section id="what-is-cmaize-s-target-component">
+<span id="tc-what-is-cmaizes-target-component"></span><h2>What is CMaize’s Target Component?<a class="headerlink" href="#what-is-cmaize-s-target-component" title="Link to this heading"></a></h2>
+<p>CMaize’s target component contains classes which represent traditional CMake
+<a class="reference internal" href="../../../background/terminology.html#term-build-target"><span class="xref std std-term">build targets</span></a>. CMaize’s target component is an object-
+oriented take on the functional approach to managing targets provided by
+traditional CMake.</p>
+</section>
+<section id="why-do-we-need-cmaize-s-target-component">
+<h2>Why Do We Need CMaize’s Target Component?<a class="headerlink" href="#why-do-we-need-cmaize-s-target-component" title="Link to this heading"></a></h2>
+<p>Since CMake already provides native support for targets, arguably the more
+pertinent question is: “Why do we need an object-oriented target component?”.
+The original motivation  was to manage
+complexity, while still providing a user-friendly interface. As suggested by
+the length of the CMake target <a class="reference external" href="https://tinyurl.com/535scwpn">documentation</a>,
+there are many considerations which go into properly setting up a CMake target.
+CMaize targets are designed
+to manage those considerations via a separation of concerns. For example,
+users creating a target for a C++ executable, via the <code class="docutils literal notranslate"><span class="pre">CXXExecutable</span></code> class
+need only interact with target properties which are relevant for executables,
+whereas the native CMake <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> additionally exposes many other
+considerations including: libraries, object libraries, and alias targets.</p>
+<p>Another motivation for CMaize’s target component is to extend CMake targets to
+other coding languages. Out of the box, CMake targets are primarily meant for
+use with C/C++ targets. Modern C/C++ projects often contain pieces written in
+other coding languages, notably Python. Being able to treat these additional
+project pieces, with a unified build system, decreases the project management
+burden since maintainers do not need to learn multiple build systems.</p>
+</section>
+<section id="target-component-considerations">
+<h2>Target Component Considerations<a class="headerlink" href="#target-component-considerations" title="Link to this heading"></a></h2>
+<p>In designing CMaize’s target component we have considered:</p>
+<dl class="simple" id="tc-language-specific">
+<dt>language specific</dt><dd><p>From the discussion on  <a class="reference internal" href="../user_api/add_target.html#designing-cmaizes-add-target-functions"><span class="std std-ref">Designing CMaize’s Add Target Functions</span></a>, it
+was decided that the language-specific aspects of target creation would be
+managed by a target class hierarchy residing below the user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>.</p>
+</dd>
+</dl>
+<dl class="simple" id="tc-language-agnostic">
+<dt>language agnostic</dt><dd><p>While perhaps seemingly at odds with <a class="reference internal" href="#tc-language-specific"><span class="std std-ref">language specific</span></a>, we
+note that from the perspective of CMake, and CMaize, targets serve primarily
+as nodes in a <a class="reference internal" href="../../../background/terminology.html#term-DAG"><span class="xref std std-term">DAG</span></a>. The language of the target is not relevant for
+assembling the DAG and it should thus be possible to work with already
+created targets in a language agnostic manner.</p>
+</dd>
+</dl>
+<dl class="simple" id="tc-dependency-tracking">
+<dt>dependency tracking</dt><dd><p>From discussions on <a class="reference internal" href="cmaize_project.html#designing-cmaizes-cmaizeproject-component"><span class="std std-ref">Designing CMaize’s CMaizeProject Component</span></a> we
+established that each target will need to track the targets it depends on.</p>
+<ul class="simple">
+<li><p>As a corollary we note that tracking dependencies is used for establishing
+build order.</p></li>
+<li><p>For a working installed package we know that all dependencies have already
+been satisfied (otherwise the package would not currently be working).
+Downstream consumers of a working installed package do not need to track
+the package’s dependencies because the package already does this for them.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="tc-cmake-based-targets">
+<dt>cmake based targets</dt><dd><p>Modern CMake is target-based. Since CMaize relies on CMake, CMaize will need
+to track the underlying CMake targets.</p>
+</dd>
+</dl>
+<dl class="simple" id="tc-lazy-cmake-target-creation">
+<dt>lazy cmake target creation</dt><dd><p>Somewhat of a corollary to the <a class="reference internal" href="#tc-cmake-based-targets"><span class="std std-ref">cmake based targets</span></a> consideration,
+we note that defining a CMake target requires some of its state to already be
+known, e.g., we need to know all of the source files for a C++ executable.
+The required state will in general live in language-specific derived classes
+and may be set over a number of manipulations. To accommodate such a
+workflow, we require that the CMake target can be created lazily, i.e., the
+CMake target is only created when needed.</p>
+<ul class="simple">
+<li><p>This consideration applies to build targets, since already installed
+targets are required to know all of their state immediately.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="design-of-cmaize-s-target-component">
+<h2>Design of CMaize’s Target Component<a class="headerlink" href="#design-of-cmaize-s-target-component" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<span id="fig-cmaize-targets"></span><img alt="../../../_images/targets.png" src="../../../_images/targets.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The overall architecture of CMaize’s target component. Also shown are the
+API details of the language agnostic pieces.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#fig-cmaize-targets"><span class="std std-numref">Fig. 5</span></a> provides an overview of the architecture of
+CMaize’s target component. Stemming from the <a class="reference internal" href="#tc-language-specific"><span class="std std-ref">language specific</span></a> and
+the <a class="reference internal" href="#tc-language-agnostic"><span class="std std-ref">language agnostic</span></a> considerations the class hierarchy is seen as
+having a language-agnostic piece and a language-specific piece. The base
+<code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code> class and its two child classes,
+<code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> and <code class="docutils literal notranslate"><span class="pre">InstalledTarget</span></code>, define the language agnostic piece of
+the hierarchy. The opaque elements of <a class="reference internal" href="#fig-cmaize-targets"><span class="std std-numref">Fig. 5</span></a>, i.e., those
+labeled <code class="docutils literal notranslate"><span class="pre">CXX</span> <span class="pre">Targets</span></code>, <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">Targets</span></code>, and <code class="docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">Targets</span></code>, form the
+language-specific part of the target component. The design of the classes needed
+to support targets for each coding language can be found elsewhere (see
+<a class="reference internal" href="cxx_target.html#designing-cmaizes-cxx-target-classes"><span class="std std-ref">Designing CMaize’s C++ Target Classes</span></a>,
+<a class="reference internal" href="python_target.html#designing-cmaizes-python-target-classes"><span class="std std-ref">Designing CMaize’s Python Target Classes</span></a>, and
+<a class="reference internal" href="cmake_target.html#designing-cmaizes-cmake-target-classes"><span class="std std-ref">Designing CMaize’s CMake Target Classes</span></a> respectively).</p>
+<p>The corollary of consideration <a class="reference internal" href="#tc-dependency-tracking"><span class="std std-ref">dependency tracking</span></a> means CMaize
+only needs to track dependencies for targets the build system will build; this
+is the motivation for the split between <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> and <code class="docutils literal notranslate"><span class="pre">InstalledTarget</span></code>.
+Code factorization — including consideration <a class="reference internal" href="#tc-cmake-based-targets"><span class="std std-ref">cmake based targets</span></a>,
+which means all CMaize targets must have corresponding CMake targets — is
+the motivation for the common base class <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code>. To address
+<a class="reference internal" href="#tc-lazy-cmake-target-creation"><span class="std std-ref">lazy cmake target creation</span></a> the <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> class has a virtual
+function <code class="docutils literal notranslate"><span class="pre">make_target</span></code>. Calling <code class="docutils literal notranslate"><span class="pre">make_target</span></code> triggers the creation of
+the CMake target.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#tc-language-specific"><span class="std std-ref">language specific</span></a></dt><dd><p>A subset of the classes comprising CMaize’s target component are dedicated
+to representing language-specific targets.</p>
+</dd>
+<dt><a class="reference internal" href="#tc-language-agnostic"><span class="std std-ref">language agnostic</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code>, <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code>, and <code class="docutils literal notranslate"><span class="pre">InstallTarget</span></code> classes contain
+the common functionality needed to interact with all targets, regardless of
+the coding language.</p>
+</dd>
+<dt><a class="reference internal" href="#tc-dependency-tracking"><span class="std std-ref">dependency tracking</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> class contains a member which tracks the target’s
+dependencies. <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> is intended for use with targets CMaize will
+build.</p>
+</dd>
+<dt><a class="reference internal" href="#tc-cmake-based-targets"><span class="std std-ref">cmake based targets</span></a></dt><dd><p>All classes in CMaize’s target component ultimately inherit from the
+<code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code> class. The <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code> class houses the CMake target
+associated with the object.</p>
+</dd>
+<dt><a class="reference internal" href="#tc-lazy-cmake-target-creation"><span class="std std-ref">lazy cmake target creation</span></a></dt><dd><p><code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> defines a virtual function <code class="docutils literal notranslate"><span class="pre">make_target</span></code> which,
+when called, will actually create the associated CMake target.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="package_manager.html" class="btn btn-neutral float-left" title="Designing CMaize’s PackageManager Component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cxx_target.html" class="btn btn-neutral float-right" title="Designing CMaize’s C++ Target Classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

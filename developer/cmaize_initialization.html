@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CMaize Conventions &mdash; CMaize 1.0.0 documentation</title>
+  <title>CMaize Initialization &mdash; CMaize 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="CMaize Initialization" href="cmaize_initialization.html" />
-    <link rel="prev" title="Designing CMaize’s CMake Target Classes" href="design/classes/cmake_target.html" /> 
+    <link rel="next" title="Design Notes" href="design_notes/index.html" />
+    <link rel="prev" title="CMaize Conventions" href="conventions.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,11 +54,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Developing CMaize</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="design/index.html">CMaize Design Documentation</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">CMaize Conventions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#namespaces">Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CMaize Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initialization-sequence">Initialization Sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-notes">Other Notes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="design_notes/index.html">Design Notes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faqs.html">Developer FAQs</a></li>
 </ul>
@@ -83,9 +84,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Developing CMaize</a></li>
-      <li class="breadcrumb-item active">CMaize Conventions</li>
+      <li class="breadcrumb-item active">CMaize Initialization</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/conventions.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/cmaize_initialization.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -93,25 +94,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cmaize-conventions">
-<h1>CMaize Conventions<a class="headerlink" href="#cmaize-conventions" title="Link to this heading"></a></h1>
-<p>This section describes the conventions to be followed when developing
-for CMaize. Since CMaize is based on CMakePPLang, an object-oriented
-extension to the CMake language, CMaize developers should follow the same
-conventions set forth by <a class="reference external" href="https://cmakepp.github.io/CMakePPLang/conventions.html">the CMakePPLang conventions</a>, unless otherwise
-specified here.</p>
-<section id="namespaces">
-<h2>Namespaces<a class="headerlink" href="#namespaces" title="Link to this heading"></a></h2>
-<p>The CMakePPLang uses the prefixes <code class="docutils literal notranslate"><span class="pre">cpp_</span></code>, <code class="docutils literal notranslate"><span class="pre">_cpp_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__cpp_</span></code> to
-specify namespaces to specify public API, protected, and private commands,
-as well as <code class="docutils literal notranslate"><span class="pre">CMAKEPP_LANG_</span></code>, <code class="docutils literal notranslate"><span class="pre">_CMAKEPP_LANG_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__CMAKEPP_LANG_</span></code> for
-for variables in the same scopes. CMaize adopts a similar convention, using
-the prefixes <code class="docutils literal notranslate"><span class="pre">cmaize_</span></code>, <code class="docutils literal notranslate"><span class="pre">_cmaize_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__cmaize_</span></code> for commands and
-<code class="docutils literal notranslate"><span class="pre">CMAIZE_</span></code>, <code class="docutils literal notranslate"><span class="pre">_CMAIZE_</span></code>, and <code class="docutils literal notranslate"><span class="pre">__CMAIZE_</span></code> for variables.</p>
-<p>Note that commands in native CMake (as well as CMakePPLang) are
-case-insensitive, so the <code class="docutils literal notranslate"><span class="pre">CMAIZE_</span></code> prefix on a command is still the same
-namespace as <code class="docutils literal notranslate"><span class="pre">cmaize_</span></code>. However, variables are case-sensitive, so care needs
-to be taken not to overlap variables and commands with the same names.</p>
+  <section id="cmaize-initialization">
+<span id="id1"></span><h1>CMaize Initialization<a class="headerlink" href="#cmaize-initialization" title="Link to this heading"></a></h1>
+<p>The point of this page is to describe what happens when CMaize is initialized.</p>
+<section id="initialization-sequence">
+<h2>Initialization Sequence<a class="headerlink" href="#initialization-sequence" title="Link to this heading"></a></h2>
+<p>CMaize initialization is triggered by the user including the top-level CMake
+module, <code class="docutils literal notranslate"><span class="pre">cmaize/cmaize.cmake</span></code> via <code class="docutils literal notranslate"><span class="pre">include(cmaize/cmaize)</span></code>.</p>
+<ol class="arabic simple">
+<li><p>Load <code class="docutils literal notranslate"><span class="pre">cmaize_impl.cmake</span></code>. This entails:</p>
+<ol class="arabic simple">
+<li><p>An early exit if <code class="docutils literal notranslate"><span class="pre">cmaize_impl.cmake</span></code> has already been loaded.</p></li>
+<li><p>Asserting the user is using a build directory.</p></li>
+<li><p>Defining CMaize
+<a class="reference external" href="https://tinyurl.com/y63thveu">global configuration options</a></p></li>
+<li><p>Bringing the CMaize classes, user API, and utility functions into scope.</p></li>
+</ol>
+</li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> for the most recent call to CMake’s <code class="docutils literal notranslate"><span class="pre">project</span></code>
+command.</p>
+<ul class="simple">
+<li><p>The name of the project is read from <code class="docutils literal notranslate"><span class="pre">${PROJECT_NAME}</span></code></p></li>
+</ul>
+</li>
+<li><p>Set global rpath options including: <code class="docutils literal notranslate"><span class="pre">CMAKE_SKIP_BUILD_RPATH</span></code>,
+<code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_WITH_INSTALL_RPATH</span></code>, <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_RPATH_USE_LINK_PATH</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_RPATH</span></code>.</p></li>
+</ol>
+</section>
+<section id="other-notes">
+<h2>Other Notes<a class="headerlink" href="#other-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Initialization may end up happening many times. For example, if a project’s
+dependencies also use CMaize, CMaize may be loaded multiple times.</p></li>
+<li><p>As a corollary of the previous point, CMaize’s initialization should be kept
+short to avoid adding too much runtime overhead.</p></li>
+<li><p>Not using a build directory will cause CMake to contaminate the source code
+of the <a class="reference internal" href="../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>. Of particular note CMakePPLang will contaminate the
+source code with auto generated class bindings.</p></li>
+</ul>
 </section>
 </section>
 
@@ -119,8 +140,8 @@ to be taken not to overlap variables and commands with the same names.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="design/classes/cmake_target.html" class="btn btn-neutral float-left" title="Designing CMaize’s CMake Target Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="cmaize_initialization.html" class="btn btn-neutral float-right" title="CMaize Initialization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="conventions.html" class="btn btn-neutral float-left" title="CMaize Conventions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="design_notes/index.html" class="btn btn-neutral float-right" title="Design Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

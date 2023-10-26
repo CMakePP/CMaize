@@ -12,10 +12,20 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 
-.. _designing_cmaizes_cmaizeproject_component:
+###################
+CMaize Class Design
+###################
 
-##########################################
-Designing CMaize's CMaizeProject Component
-##########################################
+Design documentation in this section records the process of designing the
+classes underlying CMaize.
 
-TODO: Write me!!!
+.. toctree::
+   :maxdepth: 2
+
+
+   cmaize_project
+   package_manager
+   target
+   cxx_target
+   python_target
+   cmake_target

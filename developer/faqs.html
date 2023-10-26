@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Declaring Build Targets &mdash; CMaize 1.0.0 documentation</title>
+  <title>Developer FAQs &mdash; CMaize 1.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Declaring a C/C++ Executable" href="library.html" />
-    <link rel="prev" title="Developer FAQs" href="../developer/faqs.html" /> 
+    <link rel="next" title="Declaring Build Targets" href="../declaring_targets/index.html" />
+    <link rel="prev" title="Toolchain Class" href="design_notes/classes/toolchain.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,13 +52,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../background/index.html">CMaize Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developing CMaize</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Declaring Build Targets</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="library.html">Declaring a C/C++ Executable</a></li>
-<li class="toctree-l2"><a class="reference internal" href="executable.html">Declaring a C/C++ Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="test.html">Declaring a C/C++ Test</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developing CMaize</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design/index.html">CMaize Design Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmaize_initialization.html">CMaize Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Developer FAQs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-add-a-new-cmaize-configuration-variable">How do I Add a New CMaize Configuration Variable?</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dependencies/index.html">Declaring Dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
 </ul>
@@ -77,9 +82,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Declaring Build Targets</li>
+          <li class="breadcrumb-item"><a href="index.html">Developing CMaize</a></li>
+      <li class="breadcrumb-item active">Developer FAQs</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/declaring_targets/index.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/faqs.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -87,23 +93,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="declaring-build-targets">
-<h1>Declaring Build Targets<a class="headerlink" href="#declaring-build-targets" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="library.html">Declaring a C/C++ Executable</a></li>
-<li class="toctree-l1"><a class="reference internal" href="executable.html">Declaring a C/C++ Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test.html">Declaring a C/C++ Test</a></li>
-</ul>
-</div>
+  <section id="developer-faqs">
+<h1>Developer FAQs<a class="headerlink" href="#developer-faqs" title="Link to this heading"></a></h1>
+<section id="how-do-i-add-a-new-cmaize-configuration-variable">
+<h2>How do I Add a New CMaize Configuration Variable?<a class="headerlink" href="#how-do-i-add-a-new-cmaize-configuration-variable" title="Link to this heading"></a></h2>
+<p>The definition of the variable goes into <code class="docutils literal notranslate"><span class="pre">cmake/cmaize/globals.cmake</span></code>. As long
+as you document the variable in <code class="docutils literal notranslate"><span class="pre">cmake/cmaize/globals.cmake</span></code> it will be
+picked up by CMinx and added to the
+<a class="reference external" href="https://tinyurl.com/y63thveu">documentation</a>.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../developer/faqs.html" class="btn btn-neutral float-left" title="Developer FAQs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="library.html" class="btn btn-neutral float-right" title="Declaring a C/C++ Executable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="design_notes/classes/toolchain.html" class="btn btn-neutral float-left" title="Toolchain Class" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../declaring_targets/index.html" class="btn btn-neutral float-right" title="Declaring Build Targets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

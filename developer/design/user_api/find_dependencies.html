@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Class Design &mdash; CMaize 1.0.0 documentation</title>
+  <title>Designing CMaize’s Find or Build Dependency Function &mdash; CMaize 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="BuildTarget Class" href="build_target.html" />
-    <link rel="prev" title="Design Notes" href="../index.html" /> 
+    <link rel="next" title="Designing CMaize’s Add Target Functions" href="add_target.html" />
+    <link rel="prev" title="Overview of CMaize’s User API Design" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,21 +53,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../design/index.html">CMaize Design Documentation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Design of CMaize’s User API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="overview.html">Overview of CMaize’s User API Design</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s Find or Build Dependency Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="add_target.html">Designing CMaize’s Add Target Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/index.html">CMaize Class Design</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Design Notes</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Class Design</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="build_target.html">BuildTarget Class</a></li>
-<li class="toctree-l4"><a class="reference internal" href="cxx_target.html">CXX Build Target Classes</a></li>
-<li class="toctree-l4"><a class="reference internal" href="installed_target.html">InstalledTarget Class</a></li>
-<li class="toctree-l4"><a class="reference internal" href="package_specification.html">PackageSpecification Class</a></li>
-<li class="toctree-l4"><a class="reference internal" href="target.html">CMaizeTarget Class</a></li>
-<li class="toctree-l4"><a class="reference internal" href="toolchain.html">Toolchain Class</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../faqs.html">Developer FAQs</a></li>
 </ul>
 </li>
@@ -91,10 +90,11 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Developing CMaize</a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Design Notes</a></li>
-      <li class="breadcrumb-item active">Class Design</li>
+          <li class="breadcrumb-item"><a href="../index.html">CMaize Design Documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Design of CMaize’s User API</a></li>
+      <li class="breadcrumb-item active">Designing CMaize’s Find or Build Dependency Function</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/design_notes/classes/index.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/design/user_api/find_dependencies.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -102,27 +102,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="class-design">
-<h1>Class Design<a class="headerlink" href="#class-design" title="Link to this heading"></a></h1>
-<p>This chapter describes the design of different classes that make up CMaize.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="build_target.html">BuildTarget Class</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cxx_target.html">CXX Build Target Classes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installed_target.html">InstalledTarget Class</a></li>
-<li class="toctree-l1"><a class="reference internal" href="package_specification.html">PackageSpecification Class</a></li>
-<li class="toctree-l1"><a class="reference internal" href="target.html">CMaizeTarget Class</a></li>
-<li class="toctree-l1"><a class="reference internal" href="toolchain.html">Toolchain Class</a></li>
-</ul>
-</div>
+  <section id="designing-cmaize-s-find-or-build-dependency-function">
+<span id="designing-cmaize-find-or-build-dependency"></span><h1>Designing CMaize’s Find or Build Dependency Function<a class="headerlink" href="#designing-cmaize-s-find-or-build-dependency-function" title="Link to this heading"></a></h1>
+<p>TODO: Write me!!!</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="Design Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="build_target.html" class="btn btn-neutral float-right" title="BuildTarget Class" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview of CMaize’s User API Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="add_target.html" class="btn btn-neutral float-right" title="Designing CMaize’s Add Target Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

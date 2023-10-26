@@ -4,23 +4,23 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Designing CMaize’s User API &mdash; CMaize 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>Overview of CMaize’s User API Design &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=8d563738"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Designing CMaize’s Find or Build Dependency Function" href="find_dependencies.html" />
-    <link rel="prev" title="Overview of CMaize’s Design" href="overview.html" /> 
+    <link rel="prev" title="Design of CMaize’s User API" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -31,15 +31,15 @@
 
           
           
-          <a href="../../index.html">
+          <a href="../../../index.html">
             
-              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 1.0.0
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -48,36 +48,31 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../background/index.html">CMaize Background</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting_started/index.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developing CMaize</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">CMaize Design Documentation</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="overview.html">Overview of CMaize’s Design</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Designing CMaize’s User API</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#what-is-cmaize-s-user-api">What is CMaize’s User API?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#why-does-cmaize-need-a-user-api">Why Does CMaize Need a User API?</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#user-api-considerations">User API Considerations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#proposed-user-api">Proposed User API</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../background/index.html">CMaize Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Design of CMaize’s User API</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Overview of CMaize’s User API Design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_dependencies.html">Designing CMaize’s Find or Build Dependency Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="add_target.html">Designing CMaize’s Add Target Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="find_dependencies.html">Designing CMaize’s Find or Build Dependency Function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="add_target.html">Designing CMaize’s Add Target Functions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cmaize_project.html">Designing CMaize’s CMaizeProject Component</a></li>
-<li class="toctree-l3"><a class="reference internal" href="package_specification.html">Designing CMaize’s PackageSpecification Component</a></li>
-<li class="toctree-l3"><a class="reference internal" href="package_manager.html">Designing CMaize’s PackageManager Component</a></li>
-<li class="toctree-l3"><a class="reference internal" href="target.html">Designing CMaize’s Target Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/index.html">CMaize Class Design</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../conventions.html">CMaize Conventions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faqs.html">Developer FAQs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../declaring_targets/index.html">Declaring Build Targets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../dependencies/index.html">Declaring Dependencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../bibliography/bibliography.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography/bibliography.html">References</a></li>
 </ul>
 
         </div>
@@ -86,19 +81,20 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">CMaize</a>
+          <a href="../../../index.html">CMaize</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">Developing CMaize</a></li>
-          <li class="breadcrumb-item"><a href="index.html">CMaize Design Documentation</a></li>
-      <li class="breadcrumb-item active">Designing CMaize’s User API</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Developing CMaize</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">CMaize Design Documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Design of CMaize’s User API</a></li>
+      <li class="breadcrumb-item active">Overview of CMaize’s User API Design</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/design/user_api.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/design/user_api/overview.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -106,25 +102,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="designing-cmaize-s-user-api">
-<span id="designing-cmaizes-user-api"></span><h1>Designing CMaize’s User API<a class="headerlink" href="#designing-cmaize-s-user-api" title="Link to this heading"></a></h1>
-<p><a class="reference internal" href="overview.html#overview-of-cmaizes-design"><span class="std std-ref">Overview of CMaize’s Design</span></a> called for CMaize to have a functional-style
-user <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> written over top of the object-oriented core. This page
+  <section id="overview-of-cmaize-s-user-api-design">
+<span id="designing-cmaizes-user-api"></span><h1>Overview of CMaize’s User API Design<a class="headerlink" href="#overview-of-cmaize-s-user-api-design" title="Link to this heading"></a></h1>
+<p><a class="reference internal" href="../overview.html#overview-of-cmaizes-design"><span class="std std-ref">Overview of CMaize’s Design</span></a> called for CMaize to have a functional-style
+user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> written over top of the object-oriented core. This page
 describes the design of CMaize’s user API.</p>
 <section id="what-is-cmaize-s-user-api">
 <h2>What is CMaize’s User API?<a class="headerlink" href="#what-is-cmaize-s-user-api" title="Link to this heading"></a></h2>
-<p>To be used as a <a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a>, CMaize will provide interfaces for
-controlling behavior of the <a class="reference internal" href="../../background/terminology.html#term-build-phase"><span class="xref std std-term">build phases</span></a>. These interfaces
-define the user <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> of CMaize and determine how the user will
-implement their <a class="reference internal" href="../../background/terminology.html#term-project"><span class="xref std std-term">project’s</span></a><a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a>.</p>
+<p>To be used as a <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a>, CMaize will provide interfaces for
+controlling behavior of the <a class="reference internal" href="../../../background/terminology.html#term-build-phase"><span class="xref std std-term">build phases</span></a>. These interfaces
+define the user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> of CMaize and determine how the user will
+implement their <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project’s</span></a><a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a>.</p>
 </section>
 <section id="why-does-cmaize-need-a-user-api">
 <h2>Why Does CMaize Need a User API?<a class="headerlink" href="#why-does-cmaize-need-a-user-api" title="Link to this heading"></a></h2>
 <p>At a fundamental level, CMaize needs a user API because CMaize will have users
 who need to be able to interface with CMaize. The more pertinent
 question is, “Why do we need a functional-style user API modeled after CMake?”
-To that end, we want to design CMaize’s user <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> in a manner which
-simplifies writing the <a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> for a <a class="reference internal" href="../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>. At the
+To that end, we want to design CMaize’s user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> in a manner which
+simplifies writing the <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> for a <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>. At the
 same time, we want to facilitate converting existing CMake-based build
 systems to CMaize-based build systems. Since CMake is a functional language,
 having a functional-style user API facilitates the conversion.</p>
@@ -132,15 +128,15 @@ having a functional-style user API facilitates the conversion.</p>
 <section id="user-api-considerations">
 <h2>User API Considerations<a class="headerlink" href="#user-api-considerations" title="Link to this heading"></a></h2>
 <dl class="simple" id="ua-cmake-based">
-<dt>cmake-based</dt><dd><p>Stemming from the <a class="reference internal" href="overview.html#cmake-based-build-system"><span class="std std-ref">cmake-based build system</span></a> consideration raised as
-part of the design discussions at <a class="reference internal" href="overview.html#overview-of-cmaizes-design"><span class="std std-ref">Overview of CMaize’s Design</span></a>, it was
-decided that the user-facing <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> of CMaize needed to be written in
+<dt>cmake-based</dt><dd><p>Stemming from the <a class="reference internal" href="../overview.html#cmake-based-build-system"><span class="std std-ref">cmake-based build system</span></a> consideration raised as
+part of the design discussions at <a class="reference internal" href="../overview.html#overview-of-cmaizes-design"><span class="std std-ref">Overview of CMaize’s Design</span></a>, it was
+decided that the user-facing <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> of CMaize needed to be written in
 traditional CMake.</p>
 </dd>
 </dl>
 <dl class="simple" id="functional-style">
 <dt>functional style</dt><dd><p>CMake is a functional-style language. Therefore based on the
-<a class="reference internal" href="#ua-cmake-based"><span class="std std-ref">cmake-based</span></a> consideration, the user <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> should adhere to
+<a class="reference internal" href="#ua-cmake-based"><span class="std std-ref">cmake-based</span></a> consideration, the user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> should adhere to
 functional-style programming.</p>
 </dd>
 </dl>
@@ -150,14 +146,14 @@ consideration, user adoption of CMaize is facilitated by having the
 conversion from an existing CMake-based build system to a CMaize-based build
 system be as easy as possible.</p>
 <ul>
-<li><p>Generally speaking most CMake <a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build systems</span></a> follow
+<li><p>Generally speaking most CMake <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build systems</span></a> follow
 the same flow:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>Declare the <a class="reference internal" href="../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>’s meta data including name, version, etc.</p></li>
+<li><p>Declare the <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>’s meta data including name, version, etc.</p></li>
 <li><p>Declare configuration options</p></li>
 <li><p>Find the dependencies</p></li>
-<li><p>Setup the <a class="reference internal" href="../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>’s targets</p></li>
+<li><p>Setup the <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>’s targets</p></li>
 <li><p>Install the targets</p></li>
 </ol>
 </div></blockquote>
@@ -167,15 +163,15 @@ the same flow:</p>
 </dl>
 <dl class="simple" id="ua-minimize-redundancy">
 <dt>minimize redundancy</dt><dd><p>One of the motivating considerations for creating CMaize was
-<a class="reference internal" href="overview.html#minimize-redundancy"><span class="std std-ref">minimize redundancy</span></a>. Satisfying this consideration is the job of
+<a class="reference internal" href="../overview.html#minimize-redundancy"><span class="std std-ref">minimize redundancy</span></a>. Satisfying this consideration is the job of
 CMaize’s user API since ultimately any CMaize-based build system will be
 written using the user API.</p>
 </dd>
 </dl>
 <dl class="simple" id="ua-package-manager">
 <dt>package manager</dt><dd><p>Building/packaging a dependency/project can be a complicated endeavor. From
-<a class="reference internal" href="overview.html#overview-of-cmaizes-design"><span class="std std-ref">Overview of CMaize’s Design</span></a>, it has been established that CMaize will
-have <a class="reference internal" href="../../background/terminology.html#term-package-manager"><span class="xref std std-term">package manager</span></a> support. In many cases CMaize serves as a
+<a class="reference internal" href="../overview.html#overview-of-cmaizes-design"><span class="std std-ref">Overview of CMaize’s Design</span></a>, it has been established that CMaize will
+have <a class="reference internal" href="../../../background/terminology.html#term-package-manager"><span class="xref std std-term">package manager</span></a> support. In many cases CMaize serves as a
 unified API for collecting build system data and shuttling it to the package
 manager. It is thus essential that the user API collects all of the data
 necessary to drive the package manager.</p>
@@ -185,7 +181,7 @@ necessary to drive the package manager.</p>
 <section id="proposed-user-api">
 <h2>Proposed User API<a class="headerlink" href="#proposed-user-api" title="Link to this heading"></a></h2>
 <figure class="align-center" id="id1">
-<span id="fig-user-api"></span><img alt="../../_images/user_api.png" src="../../_images/user_api.png" />
+<span id="fig-user-api"></span><img alt="../../../_images/user_api.png" src="../../../_images/user_api.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">Anticipated control flow of a CMaize-base build system.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
@@ -226,11 +222,13 @@ reduce the boilerplate. The code needed to obtain, and load, CMaize is:</p>
 CMaize’s APIs as much as possible from this point forward. That said, we note
 that CMaize will rely on traditional CMake targets, so it is possible to mix
 and match traditional CMake and CMaize code.</p>
+<p>It is worth noting that the <code class="docutils literal notranslate"><span class="pre">include(cmaize/cmaize)</span></code> line actually initializes
+CMaize (full details can be found at <a class="reference internal" href="../../cmaize_initialization.html#cmaize-initialization"><span class="std std-ref">CMaize Initialization</span></a>).</p>
 </section>
 <section id="build-options">
 <h3>Build Options<a class="headerlink" href="#build-options" title="Link to this heading"></a></h3>
-<p>The next step for most <a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build systems</span></a> is to define the
-<a class="reference internal" href="../../background/terminology.html#term-build-process"><span class="xref std std-term">build process</span></a> options (beyond those intrinsic to CMake itself). Each
+<p>The next step for most <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build systems</span></a> is to define the
+<a class="reference internal" href="../../../background/terminology.html#term-build-process"><span class="xref std std-term">build process</span></a> options (beyond those intrinsic to CMake itself). Each
 option has three parts:</p>
 <ol class="arabic simple">
 <li><p>The variable name storing the option’s value.</p></li>
@@ -238,15 +236,15 @@ option has three parts:</p>
 <li><p>A default value.</p></li>
 </ol>
 <p>In traditional CMake, the description is primarily intended for use by CMake’s
-<a class="reference internal" href="../../background/terminology.html#term-GUI"><span class="xref std std-term">GUI</span></a> and the value is restricted to being a boolean. In our experience
-users typically build CMake programs through the <a class="reference internal" href="../../background/terminology.html#term-CLI"><span class="xref std std-term">CLI</span></a>, which makes the
+<a class="reference internal" href="../../../background/terminology.html#term-GUI"><span class="xref std std-term">GUI</span></a> and the value is restricted to being a boolean. In our experience
+users typically build CMake programs through the <a class="reference internal" href="../../../background/terminology.html#term-CLI"><span class="xref std std-term">CLI</span></a>, which makes the
 description somewhat of a superfluous input; however, we still see value in
-including it in the <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> because, one, we need it to call CMake’s
+including it in the <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> because, one, we need it to call CMake’s
 <a class="reference external" href="https://cmake.org/cmake/help/latest/command/option.html">option</a> command,
 and two, it serves as metadata CMaize can leverage (for example to auto-generate
 build documentation). Allowing options to have values, other than boolean, is
 useful to avoid having to have a series of options like: <code class="docutils literal notranslate"><span class="pre">enable_vendor0</span></code>,
-<code class="docutils literal notranslate"><span class="pre">enable_vendor1</span></code>, <em>etc</em>. Instead the <a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> can simply define a
+<code class="docutils literal notranslate"><span class="pre">enable_vendor1</span></code>, <em>etc</em>. Instead the <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> can simply define a
 single option, say <code class="docutils literal notranslate"><span class="pre">vendor</span></code>, which can just be set to a string denoting the
 vendor to enable.</p>
 <p>With the above considerations in mind, the proposed CMaize API is:</p>
@@ -260,7 +258,7 @@ command. This is by design and stems from the <a class="reference internal" href
 consideration.</p>
 <p>In addition to <code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code>, we also propose the <code class="docutils literal notranslate"><span class="pre">cmaize_option_list</span></code>
 command for setting multiple options at once. Here the motivation is that some
-<a class="reference internal" href="../../background/terminology.html#term-project"><span class="xref std std-term">projects</span></a> need to define many options, which
+<a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">projects</span></a> need to define many options, which
 would lead to many calls to <code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code>. Using
 <code class="docutils literal notranslate"><span class="pre">cmaize_option_list</span></code> the above snippet would be:</p>
 <div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmaize_option_list</span><span class="p">(</span>
@@ -286,7 +284,7 @@ needs to know where to look. CMake already provides mechanisms for users to
 provide hints for finding packages (<em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code>) which CMaize
 can leverage. The output of finding a dependency is a CMake target which can be
 consumed by other CMake targets.</p>
-<p>If a package is not found, a <a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> has two options: error out or
+<p>If a package is not found, a <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> has two options: error out or
 try to build the package. Modern CMake simplifies the process of building
 dependencies which also rely on CMake-based build systems (including those using
 CMaize-based build systems) through CMake’s
@@ -298,7 +296,7 @@ dependency if it knows:</p>
 <li><p>where to obtain the dependency from,</p></li>
 <li><p>the target version of the dependency,</p></li>
 <li><p>values for the configuration options, and</p></li>
-<li><p>the package manager to use (if not <a class="reference internal" href="../../background/cmake_package_manager.html#cmakes-package-manager"><span class="std std-ref">CMake’s Package Manager</span></a>).</p></li>
+<li><p>the package manager to use (if not <a class="reference internal" href="../../../background/cmake_package_manager.html#cmakes-package-manager"><span class="std std-ref">CMake’s Package Manager</span></a>).</p></li>
 </ul>
 <p>From these considerations, we propose the following user APIs for finding and
 building dependencies with CMaize:</p>
@@ -322,7 +320,7 @@ building dependencies with CMaize:</p>
 </pre></div>
 </div>
 <p>In practice, following from the <a class="reference internal" href="#ua-package-manager"><span class="std std-ref">package manager</span></a> consideration, these
-functions are envisioned as wrappers over a <a class="reference internal" href="../../background/terminology.html#term-package-manager"><span class="xref std std-term">package manager</span></a>. The main
+functions are envisioned as wrappers over a <a class="reference internal" href="../../../background/terminology.html#term-package-manager"><span class="xref std std-term">package manager</span></a>. The main
 goal of the user API is to collect the information needed for the package
 manager to build the dependency and for CMaize to use the dependency the package
 manager builds.</p>
@@ -330,8 +328,8 @@ manager builds.</p>
 <section id="define-build-targets">
 <h3>Define Build Targets<a class="headerlink" href="#define-build-targets" title="Link to this heading"></a></h3>
 <p>Full discussion: <a class="reference internal" href="add_target.html#designing-cmaizes-add-target-functions"><span class="std std-ref">Designing CMaize’s Add Target Functions</span></a>.</p>
-<p>Once we have found or built all of the <a class="reference internal" href="../../background/terminology.html#term-project"><span class="xref std std-term">project’s</span></a> dependencies,
-we can move on to building the <a class="reference internal" href="../../background/terminology.html#term-build-target"><span class="xref std std-term">build targets</span></a>. Generally
+<p>Once we have found or built all of the <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project’s</span></a> dependencies,
+we can move on to building the <a class="reference internal" href="../../../background/terminology.html#term-build-target"><span class="xref std std-term">build targets</span></a>. Generally
 speaking, the information needed to build a target depends on the coding
 language of the target. For the purposes of this high-level discussion, we focus
 on C++; build targets for most other coding languages will have similar needs.
@@ -339,7 +337,7 @@ For a typical C++ target we need to specify the:</p>
 <ul class="simple">
 <li><p>name of the build target,</p></li>
 <li><p>source files defining the build target’s implementation,</p></li>
-<li><p>header files defining the build target’s public <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>, and</p></li>
+<li><p>header files defining the build target’s public <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>, and</p></li>
 <li><p>build target’s dependencies (including other build targets).</p></li>
 </ul>
 <p>The proposed CMaize APIs are:</p>
@@ -376,7 +374,7 @@ Testing build targets with CMake often requires:</p>
 <li><p>registering the tests with CTest.</p></li>
 </ul>
 <p>It is also worth noting that tests are often built conditionally (e.g., a
-<a class="reference internal" href="../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> typically does not build the tests of dependencies built
+<a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> typically does not build the tests of dependencies built
 during the “Find Dependencies” step). To that end CMake defines the
 <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> variable; when set to <code class="docutils literal notranslate"><span class="pre">TRUE</span></code> tests are built, otherwise they
 are not. Proposed CMaize APIs for testing a project:</p>
@@ -424,7 +422,7 @@ which hide the logic for including the CTest CMake module, and checking that
 </section>
 <section id="install-project">
 <h3>Install Project<a class="headerlink" href="#install-project" title="Link to this heading"></a></h3>
-<p>If the tests are successful (or were skipped), the next step is <a class="reference internal" href="../../background/terminology.html#term-package"><span class="xref std std-term">package</span></a>
+<p>If the tests are successful (or were skipped), the next step is <a class="reference internal" href="../../../background/terminology.html#term-package"><span class="xref std std-term">package</span></a>
 installation. Installation typically requires specifying which targets are
 part of the package, generating the packaging files, and then
 moving the targets and files to their final location. The main considerations
@@ -441,7 +439,7 @@ for installing are:</p>
 </li>
 <li><p>Installation should be done in a manner which considers the package manager.</p></li>
 </ul>
-<p>The proposed installation <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> is:</p>
+<p>The proposed installation <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> is:</p>
 <div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmaize_add_package</span><span class="p">(</span>
 <span class="w">    </span><span class="s">&lt;name&gt;</span>
 <span class="w">    </span><span class="s">NAMESPACE</span><span class="w"> </span><span class="s">&lt;namespace&gt;</span>
@@ -466,8 +464,8 @@ name as <code class="docutils literal notranslate"><span class="pre">&lt;name&gt
 <section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
 <dl class="simple">
-<dt><a class="reference internal" href="#ua-cmake-based"><span class="std std-ref">cmake-based</span></a></dt><dd><p>CMaize’s user <a class="reference internal" href="../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> is designed to be invoked directly from the
-<a class="reference internal" href="../../background/terminology.html#term-project"><span class="xref std std-term">project’s</span></a> <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as part of the usual CMake
+<dt><a class="reference internal" href="#ua-cmake-based"><span class="std std-ref">cmake-based</span></a></dt><dd><p>CMaize’s user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> is designed to be invoked directly from the
+<a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project’s</span></a> <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> as part of the usual CMake
 build procedure.</p>
 </dd>
 <dt><a class="reference internal" href="#functional-style"><span class="std std-ref">functional style</span></a></dt><dd><p>All user-facing APIs are designed to be functional in nature so as to
@@ -484,9 +482,9 @@ in particular very important for minimizing redundancy as a lot of CMake’s
 verbosity comes from having to resupply the same information to many
 different function calls.</p>
 </dd>
-<dt><a class="reference internal" href="#ua-package-manager"><span class="std std-ref">package manager</span></a></dt><dd><p>Most of the user APIs wrap interactions with a <a class="reference internal" href="../../background/terminology.html#term-package-manager"><span class="xref std std-term">package manager</span></a>. It is
+<dt><a class="reference internal" href="#ua-package-manager"><span class="std std-ref">package manager</span></a></dt><dd><p>Most of the user APIs wrap interactions with a <a class="reference internal" href="../../../background/terminology.html#term-package-manager"><span class="xref std std-term">package manager</span></a>. It is
 the package manager which does the heavy lifting of finding, building, and
-installing dependencies and/or build <a class="reference internal" href="../../background/terminology.html#term-build-target"><span class="xref std std-term">build targets</span></a>.</p>
+installing dependencies and/or build <a class="reference internal" href="../../../background/terminology.html#term-build-target"><span class="xref std std-term">build targets</span></a>.</p>
 </dd>
 </dl>
 </section>
@@ -496,7 +494,7 @@ installing dependencies and/or build <a class="reference internal" href="../../b
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="overview.html" class="btn btn-neutral float-left" title="Overview of CMaize’s Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Design of CMaize’s User API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="find_dependencies.html" class="btn btn-neutral float-right" title="Designing CMaize’s Find or Build Dependency Function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing CMaize’s Add Target Functions &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="CMaize Class Design" href="../classes/index.html" />
+    <link rel="prev" title="Designing CMaize’s Find or Build Dependency Function" href="find_dependencies.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../background/index.html">CMaize Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Design of CMaize’s User API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="overview.html">Overview of CMaize’s User API Design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_dependencies.html">Designing CMaize’s Find or Build Dependency Function</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s Add Target Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../classes/index.html">CMaize Class Design</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../faqs.html">Developer FAQs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Developing CMaize</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">CMaize Design Documentation</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Design of CMaize’s User API</a></li>
+      <li class="breadcrumb-item active">Designing CMaize’s Add Target Functions</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/design/user_api/add_target.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="designing-cmaize-s-add-target-functions">
+<span id="designing-cmaizes-add-target-functions"></span><h1>Designing CMaize’s Add Target Functions<a class="headerlink" href="#designing-cmaize-s-add-target-functions" title="Link to this heading"></a></h1>
+<p>The discussion on the <a class="reference internal" href="overview.html#designing-cmaizes-user-api"><span class="std std-ref">Overview of CMaize’s User API Design</span></a> page motivated the need
+for user-facing functions for declaring and adding targets to the build system.</p>
+<section id="what-are-the-cmaize-add-target-functions">
+<h2>What Are the CMaize Add Target Functions?<a class="headerlink" href="#what-are-the-cmaize-add-target-functions" title="Link to this heading"></a></h2>
+<p>CMaize’s user-facing <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> is comprised of functions designed to
+integrate easily into CMake-style build systems. CMaize’s add target functions
+are the pieces of the user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> through which users can define
+<a class="reference internal" href="../../../background/terminology.html#term-build-target"><span class="xref std std-term">build targets</span></a>, i.e., the libraries, executables, etc.
+comprising their <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>. We refer to these functions as the “add
+target” functions for generality.</p>
+</section>
+<section id="why-do-we-need-the-cmaize-add-target-functions">
+<h2>Why Do We Need The CMaize Add Target Functions?<a class="headerlink" href="#why-do-we-need-the-cmaize-add-target-functions" title="Link to this heading"></a></h2>
+<p>Users need a way to declare <a class="reference internal" href="../../../background/terminology.html#term-build-target"><span class="xref std std-term">build targets</span></a>. Traditional
+CMake provides only two add target functions:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_library.html">add_library</a></p></li>
+<li><p><a class="reference external" href="https://tinyurl.com/4pxh3cmf">add_executable</a></p></li>
+</ul>
+<p>though it should be noted the <a class="reference external" href="https://cmake.org/cmake/help/latest/command/add_library.html">add_library</a> actually covers a number of use
+cases, i.e., static libraries, shared libraries, interface libraries, modules,
+and object libraries. Modern CMake is target-based and CMaize will ultimately
+need to make targets in order to interact with CMake. Thus CMaize’s add target
+functions will necessarily wrap CMake’s add target functions.</p>
+<p>The primary reason CMaize needs wrapper functions is to capture the user’s
+input. More specifically, the CMaize versions of the add target functions will
+record the target options in the active <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> so that CMaize will
+be able to automate packaging of the project. Another motivation for
+maintaining a separate set of CMaize add target functions is to
+provide more succinct APIs. In practice, declaring CMake targets can be very
+verbose and much of what needs to be provided can be inferred or learned from
+other sources.</p>
+</section>
+<section id="add-target-terminology">
+<h2>Add Target Terminology<a class="headerlink" href="#add-target-terminology" title="Link to this heading"></a></h2>
+<p>CMaize will be dealing with targets associated with multiple coding languages.
+Most coding languages organize code similarly, but differ in what they term
+those organizational units. In order to provide a unified description we define
+the following terms. We use these terms throughout this page regardless of what
+the coding-language appropriate terms are.</p>
+<dl class="simple glossary">
+<dt id="term-executable">executable<a class="headerlink" href="#term-executable" title="Link to this term"></a></dt><dd><p>A program meant to be run by a user. It may be compiled or it may not be,
+e.g., a Python script.</p>
+</dd>
+<dt id="term-library">library<a class="headerlink" href="#term-library" title="Link to this term"></a></dt><dd><p>A collection of functionality distributed as a single packaged entity.
+Libraries are designed for consumption by other packages.</p>
+</dd>
+<dt id="term-source-file">source file<a class="headerlink" href="#term-source-file" title="Link to this term"></a></dt><dd><p>Any file containing code. For languages like C++, “source file” includes
+header files.</p>
+</dd>
+</dl>
+<p>As a slight aside, we choose these terms in order to conform to CMake’s already
+existing <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>.</p>
+</section>
+<section id="add-target-function-considerations">
+<h2>Add Target Function Considerations<a class="headerlink" href="#add-target-function-considerations" title="Link to this heading"></a></h2>
+<dl class="simple" id="at-recording-targets">
+<dt>recording targets</dt><dd><p>The primary motivation for the add target functions is to serve as a
+mechanism for recording the details of the target.</p>
+</dd>
+</dl>
+<dl class="simple" id="at-succinctness">
+<dt>succinctness</dt><dd><p>A lot of the information required by CMake’s add target functions can be
+gleaned from other sources. Requiring the user to restate the information is
+verbose and violates <a class="reference internal" href="../../../background/terminology.html#term-DRY"><span class="xref std std-term">DRY</span></a>.</p>
+</dd>
+</dl>
+<dl class="simple" id="at-maintaining-best-practices">
+<dt>maintaining best practices</dt><dd><p>The best practice for how to set up a target will depend on a
+number of parameters including: the coding language, the build type, and
+the intended hardware architecture. Ideally CMaize will automate the creation
+of targets adhering to best practices.</p>
+</dd>
+</dl>
+<dl class="simple" id="at-coding-languages">
+<dt>coding language</dt><dd><p>Exactly what targets can be built/found depend on the coding language(s) of
+the project. For example, shared/static <a class="reference internal" href="#term-library"><span class="xref std std-term">libraries</span></a> do not
+exist in the context of building Python code, but do exist when building
+C/C++ code.</p>
+<ul class="simple">
+<li><p>Targeted coding languages include: C, C++, CMake, Fortran, Python, and
+extensions of the aforementioned languages (e.g., CMaize, CUDA and OpenMP).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="at-target-sources">
+<dt>target sources</dt><dd><p>Targets are usually associated with <a class="reference internal" href="#term-source-file"><span class="xref std std-term">source files</span></a>.</p>
+<ul class="simple">
+<li><p>As a corollary we note that source files usually fall into two categories,
+public and private. Public source files need to be redistributed with the
+target, whereas private source files are consumed in building the target.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="at-conditional-targets">
+<dt>conditional targets</dt><dd><p>Many projects contain targets which are only conditionally built. These
+targets may be optional package features, or targets only needed for testing
+or maintaining the project. In our experience, in a traditional CMake-based
+<a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a>, it is rarely possible to isolate the logic for these
+targets because CMake requires them to be specified in multiple places. We
+assume the following about a conditional target:</p>
+<ul class="simple">
+<li><p>is conditionally included based on the value of a variable (if it’s
+actually multiple variables, the user, via boolean logic, can combine the
+variables into a single variable). For optional features the variable is
+usually something like <code class="docutils literal notranslate"><span class="pre">ENABLE_XXX</span></code>; for tests the variable is
+<code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code> (defined by CMake).</p></li>
+<li><p>needs to be conditionally built, linked to, tested, and packaged. In other
+words, when CMaize is given a list of targets, CMaize needs to skip
+conditional targets which are not currently enabled.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="design-of-the-add-target-functions">
+<h2>Design of the Add Target Functions<a class="headerlink" href="#design-of-the-add-target-functions" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<span id="fig-add-target-functions"></span><img alt="../../../_images/add_target.png" src="../../../_images/add_target.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">The user API for defining targets. Also shown is how the inputs to the user
+API ultimately map to underlying objects. a) Functions related to creating
+an executable. b) Functions related to creating a library. c) Conditional
+functions wrapping functions from a) and b).</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a> summarizes the functions implementing the
+front end of CMaize’s target component. As part of the user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>, the
+front end is function-based (see <a class="reference internal" href="overview.html#functional-style"><span class="std std-ref">functional style</span></a>). Each box in
+<a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a> represents a function (“snake_case” labels),
+section of a function (boxes labeled with phrases), or an object
+(“UpperCamelCase” labels). Nested boxes represent the parts of the function.</p>
+<p>As mentioned above, one of the main considerations for CMaize’s add target
+functions is <a class="reference internal" href="#at-recording-targets"><span class="std std-ref">recording targets</span></a>. In <a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a>
+recording the target information is done in the boxes labeled “Notify Project”.
+The other major consideration for CMaize’s add target functions is
+<a class="reference internal" href="#at-succinctness"><span class="std std-ref">succinctness</span></a>. Succinctness is the motivation for the dispatch steps.
+To clarify, CMaize is able to avoid requiring the user to specify some of the
+target’s properties (e.g., language, header-only) simply by analyzing the
+<a class="reference internal" href="#term-source-file"><span class="xref std std-term">source files</span></a> the user provides. Conceivably it is possible
+to glean even more details (for example the C++/Python version used) from the
+source file contents; however, CMaize currently makes no attempt to do so.</p>
+<p>While the API of the add target functions is language agnostic, consideration
+<a class="reference internal" href="#at-coding-languages"><span class="std std-ref">coding language</span></a> means the backend can not be. As shown in
+<a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a>, both <code class="docutils literal notranslate"><span class="pre">cmaize_add_executable</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code> ultimately dispatch to language-specific target objects.
+In this sense, CMaize’s add target functions can be thought of as factory
+routines.</p>
+</section>
+<section id="add-target-apis">
+<h2>Add Target APIs<a class="headerlink" href="#add-target-apis" title="Link to this heading"></a></h2>
+<p>The APIs for <code class="docutils literal notranslate"><span class="pre">cmaize_add_executable</span></code> and <code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code> were
+briefly introduced in the <a class="reference internal" href="overview.html#designing-cmaizes-user-api"><span class="std std-ref">Overview of CMaize’s User API Design</span></a> section. Generally
+speaking the two functions work similarly aside from the fact that
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_executable</span></code>/<code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code> will ultimately map to
+CMake’s <code class="docutils literal notranslate"><span class="pre">add_executable</span></code>/<code class="docutils literal notranslate"><span class="pre">add_library</span></code> function, respectively (the calls
+to the CMake functions happen inside the target objects). Given the similar APIs
+we presently limit our focus to <code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code>:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="c"># A typical C++ invocation</span>
+<span class="nb">cmaize_add_library</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;&lt;target name&gt;&quot;</span>
+<span class="w">    </span><span class="s">SOURCE_DIR</span><span class="w"> </span><span class="s2">&quot;&lt;directory containing private source files&gt;&quot;</span>
+<span class="w">    </span><span class="s">INCLUDE_DIRS</span><span class="w"> </span><span class="s2">&quot;&lt;directory(s) containing public source files&gt;&quot;</span>
+<span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s2">&quot;&lt;name of dependency 0&gt;&quot;</span><span class="w"> </span><span class="s2">&quot;&lt;name of dependency 1&gt;&quot;</span>
+<span class="p">)</span>
+
+<span class="c"># A typical Python invocation</span>
+<span class="nb">cmaize_add_library</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;&lt;target name&gt;&quot;</span>
+<span class="w">    </span><span class="s">SOURCE_DIR</span><span class="w"> </span><span class="s2">&quot;&lt;directory containing the Python library&gt;&quot;</span>
+<span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s2">&quot;&lt;name of dependency 0&gt;&quot;</span><span class="w"> </span><span class="s2">&quot;&lt;name of dependency 1&gt;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>As shown neither invocation directly says anything about the coding language
+of the target. CMaize will determine this by looking at the file extensions
+(e.g., <code class="docutils literal notranslate"><span class="pre">*.py</span></code> will signals a Python library, whereas <code class="docutils literal notranslate"><span class="pre">*.h</span></code> and <code class="docutils literal notranslate"><span class="pre">*.cpp</span></code>
+signal a C++ library; file extension mappings are managed by
+<a class="reference external" href="https://tinyurl.com/y63thveu">global configuration options</a>). Compared to
+CMake’s <code class="docutils literal notranslate"><span class="pre">add_library</span></code> command CMaize’s API does not require:</p>
+<ul class="simple">
+<li><p>individual source files to be declared,</p></li>
+<li><p>a separate call to <code class="docutils literal notranslate"><span class="pre">target_include_directories</span></code> (which requires include
+files to be specified), nor does it require</p></li>
+<li><p>labeling of interface libraries.</p></li>
+</ul>
+<p>Having to only specify directories, as opposed to source files, leads to much
+more succinct interface than the CMake versions (it also largely negates the
+need for separate <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> files for each target).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Experienced CMake developers may be aware of the pitfalls pertaining to
+<code class="docutils literal notranslate"><span class="pre">file(GLOB</span></code> vs. listing individual source files (see for example
+<a class="reference external" href="https://tinyurl.com/3u6wrw86">here</a>). Under the hood CMaize takes care
+to make sure that adding/deleting files will rerun CMake to pick up the
+changes. Unfortunately, there is some overhead associated with our current
+strategy. If/when a new implementation is pursued it will not break the
+current API, i.e., CMaize’s APIs remain committed to specifying target
+source files by directory.</p>
+</div>
+<p>The final consideration, <a class="reference internal" href="#at-conditional-targets"><span class="std std-ref">conditional targets</span></a>, is addressed by a series
+of functions which wrap <code class="docutils literal notranslate"><span class="pre">cmaize_add_executable</span></code> and <code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code>.
+Respectively <code class="docutils literal notranslate"><span class="pre">cmaize_add_optional_executable</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_optional_library</span></code> extend <code class="docutils literal notranslate"><span class="pre">cmaize_add_executable</span></code> and
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code> to associate a control variable with the target. The
+APIs are:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmaize_add_optional_executable</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;&lt;same API as cmaize_add_executable&gt;&quot;</span>
+<span class="w">    </span><span class="s">ENABLED_BY</span><span class="w"> </span><span class="s2">&quot;&lt;variable&gt;&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">cmaize_add_optional_library</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;&lt;same API as cmaize_add_library&gt;&quot;</span>
+<span class="w">    </span><span class="s">ENABLED_BY</span><span class="w"> </span><span class="s2">&quot;&lt;variable&gt;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In the above code snippet <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> is the CMake variable controlling the
+inclusion of a the optional target. When <code class="docutils literal notranslate"><span class="pre">&lt;variable&gt;</span></code> contains a truth-y
+value the target is included in the project, otherwise it is ignored. Since
+most packages will have test components, which are usually optional, we also
+propose the convenience functions:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmaize_add_test_executable</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;&lt;same API as cmaize_add_executable&gt;&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">cmaize_add_test_library</span><span class="p">(</span>
+<span class="w">    </span><span class="s2">&quot;&lt;same API as cmaize_add_library&gt;&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">cmaize_add_test</span><span class="p">(</span>
+<span class="w">   </span><span class="s2">&quot;&lt;same API as cmaize_add_test_executable&gt;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>CMake defines the “ENABLED_BY” variable for tests to be <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code>.
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_test_executable</span></code>/<code class="docutils literal notranslate"><span class="pre">cmaize_add_test_library</span></code> respectively wrap
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_optional_executable</span></code>/<code class="docutils literal notranslate"><span class="pre">cmaize_add_optional_library</span></code> and
+hardcode the “ENABLED_BY” variable to be <code class="docutils literal notranslate"><span class="pre">BUILD_TESTING</span></code>.
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_test</span></code> is a convenience wrapper around
+<code class="docutils literal notranslate"><span class="pre">cmaize_add_test_executable</span></code> which also automatically registers the resulting
+executable with CTest.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#at-recording-targets"><span class="std std-ref">recording targets</span></a></dt><dd><p>All functions meant to be called by users of CMaize will record the target’s
+information in the active project.</p>
+</dd>
+<dt><a class="reference internal" href="#at-succinctness"><span class="std std-ref">succinctness</span></a></dt><dd><p>CMaize analyzes source code to determine language and library type. Beyond
+that the APIs are designed to require as little information as possible,
+e.g., directories instead of files.</p>
+</dd>
+<dt><a class="reference internal" href="#at-maintaining-best-practices"><span class="std std-ref">maintaining best practices</span></a></dt><dd><p>Following from the <a class="reference internal" href="#at-succinctness"><span class="std std-ref">succinctness</span></a> consideration, the add target APIs
+place an emphasis on specifying the source file assets associated with the
+target and leaving CMaize to work out the remaining properties of the target.
+In turn, it becomes CMaize’s responsibility to set the targets up following
+best practices, thereby removing the burden from the caller.</p>
+</dd>
+<dt><a class="reference internal" href="#at-coding-languages"><span class="std std-ref">coding language</span></a></dt><dd><p>CMaize’s various add target functions serve as factory functions for creating
+language-specific target objects.</p>
+</dd>
+<dt><a class="reference internal" href="#at-target-sources"><span class="std std-ref">target sources</span></a></dt><dd><p>Users provide CMaize with directories, not individual source files. This
+facilitates CMaize picking up new files automatically.</p>
+</dd>
+<dt><a class="reference internal" href="#at-conditional-targets"><span class="std std-ref">conditional targets</span></a></dt><dd><p>A series of convenience functions are provided which associate a control flow
+variable with a target. When the control flow variable has a truth-y value
+the target is built, linked against, installed, etc. Otherwise it is skipped.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="find_dependencies.html" class="btn btn-neutral float-left" title="Designing CMaize’s Find or Build Dependency Function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../classes/index.html" class="btn btn-neutral float-right" title="CMaize Class Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
