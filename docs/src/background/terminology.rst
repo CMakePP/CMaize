@@ -80,6 +80,14 @@ and terminology which applies to other build systems as well.
       metadata about the package. The metadata is usually designed to aid a
       :term:`package manager` in finding the package later.
 
+   package configuration
+      The configuration of a :term:`package` refers to the options it was built
+      with, e.g., the target architecture, compiler flags (if applicable),
+      and enabled features. The configuration also includes the
+      :term:`package specification` of each dependency. Note that if a package
+      has no dependencies, then the package configuration is simply the build
+      options.
+
    package manager
       Package managers may be part of a :term:`build tool` or they may be
       independent programs. Regardless of their origin, a "package manager" is
@@ -88,6 +96,12 @@ and terminology which applies to other build systems as well.
       responsible for determining if a particular package instance can be used
       to satisfy a dependency. Package management is built in to CMake via the
       ``find_package`` command and the ``FetchContent`` module.
+
+   package specification
+      A package's specification includes the version of the package and its
+      :term:`package configuration`. For a given package, the package's
+      specification/configuration is a superset/subset of that package's
+      configuration/specification.
 
    project
       Conceptually a "project" is the input (usually source code) to a
