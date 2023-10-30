@@ -100,7 +100,7 @@ version or URL) and any necessary build options. Internally,
 In turn, ``find_or_build_dependency`` thus works like a driver managing the
 interactions of the ``CMaizeProject`` object with the ``PackageManager``
 objects. The reliance on a ``PackageManager`` object addresses the
-:ref:`fbd_wrap_package_manager` consideration.
+:ref:`fbd_wrap_package_managers` consideration.
 
 *******
 Summary

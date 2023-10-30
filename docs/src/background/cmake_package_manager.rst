@@ -70,42 +70,39 @@ In satisfying their primary responsibility, package managers must be able to:
 .. _pmr_package_specs:
 
 Understand :term:`package specifications <package specification>`.
-
-   - Notably this includes knowing what other packages the package depends on.
+   Notably this includes knowing what other packages the package depends on.
 
 .. _pmr_inspect_packages:
 
 Inspect managed packages.
-
-   - This can include not only the package's specification, but also the
-     integrity of the package (does it work?) and its authenticity (is it really
-     what it says it is?).
+   This can include not only the package's specification, but also the
+   integrity of the package (does it work?) and its authenticity (is it really
+   what it says it is?).
 
 .. _pmr_compare_packages:
 
 Compare and discern among managed packages.
+   In particular the package manager must be able to not only realize when two
+   packages are entirely different (e.g., one is say a C++ compiler and the
+   other is a Python interpreter), but also be able to discern among different
+   specifications of the same package.
 
-  - In particular the package manager must be able to not only realize when two
-    packages are entirely different (e.g., one is say a C++ compiler and the
-    other is a Python interpreter), but also be able to discern among different
-    specifications of the same package.
-  - Comparisons are usually needed to know if a package could be used to satisfy
-    a particular package specification.
+   - Comparisons are usually needed to know if a package could be used to
+     satisfy a particular package specification.
 
 .. _pmr_obtain_new_packages:
 
 Obtain new packages.
-
-   - New packages can come from manual addition (a non-ideal solution),
-     downloading, or even other package managers.
+   New packages can come from manual addition (a non-ideal solution),
+   downloading, or even other package managers.
 
 .. _pmr_facilitate_use_of_managed_packages:
 
 Facilitate use of managed packages.
+   If a package manager possesses a package, but the user can not use the
+   package, the package is of no use. The package manager must provide
+   mechanisms so that the package can actually be used.
 
-   - If a package manager possesses a package, but the user can not use the
-     package, the package is of no use. The package manager must provide
-     mechanisms so that the package can actually be used.
    - This is particularly relevant for packages which were added to the package
      manager as dependencies of other packages. Often these packages are not
      located in places which are readily accessible to the user.
