@@ -95,6 +95,15 @@ Package Specification Design
 
    Schematic illustration of the state of the ``PackageSpecification`` class.
 
+:numref:`fig_package_specification` shows the ``PackageSpecification`` class's
+state. The class itself is purely a data structure, meant to package all of the
+information together. While the source location attribute is not applicable to
+packages which have already been built, at present, we have opted to include it
+on all ``PackageSpecification`` objects. This is simply to avoid introducing a
+derived class to store one attribute. If management of the source location
+becomes more complicated it may make sense to factor it out out into a derived
+class.
+
 *******
 Summary
 *******
