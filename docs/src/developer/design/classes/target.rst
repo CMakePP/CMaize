@@ -99,7 +99,7 @@ dependency tracking
 
 cmake based targets
    Modern CMake is target-based. Since CMaize relies on CMake, CMaize will need
-   to track the underlying CMake targets.
+   to track the underlying CMake target(s).
 
 .. _tc_lazy_cmake_target_creation:
 

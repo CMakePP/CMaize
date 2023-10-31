@@ -117,13 +117,14 @@ abstract base
    abstract away the differences. From an object-oriented design standpoint this
    suggests a common abstract base class.
 
-Out of Scope
-============
+.. _ct_install_location:
 
-installing packages
-   The above workflow for creating C++ targets showed installation for
-   completeness; however, actually installing the targets is the responsibility
-   of the package manager.
+install location
+   CMake is great at managing targets during the build process; however,
+   CMake requires the package maintainer to more or less manually configure how
+   the target will behave after installation. This includes ensuring the package
+   can still find all of its files and dependencies. This process is facilitated
+   by having each target know where its install location will be.
 
 *****************
 C++ Target Design

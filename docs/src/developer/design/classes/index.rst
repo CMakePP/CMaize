@@ -24,6 +24,7 @@ classes underlying CMaize.
 
 
    cmaize_project
+   package_specification
    package_manager
    target
    cxx_target

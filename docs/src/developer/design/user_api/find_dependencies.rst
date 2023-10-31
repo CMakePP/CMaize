@@ -68,6 +68,23 @@ wrap package managers
      able to accept whatever input is needed for the various package manager
      backends.
 
+.. _fbd_cmake_target:
+
+CMake target
+   The user of the ``find_or_build_dependency`` function will provide a name
+   for the dependency. That name will be tied to that particular invocation of
+   ``find_or_build_dependency`` and will represent that specific package
+   specification. This is explicitly done by creating a traditional CMake target
+   under the provided name.
+
+   - As a corollary, if the user wants to have multiple specifications of a
+     package, then there must be be multiple calls to
+     ``find_or_build_dependency``, each call must provide a unique name.
+   - The user should continue to refer to this package specification via the
+     provided name, e.g., when using it as a dependency for another
+     ``find_or_build_dependency`` call or when specifying the project's
+     assets (e.g., ``cmaize_add_library``)
+
 ****************************************
 Find or Build Dependency Function Design
 ****************************************
@@ -102,6 +119,47 @@ interactions of the ``CMaizeProject`` object with the ``PackageManager``
 objects. The reliance on a ``PackageManager`` object addresses the
 :ref:`fbd_wrap_package_managers` consideration.
 
+**********
+API Design
+**********
+
+The :term:`API` of the ``find_or_build_dependency`` function must be capable of
+accepting whatever input a ``PackageSpecification`` object may need. This is
+because the ``PackageManager`` will ultimately work with the
+``PackageSpecification``. To that end, the API will accept a number of
+:term:`kwargs` which will be forwarded to the ``PackageSpecification`` and the
+basic API will be:
+
+.. code-block:: CMake
+
+   cmaize_find_or_build_dependency(name_of_dependency <kwargs>)
+
+
+Here ``name_of_dependency`` will be the name assigned to the CMake target, as
+required by the :ref:`fbd_cmake_target` consideration. N.B., "CMake target" in
+this context refers to a traditional CMake target, NOT a CMaize object. In turn,
+the user can customize the target via traditional CMake target commands if they
+so choose; for example:
+
+.. code-block:: CMake
+
+   # Somehow get the libraries the target needs to link to
+   set(link_libraries "...")
+   target_link_libraries(name_of_dependency PUBLIC ${link_libraries})
+
+As stated in the :ref:`fbd_cmake_target` consideration, users should use the
+provided name in all future CMaize interactions as well. For example, if one
+of the project's libraries depends on ``name_of_dependency`` then this specified
+like:
+
+.. code-block:: CMake
+
+   cmaize_add_library(
+      <library_name>
+      DEPENDS name_of_dependency <other_dependencies_if_applicable>
+      <other_options>
+   )
+
 *******
 Summary
 *******
@@ -114,3 +172,8 @@ Summary
    The body of the ``find_or_build_dependency`` function relies on
    ``PackageManager`` instances to actually find and/or build the various
    dependencies.
+
+:ref:`fbd_cmake_target`
+   The ``BuildTarget`` and ``InstalledTarget`` classes are responsible for
+   ensuring that a traditional CMake target is created under the name the
+   user provides to the ``find_or_build_dependency`` function.
