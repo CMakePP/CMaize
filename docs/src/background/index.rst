@@ -23,6 +23,7 @@ CMaize Background
    :maxdepth: 2
 
    terminology
+   statement_of_need
+   other_projects
    build_phases
    cmake_package_manager
-   statement_of_need

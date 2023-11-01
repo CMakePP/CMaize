@@ -19,9 +19,35 @@
 Statement of Need
 #################
 
-TODO: contents copied from design docs, need expanded on (with references)
+This page summarizes why we wrote CMaize. For convenience we start with the
+the "too long; didn't ready (TL;DR)" summary.
 
-The vast majority of build systems written for CMake are verbose and highly
+*****
+TL;DR
+*****
+
+- CMake is verbose, CMaize strives to be as succinct as possible.
+- CMake best practices often amount to copy/pasting from another build system.
+  CMaize's minimal APIs avoid this problem and propagate information
+  programatically, meaning refactoring by the user automatically propagates.
+- CMaize has stable APIs. Support for new CMake features/best practices is done
+  under the hood.
+- CMaize can be extended to new use cases via inheritance.
+- Other similar tools are no longer supported.
+- CMaize is easy (or at least we think so).
+
+****************
+Full Description
+****************
+
+Generally speaking, most software packages require some setup before they can
+be used. Setting up a package typically, at a minimum, requires ensuring that
+all necessary dependencies are installed and available. For compiled software,
+one must not only manage external dependencies, but also internal dependencies
+among source files. Thus at a high-level, software setup is an exercise in
+dependency management. For C/C++ software, setup is typically managed by CMake.
+
+The vast majority of build systems written in CMake are verbose and highly
 redundant. Generally speaking, it seems that the broader CMake community has
 accepted that this "is simply the way CMake build systems are" and has stopped
 trying to improve them. Evidence for this claim comes from tutorials prominently
@@ -33,12 +59,24 @@ subsequently suffer from the same problems proponents of DRY seek
 to avoid, *e.g.*, multiple sources of truth, lack of synchronization,
 and coupling the logic of distinct units of code.
 
+Another problem with CMake is that features and best practices are constantly
+changing. While the CMake language is fairly backwards compatible, the
+build systems written in CMake usually are not. This is because CMake-based
+build systems have a "viral" tendency. More specifically, CMake works best if
+a project's dependencies also provide build systems written in CMake, and if the
+dependencies of those dependencies also utilize CMake-based build systems, so on
+and so forth. In such a case, CMake is able to manage dependencies across
+projects. Unfortunately this also means that if a project attempts to use a new
+feature, or a new best practice, that project's dependencies must also support
+that feature or practice.
+
+
 Given that CMake is a full-featured coding language, it is possible to write
 abstractions as CMake extensions which will reduce the verbosity and redundancy,
 but this is not often done. We speculate that the primary hurdle to developing
 such abstractions is lack of support. Most support for scientific software is
 aimed at method development and not at software maintenance/sustainability. As
-a result build systems are low priority. This is why CMaize is needed. CMaize
+a result build systems are a low priority. This is why CMaize is needed. CMaize
 will be a reusable, :term:`build tool` built on top of CMake designed to
 streamline writing build systems, particularly build systems of scientific
 software.

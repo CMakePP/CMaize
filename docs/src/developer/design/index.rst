@@ -25,5 +25,6 @@ right place.
    :maxdepth: 2
 
    overview
+   faq
    user_api/index
    classes/index

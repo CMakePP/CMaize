@@ -150,6 +150,9 @@ Computer Science Terminology
       A Graphical User Interface (GUI) is a mechanism for a user to interact
       with a program via a traditional window-based environment.
 
+   HPC
+      High-performance computing (HPC).
+
    KWARGS
       Short for "keyword arguments". I don't know the full history/applicability
       of the term, but the "kwargs" is widely used in Python communities. We've
