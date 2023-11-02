@@ -135,30 +135,16 @@ basic API will be:
    cmaize_find_or_build_dependency(name_of_dependency <kwargs>)
 
 
-Here ``name_of_dependency`` will be the name assigned to the CMake target, as
-required by the :ref:`fbd_cmake_target` consideration. N.B., "CMake target" in
-this context refers to a traditional CMake target, NOT a CMaize object. In turn,
-the user can customize the target via traditional CMake target commands if they
-so choose; for example:
+Here ``name_of_dependency`` will be the base name assigned to the CMake target,
+as required by the :ref:`fbd_cmake_target` consideration. N.B., "CMake target"
+in this context refers to a traditional CMake target, NOT a CMaize object.
+Users should continue to refer to the dependency as ``name_of_dependency`` in
+all future CMaize calls, e.g.:
 
 .. code-block:: CMake
 
-   # Somehow get the libraries the target needs to link to
-   set(link_libraries "...")
-   target_link_libraries(name_of_dependency PUBLIC ${link_libraries})
-
-As stated in the :ref:`fbd_cmake_target` consideration, users should use the
-provided name in all future CMaize interactions as well. For example, if one
-of the project's libraries depends on ``name_of_dependency`` then this specified
-like:
-
-.. code-block:: CMake
-
-   cmaize_add_library(
-      <library_name>
-      DEPENDS name_of_dependency <other_dependencies_if_applicable>
-      <other_options>
-   )
+   cmaize_find_or_build_dependency(foo <kwargs>)
+   cmaize_find_or_build_dependency(bar DEPENDS foo <other_kwargs>)
 
 *******
 Summary
