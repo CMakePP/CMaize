@@ -29,7 +29,7 @@ TL;DR
 - CMake is verbose, CMaize strives to be as succinct as possible.
 - CMake best practices often amount to copy/pasting from another build system.
   CMaize's minimal APIs avoid this problem and propagate information
-  programatically, meaning refactoring by the user automatically propagates.
+  programatically.
 - CMaize has stable APIs. Support for new CMake features/best practices is done
   under the hood.
 - CMaize can be extended to new use cases via inheritance.
@@ -41,19 +41,30 @@ Full Description
 ****************
 
 Generally speaking, most software packages require some setup before they can
-be used. Setting up a package typically, at a minimum, requires ensuring that
-all necessary dependencies are installed and available. For compiled software,
-one must not only manage external dependencies, but also internal dependencies
-among source files. Thus at a high-level, software setup is an exercise in
-dependency management. For C/C++ software, setup is typically managed by CMake.
+be used. This setup is termed the :term:`build process` and executing the build
+process is called "building". Building a package typically, at a minimum,
+requires ensuring that all necessary dependencies are installed and available
+so that the software can actually be run. For compiled software, one must not
+only manage external dependencies, but also internal dependencies among source
+files, i.e., the source files can be considered dependencies of the binary
+objects needed for the software to run. Thus, at a high-level, building software
+is an exercise in dependency management.
 
-The vast majority of build systems written in CMake are verbose and highly
-redundant. Generally speaking, it seems that the broader CMake community has
-accepted that this "is simply the way CMake build systems are" and has stopped
-trying to improve them. Evidence for this claim comes from tutorials prominently
-showcasing boilerplate code, the growing reliance on template repositories, and
-the tried and true technique of copy/paste-ing CMake scripts from one project
-into another. All of these approaches run afoul of the
+For C/C++ software, CMake has become the de facto tool for managing the build
+process. Unfortunately, the vast majority of build systems leveraging CMake are
+verbose
+and highly redundant. Generally speaking, it seems that the broader
+CMake community has accepted that this "is simply the way CMake build systems
+are" and has stopped trying to improve them. Evidence for this claim comes from
+tutorials prominently showcasing boilerplate code,
+the growing reliance on template repositories (more or less version-controlled
+copy/pasting) :cite:`cmake_template,cpp_boilerplate,cppbase,minimal_cmake_example,moderncpp_project_template,package_example`,
+and even just copy/paste-ing CMake scripts from one project
+into another. Note that citations supporting this evidence are representative,
+not exhaustive, i.e., we are aware that there are many more examples!
+
+All of these approaches run
+afoul of the
 `"Don't Repeat Yourself (DRY)" <https://tinyurl.com/28x7h46c>`__ paradigm and
 subsequently suffer from the same problems proponents of DRY seek
 to avoid, *e.g.*, multiple sources of truth, lack of synchronization,
