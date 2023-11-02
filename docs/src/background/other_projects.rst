@@ -67,7 +67,13 @@ design constraints (column numbers correspond to the above list):
 +-----------------+-----+-----+-----+-----+-----+-----+-----+-----+
 | CMake\+\+       | |y| | |y| | |y| | |y| | |y| | |y| | |y| | |n| |
 +-----------------+-----+-----+-----+-----+-----+-----+-----+-----+
+| cmake-get       | |y| | |y| | |y| | |y| | |n| | |n| | |?| | |n| |
++-----------------+-----+-----+-----+-----+-----+-----+-----+-----+
 | cmake-init      | |n| | |y| | |y| | |y| | |y| | |n| | |?| | |y| |
++-----------------+-----+-----+-----+-----+-----+-----+-----+-----+
+| CPM             | |y| | |y| | |y| | |?| | |n| | |n| | |y| | |y| |
++-----------------+-----+-----+-----+-----+-----+-----+-----+-----+
+| CPM.cmake       | |y| | |y| | |y| | |y| | |y| | |n| | |y| | |y| |
 +-----------------+-----+-----+-----+-----+-----+-----+-----+-----+
 | Hunter          | |y| | |y| | |n| | |y| | |y| | |n| | |y| | |y| |
 +-----------------+-----+-----+-----+-----+-----+-----+-----+-----+
@@ -197,6 +203,20 @@ for CMaize, the CMake++ project has been abandoned and lacks documentation
 (except for high-level functionality); in turn complicating the process of
 resurrecting CMake++.
 
+*********
+cmake-get
+*********
+
+- Website: N/A
+- Source: `<https://github.com/pfultz2/cmake-get>`_
+- Development status: inactive.
+- User community: small.
+
+cmake-get :cite:`cmake_get` is a CMake module designed to be a
+configuration-time replacement for  CMake's ``ExternalProject`` module.
+Thus cmake-get simplifies the process of obtaining and building dependencies,
+but not the process of defining a CMake build system.
+
 **********
 cmake-init
 **********
@@ -218,13 +238,34 @@ generators, cmake-init suffers from the problems described
 CPM
 ***
 
+- Website: There's a link on GitHub, but it looks like it's been compromised.
+- Source: `<https://github.com/iauns/cpm>`_
+- Development status: inactive.
+- User community: large.
+
+CPM :cite:`cpm` (presumably stands for CMake Package Manager) is a CMake module
+designed to be a C++ package manager written in CMake with a focus on static
+linking. The static linking focus means that users of CPM are expected to
+compile their projects into CPM modules (which requires certain C++
+boilerplate). That said, CPM also works with dependencies which are not CPM
+modules.
+
+*********
+CPM.cmake
+*********
+
 - Website: N/A
 - Sources: `<https://github.com/cpm-cmake/CPM.cmake>`_
 - Development status: active.
 - User community: large.
 
-CPM (presumably stands for CMake Package Manager, but I don't actually see a
-definition)
+CPM.cmake :cite:`cpm_cmake` (presumably stands for CMake Package Manager) is a
+CMake module which provides a wrapper around CMake's existing package manager
+(see :ref:`cmakes_package_manager`). The ".cmake" part of the name appears to
+come from not wanting to be confused with the other CPM on this list. Compared
+to the native CMake package manager, CPM.cmake dramatically simplifies the
+underlying CMake calls while also providing version checking, offline builds,
+and some performance optimizations.
 
 ******
 Hunter
