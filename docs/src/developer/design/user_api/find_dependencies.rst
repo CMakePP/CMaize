@@ -54,7 +54,7 @@ Find or Build Dependency Function Considerations
 CMake based
    As user-facing functionality, the ``find_or_build_dependency`` function
    should have an interface which is consistent with traditional CMake. In
-   particular this means the input should strings and the result should be
+   particular this means the input should be strings and the result should be
    the name of a traditional CMake target.
 
 .. _fbd_wrap_package_managers:

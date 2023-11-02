@@ -57,7 +57,7 @@ The primary responsibility of a package manager is, as the name states, to
 maintain a set of :term:`packages <package>`. When a user wants to use a
 package they need only request it from the the package manager and the package
 manager does the rest. The package manager's job is very easy if the user's
-request is: very simple (e.g., "any version of Python"), and the package is
+request is very simple (e.g., "any version of Python"), and the package is
 already available. The usefulness of a package manager can be measured by how
 well it is able to handle complicated requests (e.g., Python version 3.12.0,
 compiled with GCC version 9.5, ``-O2``, ...) and obtain packages which are not
@@ -135,7 +135,7 @@ version file (``PackageNameConfigVersion.cmake`` or
 ``package_name-config-version.cmake``). Alternatively, a find module may be
 provided (``FindXXX.cmake`` where ``XXX`` is the name passed to
 ``find_package``). Regardless of which mechanism is used, it is the ``.cmake``
-files responsibility to make sure CMake has the package specification
+files' responsibility to make sure CMake has the package specification
 information it needs (the version and available components; the package name is
 used to locate the files). CMake considers the packages a match if the version
 information and components provided by the files match what the user asked for.

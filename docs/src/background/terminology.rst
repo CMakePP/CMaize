@@ -151,7 +151,6 @@ Computer Science Terminology
       with a program via a traditional window-based environment.
 
    KWARGS
-      Short for "keyword arguments". I don't know the full history/applicability
-      of the term, but the "kwargs" is widely used in Python communities. We've
+      Short for "keyword arguments". The term "kwargs" is widely used in Python communities. We've
       borrowed the term here for referring to how many modern CMake functions
       accept their arguments as key/value pairs.

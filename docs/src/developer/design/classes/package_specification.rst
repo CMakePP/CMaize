@@ -20,7 +20,7 @@ Designing the Package Specification
 
 Design discussions pertaining to the ``CMaizeProject`` component (see
 :ref:`designing_cmaizes_cmaizeproject_component`) motivated the need for being
-able to represent a packages' specification. This page captures the design
+able to represent a package's specification. This page captures the design
 process of the CMaize's ``PackageSpecification`` class.
 
 ********************************
