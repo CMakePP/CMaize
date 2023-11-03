@@ -35,6 +35,7 @@ jobs:
 
       - name: Build Catch2
         run: |
+          ls
           prefix=`pwd`/tests/scripts/catch2_install
           cd catch2
           cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX="${prefix}"
