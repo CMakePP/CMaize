@@ -28,6 +28,21 @@ jobs:
         uses: lukka/get-cmake@latest
         with:
           cmakeVersion: ${{ env.cmake_version }}
+
+      - name: Download Catch2
+        run: |
+          git clone https://github.com/catchorg/Catch2.git catch2
+
+      - name: Build Catch2
+        run: |
+          cd catch2
+          cmake -H. -Bbuild
+          cmake --build build --parallel 2
+          
+      - name: Install Catch2
+        run: |
+          cd catch2
+          cmake --build build --target install
       
       - name: Configure Project
         run: >
