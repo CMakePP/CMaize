@@ -21,6 +21,13 @@ include(cmakepp_lang/cmakepp_lang)
 cpp_class(CMaizeTarget)
 
     #[[[
+    # :type: path
+    #
+    # Directory where the target binary will be installed.
+    #]]
+    cpp_attr(CMaizeTarget install_path)
+
+    #[[[
     # Creates a ``CMaizeTarget`` object to manage a target of the given name.
     # 
     # .. note::
