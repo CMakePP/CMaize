@@ -35,11 +35,11 @@ jobs:
 
       - name: Build Catch2
         run: |
-          ls
-          prefix=`pwd`/tests/scripts/catch2_install
+          prefix=`pwd`/catch2_install
           cd catch2
           cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX="${prefix}"
           cmake --build build --parallel 2
+          echo "CMAKE_PREFIX_PATH=${prefix}" >> $GITHUB_ENV
           
       - name: Install Catch2
         run: |
