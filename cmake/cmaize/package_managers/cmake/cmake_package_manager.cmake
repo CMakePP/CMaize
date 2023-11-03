@@ -366,6 +366,15 @@ cpp_class(CMakePackageManager PackageManager)
                 #     "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
             )
 
+            # Set each package target's installation path(s). Currently this
+            # sets both the bin and lib directories but realistically only
+            # one or the other would actually contain the target binary
+            set(_ip_install_paths
+                "${_ip_destination_prefix}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
+                "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+            )
+            CMaizeTarget(SET "${_ip_tgt_obj_i}" install_path "${_ip_install_paths}")
+
             # Writes config file to build directory
             CMakePackageManager(_generate_target_config
                 "${self}"
@@ -386,6 +395,29 @@ cpp_class(CMakePackageManager PackageManager)
                         "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}"
                     USE_SOURCE_PERMISSIONS
                 )
+            endforeach()
+        endforeach()
+
+        # Set INSTALL_RPATH to install paths of dependencies to ensure they
+        # can be found
+        foreach(_ip_TARGETS_i ${_ip_TARGETS})
+            CMaizeProject(get_target
+                "${_ip_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
+            )
+
+            BuildTarget(GET "${_ip_tgt_obj_i}" _dep_list depends)
+            foreach(dependency ${_dep_list})
+                # Fetch the dependency's target object
+                CMaizeProject(get_target
+                    "${_ip_proj}" _dep_tgt_obj "${dependency}"
+                )
+
+                # Get the install path for the dependency
+                CMaizeTarget(GET "${_dep_tgt_obj}" _dep_install_path install_path)
+
+                CMaizeTarget(get_property "${_ip_tgt_obj_i}" _install_rpath INSTALL_RPATH)
+                list(APPEND _install_rpath ${_dep_install_path})
+                CMaizeTarget(set_property "${_ip_tgt_obj_i}" INSTALL_RPATH "${_install_rpath}")
             endforeach()
         endforeach()
 
