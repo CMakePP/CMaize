@@ -1,3 +1,17 @@
+# Copyright 2023 CMakePP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/targets/targets)
@@ -137,7 +151,7 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     # defaulting to CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS
     list(LENGTH _cacl_INCLUDE_EXTS _cacl_INCLUDE_EXTS_n)
     if(NOT "${_cacl_INCLUDE_EXTS_n}" GREATER 0)
-        set(_cacl_INCLUDE_EXTS "${CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS}")
+        cpp_get_global(_cacl_INCLUDE_EXTS CMAIZE_CXX_INCLUDE_FILE_EXTENSIONS)
     endif()
 
     _cmaize_glob_files(_cacl_source_files "${_cacl_SOURCE_DIR}" "${_cacl_SOURCE_EXTS}")

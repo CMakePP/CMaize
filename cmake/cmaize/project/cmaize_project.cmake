@@ -1,8 +1,22 @@
+# Copyright 2023 CMakePP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/targets/cmaize_target)
-include(cmaize/project/project_specification)
+include(cmaize/project/package_specification)
 include(cmaize/utilities/utilities)
 
 #[[[
@@ -13,20 +27,20 @@ include(cmaize/utilities/utilities)
 # exist.
 #
 # **Usage:**
-# 
+#
 # A ``CMaizeProject`` object will be automatically created for the current
 # when CMaize is included in a ``CMakeLists.txt`` file if a ``project()``
 # call has already been made. This project should not be created manually
 # in most cases.
 #
 # To retrieve an existing project object, call:
-# 
+#
 # .. code-block:: cmake
 #
 #    cpp_get_global(result_object CMAIZE_PROJECT_<project_name>)
 #]]
 cpp_class(CMaizeProject)
-    
+
     #[[[
     # :type: desc
     #
@@ -35,7 +49,7 @@ cpp_class(CMaizeProject)
     cpp_attr(CMaizeProject name)
 
     #[[[
-    # :type: ProjectSpecification
+    # :type: PackageSpecification
     #
     # Details about the project.
     #]]
@@ -81,24 +95,6 @@ cpp_class(CMaizeProject)
     # :type _ctor_name: desc
     #
     # :Keyword Arguments:
-    #    * **VERSION** (*desc*) --
-    #      Version string of non-negative integers of the form
-    #      ``<major>[.<minor>[.<patch>[.<tweak>] ] ]``. Populates the
-    #      version attributes of the ``ProjectSpecification``. Parallels
-    #      the ``VERSION <version>`` keyword for CMake ``project()``
-    #      (`link <cmake_project_>`__), and the value is passed to
-    #      a CMake ``project()`` call if the project does not exist yet.
-    #    * **DESCRIPTION** (*desc*) --
-    #      Description of the project. Parallels the 
-    #      ``DESCRIPTION <project-description-string>`` keyword for 
-    #      CMake ``project()`` (`link <cmake_project_>`__), and the value
-    #      is passed to a CMake ``project()`` call if the project does not
-    #      exist yet.
-    #    * **HOMEPAGE_URL** (*desc*) --
-    #      Homepage URL for the project. Parallels the
-    #      ``HOMEPAGE_URL <url-string>`` keyword for CMake ``project()``
-    #      (`link <cmake_project_>`__), and the value is passed to
-    #      a CMake ``project()`` call if the project does not exist yet.
     #    * **LANGUAGES** (*list[desc]*) --
     #      Languages supported by the project. These languages are passed to
     #      the LANGUAGES keyword of the CMake ``project()`` call if the project
@@ -110,7 +106,7 @@ cpp_class(CMaizeProject)
     # :returns: ``self`` will be set to the newly constructed
     #           ``CMaizeProject`` object.
     # :rtype: CMaizeProject
-    # 
+    #
     # .. Reference definitions
     # .. _cmake_project: https://cmake.org/cmake/help/latest/command/project.html
     #]]
@@ -137,7 +133,7 @@ cpp_class(CMaizeProject)
         # If the project name is different than the current project, assume
         # a new CMake project needs to be created
         if(NOT "${_ctor_name}" STREQUAL "${PROJECT_NAME}")
-            set(_ctor_msg 
+            set(_ctor_msg
                 "The given project name does not match the current CMake"
                 "project. Make sure that `project()` was called before"
                 "creating a CMaize project."
@@ -151,9 +147,9 @@ cpp_class(CMaizeProject)
             )
         endif()
 
-        # Create a project specification that defaults to the values set
+        # Create a package specification that defaults to the values set
         # in the above ``project()`` call
-        ProjectSpecification(CTOR proj_spec)
+        PackageSpecification(CTOR proj_spec)
         CMaizeProject(SET "${self}" specification "${proj_spec}")
 
     endfunction()
@@ -227,7 +223,7 @@ cpp_class(CMaizeProject)
     #    * **INSTALLED** (*bool*) --
     #      Flag to indicate that the target being added is already installed
     #      on the system.
-    #    * **NAME** (*desc* or *target*) -- 
+    #    * **NAME** (*desc* or *target*) --
     #      Identifying name for the target. This can match name of either the
     #      CMake target or CMaizeTarget object, but is required to do match
     #      them. This keyword argument is **required**.
@@ -262,7 +258,7 @@ cpp_class(CMaizeProject)
     #    * **INSTALLED** (*bool*) --
     #      Flag to indicate that the target being added is already installed
     #      on the system.
-    #    * **NAME** (*desc* or *target*) -- 
+    #    * **NAME** (*desc* or *target*) --
     #      Identifying name for the target. This can match name of either the
     #      CMake target or CMaizeTarget object, but is required to do match
     #      them. This keyword argument is **required**.
@@ -347,10 +343,10 @@ cpp_class(CMaizeProject)
     #    * **ALL** (*bool*) --
     #      Flag to indicate that both the build and installed targets should
     #      be checked.
-    #    * **NAME** (*desc* or *target*) -- 
+    #    * **NAME** (*desc* or *target*) --
     #      Identifying name for a target contained in the current Cmaize
     #      project. This keyword argument is **required**.
-    # 
+    #
     # :returns: CMaizeTarget found (TRUE) or not (FALSE).
     # :rtype: bool
     #]]
@@ -388,7 +384,7 @@ cpp_class(CMaizeProject)
     #    * **ALL** (*bool*) --
     #      Flag to indicate that both the build and installed targets should
     #      be checked.
-    #    * **NAME** (*desc* or *target*) -- 
+    #    * **NAME** (*desc* or *target*) --
     #      Identifying name for a target contained in the current Cmaize
     #      project. This keyword argument is **required**.
     #
@@ -453,7 +449,7 @@ cpp_class(CMaizeProject)
     #                      ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS`` for the list
     #                      of supported package manager types.
     # :type _gpm_pm_type: desc
-    # 
+    #
     # :returns: Requested package manager object, or an empty string ("") if
     #           no package manager with the matching type was found.
     # :rtype: PackageManager
@@ -494,10 +490,10 @@ cpp_class(CMaizeProject)
     # :Keyword Arguments:
     #    * **INSTALLED** (*bool*) --
     #      Flag to indicate that the installed targets should be searched.
-    #    * **NAME** (*desc* or *target*) -- 
+    #    * **NAME** (*desc* or *target*) --
     #      Identifying name for a target contained in the current Cmaize
     #      project. This keyword argument is **required**.
-    # 
+    #
     # :returns: Requested target object, or an empty string ("") if
     #           no target with the matching type was found.
     # :rtype: CMaizeTarget
@@ -532,7 +528,7 @@ cpp_class(CMaizeProject)
     # :Keyword Arguments:
     #    * **INSTALLED** (*bool*) --
     #      Flag to indicate that the installed targets should be searched.
-    #    * **NAME** (*desc* or *target*) -- 
+    #    * **NAME** (*desc* or *target*) --
     #      Identifying name for a target contained in the current Cmaize
     #      project. This keyword argument is **required**.
     #

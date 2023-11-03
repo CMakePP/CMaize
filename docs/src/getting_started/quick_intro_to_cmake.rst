@@ -1,3 +1,20 @@
+..
+   Copyright 2023 CMakePP
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+.. _quick_introduction_to_cmake:
+
 ***************************
 Quick Introduction to CMake
 ***************************
@@ -86,7 +103,7 @@ Realistic Usage
 
 The usage in the previous section is somewhat idealized.  Generally speaking you
 will need to provide more information.  CMake defines a lot of options and we
-have collected them for you on the :ref:`CMake Option Variables` page.  Two of
+have collected them for you on the :ref:`cmake_option_variables` page.  Two of
 the more important options you should be aware of are ``CMAKE_INSTALL_PREFIX``
 and ``CMAKE_PREFIX_PATH``.  While they may sound similar they are used for two
 different purposes.  ``CMAKE_INSTALL_PREFIX`` tells CMake where to install the

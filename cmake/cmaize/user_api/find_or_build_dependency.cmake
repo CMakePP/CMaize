@@ -1,3 +1,17 @@
+# Copyright 2023 CMakePP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include_guard()
 
 include(cmakepp_lang/cmakepp_lang)
@@ -41,7 +55,7 @@ endfunction()
 #
 # :Keyword Arguments:
 #    * **VERSION** (*desc*) --
-#      Version of the project to find. Defaults to no version ("").
+#      Version of the package to find. Defaults to no version ("").
 #    * **PACKAGE_MANAGER** (*desc*) --
 #      Package manager to use. Must be a valid package listed in the
 #      ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS`` variable. Defaults to "CMake".
@@ -94,10 +108,10 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
 
     cpp_get_global(_fobdc_project CMAIZE_PROJECT_${PROJECT_NAME})
 
-    # Create the project specification
-    ProjectSpecification(ctor _fobdc_project_specs)
-    ProjectSpecification(SET "${_fobdc_project_specs}" name "${_fobdc_name}")
-    ProjectSpecification(set_version "${_fobdc_project_specs}" "${_fobdc_VERSION}")
+    # Create the package specification
+    PackageSpecification(ctor _fobdc_package_specs)
+    PackageSpecification(SET "${_fobdc_package_specs}" name "${_fobdc_name}")
+    PackageSpecification(set_version "${_fobdc_package_specs}" "${_fobdc_VERSION}")
 
     # Add a CMakePackageManager to the project if it does not exist yet
     CMaizeProject(get_package_manager "${_fobdc_project}" _fobdc_pm "CMake")
@@ -114,7 +128,7 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     CMakePackageManager(find_installed
         "${_fobdc_pm}"
         _fobdc_tgt
-        "${_fobdc_project_specs}"
+        "${_fobdc_package_specs}"
         ${ARGN}
     )
     if(NOT "${_fobdc_tgt}" STREQUAL "")
@@ -131,7 +145,7 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     CMakePackageManager(get_package
         "${_fobdc_pm}"
         _fobdc_tgt
-        "${_fobdc_project_specs}"
+        "${_fobdc_package_specs}"
         ${ARGN}
     )
     if(NOT "${_fobdc_tgt}" STREQUAL "")

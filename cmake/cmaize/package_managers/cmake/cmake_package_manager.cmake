@@ -1,10 +1,24 @@
+# Copyright 2023 CMakePP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/package_managers/package_manager)
 include(cmaize/package_managers/get_package_manager)
 include(cmaize/package_managers/cmake/dependency/dependency)
-include(cmaize/project/project_specification)
+include(cmaize/project/package_specification)
 include(cmaize/targets/cmaize_target)
 include(cmaize/utilities/fetch_and_available)
 include(cmaize/utilities/generated_by_cmaize)
@@ -99,12 +113,12 @@ cpp_class(CMakePackageManager PackageManager)
     # :rtype: Dependency
     #]]
     cpp_member(register_dependency
-        CMakePackageManager desc ProjectSpecification args
+        CMakePackageManager desc PackageSpecification args
     )
     function("${register_dependency}" self _rd_result _rd_proj_specs)
 
-        ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
-        ProjectSpecification(GET "${_rd_proj_specs}" _rd_pkg_version version)
+        PackageSpecification(GET "${_rd_proj_specs}" _rd_pkg_name name)
+        PackageSpecification(GET "${_rd_proj_specs}" _rd_pkg_version version)
 
         CMakePackageManager(GET "${self}" _rd_dependencies dependencies)
         cpp_map(GET "${_rd_dependencies}" _rd_depend "${_rd_pkg_name}")
@@ -131,8 +145,8 @@ cpp_class(CMakePackageManager PackageManager)
     #
     # :param _fi_result: Return value for the installed target.
     # :type _fi_result: InstalledTarget*
-    # :param _fi_project_specs: Specifications for the package to build.
-    # :type _fi_project_specs: ProjectSpecification
+    # :param _fi_package_specs: Specifications for the package to build.
+    # :type _fi_package_specs: PackageSpecification
     # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
@@ -146,9 +160,9 @@ cpp_class(CMakePackageManager PackageManager)
     # :rtype: InstalledTarget
     #]]
     cpp_member(find_installed
-        CMakePackageManager desc ProjectSpecification args
+        CMakePackageManager desc PackageSpecification args
     )
-    function("${find_installed}" self _fi_result _fi_project_specs)
+    function("${find_installed}" self _fi_result _fi_package_specs)
 
         # set(_fi_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
         set(_fi_one_value_args BUILD_TARGET FIND_TARGET)
@@ -156,12 +170,12 @@ cpp_class(CMakePackageManager PackageManager)
             _fi "" "${_fi_one_value_args}" "" ${ARGN}
         )
 
-        ProjectSpecification(GET "${_fi_project_specs}" _fi_pkg_name name)
+        PackageSpecification(GET "${_fi_package_specs}" _fi_pkg_name name)
 
         CMakePackageManager(register_dependency
             "${self}"
             _fi_depend
-            "${_fi_project_specs}"
+            "${_fi_package_specs}"
             ${ARGN}
         )
 
@@ -202,12 +216,12 @@ cpp_class(CMakePackageManager PackageManager)
     # :param _gp_result: Resulting target object return variable
     # :type _gp_result: InstalledTarget*
     # :param _gp_proj_specs: Specifications for the package to build.
-    # :type _gp_proj_specs: ProjectSpecification
+    # :type _gp_proj_specs: PackageSpecification
     #
     # :returns: Resulting target from the package manager
     # :rtype: InstalledTarget
     #]]
-    cpp_member(get_package CMakePackageManager str ProjectSpecification args)
+    cpp_member(get_package CMakePackageManager str PackageSpecification args)
     function("${get_package}" self _gp_result _gp_proj_specs)
 
         CMakePackageManager(register_dependency
@@ -561,6 +575,10 @@ cpp_class(CMakePackageManager PackageManager)
             "endforeach()\n\n"
         )
 
+        # Potentially add an additional check for imported target names
+        # From: https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1?permalink_comment_id=3200539#gistcomment-3200539
+        # pkg_check_modules(libname REQUIRED IMPORTED_TARGET libname)
+
         string(APPEND "check_required_components(${__gpc_pkg_name})\n")
 
         # Write to a file to be configured
@@ -606,6 +624,14 @@ cpp_class(CMakePackageManager PackageManager)
     )
 
         _cmaize_generated_by_cmaize(__gtc_file_contents)
+        string(APPEND __gtc_file_contents "\n")
+        
+        string(APPEND
+            __gtc_file_contents
+            "
+if(TARGET ${__gtc_namespace}${__gtc_target_name})
+    return()
+endif()")      
         string(APPEND __gtc_file_contents "\n\n")
 
         string(APPEND
@@ -680,7 +706,7 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
         string(APPEND
             __gtc_file_contents
             "
-set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/lib/${__gtc_target_name}/${__gtc_libname_w_version}\")
+set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/${CMAKE_INSTALL_LIBDIR}/${__gtc_target_name}/${__gtc_libname_w_version}\")
 
 # Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
 set_property(TARGET ${__gtc_namespace}${__gtc_target_name} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
