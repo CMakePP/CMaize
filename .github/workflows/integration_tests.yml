@@ -36,13 +36,11 @@ jobs:
       - name: Build Catch2
         run: |
           cd catch2
-          echo "CMAKE_INSTALL_PREFIX set to `pwd`/../catch2_install"
           cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX=`pwd`/../catch2_install
           cmake --build build --parallel 2
           
       - name: Install Catch2
         run: |
-          echo "CMAKE_PREFIX_PATH set to `pwd`/catch2_install"
           cd catch2
           cmake --build build --target install
       
