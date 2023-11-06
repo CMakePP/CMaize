@@ -20,7 +20,7 @@ jobs:
       os: linux-x86_64
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       - name: get cmake
         env:
@@ -39,4 +39,7 @@ jobs:
       - name: unit_test
         run: |
           cd build
-          ../cmake-${cmake_version}-${os}/bin/ctest  -j 2 --output-on-failure
+          ../cmake-${cmake_version}-${os}/bin/ctest \
+              j 2 \
+              --output-on-failure \
+              -LE integration_tests
