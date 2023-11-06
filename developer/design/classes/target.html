@@ -128,7 +128,11 @@ to manage those considerations via a separation of concerns. For example,
 users creating a target for a C++ executable, via the <code class="docutils literal notranslate"><span class="pre">CXXExecutable</span></code> class
 need only interact with target properties which are relevant for executables,
 whereas the native CMake <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> additionally exposes many other
-considerations including: libraries, object libraries, and alias targets.</p>
+considerations including: libraries, object libraries, and alias targets.
+Another motivation for CMaize’s target component is to wrap the process of getting/
+setting target properties in a more user-friendly interface (CMake’s native
+API can be a bit of a pain because it depends on exactly what the target
+represents).</p>
 <p>Another motivation for CMaize’s target component is to extend CMake targets to
 other coding languages. Out of the box, CMake targets are primarily meant for
 use with C/C++ targets. Modern C/C++ projects often contain pieces written in

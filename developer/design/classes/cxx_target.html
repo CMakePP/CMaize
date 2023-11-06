@@ -107,7 +107,159 @@
              
   <section id="designing-cmaize-s-c-target-classes">
 <span id="designing-cmaizes-cxx-target-classes"></span><h1>Designing CMaize’s C++ Target Classes<a class="headerlink" href="#designing-cmaize-s-c-target-classes" title="Link to this heading"></a></h1>
-<p>TODO: Fill me out!</p>
+<p><a class="reference internal" href="target.html#designing-cmaizes-target-component"><span class="std std-ref">Designing CMaize’s Target Component</span></a> described the design of the language
+agnostic pieces of CMaize’s Target component. This page describes the design
+of the Target component specific to C++ targets.</p>
+<section id="what-are-the-c-target-classes">
+<h2>What are the C++ Target Classes?<a class="headerlink" href="#what-are-the-c-target-classes" title="Link to this heading"></a></h2>
+<p>As the name suggests, the C++ target classes are the classes in CMaize’s Target
+component which describe C++ targets including libraries and executables.</p>
+</section>
+<section id="why-do-we-need-c-target-classes">
+<h2>Why Do We Need C++ Target Classes?<a class="headerlink" href="#why-do-we-need-c-target-classes" title="Link to this heading"></a></h2>
+<p>CMaize’s C++ target classes will provide an object-oriented representation of
+CMake’s native C++ targets. C++ target objects are needed to ensure that C++
+targets can be treated in a manner that is compatible with CMaize’s target
+support for coding languages not supported by traditional CMake. CMaize’s target
+classes also help extract away much of the repetition resulting from using
+CMake’s C++ targets directly.</p>
+</section>
+<section id="c-target-considerations">
+<h2>C++ Target Considerations<a class="headerlink" href="#c-target-considerations" title="Link to this heading"></a></h2>
+<p>To motivate the considerations for the C++ Target classes consider the
+traditional CMake workflow for setting up C++ targets:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="c"># Step 1: Declare the target for the library</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+
+<span class="c"># Step 2: Set compiler features needed by the target</span>
+<span class="nb">target_compile_features</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+
+<span class="c"># Step 3: Set up the include directories for the target. This includes the</span>
+<span class="c">#         include paths needed to build the target and the include paths the</span>
+<span class="c">#         target will need after it has been installed.</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+
+<span class="c"># Step 4: Ensure that the header files defining the public API of the target</span>
+<span class="c">#         will be installed.</span>
+<span class="nb">install</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+
+<span class="c"># Step 5: Register the dependencies of the target</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+
+<span class="c"># Step 6: Add source files to the target (if there are any)</span>
+<span class="nb">target_source</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+
+<span class="c"># Step 7: Decide where to install the target and configure the packaging</span>
+<span class="c">#         file for finding the target</span>
+<span class="nb">install</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+
+<span class="c"># Step 8: Install the packaging file.</span>
+<span class="nb">install</span><span class="p">(</span><span class="s">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above workflow is for C++ libraries, but is nearly identical to that of
+an executable except that when building an executable step 1 calls
+<code class="docutils literal notranslate"><span class="pre">add_executable</span></code> instead of <code class="docutils literal notranslate"><span class="pre">add_library</span></code>.</p>
+<p>This leads to the following considerations:</p>
+<dl class="simple" id="ct-cmake-target-creation">
+<dt>CMake target creation</dt><dd><p><a class="reference internal" href="target.html#designing-cmaizes-target-component"><span class="std std-ref">Designing CMaize’s Target Component</span></a> called for each CMaize target to
+have an underlying CMake target. The various C++ target classes will be
+responsible for actually creating and initializing those targets.</p>
+</dd>
+</dl>
+<dl class="simple" id="ct-cxx-libraries-and-executables">
+<dt>C++ libraries and executables</dt><dd><p>Software written in C++ is comprised of two types of objects: libraries and
+executables. The C++ target classes must be able to represent executables
+and libraries.</p>
+</dd>
+</dl>
+<dl class="simple" id="ct-header-only-libraries">
+<dt>header-only libraries</dt><dd><p>Many modern C++ libraries are header-only. Conceptually, such libraries
+follow the same workflow, but skip step 6 (adding source files to the
+target). Unfortunately, CMake requires header-only libraries to provide
+different inputs for a number of the steps (in the above code snippet, the
+actual differences are part of the ellipses and are thus not shown). The
+C++ target classes should abstract away the differences between setting-up
+header-only and compiled libraries.</p>
+</dd>
+</dl>
+<dl class="simple" id="ct-abstract-base">
+<dt>abstract base</dt><dd><p>As the above code snippet showed, the process for configuring and installing
+a C++ library is nearly identical to that of configuring and installing a
+C++ executable. The CMaize objects should factor out the common routines and
+abstract away the differences. From an object-oriented design standpoint this
+suggests a common abstract base class.</p>
+</dd>
+</dl>
+<section id="out-of-scope">
+<h3>Out of Scope<a class="headerlink" href="#out-of-scope" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>installing packages</dt><dd><p>The above workflow for creating C++ targets showed installation for
+completeness; however, actually installing the targets is the responsibility
+of the package manager.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="c-target-design">
+<h2>C++ Target Design<a class="headerlink" href="#c-target-design" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<span id="fig-cxx-target-design"></span><img alt="../../../_images/cxx_targets.png" src="../../../_images/cxx_targets.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The classes implementing CMaize’s target component for C++ targets.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#fig-cxx-target-design"><span class="std std-numref">Fig. 6</span></a> is a class diagram for the classes responsible
+for modeling C++ targets. Following from consideration <a class="reference internal" href="#ct-abstract-base"><span class="std std-ref">abstract base</span></a>
+we have introduced the <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> class to factor out the common
+infrastructure. The <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> class implements the <code class="docutils literal notranslate"><span class="pre">make_target</span></code> function
+defined by the <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> class in terms of a series of virtual protected
+member functions, i.e, <code class="docutils literal notranslate"><span class="pre">_create_target</span></code>, <code class="docutils literal notranslate"><span class="pre">_set_compile_features</span></code>,
+<code class="docutils literal notranslate"><span class="pre">_set_include_directories</span></code>, <code class="docutils literal notranslate"><span class="pre">_set_link_libraries</span></code>, and <code class="docutils literal notranslate"><span class="pre">_set_sources</span></code>.</p>
+<p>Following from the <a class="reference internal" href="#ct-cxx-libraries-and-executables"><span class="std std-ref">C++ libraries and executables</span></a> consideration, we
+derive from <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> the <code class="docutils literal notranslate"><span class="pre">CXXExecutable</span></code> and <code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code> classes.
+These classes simply override <code class="docutils literal notranslate"><span class="pre">_create_target</span></code> so that it calls
+<code class="docutils literal notranslate"><span class="pre">add_executable</span></code> or <code class="docutils literal notranslate"><span class="pre">add_library</span></code>, respectively. Finally, to address the
+<a class="reference internal" href="#ct-header-only-libraries"><span class="std std-ref">header-only libraries</span></a> consideration we derive the
+<code class="docutils literal notranslate"><span class="pre">CXXInterfaceLibrary</span></code> class from the <code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code> class.</p>
+<section id="proposed-api">
+<h3>Proposed API<a class="headerlink" href="#proposed-api" title="Link to this heading"></a></h3>
+<p>To create a C++ library:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="s">include_files</span><span class="w"> </span><span class="s">...</span><span class="p">)</span><span class="w"> </span><span class="c"># Somehow get a list of header files</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">source_files</span><span class="w"> </span><span class="s">...</span><span class="p">)</span><span class="w">  </span><span class="c"># Somehow get a list of source files</span>
+
+<span class="c"># Create a library called &quot;my_first_cmaize_cxx_library&quot; and assign it to the</span>
+<span class="c"># variable cxx_library</span>
+<span class="nb">CXXLibrary</span><span class="p">(</span><span class="s">CTOR</span><span class="w"> </span><span class="s">cxx_library</span><span class="w"> </span><span class="s2">&quot;my_first_cmaize_cxx_library&quot;</span><span class="p">)</span>
+
+<span class="c"># Actually create the CMake target powering the library</span>
+<span class="nb">CXXLibrary</span><span class="p">(</span><span class="s">make_target</span>
+<span class="w">    </span><span class="s2">&quot;${cxx_library}&quot;</span>
+<span class="w">    </span><span class="s">INCLUDES</span><span class="w"> </span><span class="s2">&quot;${include_files}&quot;</span>
+<span class="w">    </span><span class="s">SOURCES</span><span class="w"> </span><span class="s2">&quot;${source_files}&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#ct-cmake-target-creation"><span class="std std-ref">CMake target creation</span></a></dt><dd><p>The literal CMake targets are created by the derived classes when overriding
+<code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code>’s <code class="docutils literal notranslate"><span class="pre">_create_target</span></code> function.</p>
+</dd>
+<dt><a class="reference internal" href="#ct-cxx-libraries-and-executables"><span class="std std-ref">C++ libraries and executables</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code> and <code class="docutils literal notranslate"><span class="pre">CXXExecutable</span></code> classes respectively model a C++
+library and a C++ executable.</p>
+</dd>
+<dt><a class="reference internal" href="#ct-header-only-libraries"><span class="std std-ref">header-only libraries</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">CXXInterfaceLibrary</span></code> class derives from the <code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code> class and
+modifies the workflows so that the underlying CMake calls are consistent with
+declaring a header-only library.</p>
+</dd>
+<dt><a class="reference internal" href="#ct-abstract-base"><span class="std std-ref">abstract base</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> class has been introduced to factor out common
+infrastructure.</p>
+</dd>
+</dl>
+</section>
 </section>
 
 
