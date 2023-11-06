@@ -78,10 +78,16 @@ build_and_install $PACKAGE ${log_dir} $TOOLCHAIN $WORKSPACE/install \
 # Verify that the installation was successful
 echo "Verifying package installation..."
 
+version="1.0.0"
+libext="so.$version"
+if [[ "`uname`" == 'Darwin' ]]; then
+    libext=$version.dylib
+fi
+
 check_dir_exists  "install/include/cmaize_public_depend"
 check_file_exists "install/include/cmaize_public_depend/cmaize_public_depend.hpp"
 check_dir_exists  "install/lib/$PACKAGE"
-check_file_exists "install/lib/$PACKAGE/lib${PACKAGE}.so.1.0.0"
+check_file_exists "install/lib/$PACKAGE/lib${PACKAGE}.$libext"
 check_dir_exists  "install/lib/$PACKAGE/cmake"
 check_file_exists "install/lib/$PACKAGE/cmake/${PACKAGE}Config.cmake"
 check_file_exists "install/lib/$PACKAGE/cmake/${PACKAGE}ConfigVersion.cmake"

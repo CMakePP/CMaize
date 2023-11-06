@@ -81,9 +81,14 @@ build_and_install $PACKAGE ${log_dir} $TOOLCHAIN $WORKSPACE/install \
 # Verify that the installation was successful
 echo "Verifying package installation..."
 
+libext="so"
+if [[ "`uname`" == 'Darwin' ]]; then
+    libext=dylib
+fi
+
 check_dir_exists  "install/include/cmake_private"
 check_file_exists "install/include/cmake_private/cmake_private.hpp"
 check_dir_exists  "install/lib/cmakeprivate"
-check_file_exists "install/lib/cmakeprivate/libCMakePrivate.so"
+check_file_exists "install/lib/cmakeprivate/libCMakePrivate.$libext"
 check_dir_exists  "install/lib/cmakeprivate/cmake"
 check_file_exists "install/lib/cmakeprivate/cmake/${PACKAGE}Config.cmake"
