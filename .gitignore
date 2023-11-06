@@ -18,6 +18,7 @@
 
 # Build directories
 **/*build*/
+
 ## API documentation build directory
 docs/src/api/developer/
 
@@ -26,3 +27,18 @@ docs/src/api/developer/
 
 # Python virtual environments
 **/*venv*/
+
+# Build logs
+**/*logs*/
+
+# Scratch files
+**/scratch/
+
+# Local build scripts
+*build*.sh
+
+# Integration test artifacts
+tests/scripts/catch2_install
+tests/scripts/install
+tests/scripts/logs
+tests/scripts/src
