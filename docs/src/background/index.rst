@@ -22,8 +22,9 @@ CMaize Background
 .. toctree::
    :maxdepth: 2
 
-   terminology
    statement_of_need
    other_projects
+   redundancy
    build_phases
    cmake_package_manager
+   terminology

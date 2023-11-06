@@ -13,3 +13,4 @@ set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 
 # ct_add_dir("cpp")
 ct_add_dir("cmaize")
+add_subdirectory(docs)

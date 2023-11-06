@@ -42,14 +42,15 @@ Generally speaking, most software packages require some setup before they can
 be used. This setup is termed the :term:`build process` and executing the build
 process is called "building". The :term:`build system` is the thing which
 actually does the building. For C/C++ software, CMake has become
-the de facto  :term:`build tool`  :cite:`cmake,modern_cmake` for managing the
-build process and most build systems are thus written using the CMake scripting
-language.
+the de facto :cite:`cmake,cmake_cookbook,modern_cmake` :term:`build tool`
+for managing the build process and most build systems are thus written using
+the CMake scripting language.
 
 Unfortunately, CMake-based build systems tend to be verbose and repetitive.
 As gleaned from tutorials prominently showcasing boilerplate
-code :cite:`its_time_to_do_cmake_right,samples_for_moderncmake`, the growing
-reliance on template repositories :cite:`cmake_template,cpp_boilerplate,cppbase,cpp_lib_template,minimal_cmake_example,moderncpp_project_template,package_example`,
+code :cite:`cmake_cookbook,its_time_to_do_cmake_right,samples_for_moderncmake`,
+the growing reliance on template repositories
+:cite:`cmake_template,cpp_boilerplate,cppbase,cpp_lib_template,minimal_cmake_example,moderncpp_project_template,package_example`,
 and even just copy/paste-ing CMake scripts from one project into another the
 broader community of CMake-based build system developer seem to have just
 accepted the verboseness and repetition (N.B. citations here are representative,
@@ -113,19 +114,21 @@ motivator for the remaining projects to follow suite).
 
 Even though CMake strives to be as flexible as possible, the reality is that
 software packages are becoming increasingly complicated as are their deployment
-environments. Of particular note, many C/C++ packages are increasingly shipping
-with Python interfaces. Unsurprisingly, the Python interface often depends on
-external Python packages, e.g., many scientific C/C++ projects leverage
+environments. For example, and as evidenced by the popularity of the pybind11
+project :cite:`pybind11` on GitHub, many C/C++ packages are increasingly
+supporting Python interfaces. Unsurprisingly, the Python interface often depends
+on external Python packages, e.g., many scientific C/C++ projects leverage
 Numpy :cite:`numpy`.
 While CMake can already facilitate finding the Python interpreter and the
-Python development libraries, it is unreasonable to ask CMake to also
-provide mechanisms for finding and building Python packages. Furthermore, most
+Python development libraries :cite:`find_python`, it is unreasonable to ask
+CMake to also provide mechanisms for finding and building Python packages.
+Furthermore, most
 Python package maintainers are unlikely to provide CMake support. Admittedly,
 the prevalence of the C++/Python paradigm may lead to CMake support down the
-road, but the ultimate point is meant to be language agnostic, i.e., it is not
-reasonable for CMake to natively support all use cases of all coding
-languages. Instead, *there is a need to be able to non-invasively extend CMake
-to additional coding languages and package managers*.
+road, but the ultimate point we're trying to make is that it is unreasonable for
+CMake to natively support all use cases of all coding languages. Instead,
+*there is a need to be able to non-invasively extend CMake to additional coding
+languages and package managers*.
 
 Given that CMake is a full-featured coding language, it is possible to write
 CMake extensions which will reduce the verbosity and redundancy via
