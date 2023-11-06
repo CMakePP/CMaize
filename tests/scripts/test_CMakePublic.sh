@@ -79,11 +79,16 @@ build_and_install $PACKAGE ${log_dir} $TOOLCHAIN $WORKSPACE/install \
 # Verify that the installation was successful
 echo "Verifying package installation..."
 
+libext="so"
+if [[ "`uname`" == 'Darwin' ]]; then
+    libext=dylib
+fi
+
 check_dir_exists  "install/include/cmake_public"
 check_file_exists "install/include/cmake_public/cmake_public.hpp"
 check_dir_exists  "install/lib/CMakePublic"
-check_file_exists "install/lib/CMakePublic/libhello.so"
-check_file_exists "install/lib/CMakePublic/libworld.so"
+check_file_exists "install/lib/CMakePublic/libhello.$libext"
+check_file_exists "install/lib/CMakePublic/libworld.$libext"
 check_dir_exists  "install/lib/CMakePublic/cmake"
 check_file_exists "install/lib/CMakePublic/cmake/${PACKAGE}Config.cmake"
 check_file_exists "install/lib/CMakePublic/cmake/helloConfig.cmake"
