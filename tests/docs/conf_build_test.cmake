@@ -10,6 +10,7 @@ execute_process(
     COMMAND ${CMAKE_COMMAND} -H${TEST_NAME}
                              -B${test_build_dir}
                              -DCMAKE_INSTALL_PREFIX=${install_build_dir}
+                             -D${CMAKE_ARGS}
     COMMAND_ERROR_IS_FATAL ANY
 )
 
