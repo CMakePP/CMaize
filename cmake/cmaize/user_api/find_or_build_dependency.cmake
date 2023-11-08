@@ -72,7 +72,6 @@ function(cmaize_find_or_build_dependency _fobd_name)
 
     # Decide which language we are building for
     string(TOLOWER "${_fobd_PACKAGE_MANAGER}" _fobd_PACKAGE_MANAGER_lower)
-    set(pm_obj "")
     if("${_fobd_PACKAGE_MANAGER_lower}" STREQUAL "cmake")
         cmaize_find_or_build_dependency_cmake(
             "${_fobd_name}"
