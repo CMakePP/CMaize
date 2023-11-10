@@ -31,9 +31,9 @@
 #                      recursively. Specifically, after building the primary
 #                      project which lives in ${scb_test_dir}, the
 #                      conf_build_test.cmake will be run on a subproject that
-#                      lives in ${scb_test_dir}/test_install. The developer is
+#                      lives in ${scb_test_dir}/package_tests. The developer is
 #                      expected to write the subproject so that it tests the
-#                      main project by leveraging it in the subproject's build
+#                      main package by leveraging it in the subproject's build
 #                      (e.g., by find_package).
 function(sub_cmake_build directory_name)
     set(scb_options NO_INSTALL RUN_TEST_INSTALL)

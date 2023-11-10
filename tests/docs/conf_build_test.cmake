@@ -118,7 +118,7 @@ endif()
 
 if(RUN_TEST_INSTALL)
     execute_process(
-        COMMAND ${CMAKE_COMMAND} -DTEST_SOURCE=${TEST_SOURCE}/test_install
+        COMMAND ${CMAKE_COMMAND} -DTEST_SOURCE=${TEST_SOURCE}/package_tests
                                  -DTEST_NAME=testing_install_of_${TEST_NAME}
                                  -DNO_INSTALL=TRUE
                                  -DRUN_TEST_INSTALL=FALSE
