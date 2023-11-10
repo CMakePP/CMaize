@@ -12,7 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 3.19) # For COMMAND_ERROR_IS_FATAL
+# Starting with 3.19 we have COMMAND_ERROR_IS_FATAL, which is a much nicer
+# solution than manually checking the variable
+if("${CMAKE_VERSION}" VERSION_LESS 3.19)
+    set(error_variable "RESULT_VARIABLE;_cbt_result")
+    function(check_error)
+        if(NOT "${_cbt_result}" STREQUAL "0")
+            message(FATAL_ERROR "Command failed with error: ${_cbt_result}")
+        endif()
+    endfunction()
+else()
+    set(error_variable "COMMAND_ERROR_IS_FATAL;ANY")
+    function(check_error)
+    endfunction()
+endif()
 
 ####################################################################
 # Grab the arguments passed to the script and put them into a list #
@@ -67,8 +80,9 @@ execute_process(
                              -DCMAKE_INSTALL_PREFIX=${install_build_dir}
                              -DCMAKE_MODULE_PATH=${CMAKE_MODULE_PATH}
                              ${args_to_forward}
-    COMMAND_ERROR_IS_FATAL ANY
+    ${error_variable}
 )
+check_error()
 
 #########
 # Build #
@@ -76,8 +90,9 @@ execute_process(
 
 execute_process(
     COMMAND ${CMAKE_COMMAND} --build ${test_build_dir}
-    COMMAND_ERROR_IS_FATAL ANY
+    ${error_variable}
 )
+check_error()
 
 ########
 # Test #
@@ -85,8 +100,9 @@ execute_process(
 
 execute_process(
     COMMAND ${CMAKE_COMMAND} --build ${test_build_dir} -t test
-    COMMAND_ERROR_IS_FATAL ANY
+    ${error_variable}
 )
+check_error()
 
 ###########
 # Install #
@@ -95,8 +111,9 @@ execute_process(
 if(NOT NO_INSTALL)
     execute_process(
         COMMAND ${CMAKE_COMMAND} --build ${test_build_dir} -t install
-        COMMAND_ERROR_IS_FATAL ANY
+        ${error_variable}
     )
+    check_error()
 endif()
 
 if(RUN_TEST_INSTALL)
@@ -107,8 +124,9 @@ if(RUN_TEST_INSTALL)
                                  -DRUN_TEST_INSTALL=FALSE
                                  -P ${CMAKE_CURRENT_LIST_FILE}
                                  -DINSTALL_LOCATION=${install_build_dir}
-        COMMAND_ERROR_IS_FATAL ANY
+        ${error_variable}
     )
+    check_error()
 else()
     message(DEBUG "No install test specified!")
 endif()
