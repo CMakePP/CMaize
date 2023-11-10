@@ -101,11 +101,7 @@ cpp_class(CXXTarget BuildTarget)
         # string.
         CXXTarget(GET "${self}" _mt_cxx_std cxx_standard)
         if("${_mt_cxx_std}" STREQUAL "")
-            if("${CMAKE_CXX_STANDARD}" STREQUAL "")
-                CXXTarget(SET "${self}" cxx_standard 98)
-            else()
-                CXXTarget(SET "${self}" cxx_standard "${CMAKE_CXX_STANDARD}")
-            endif()
+            CXXTarget(SET "${self}" cxx_standard "${CMAKE_CXX_STANDARD}")
         endif()
 
         # Make all of the calls to create the CMake target and set its
@@ -151,13 +147,13 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(target "${self}" _scf_tgt_name)
         CXXTarget(GET "${self}" _scf_cxx_std cxx_standard)
 
-        # The CXX std will always have PUBLIC access
-        target_compile_features(
-            "${_scf_tgt_name}"
-            PUBLIC
-                "cxx_std_${_scf_cxx_std}"
-        )
-
+        if(NOT "${_scf_cxx_std}" STREQUAL "")
+            # The CXX std will always have PUBLIC access
+            target_compile_features(
+                "${_scf_tgt_name}"
+                PUBLIC "cxx_std_${_scf_cxx_std}"
+            )
+        endif()
     endfunction()
 
     #[[[
