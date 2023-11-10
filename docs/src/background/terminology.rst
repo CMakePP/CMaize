@@ -125,6 +125,9 @@ Computer Science Terminology
       language bindings that allow the component to be manipulated directly from
       the source code of another software component.
 
+   boilerplate
+      Code which is repeated nearly verbatim in multiple source units.
+
    CLI
       A Command Line Interface (CLI) is a mechanism for a user to interact with
       a program in a traditional terminal environment.

@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cmake_minimum_required(VERSION 3.11) # For FetchContent
-project(test_minimum_with_fetch_content)
+cmake_minimum_required(VERSION 3.5)
+project(hello_world VERSION 1.0.0)
 
-# The caller will usle a local copy of hello_world's source. The URL is just to
-# make FetchContent not error out
-include(FetchContent)
-message("${FETCHCONTENT_SOURCE_DIR_HELLO_WORLD}")
-FetchContent_Declare(hello_world URL https://cmaize_not_a_real_url.com)
-FetchContent_MakeAvailable(hello_world)
+include(cmaize/cmaize)
+
+cmaize_add_executable(hello_world SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+cmaize_add_package(hello_world)
 
 # The below lines of code are used in unit testing this code example
 include(CTest)
