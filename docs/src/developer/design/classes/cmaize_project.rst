@@ -149,7 +149,8 @@ project, the downstream project will need the ability to uniquely distinguish
 among package iterations (instances of a package that differ in configuration
 and/or version). This requires tagging the package with some subset of a
 ``CMaizeProject`` object's state and to this end we introduce
-the ``PackageSpecification`` class.
+the ``PackageSpecification`` class (full design discussion
+:ref:`designing_package_specification`).
 
 Keeping with :term:`DRY` we want each piece of state in the CMaizeProject
 component to appear in only one place and thus one of the key design decisions
@@ -163,8 +164,9 @@ details of the packages it manages, thus it needs to know which package
 we want to build and what settings/options to build the package with.
 
 Finally, because of the :ref:`cp_workspace` consideration, we opt to store most
-``CMaizeProject`` state not in the ``PackageSpecification`` class as targets.
-More specifically, modern CMake is target-based. We thus need a mechanism to
+``CMaizeProject`` state not in the ``PackageSpecification`` class, but as
+targets. More specifically, modern CMake is target-based. We thus need a
+mechanism to
 retrieve the build system targets from within the implementation of CMaize's
 user :term:`API`. By storing them in the ``CMaizeProject`` we can access the
 targets by retrieving the ``CMaizeProject`` object for the project, and then

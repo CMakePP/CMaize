@@ -39,6 +39,12 @@ but this is not often done. We speculate that the primary hurdle to developing
 such abstractions is lack of support. Most support for scientific software is
 aimed at method development and not at software maintenance/sustainability. As
 a result build systems are low priority. This is why CMaize is needed. CMaize
-will be a reusable, :term:`build tool` built on top of CMake designed to
+will be a reusable :term:`build tool` built on top of CMake designed to
 streamline writing build systems, particularly build systems of scientific
 software.
+
+- Consistency. CMake best practices evolve somewhat quickly
+  - Superbuilds
+  - C++ feature lookup
+  - FetchContent compatible
+  - Dependency providers
