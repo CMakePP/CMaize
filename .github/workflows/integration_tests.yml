@@ -1,0 +1,61 @@
+name: CMaize Integration Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+
+  # Allows manual triggering with the "Run workflow" button
+  workflow_dispatch:
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cmake: [3.14.7, latestrc]
+
+    env:
+      cmake_version: ${{ matrix.cmake }}
+      cores: 2
+      os: linux-x86_64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: ${{ env.cmake_version }}
+
+      - name: Download Catch2
+        run: |
+          git clone https://github.com/catchorg/Catch2.git catch2 --branch v3.0.1
+
+      - name: Build Catch2
+        run: |
+          prefix=`pwd`/catch2_install
+          cd catch2
+          cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX="${prefix}"
+          cmake --build build --parallel 2
+          echo "CMAKE_PREFIX_PATH=${prefix}" >> $GITHUB_ENV
+          
+      - name: Install Catch2
+        run: |
+          cd catch2
+          cmake --build build --target install
+      
+      - name: Configure Project
+        run: >
+          cmake
+          -H.
+          -Bbuild
+          -DBUILD_TESTING=ON
+          -DCMAKE_MESSAGE_LOG_LEVEL=DEBUG
+          -DCMAIZE_GITHUB_TOKEN=${{secrets.CMAKEPRIVATE_TOKEN}}
+
+      - name: Integration Tests
+        run: |
+          cd build/tests/scripts
+          ctest --output-on-failure -L integration_tests --verbose
