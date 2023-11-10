@@ -99,7 +99,7 @@ check_error()
 ########
 
 execute_process(
-    COMMAND ${CMAKE_COMMAND} --build ${test_build_dir} -t test
+    COMMAND ${CMAKE_COMMAND} --build ${test_build_dir} --target test
     ${error_variable}
 )
 check_error()
@@ -110,7 +110,7 @@ check_error()
 
 if(NOT NO_INSTALL)
     execute_process(
-        COMMAND ${CMAKE_COMMAND} --build ${test_build_dir} -t install
+        COMMAND ${CMAKE_COMMAND} --build ${test_build_dir} --target install
         ${error_variable}
     )
     check_error()
