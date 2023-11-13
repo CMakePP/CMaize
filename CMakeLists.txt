@@ -5,7 +5,7 @@ option(BUILD_TESTING "Should we build and run the unit tests?" OFF)
 
 # If cmake/ directory is not part of the CMAKE_MODULE_PATH, add it so we can
 # find CMaize and CMakePPLang
-list(FIND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" path_has_cmake)
+list(FIND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" path_has_cmake)
 if(${path_has_cmake} STREQUAL "-1")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 endif()
