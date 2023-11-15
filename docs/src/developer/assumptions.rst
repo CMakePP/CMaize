@@ -42,13 +42,13 @@ Note that in the above we do not say that "CMaize forces the user to follow best
 practices and/or standard conventions", rather, we use best practices and
 standard conventions to choose default values. The user should be free to
 override those default values, though the more they deviate from best practices
-and/or standard conventions, the less use CMaize will be.
+and/or standard conventions, the less useful CMaize will be.
 
 The point of this page is to collect assumptions that CMaize makes, which CMaize
 developers can rely on internally.
 
 *************************
-Project Level Assumptions
+Project-Level Assumptions
 *************************
 
 - Each project maps to one package. Users wanting to build

@@ -128,7 +128,7 @@ though there are also some which provide useful features (e.g, colored CMake
 messages, and a safe guard for avoiding in-source builds).
 
 Ultimately, the use of the generator means that projects which use Autocmake
-suffer from the problems described :ref:`here <why_not_a_generator>`. The
+suffer from the problems described in ":ref:`why_not_a_generator`". The
 documentation also suggests (see `here <https://tinyurl.com/mr49kffb>`__ for
 example) that parts of the build system are Python-based, and that users can not
 use established CMake workflows. We were not able to readily identify if
@@ -156,7 +156,7 @@ application, with minimal dependencies (aside from those found in the standard
 :term:`HPC` toolkit). However, BLT provides very minimal support for finding
 other dependencies, and as far as we can tell, no support for building other
 dependencies. That said, the size of the user community suggests that, despite
-these limitations there is quite a bit of demand for BLT.
+these limitations, there is quite a bit of demand for BLT.
 
 *****
 Cinch
@@ -174,7 +174,7 @@ that wrap a Python tool
 `cinch-utils <https://github.com/laristra/cinch-utils>`_. The build system
 developer then writes a CMake-based build system in terms of the CMake bindings.
 
-In terms of features, Cinch seems to be primarily interested in support
+In terms of features, Cinch seems to be primarily interested in
 facilitating the building of libraries and executables as well as unit tests
 and documentation for the libraries and executables. Cinch seems to assume that
 the source tree also contains the dependencies' source, and relies on recursive
@@ -195,8 +195,8 @@ CMake++
 
 CMake++ :cite:`cmakepp` is a tour-de-force of what is possible with the
 traditional CMake
-language. At its core, CMake++ is meant to be more of a library for CMake,
-then a build system. That said it does contain a number of features which can
+language. At its core, CMake++ is meant to be more of a library for CMake
+than a build system. That said it does contain a number of features which can
 be used to simplify writing build systems including native dependency
 management support. While CMake++ would have been an excellent starting point
 for CMaize, the CMake++ project has been abandoned and lacks documentation
@@ -231,8 +231,8 @@ systems. cmake-init is specifically designed to help setup CMake build systems
 which can be consumed by the ``FetchContent`` module. Like many other tools on
 the list, cmake-init is designed with a certain stack in mind, though that
 stack is pretty standard (e.g., clang-tidy, Doxygen, clang-format). Like other
-generators, cmake-init suffers from the problems described
-:ref:`here <why_not_a_generator>`.
+generators, cmake-init suffers from the problems described in
+":ref:`why_not_a_generator`".
 
 ***
 CPM
@@ -303,7 +303,7 @@ selecting reasonable defaults, and focusing on targets/generator expressions.
 IXM has however been archived, though the README promises a resurrected version
 will be available no later than 11/1/2023. As of this writing (11/2/2023) the
 new version does not appear to exist yet (the developer's
-`blog <https://tinyurl.com/47p9pah2>_` suggests it's been pushed back to
+`blog <https://tinyurl.com/47p9pah2>`_ suggests it's been pushed back to
 December).
 
 While there are hints that more extensive documentation was available at
@@ -345,16 +345,16 @@ project_options
 
 project_options :cite:`project_options` is a CMake module meant to reduce the
 boilerplate associated
-with writing CMake based build systems. project_options focuses on
+with writing CMake-based build systems. project_options focuses on
 making it easy to enable common dependencies (e.g., Doxygen, clang-tidy, Conan),
 enable/disable static analysis, and propagating those options throughout the
 build system and to the packages produced by the project. Perhaps the
 most interesting feature of project_options is its ability to automatically
 create Conan or vcpkg packages from the project.
 
-While project_options, aims to reduce the complexity/verboseness of the build
+While project_options aims to reduce the complexity/verboseness of the build
 system, users of project_options are still left to create targets through the
-usual CMake commands. project_options punts to vcpkg (and potentially Conan)
+usual CMake commands. project_options defers to vcpkg (and potentially Conan)
 for installing dependencies. Ultimately, project_options still assumes a
 particular stack and that stack does not appear to be readily extendable
 without modifying the source code of the project_options module.

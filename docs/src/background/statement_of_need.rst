@@ -51,8 +51,8 @@ As gleaned from tutorials prominently showcasing boilerplate
 code :cite:`cmake_cookbook,its_time_to_do_cmake_right,samples_for_moderncmake`,
 the growing reliance on template repositories
 :cite:`cmake_template,cpp_boilerplate,cppbase,cpp_lib_template,minimal_cmake_example,moderncpp_project_template,package_example`,
-and even just copy/paste-ing CMake scripts from one project into another the
-broader community of CMake-based build system developer seem to have just
+and even just copy/paste-ing CMake scripts from one project into another, the
+broader community of CMake-based build system developer seem to have
 accepted the verboseness and repetition (N.B. citations here are representative,
 not exhaustive, i.e., we are aware that there are many more examples!). All of
 these approaches to writing build systems run afoul of the
@@ -62,7 +62,7 @@ to avoid, *e.g.*, multiple sources of truth, lack of synchronization,
 and coupling the logic of distinct units of code. The point is, *we need a way
 to write CMake-based build systems, which does not violate DRY!*
 
-The next problem with CMake-based build systems are that CMake's features and
+The next problem with CMake-based build systems is that CMake's features and
 best practices change quite readily. For example, up until CMake 3.11 in 2018
 best practice was to write superbuilds :cite:`superbuild` for adding
 dependencies to your project's CMake build system. CMake 3.11 introduced the
