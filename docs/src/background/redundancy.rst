@@ -19,8 +19,8 @@ Redundancy in CMake-Based Build Systems
 One of the predicates underlying the :ref:`statement_of_need` section is that
 CMake-based build systems are redundant. The redundancy in turn contributes to
 the verboseness of the resulting build system, and its inability to satisfy
-:term:`DRY`. To better illustrate this point the present page showcases some
-example CMake-based build systems. Note source for all examples are available in
+:term:`DRY`. To better illustrate this point, this page showcases some
+example CMake-based build systems. Note that source code for all examples are available in
 CMaize's GitHub repository in the ``tests/docs`` directory.
 
 .. _bare_minimum_cmake_build_system:
@@ -74,7 +74,7 @@ resulting executable. If we want to be warning free we need to expand the
    :linenos:
    :lineno-start: 1
 
-and if we also want to be able to install the executable the minimal
+and if we also want to be able to install the executable, the minimal
 ``CMakeLists.txt`` is then:
 
 .. literalinclude:: /../../tests/docs/minimal_cmake/CMakeLists.txt

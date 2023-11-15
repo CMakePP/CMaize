@@ -62,14 +62,14 @@ endif()
 
 message(DEBUG "conf_build_test called with: ${args_to_forward}")
 
-#######################################:q############################
+###################################################################
 # Make a prefix for this run which won't clash with previous runs #
 ###################################################################
 
 string(TIMESTAMP test_prefix)
 set(test_build_dir "${CMAKE_BINARY_DIR}/${TEST_NAME}/${test_prefix}")
 set(install_build_dir "${test_build_dir}-install")
-message("In conf_build_test: ${CMAKE_MODULE_PATH}")
+ 
 #############
 # Configure #
 #############

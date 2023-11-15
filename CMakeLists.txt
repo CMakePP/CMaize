@@ -18,7 +18,7 @@ cpp_fetch_and_available(
     GIT_REPOSITORY https://github.com/CMakePP/CMakePPLang
 )
 
-#For projects including CMaize via FetchContent
+# For projects including CMaize via FetchContent
 if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 endif()
