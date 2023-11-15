@@ -25,6 +25,7 @@ This part is for developers of CMaize.
    :maxdepth: 1
 
    design/index
+   assumptions
    conventions
    cmaize_initialization
    design_notes/index

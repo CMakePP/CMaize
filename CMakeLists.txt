@@ -3,8 +3,13 @@ project(CMaize VERSION 1.0.0 LANGUAGES NONE)
 
 option(BUILD_TESTING "Should we build and run the unit tests?" OFF)
 
-# Include the fetch module and bring CMakePPLang into scope
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+# If cmake/ directory is not part of the CMAKE_MODULE_PATH, add it so we can
+# find CMaize and CMakePPLang
+list(FIND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" path_has_cmake)
+if(${path_has_cmake} STREQUAL "-1")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+endif()
+
 include(cpp/fetch/fetch_and_available)
 set(build_testing_old "${BUILD_TESTING}")
 set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
@@ -13,8 +18,9 @@ cpp_fetch_and_available(
     GIT_REPOSITORY https://github.com/CMakePP/CMakePPLang
 )
 
+# For projects including CMaize via FetchContent
 if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE) #For projects including CMaize
+	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 endif()
 set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 

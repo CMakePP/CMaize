@@ -125,6 +125,9 @@ Computer Science Terminology
       language bindings that allow the component to be manipulated directly from
       the source code of another software component.
 
+   boilerplate
+      Code which is repeated nearly verbatim in multiple source units.
+
    CLI
       A Command Line Interface (CLI) is a mechanism for a user to interact with
       a program in a traditional terminal environment.
@@ -150,7 +153,21 @@ Computer Science Terminology
       A Graphical User Interface (GUI) is a mechanism for a user to interact
       with a program via a traditional window-based environment.
 
+   HPC
+      High-performance computing (HPC) refers to developing and running highly
+      optimized software, typically on supercomputers. The key differences,
+      compared to traditional software, are the level of optimization and the
+      power of the computers the software runs on. Many traditional applications
+      involve algorithms of low computational complexity and thus run quickly on
+      consumer commodity hardware, with relatively little optimization. HPC
+      applications, however, typically involve computational algorithms which
+      have computational complexity orders of magnitude more expensive than the
+      algorithms found in traditional software. In order for HPC applications
+      to obtain answers in a reasonable amount of wall time, the software must
+      usually be run on cutting-edge hardware and optimized to obtain so as to
+      obtain near peak performance on that hardware.
+
    KWARGS
-      Short for "keyword arguments". The term "kwargs" is widely used in Python communities. We've
-      borrowed the term here for referring to how many modern CMake functions
-      accept their arguments as key/value pairs.
+      Short for "keyword arguments". The term "kwargs" is widely used in Python
+      communities. We've borrowed the term here for referring to how many
+      modern CMake functions accept their arguments as key/value pairs.
