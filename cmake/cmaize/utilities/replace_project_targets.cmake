@@ -43,7 +43,7 @@ function(cmaize_replace_project_targets _rpt_result)
         cpp_return("${_rpt_result}")
     endif()
 
-    cpp_get_global(_rpt_project CMAIZE_PROJECT_${PROJECT_NAME})
+    cpp_get_global(_rpt_project CMAIZE_TOP_PROJECT)
 
     # Check if each dependency listed is a CMaizeTarget
     foreach(_rpt_targets_i ${_rpt_targets})

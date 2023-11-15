@@ -61,7 +61,7 @@ endfunction()
 function(cmaize_add_package_cmake _capc_pkg_name)
 
     # Get the CMaize project
-    cpp_get_global(_capc_proj CMAIZE_PROJECT_${PROJECT_NAME})
+    cpp_get_global(_capc_proj CMAIZE_TOP_PROJECT)
 
     # Get the correct package manager
     CMaizeProject(get_package_manager

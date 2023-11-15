@@ -105,7 +105,7 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     set(_fobdc_one_value_args VERSION)
     cmake_parse_arguments(_fobdc "" "${_fobdc_one_value_args}" "" ${ARGN})
 
-    cpp_get_global(_fobdc_project CMAIZE_PROJECT_${PROJECT_NAME})
+    cpp_get_global(_fobdc_project CMAIZE_TOP_PROJECT)
 
     # Create the package specification
     PackageSpecification(ctor _fobdc_package_specs)

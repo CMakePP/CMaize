@@ -327,7 +327,7 @@ cpp_class(CMakePackageManager PackageManager)
         # Set VERSION and SOVERSION properties on the targets
         foreach(_ip_TARGETS_i ${_ip_TARGETS})
             CMaizeProject(get_target
-                "${_ip_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
+                "${_ip_top_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
             )
 
             # Set package version
@@ -342,7 +342,7 @@ cpp_class(CMakePackageManager PackageManager)
         # Generate individual <target>Config.cmake components for
         # find_package(package COMPONENT target)
         foreach(_ip_TARGETS_i ${_ip_TARGETS})
-            CMaizeProject(get_target "${_ip_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}")
+            CMaizeProject(get_target "${_ip_top_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}")
 
             set(
                 _ip_tgt_config
@@ -402,14 +402,14 @@ cpp_class(CMakePackageManager PackageManager)
         # can be found
         foreach(_ip_TARGETS_i ${_ip_TARGETS})
             CMaizeProject(get_target
-                "${_ip_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
+                "${_ip_top_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
             )
 
             BuildTarget(GET "${_ip_tgt_obj_i}" _dep_list depends)
             foreach(dependency ${_dep_list})
                 # Fetch the dependency's target object
                 CMaizeProject(get_target
-                    "${_ip_proj}" _dep_tgt_obj "${dependency}"
+                    "${_ip_top_proj}" _dep_tgt_obj "${dependency}"
                 )
 
                 # Get the install path for the dependency
@@ -480,7 +480,7 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         # Get the current CMaize project
-        cpp_get_global(__gpc_proj CMAIZE_PROJECT_${PROJECT_NAME})
+        cpp_get_global(__gpc_proj CMAIZE_TOP_PROJECT)
         foreach(__gpc_targets_i ${__gpc_targets})
             CMaizeProject(get_target
                 "${__gpc_proj}" __gpc_tgt_obj "${__gpc_targets_i}"
