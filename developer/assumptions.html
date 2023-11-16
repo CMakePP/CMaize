@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMaize Assumptions &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CMaize Conventions" href="conventions.html" />
+    <link rel="prev" title="Designing CMaize’s CMake Target Classes" href="design/classes/cmake_target.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../background/index.html">CMaize Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developing CMaize</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design/index.html">CMaize Design Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CMaize Assumptions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#project-level-assumptions">Project-Level Assumptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packaging-assumptions">Packaging Assumptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmaize_initialization.html">CMaize Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faqs.html">Developer FAQs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developing CMaize</a></li>
+      <li class="breadcrumb-item active">CMaize Assumptions</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/assumptions.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cmaize-assumptions">
+<span id="id1"></span><h1>CMaize Assumptions<a class="headerlink" href="#cmaize-assumptions" title="Link to this heading"></a></h1>
+<p>Compared to CMake’s <a class="reference internal" href="../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>, CMaize has a vastly simpler API.
+CMake’s verbose API originates from CMake’s philosophy of making every detail
+configurable, even when modifying those details would: create inconsistencies
+throughout the project (e.g., claiming a target gets installed somewhere it
+does not), are against best practices (e.g., not namespace protecting an
+imported target), not follow widely adhered to conventions (e.g.,
+putting the source for more than one target in the same directory).
+CMaize’s simpler API is a direct result of assuming:</p>
+<ul class="simple">
+<li><p>The user wants a build system which works. For example, once you told CMaize
+where to install something, CMaize is going to assume it will be installed
+there moving forward, i.e., unlike CMake, CMaize will remember user input
+instead of asking for it each time it is needed.</p></li>
+<li><p>The user wants to follow best practices. Thus inputs whose values can be fixed
+by adhering to a best practice, should default to values consistent with those
+best practices.</p></li>
+<li><p>The user wants to follow standard conventions. Similar to best practices,
+this assumption again means that CMaize should default to values consistent
+with those conventions.</p></li>
+</ul>
+<p>Note that in the above we do not say that “CMaize forces the user to follow best
+practices and/or standard conventions”, rather, we use best practices and
+standard conventions to choose default values. The user should be free to
+override those default values, though the more they deviate from best practices
+and/or standard conventions, the less useful CMaize will be.</p>
+<p>The point of this page is to collect assumptions that CMaize makes, which CMaize
+developers can rely on internally.</p>
+<section id="project-level-assumptions">
+<h2>Project-Level Assumptions<a class="headerlink" href="#project-level-assumptions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Each project maps to one package. Users wanting to build
+multiple packages can do so by having the root project build multiple
+sub-projects. The result is that we do not need to ask for the name of
+the project CMaize is currently building, we can simply use
+<code class="docutils literal notranslate"><span class="pre">${PROJECT_NAME}</span></code> (note this should not be confused with
+<code class="docutils literal notranslate"><span class="pre">${CMAKE_PROJECT_NAME}</span></code>, which is the name of the top-most CMake project).</p></li>
+<li><p>It is assumed that all source files in a target’s source directory are
+associated with that target, i.e., each target (which is not simply a
+different configuration) has its own source directory. Conventionally, this
+is accomplished by having a root source directory which contains source
+directories for each target. The consequence of this assumption is that CMaize
+can automatically find source files given directories and does not need
+itemized lists.</p></li>
+</ul>
+</section>
+<section id="packaging-assumptions">
+<h2>Packaging Assumptions<a class="headerlink" href="#packaging-assumptions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>CMake best practice <span id="id2"><sup><a class="reference internal" href="../bibliography/bibliography.html#id9" title="Importing and exporting guide. https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html. Accessed: 11-9-2023.">5</a></sup></span> is to namespace imported
+targets with the name of the package. By default, CMaize assumes imported
+targets start with <code class="docutils literal notranslate"><span class="pre">${PROJECT_NAME}::</span></code>. This applies not only for packages
+CMaize creates, but for packages CMaize finds.</p></li>
+<li><p>Versioning of packages CMaize builds follow versioning follow semantic
+versioning <span id="id3"><sup><a class="reference internal" href="../bibliography/bibliography.html#id35" title="Semantic versioning 2.0.0. https://semver.org/. Accessed: 11-10-2023.">9</a></sup></span>. Packages CMaize</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="design/classes/cmake_target.html" class="btn btn-neutral float-left" title="Designing CMaize’s CMake Target Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="conventions.html" class="btn btn-neutral float-right" title="CMaize Conventions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

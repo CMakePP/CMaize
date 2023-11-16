@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Terminology and Abbreviations" href="terminology.html" />
+    <link rel="next" title="Statement of Need" href="statement_of_need.html" />
     <link rel="prev" title="Overview" href="../overview.html" /> 
 </head>
 
@@ -50,10 +50,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CMaize Background</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html">Other Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redundancy.html">Redundancy in CMake-Based Build Systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
-<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
@@ -92,9 +94,28 @@
 <span id="id1"></span><h1>CMaize Background<a class="headerlink" href="#cmaize-background" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="terminology.html#cmake-terminology">CMake Terminology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="terminology.html#computer-science-terminology">Computer Science Terminology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="statement_of_need.html">Statement of Need</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html#tl-dr">TL;DR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html#full-description">Full Description</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="other_projects.html">Other Projects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#autocmake">Autocmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#blt">BLT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#cinch">Cinch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#cmake">CMake++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#cmake-get">cmake-get</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#cmake-init">cmake-init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#cpm">CPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#cpm-cmake">CPM.cmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#hunter">Hunter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#ixm">IXM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#jaws">JAWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html#project-options">project_options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="redundancy.html">Redundancy in CMake-Based Build Systems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="redundancy.html#bare-minimum-cmake-build-system">Bare-Minimum CMake Build System</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="build_phases.html">Build Phases</a><ul>
@@ -104,8 +125,16 @@
 <li class="toctree-l2"><a class="reference internal" href="build_phases.html#install-phase">Install Phase</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
-<li class="toctree-l1"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html#package-manager-responsibilities">Package Manager Responsibilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html#cmake-as-a-package-manager">CMake as a Package Manager</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html#cmake-terminology">CMake Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html#computer-science-terminology">Computer Science Terminology</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
@@ -115,7 +144,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="terminology.html" class="btn btn-neutral float-right" title="Terminology and Abbreviations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="statement_of_need.html" class="btn btn-neutral float-right" title="Statement of Need" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

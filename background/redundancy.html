@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redundancy in CMake-Based Build Systems &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Build Phases" href="build_phases.html" />
+    <link rel="prev" title="Other Projects" href="other_projects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CMaize Background</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html">Other Projects</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Redundancy in CMake-Based Build Systems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bare-minimum-cmake-build-system">Bare-Minimum CMake Build System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bare-minimum-cmaize-build-system">Bare-Minimum CMaize Build System</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developing CMaize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">CMaize Background</a></li>
+      <li class="breadcrumb-item active">Redundancy in CMake-Based Build Systems</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/background/redundancy.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="redundancy-in-cmake-based-build-systems">
+<h1>Redundancy in CMake-Based Build Systems<a class="headerlink" href="#redundancy-in-cmake-based-build-systems" title="Link to this heading"></a></h1>
+<p>One of the predicates underlying the <a class="reference internal" href="statement_of_need.html#statement-of-need"><span class="std std-ref">Statement of Need</span></a> section is that
+CMake-based build systems are redundant. The redundancy in turn contributes to
+the verboseness of the resulting build system, and its inability to satisfy
+<a class="reference internal" href="terminology.html#term-DRY"><span class="xref std std-term">DRY</span></a>. To better illustrate this point, this page showcases some
+example CMake-based build systems. Note that source code for all examples are available in
+CMaize’s GitHub repository in the <code class="docutils literal notranslate"><span class="pre">tests/docs</span></code> directory.</p>
+<section id="bare-minimum-cmake-build-system">
+<span id="id1"></span><h2>Bare-Minimum CMake Build System<a class="headerlink" href="#bare-minimum-cmake-build-system" title="Link to this heading"></a></h2>
+<p>Defining the “minimal CMake-based build system” is a seemingly innocuous task.
+In theory, we are after the shortest CMake script which will build a simple C++
+project. In practice, the shortest CMake script will depend on exactly what we
+mean by “build” and what constitutes a “simple” C++ project. The latter is
+perhaps easier to define. To that end, consider a C++ project which has no
+dependencies (aside from the standard C++ library) and let the project build
+a single executable from a single source file. The complexity of the contents of
+the source file are irrelevant, so long as the contents adhere to the stated
+assumptions; thus a standard “Hello World” example suffices:</p>
+<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">4</span><span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello World!&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">5</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">6</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Assuming the above source code resides in a source file <code class="docutils literal notranslate"><span class="pre">hello_world.cpp</span></code>,
+which resides next to the <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> for building it, i.e., assuming a
+project structure like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>hello_world/
+├─ CMakeLists.txt
+├─ hello_world.cpp
+</pre></div>
+</div>
+<p>then the minimal <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file looks like:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">hello_world</span><span class="w"> </span><span class="s">hello_world.cpp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note this will not configure warning free, nor will you be able to install the
+resulting executable. If we want to be warning free we need to expand the
+<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> to:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.5</span><span class="p">)</span>
+<span class="linenos">2</span><span class="nb">project</span><span class="p">(</span><span class="s">hello_world</span><span class="p">)</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">hello_world</span><span class="w"> </span><span class="s">hello_world.cpp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and if we also want to be able to install the executable, the minimal
+<code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> is then:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.5</span><span class="p">)</span>
+<span class="linenos">2</span><span class="nb">project</span><span class="p">(</span><span class="s">hello_world</span><span class="p">)</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">hello_world</span><span class="w"> </span><span class="s">hello_world.cpp</span><span class="p">)</span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="nb">install</span><span class="p">(</span><span class="s">TARGETS</span><span class="w"> </span><span class="s">hello_world</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In our opinion, the above is a reasonable candidate (<em>vide infra</em>) for the
+“simplest” CMake-based build system for our simple C++ project. Of note the
+build system:</p>
+<ul class="simple">
+<li><p>is warning free,</p></li>
+<li><p>builds the executable,</p></li>
+<li><p>installs the executable,</p></li>
+<li><p>is configurable (it respects variables meant to be set by the user,
+like <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code> and <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code>), and</p></li>
+<li><p>can be included by other CMake-based build systems via CMake’s
+<code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module.</p></li>
+</ul>
+<p>The “candidate” moniker is because this build system still does not adhere to
+all CMake best practices. In particular, the installed package does not provide
+CMake configuration files to facilitate finding the package with CMake’s
+<code class="docutils literal notranslate"><span class="pre">find_package</span></code> function. To be fair, such files are far more important for
+libraries which are meant to be consumed by other (CMake-based) build systems.
+Thus, whether the CMake-based build system here needs to generate configuration
+files is up for debate. Nevertheless, for completeness, we can also generate the
+configuration files by using the <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.5</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="nb">project</span><span class="p">(</span><span class="s">hello_world</span><span class="w"> </span><span class="s">VERSION</span><span class="w"> </span><span class="s">1.0.0</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">hello_world</span><span class="w"> </span><span class="s">hello_world.cpp</span><span class="p">)</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="nb">include</span><span class="p">(</span><span class="s">GNUInstallDirs</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="nb">set</span><span class="p">(</span><span class="s">target_name</span><span class="w"> </span><span class="s">hello_world</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="nb">install</span><span class="p">(</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="s">TARGETS</span><span class="w"> </span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span>
+<span class="linenos">10</span><span class="w">    </span><span class="s">EXPORT</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">Targets</span>
+<span class="linenos">11</span><span class="w">    </span><span class="s">RUNTIME</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_BINDIR</span><span class="o">}</span>
+<span class="linenos">12</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="nb">include</span><span class="p">(</span><span class="s">CMakePackageConfigHelpers</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="nb">set</span><span class="p">(</span><span class="s">install_cmake_dir</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="s">/cmake</span><span class="p">)</span>
+<span class="linenos">17</span><span class="nb">install</span><span class="p">(</span>
+<span class="linenos">18</span><span class="w">    </span><span class="s">EXPORT</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">Targets</span>
+<span class="linenos">19</span><span class="w">    </span><span class="s">FILE</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">-targets.cmake</span>
+<span class="linenos">20</span><span class="w">    </span><span class="s">NAMESPACE</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">::</span>
+<span class="linenos">21</span><span class="w">    </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">install_cmake_dir</span><span class="o">}</span><span class="s">/</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="linenos">22</span><span class="p">)</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="nb">set</span><span class="p">(</span><span class="s">version_file</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">-config-version.cmake</span><span class="p">)</span>
+<span class="linenos">25</span><span class="nb">set_property</span><span class="p">(</span>
+<span class="linenos">26</span><span class="w">    </span><span class="s">TARGET</span><span class="w"> </span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span>
+<span class="linenos">27</span><span class="w">    </span><span class="s">PROPERTY</span><span class="w"> </span><span class="s">VERSION</span><span class="w"> </span><span class="o">${</span><span class="nv">${PROJECT_NAME</span><span class="o">}</span><span class="s">_VERSION}</span>
+<span class="linenos">28</span><span class="p">)</span>
+<span class="linenos">29</span><span class="nb">set_property</span><span class="p">(</span>
+<span class="linenos">30</span><span class="w">    </span><span class="s">TARGET</span><span class="w"> </span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span>
+<span class="linenos">31</span><span class="w">    </span><span class="s">PROPERTY</span>
+<span class="linenos">32</span><span class="w">        </span><span class="s">INTERFACE_</span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span><span class="s">_MAJOR_VERSION</span><span class="w"> </span><span class="o">${</span><span class="nv">${PROJECT_NAME</span><span class="o">}</span><span class="s">_VERSION_MAJOR}</span>
+<span class="linenos">33</span><span class="p">)</span>
+<span class="linenos">34</span><span class="nb">set_property</span><span class="p">(</span>
+<span class="linenos">35</span><span class="w">    </span><span class="s">TARGET</span><span class="w"> </span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span>
+<span class="linenos">36</span><span class="w">    </span><span class="s">APPEND</span><span class="w"> </span><span class="s">PROPERTY</span>
+<span class="linenos">37</span><span class="w">    </span><span class="s">COMPATIBLE_INTERFACE_STRING</span><span class="w"> </span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span><span class="s">_MAJOR_VERSION</span>
+<span class="linenos">38</span><span class="p">)</span>
+<span class="linenos">39</span><span class="nb">write_basic_package_version_file</span><span class="p">(</span>
+<span class="linenos">40</span><span class="w">    </span><span class="s2">&quot;${CMAKE_CURRENT_BINARY_DIR}/${version_file}&quot;</span>
+<span class="linenos">41</span><span class="w">    </span><span class="s">VERSION</span><span class="w"> </span><span class="o">${</span><span class="nv">${PROJECT_NAME</span><span class="o">}</span><span class="s">_VERSION}</span>
+<span class="linenos">42</span><span class="w">    </span><span class="s">COMPATIBILITY</span><span class="w"> </span><span class="s">SameMajorVersion</span>
+<span class="linenos">43</span><span class="p">)</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span><span class="nb">set</span><span class="p">(</span><span class="s">config_file</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span><span class="s">-config.cmake</span><span class="p">)</span>
+<span class="linenos">46</span><span class="nb">configure_package_config_file</span><span class="p">(</span>
+<span class="linenos">47</span><span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/</span><span class="o">${</span><span class="nv">config_file</span><span class="o">}</span><span class="s">.in</span>
+<span class="linenos">48</span><span class="w">    </span><span class="s2">&quot;${CMAKE_CURRENT_BINARY_DIR}/${config_file}&quot;</span>
+<span class="linenos">49</span><span class="w">    </span><span class="s">INSTALL_DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">install_cmake_dir</span><span class="o">}</span><span class="s">/</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="linenos">50</span><span class="p">)</span>
+<span class="linenos">51</span><span class="nb">install</span><span class="p">(</span>
+<span class="linenos">52</span><span class="w">    </span><span class="s">FILES</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="s">/</span><span class="o">${</span><span class="nv">config_file</span><span class="o">}</span>
+<span class="linenos">53</span><span class="w">          </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="s">/</span><span class="o">${</span><span class="nv">version_file</span><span class="o">}</span>
+<span class="linenos">54</span><span class="w">    </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">install_cmake_dir</span><span class="o">}</span><span class="s">/</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="linenos">55</span>
+<span class="linenos">56</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>CMake also requires us to write a template configuration file, i.e., a
+<code class="docutils literal notranslate"><span class="pre">&lt;project-name&gt;-config.cmake.in</span></code> file. The contents of our
+<code class="docutils literal notranslate"><span class="pre">hello_world-config.cmake.in</span></code> file is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>@PACKAGE_INIT@
+<span class="linenos">2</span>
+<span class="linenos">3</span>set(_hw_package_name hello_world)
+<span class="linenos">4</span>set(_hw_target_file ${_hw_package_name}-targets.cmake)
+<span class="linenos">5</span>include(${CMAKE_CURRENT_LIST_DIR}/${_hw_target_file})
+<span class="linenos">6</span>
+<span class="linenos">7</span>check_required_components(${_hw_package_name})
+</pre></div>
+</div>
+<p>As can be seen, needing to generate configuration files dramatically lengthens
+the build system. However, as we tried to show in the above snippets by
+the use of variables, most of of the required code is <a class="reference internal" href="terminology.html#term-boilerplate"><span class="xref std std-term">boilerplate</span></a>. It
+should be noted, this boilerplate was adopted from CMake’s official
+importing/exporting guide <span id="id2"><sup><a class="reference internal" href="../bibliography/bibliography.html#id9" title="Importing and exporting guide. https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html. Accessed: 11-9-2023.">5</a></sup></span>; the point being, if
+there is a more succinct way to package an executable, CMake is not currently
+advertising it (and we are not aware of it).</p>
+<p>Some readers may argue that this is still not the “simplest CMake-based build
+system” because the build system still does not address a number of software
+development best practices, e.g., documentation, testing, and/or deployment.
+While there are benefits which come from integrating these tasks into the build
+system (mainly the ability to utilize configuration information), many of these
+remaining tasks are conventionally handled by tools outside CMake (though CMake
+may provide support for these tools, e.g., via CTest or the Doxygen CMake
+module). Regardless of what exactly constitutes the “simplest CMake-based build
+system”, already with the previous example we have begun to see redundancy.
+The vast majority of the boilerplate could have been filled in for the
+developer provided the:</p>
+<ul class="simple">
+<li><p>name of the target to install,</p></li>
+<li><p>the name of the project, and</p></li>
+<li><p>the project version.</p></li>
+</ul>
+<p>Furthermore, the latter two on the list are available from CMake as long as the
+developer calls the <code class="docutils literal notranslate"><span class="pre">project()</span></code> command with a version.</p>
+<section id="bare-minimum-cmaize-build-system">
+<h3>Bare-Minimum CMaize Build System<a class="headerlink" href="#bare-minimum-cmaize-build-system" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since CMaize is a CMake extension, its location is not known to CMake by
+default. CMaize examples on this page assume that the build system knows
+where CMaize is located. There are a number of ways to accomplish this
+(see <a class="reference internal" href="../getting_started/using_cmaize_as_build_system/obtaining_cmaize.html#obtaining-cmaize"><span class="std std-ref">Obtaining CMaize</span></a>).</p>
+</div>
+<p>We would be remiss if we did not take this opportunity to demonstrate what the
+equivalent CMaize-based build system looks like. Said build system is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>cmake_minimum_required(VERSION 3.5)
+<span class="linenos">2</span>project(hello_world VERSION 1.0.0)
+<span class="linenos">3</span>
+<span class="linenos">4</span>include(cmaize/cmaize)
+<span class="linenos">5</span>
+<span class="linenos">6</span>cmaize_add_executable(hello_world SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+<span class="linenos">7</span>cmaize_add_package(hello_world)
+</pre></div>
+</div>
+<p>It should be noted that the above CMaize-based build system:</p>
+<ul class="simple">
+<li><p>is warning free,</p></li>
+<li><p>builds the executable,</p></li>
+<li><p>installs the executable,</p></li>
+<li><p>is configurable (it respects variables meant to be set by the user,
+like <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code> and <code class="docutils literal notranslate"><span class="pre">CMAKE_CXX_FLAGS</span></code>),</p></li>
+<li><p>can be included by other CMake-/CMaize-based build systems via CMake’s
+<code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module, and</p></li>
+<li><p>will generate the configuration files necessary for another CMake-/CMaize-
+based build system to leverage an installed version.</p></li>
+</ul>
+<p>Admittedly the brevity of the CMaize-based build system comes from making a
+number of assumptions about default values (see <a class="reference internal" href="../developer/assumptions.html#cmaize-assumptions"><span class="std std-ref">CMaize Assumptions</span></a> for
+a full list). However, we expect that these assumptions are already true for
+the majority of CMake-based projects and/or most projects would be fine adopting
+these conventions in exchange for the much simpler build system.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="other_projects.html" class="btn btn-neutral float-left" title="Other Projects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="build_phases.html" class="btn btn-neutral float-right" title="Build Phases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

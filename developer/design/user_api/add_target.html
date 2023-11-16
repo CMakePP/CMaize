@@ -55,6 +55,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../faq.html">Frequently Asked Design Questions</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">Design of CMaize’s User API</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="overview.html">Overview of CMaize’s User API Design</a></li>
 <li class="toctree-l4"><a class="reference internal" href="find_dependencies.html">Designing CMaize’s Find or Build Dependency Function</a></li>
@@ -64,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../classes/index.html">CMaize Class Design</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../assumptions.html">CMaize Assumptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
@@ -223,20 +225,20 @@ conditional targets which are not currently enabled.</p></li>
 <figure class="align-center" id="id1">
 <span id="fig-add-target-functions"></span><img alt="../../../_images/add_target.png" src="../../../_images/add_target.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">The user API for defining targets. Also shown is how the inputs to the user
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The user API for defining targets. Also shown is how the inputs to the user
 API ultimately map to underlying objects. a) Functions related to creating
 an executable. b) Functions related to creating a library. c) Conditional
 functions wrapping functions from a) and b).</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p><a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a> summarizes the functions implementing the
+<p><a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 4</span></a> summarizes the functions implementing the
 front end of CMaize’s target component. As part of the user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>, the
 front end is function-based (see <a class="reference internal" href="overview.html#functional-style"><span class="std std-ref">functional style</span></a>). Each box in
-<a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a> represents a function (“snake_case” labels),
+<a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 4</span></a> represents a function (“snake_case” labels),
 section of a function (boxes labeled with phrases), or an object
 (“UpperCamelCase” labels). Nested boxes represent the parts of the function.</p>
 <p>As mentioned above, one of the main considerations for CMaize’s add target
-functions is <a class="reference internal" href="#at-recording-targets"><span class="std std-ref">recording targets</span></a>. In <a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a>
+functions is <a class="reference internal" href="#at-recording-targets"><span class="std std-ref">recording targets</span></a>. In <a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 4</span></a>
 recording the target information is done in the boxes labeled “Notify Project”.
 The other major consideration for CMaize’s add target functions is
 <a class="reference internal" href="#at-succinctness"><span class="std std-ref">succinctness</span></a>. Succinctness is the motivation for the dispatch steps.
@@ -247,7 +249,7 @@ to glean even more details (for example the C++/Python version used) from the
 source file contents; however, CMaize currently makes no attempt to do so.</p>
 <p>While the API of the add target functions is language agnostic, consideration
 <a class="reference internal" href="#at-coding-languages"><span class="std std-ref">coding language</span></a> means the backend can not be. As shown in
-<a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 3</span></a>, both <code class="docutils literal notranslate"><span class="pre">cmaize_add_executable</span></code> and
+<a class="reference internal" href="#fig-add-target-functions"><span class="std std-numref">Fig. 4</span></a>, both <code class="docutils literal notranslate"><span class="pre">cmaize_add_executable</span></code> and
 <code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code> ultimately dispatch to language-specific target objects.
 In this sense, CMaize’s add target functions can be thought of as factory
 routines.</p>

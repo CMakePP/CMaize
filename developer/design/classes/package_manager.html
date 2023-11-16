@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Designing CMaize’s Target Component" href="target.html" />
-    <link rel="prev" title="Designing CMaize’s CMaizeProject Component" href="cmaize_project.html" /> 
+    <link rel="prev" title="Designing the Package Specification" href="package_specification.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,9 +55,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../faq.html">Frequently Asked Design Questions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">Design of CMaize’s User API</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">CMaize Class Design</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">Designing CMaize’s CMaizeProject Component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_specification.html">Designing the Package Specification</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s PackageManager Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="target.html">Designing CMaize’s Target Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_target.html">Designing CMaize’s C++ Target Classes</a></li>
@@ -67,6 +69,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../assumptions.html">CMaize Assumptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
@@ -107,10 +110,29 @@
              
   <section id="designing-cmaize-s-packagemanager-component">
 <span id="designing-cmaizes-packagemanager-component"></span><h1>Designing CMaize’s PackageManager Component<a class="headerlink" href="#designing-cmaize-s-packagemanager-component" title="Link to this heading"></a></h1>
-<p>TODO: Write me!!!</p>
+<p>This page describes the design of the classes comprising CMaize’s PackageManager
+component.</p>
+<section id="what-is-the-packagemanager-component">
+<h2>What is the PackageManager Component?<a class="headerlink" href="#what-is-the-packagemanager-component" title="Link to this heading"></a></h2>
+<p>Developers use CMaize to write the <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> for their project. As
+part of that build system they state the dependencies which the project needs.
+The PackageManager component is responsible for actually making those
+dependencies available to the user, be it by finding already built versions, or
+by building them.</p>
+</section>
+<section id="why-do-we-need-a-packagemanager-component">
+<h2>Why do we Need a PackageManager Component?<a class="headerlink" href="#why-do-we-need-a-packagemanager-component" title="Link to this heading"></a></h2>
+<p>The need for <a class="reference internal" href="../../../background/terminology.html#term-package-manager"><span class="xref std std-term">package manager</span></a> integrations was one of the high-level
+considerations behind CMaize (see <a class="reference internal" href="../overview.html#package-manager-support"><span class="std std-ref">package manager support</span></a>). The
+PackageManager component is how CMaize addresses this consideration. It should
+be noted that traditional CMake can be seen as having an underlying package
+manager manager with <code class="docutils literal notranslate"><span class="pre">find_package</span></code> serving as the function for
+locating existing packages and the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> and/or <code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code>
+modules actually building and installing the packages.</p>
+</section>
 <section id="packagemanager-considerations">
 <h2>PackageManager Considerations<a class="headerlink" href="#packagemanager-considerations" title="Link to this heading"></a></h2>
-<dl class="simple">
+<dl class="simple" id="pm-finding-packages">
 <dt>finding packages</dt><dd><p>The design discussion in <a class="reference internal" href="../user_api/overview.html#designing-cmaizes-user-api"><span class="std std-ref">Overview of CMaize’s User API Design</span></a> decided that the
 package manager would be responsible for finding packages that meet the
 specifications needed by the <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a>. From the
@@ -118,12 +140,72 @@ specifications needed by the <a class="reference internal" href="../../../backgr
 that the specifications will be represented by <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code>
 objects.</p>
 </dd>
+</dl>
+<dl class="simple" id="pm-building-packages">
 <dt>building packages</dt><dd><p>The design discussion in <a class="reference internal" href="../user_api/overview.html#designing-cmaizes-user-api"><span class="std std-ref">Overview of CMaize’s User API Design</span></a> decided that the
 package manager would be responsible for building packages that
 the <a class="reference internal" href="../../../background/terminology.html#term-project"><span class="xref std std-term">project</span></a> depends on.</p>
 </dd>
+</dl>
+<dl class="simple" id="pm-installing-packages">
 <dt>installing packages</dt><dd><p>Brought up in <a class="reference internal" href="cxx_target.html#designing-cmaizes-cxx-target-classes"><span class="std std-ref">Designing CMaize’s C++ Target Classes</span></a>, the package
 manager is responsible for installing the built packages.</p>
+</dd>
+</dl>
+<dl class="simple" id="pm-cmake-package-manager">
+<dt>CMake package manager</dt><dd><p>Historically, C++ build system maintainers have relied on CMake’s package
+managing capabilities. To be backwards compatible, CMaize must support
+CMake’s package manager. See <a class="reference internal" href="../../../background/cmake_package_manager.html#cmakes-package-manager"><span class="std std-ref">CMake’s Package Manager</span></a> for more details
+on how traditional CMake is used as a package manager.</p>
+</dd>
+</dl>
+<dl class="simple" id="pm-extendable">
+<dt>extendable</dt><dd><p>Ultimately we want to leverage existing package managers outside the CMake
+ecosystem. The PackageManager component should be able to wrap other
+package managers aside from the CMake manager.</p>
+</dd>
+</dl>
+</section>
+<section id="packagemanager-design">
+<h2>PackageManager Design<a class="headerlink" href="#packagemanager-design" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<span id="fig-package-manager"></span><img alt="../../../_images/package_manager.png" src="../../../_images/package_manager.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Overview of CMaize’s PackageManager component.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><a class="reference internal" href="#fig-package-manager"><span class="std std-numref">Fig. 7</span></a> provides an overview of the PackageManager
+component. Considerations <a class="reference internal" href="#pm-finding-packages"><span class="std std-ref">finding packages</span></a>,
+<a class="reference internal" href="#pm-building-packages"><span class="std std-ref">building packages</span></a>, and <a class="reference internal" href="#pm-installing-packages"><span class="std std-ref">installing packages</span></a> are addressed by
+the abstract base class’s <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>. More specifically, each derived class is
+charged with implementing mechanisms for finding (<code class="docutils literal notranslate"><span class="pre">find_installed</span></code>),
+building (<code class="docutils literal notranslate"><span class="pre">get_package</span></code>), and installing (<code class="docutils literal notranslate"><span class="pre">install_package</span></code>) packages. The
+mechanisms for using CMake’s built in package manager are implemented by the
+<code class="docutils literal notranslate"><span class="pre">CMakePackageManager</span></code> class (consideration <a class="reference internal" href="#pm-cmake-package-manager"><span class="std std-ref">CMake package manager</span></a>).
+Finally, we note that the <a class="reference internal" href="#pm-extendable"><span class="std std-ref">extendable</span></a> consideration is addressed by
+deriving new classes from the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> base class.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#pm-finding-packages"><span class="std std-ref">finding packages</span></a></dt><dd><p>Finding installed packages is done via the <code class="docutils literal notranslate"><span class="pre">find_installed</span></code> method. Each
+derived class must implement it appropriately.</p>
+</dd>
+<dt><a class="reference internal" href="#pm-building-packages"><span class="std std-ref">building packages</span></a></dt><dd><p>Obtaining and/or building a package is done by calling the <code class="docutils literal notranslate"><span class="pre">get_package</span></code>
+method. Again, the derived class is responsible for implementing it in a
+manner which is appropriate for the backend.</p>
+</dd>
+<dt><a class="reference internal" href="#pm-installing-packages"><span class="std std-ref">installing packages</span></a></dt><dd><p>Installing the package is abstracted away by the <code class="docutils literal notranslate"><span class="pre">install_package</span></code>
+method. Classes derived from <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> must implement the method
+appropriately.</p>
+</dd>
+<dt><a class="reference internal" href="#pm-cmake-package-manager"><span class="std std-ref">CMake package manager</span></a></dt><dd><p>The first package manager implemented in CMaize is the CMake package manager,
+which is represented by the <code class="docutils literal notranslate"><span class="pre">CMakePackageManager</span></code> class. The
+<code class="docutils literal notranslate"><span class="pre">CMakePackageManager</span></code> class leverages CMake’s <code class="docutils literal notranslate"><span class="pre">find_package</span></code> function
+and the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module.</p>
+</dd>
+<dt><a class="reference internal" href="#pm-extendable"><span class="std std-ref">extendable</span></a></dt><dd><p>Extending the package manager component to additional package managers is
+straightforward and done by deriving new classes from <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code>.</p>
 </dd>
 </dl>
 </section>
@@ -133,7 +215,7 @@ manager is responsible for installing the built packages.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cmaize_project.html" class="btn btn-neutral float-left" title="Designing CMaize’s CMaizeProject Component" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="package_specification.html" class="btn btn-neutral float-left" title="Designing the Package Specification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="target.html" class="btn btn-neutral float-right" title="Designing CMaize’s Target Component" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

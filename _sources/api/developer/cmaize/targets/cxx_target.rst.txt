@@ -42,7 +42,7 @@ cmaize.targets/cxx_target
 
    .. py:method:: _access_level(_al_access_level)
 
-      Abstracts out CMake's access level concept (public, interface, or 
+      Abstracts out CMake's access level concept (public, interface, or
       private).
       
       :param self: CXXTarget object
@@ -116,7 +116,7 @@ cmaize.targets/cxx_target
       :type: int
       
       CXX standard to use. For a given C++ standard designation, denoted as
-      ``cxx_std_xx`` or "C++ xx", only provide the number, "xx" of the 
+      ``cxx_std_xx`` or "C++ xx", only provide the number, "xx" of the
       standard.
       
       Following the precident set forth by CMake for the ``CXX_STANDARD``

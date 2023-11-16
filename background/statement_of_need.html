@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Getting Started" href="../getting_started/index.html" />
-    <link rel="prev" title="CMake’s Package Manager" href="cmake_package_manager.html" /> 
+    <link rel="next" title="Other Projects" href="other_projects.html" />
+    <link rel="prev" title="CMaize Background" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,10 +50,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">CMaize Background</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Statement of Need</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tl-dr">TL;DR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#full-description">Full Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html">Other Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redundancy.html">Redundancy in CMake-Based Build Systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Statement of Need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
@@ -91,35 +97,131 @@
              
   <section id="statement-of-need">
 <span id="id1"></span><h1>Statement of Need<a class="headerlink" href="#statement-of-need" title="Link to this heading"></a></h1>
-<p>TODO: contents copied from design docs, need expanded on (with references)</p>
-<p>The vast majority of build systems written for CMake are verbose and highly
-redundant. Generally speaking, it seems that the broader CMake community has
-accepted that this “is simply the way CMake build systems are” and has stopped
-trying to improve them. Evidence for this claim comes from tutorials prominently
-showcasing boilerplate code, the growing reliance on template repositories, and
-the tried and true technique of copy/paste-ing CMake scripts from one project
-into another. All of these approaches run afoul of the
+<p>This page summarizes why we wrote CMaize. For convenience we start with the
+the “too long; didn’t read (TL;DR)” summary.</p>
+<section id="tl-dr">
+<h2>TL;DR<a class="headerlink" href="#tl-dr" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>CMake is verbose. CMaize provides succinct stable, APIs.</p></li>
+<li><p>CMake features/best practices change a lot. CMaize’s stable APIs allow the
+implementations to address these changes, without requiring CMaize users to
+update their build systems.</p></li>
+<li><p>CMaize supports package managers and languages CMake does not.</p></li>
+<li><p>CMaize is object-oriented and can be extended to even more package managers
+and languages, via inheritance.</p></li>
+</ul>
+</section>
+<section id="full-description">
+<h2>Full Description<a class="headerlink" href="#full-description" title="Link to this heading"></a></h2>
+<p>Generally speaking, most software packages require some setup before they can
+be used. This setup is termed the <a class="reference internal" href="terminology.html#term-build-process"><span class="xref std std-term">build process</span></a> and executing the build
+process is called “building”. The <a class="reference internal" href="terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> is the thing which
+actually does the building. For C/C++ software, CMake has become
+the de facto <span id="id2"><sup><a class="reference internal" href="../bibliography/bibliography.html#id5" title="An introduction to modern CMake. https://cliutils.gitlab.io/modern-cmake/. Accessed: 11-2-2023.">1</a>,<a class="reference internal" href="../bibliography/bibliography.html#id2" title="CMake. https://cmake.org/. Accessed: 11-2-2023.">20</a>,<a class="reference internal" href="../bibliography/bibliography.html#id3" title="Radovan Bast and Roberto Di Remigio. CMake cookbook. Packt Publishing Ltd., Birmingham, UK, 2018.">28</a></sup></span> <a class="reference internal" href="terminology.html#term-build-tool"><span class="xref std std-term">build tool</span></a>
+for managing the build process and most build systems are thus written using
+the CMake scripting language.</p>
+<p>Unfortunately, CMake-based build systems tend to be verbose and repetitive.
+As gleaned from tutorials prominently showcasing boilerplate
+code <span id="id3"><sup><a class="reference internal" href="../bibliography/bibliography.html#id6" title="It's time to do CMake right. https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/. Accessed: 11-2-2023.">6</a>,<a class="reference internal" href="../bibliography/bibliography.html#id8" title="Samples fo learning modern cmake. https://github.com/toeb/moderncmake. Accessed: 11-2-2023.">8</a>,<a class="reference internal" href="../bibliography/bibliography.html#id3" title="Radovan Bast and Roberto Di Remigio. CMake cookbook. Packt Publishing Ltd., Birmingham, UK, 2018.">28</a></sup></span>,
+the growing reliance on template repositories
+<span id="id4"><sup><a class="reference internal" href="../bibliography/bibliography.html#id17" title="Minimal CMake Example. https://github.com/krux02/minimal_cmake_example. Accessed: 11-2-2023.">7</a>,<a class="reference internal" href="../bibliography/bibliography.html#id13" title="Cmake_template. https://github.com/cpp-best-practices/cmake_template. Accessed: 11-1-2023.">12</a>,<a class="reference internal" href="../bibliography/bibliography.html#id14" title="Cpp-boilerplate. https://github.com/Lectem/cpp-boilerplate. Accessed: 11-1-2023.">13</a>,<a class="reference internal" href="../bibliography/bibliography.html#id16" title="Cpp-lib-template. https://github.com/pananton/cpp-lib-template. Accessed: 11-2-2023.">14</a>,<a class="reference internal" href="../bibliography/bibliography.html#id15" title="Cppbase. https://github.com/kartikkumar/cppbase. Accessed: 11-1-2023.">15</a>,<a class="reference internal" href="../bibliography/bibliography.html#id18" title="Moderncpp-project-template. https://github.com/madduci/moderncpp-project-template. Accessed: 11-1-2023.">16</a>,<a class="reference internal" href="../bibliography/bibliography.html#id19" title="Pacakge-example. https://github.com/forexample/package-example. Accessed: 11-1-2023.">17</a></sup></span>,
+and even just copy/paste-ing CMake scripts from one project into another, the
+broader community of CMake-based build system developer seem to have
+accepted the verboseness and repetition (N.B. citations here are representative,
+not exhaustive, i.e., we are aware that there are many more examples!). All of
+these approaches to writing build systems run afoul of the
 <a class="reference external" href="https://tinyurl.com/28x7h46c">“Don’t Repeat Yourself (DRY)”</a> paradigm and
 subsequently suffer from the same problems proponents of DRY seek
 to avoid, <em>e.g.</em>, multiple sources of truth, lack of synchronization,
-and coupling the logic of distinct units of code.</p>
+and coupling the logic of distinct units of code. The point is, <em>we need a way
+to write CMake-based build systems, which does not violate DRY!</em></p>
+<p>The next problem with CMake-based build systems is that CMake’s features and
+best practices change quite readily. For example, up until CMake 3.11 in 2018
+best practice was to write superbuilds <span id="id5"><sup><a class="reference internal" href="../bibliography/bibliography.html#id4" title="Marcus D. Hanwell. CMake superbuilds and Git submodules. https://www.kitware.com/cmake-superbuilds-git-submodules/, 2017. Accessed: 11-2-2023.">29</a></sup></span> for adding
+dependencies to your project’s CMake build system. CMake 3.11 introduced the
+<code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module, which in theory rendered superbuilds obsolete. In
+practice, because many build systems had already been written in a manner that
+precluded use with <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code>, many build systems needed to be rewritten.
+With CMake 3.24 released in 2022, the best practices for dependency management
+are again likely to change because now CMake natively supports package managers!
+Another example is the switch to target-based build systems. Modern CMake is
+target-based <span id="id6"><sup><a class="reference internal" href="../bibliography/bibliography.html#id5" title="An introduction to modern CMake. https://cliutils.gitlab.io/modern-cmake/. Accessed: 11-2-2023.">1</a>,<a class="reference internal" href="../bibliography/bibliography.html#id6" title="It's time to do CMake right. https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/. Accessed: 11-2-2023.">6</a></sup></span>, but many of the
+<code class="docutils literal notranslate"><span class="pre">FindXXX.cmake</span></code> modules originally included with CMake 3.0 in 2014 were not;
+instead the <code class="docutils literal notranslate"><span class="pre">FindXXX.cmake</span></code> modules set variables. Starting around CMake 3.5
+this began to change as the <code class="docutils literal notranslate"><span class="pre">FindXXX.cmake</span></code> scripts now additionally made
+targets. Many build systems adapted to the lack of targets before CMake 3.5 by
+creating their own targets. Unfortunately, the targets the various build systems
+created were not drop-in replacements for the targets that <code class="docutils literal notranslate"><span class="pre">FindXXX.cmake</span></code>
+started producing with CMake 3.5. The result was that build systems again needed
+to be rewritten to adopt the new features.</p>
+<p>While the CMake language is very backwards compatible (many core features
+already existed in the CMake 2.X series), CMake-based build systems are
+usually not forward compatible. The lack of forward compatibility is an issue
+because CMake-based build systems are, by design, “viral”. More specifically,
+CMake works best if a project’s dependencies also provide build systems written
+in CMake, if the dependencies of those dependencies also utilize CMake-based
+build systems, and so on and so forth. Unfortunately this also means that if a
+project attempts to use a new feature, or a new best practice, that project’s
+dependencies must also support that feature or practice. Writing CMake-based
+build systems can be a large time commitment and ideally <em>we need a series of
+stable, forward compatible APIs for expressing our build system</em>, so that we
+can avoid needing to rewrite CMake-based build systems every couple of years.</p>
+<p>To be fair, a lot of the problems with CMake really stem from the lack of formal
+build process standardization for the coding languages CMake targets (C/C++)
+and supports (e.g., Fortran). For example C++ does not mandate how the
+project’s source is structured
+<span id="id7"><sup><a class="reference internal" href="../bibliography/bibliography.html#id11" title="Directory layout and source conventions. https://gcc.gnu.org/onlinedocs/libstdc++/manual/source_organization.html. Accessed: 11-3-2023.">3</a>,<a class="reference internal" href="../bibliography/bibliography.html#id12" title="How to structure your project. https://cliutils.gitlab.io/modern-cmake/chapters/basics/structure.html. Accessed: 11-3-2023.">4</a>,<a class="reference internal" href="../bibliography/bibliography.html#id10" title="Boris Kolpackov. Canonical project structure. https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1204r0.html, 2018. Accessed: 11-3-2023.">32</a></sup></span>, nor does it
+specify a standardized binary interface for libraries. In
+an attempt to be able to support every build system, including those which may
+involve tools yet to come, CMake has opted to assume as little as possible.
+The result is CMake’s functionality is very customizable, but at the cost of
+also being very verbose. That said, even though the coding languages may
+not impose formal standards on the build process, there are many aspects of the
+process which are nearly standardized (or at worst there exists several
+competing conventions). The point is, <em>there is a need to simplify the CMake
+interface by targeting current best practices</em>. The resulting build tool would
+be applicable to the majority of projects’ build systems (and likely a strong
+motivator for the remaining projects to follow suite).</p>
+<p>Even though CMake strives to be as flexible as possible, the reality is that
+software packages are becoming increasingly complicated as are their deployment
+environments. For example, and as evidenced by the popularity of the pybind11
+project <span id="id8"><sup><a class="reference internal" href="../bibliography/bibliography.html#id33" title="Wenzel Jakob, Jason Rhinelander, and Dean Moldovan. Pybind11 – seamless operability between C++11 and Python. 2017. https://github.com/pybind/pybind11.">31</a></sup></span> on GitHub, many C/C++ packages are increasingly
+supporting Python interfaces. Unsurprisingly, the Python interface often depends
+on external Python packages, e.g., many scientific C/C++ projects leverage
+Numpy <span id="id9"><sup><a class="reference internal" href="../bibliography/bibliography.html#id32" title="Charles R. Harris, K. Jarrod Millman, Stéfan J. van der Walt, Ralf Gommers, Pauli Virtanen, David Cournapeau, Eric Wieser, Julian Taylor, Sebastian Berg, Nathaniel J. Smith, Robert Kern, Matti Picus, Stephan Hoyer, Marten H. van Kerkwijk, Matthew Brett, Allan Haldane, Jaime Fernández del Río, Mark Wiebe, Pearu Peterson, Pierre Gérard-Marchant, Kevin Sheppard, Tyler Reddy, Warren Weckesser, Hameer Abbasi, Christoph Gohlke, and Travis E. Oliphant. Array programming with NumPy. Nature, 585(7825):357–362, September 2020. URL: https://doi.org/10.1038/s41586-020-2649-2, doi:10.1038/s41586-020-2649-2.">30</a></sup></span>.
+While CMake can already facilitate finding the Python interpreter and the
+Python development libraries <span id="id10"><sup><a class="reference internal" href="../bibliography/bibliography.html#id34" title="FindPython. https://cmake.org/cmake/help/latest/module/FindPython.html. Accessed: 11-3-2023.">24</a></sup></span>, it is unreasonable to ask
+CMake to also provide mechanisms for finding and building Python packages.
+Furthermore, most
+Python package maintainers are unlikely to provide CMake support. Admittedly,
+the prevalence of the C++/Python paradigm may lead to CMake support down the
+road, but the ultimate point we’re trying to make is that it is unreasonable for
+CMake to natively support all use cases of all coding languages. Instead,
+<em>there is a need to be able to non-invasively extend CMake to additional coding
+languages and package managers</em>.</p>
 <p>Given that CMake is a full-featured coding language, it is possible to write
-abstractions as CMake extensions which will reduce the verbosity and redundancy,
-but this is not often done. We speculate that the primary hurdle to developing
-such abstractions is lack of support. Most support for scientific software is
-aimed at method development and not at software maintenance/sustainability. As
-a result build systems are low priority. This is why CMaize is needed. CMaize
-will be a reusable, <a class="reference internal" href="terminology.html#term-build-tool"><span class="xref std std-term">build tool</span></a> built on top of CMake designed to
-streamline writing build systems, particularly build systems of scientific
-software.</p>
+CMake extensions which will reduce the verbosity and redundancy via
+abstractions. As already mentioned, this is not often done; instead many
+projects resort to build system templates or copy/pasting. We speculate that the
+primary hurdle to developing the desperately needed abstractions is a lack of
+financial support and tooling. The CMake coding language is functional,
+with a feel akin to shell scripting. In turn, for many modern programmers
+developing software in CMake can be a laborious, aggravating process.
+Particularly when it comes to developing scientific software, most financial
+support targets science and not at software maintenance/sustainability. As a
+result build systems are a low priority and many developers settle for
+considerable technical debt in their build systems.</p>
+<p>This is the state of C++ software development when CMake is used as a build
+system. And this is why a project like CMaize is needed.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cmake_package_manager.html" class="btn btn-neutral float-left" title="CMake’s Package Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../getting_started/index.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="CMaize Background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="other_projects.html" class="btn btn-neutral float-right" title="Other Projects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Build Phases" href="build_phases.html" />
-    <link rel="prev" title="CMaize Background" href="index.html" /> 
+    <link rel="next" title="Getting Started" href="../getting_started/index.html" />
+    <link rel="prev" title="CMake’s Package Manager" href="cmake_package_manager.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,14 +51,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">CMaize Background</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html">Other Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redundancy.html">Redundancy in CMake-Based Build Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Terminology and Abbreviations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cmake-terminology">CMake Terminology</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#computer-science-terminology">Computer Science Terminology</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
-<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
@@ -147,6 +149,13 @@ produced during the <a class="reference internal" href="#term-build-process"><sp
 metadata about the package. The metadata is usually designed to aid a
 <a class="reference internal" href="#term-package-manager"><span class="xref std std-term">package manager</span></a> in finding the package later.</p>
 </dd>
+<dt id="term-package-configuration">package configuration<a class="headerlink" href="#term-package-configuration" title="Link to this term"></a></dt><dd><p>The configuration of a <a class="reference internal" href="#term-package"><span class="xref std std-term">package</span></a> refers to the options it was built
+with, e.g., the target architecture, compiler flags (if applicable),
+and enabled features. The configuration also includes the
+<a class="reference internal" href="#term-package-specification"><span class="xref std std-term">package specification</span></a> of each dependency. Note that if a package
+has no dependencies, then the package configuration is simply the build
+options.</p>
+</dd>
 <dt id="term-package-manager">package manager<a class="headerlink" href="#term-package-manager" title="Link to this term"></a></dt><dd><p>Package managers may be part of a <a class="reference internal" href="#term-build-tool"><span class="xref std std-term">build tool</span></a> or they may be
 independent programs. Regardless of their origin, a “package manager” is
 a program or tool which can facilitate finding, building, and tracking of
@@ -154,6 +163,11 @@ a program or tool which can facilitate finding, building, and tracking of
 responsible for determining if a particular package instance can be used
 to satisfy a dependency. Package management is built in to CMake via the
 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> command and the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module.</p>
+</dd>
+<dt id="term-package-specification">package specification<a class="headerlink" href="#term-package-specification" title="Link to this term"></a></dt><dd><p>A package’s specification includes the version of the package and its
+<a class="reference internal" href="#term-package-configuration"><span class="xref std std-term">package configuration</span></a>. For a given package, the package’s
+specification/configuration is a superset/subset of that package’s
+configuration/specification.</p>
 </dd>
 <dt id="term-project">project<a class="headerlink" href="#term-project" title="Link to this term"></a></dt><dd><p>Conceptually a “project” is the input (usually source code) to a
 <a class="reference internal" href="#term-build-system"><span class="xref std std-term">build system</span></a>. In practice CMake, uses the term project to
@@ -173,6 +187,8 @@ called by other software components.
 In practice, a component’s API usually amounts to one or more coding
 language bindings that allow the component to be manipulated directly from
 the source code of another software component.</p>
+</dd>
+<dt id="term-boilerplate">boilerplate<a class="headerlink" href="#term-boilerplate" title="Link to this term"></a></dt><dd><p>Code which is repeated nearly verbatim in multiple source units.</p>
 </dd>
 <dt id="term-CLI">CLI<a class="headerlink" href="#term-CLI" title="Link to this term"></a></dt><dd><p>A Command Line Interface (CLI) is a mechanism for a user to interact with
 a program in a traditional terminal environment.</p>
@@ -195,6 +211,23 @@ introduced, or a new feature is added.</p>
 <dt id="term-GUI">GUI<a class="headerlink" href="#term-GUI" title="Link to this term"></a></dt><dd><p>A Graphical User Interface (GUI) is a mechanism for a user to interact
 with a program via a traditional window-based environment.</p>
 </dd>
+<dt id="term-HPC">HPC<a class="headerlink" href="#term-HPC" title="Link to this term"></a></dt><dd><p>High-performance computing (HPC) refers to developing and running highly
+optimized software, typically on supercomputers. The key differences,
+compared to traditional software, are the level of optimization and the
+power of the computers the software runs on. Many traditional applications
+involve algorithms of low computational complexity and thus run quickly on
+consumer commodity hardware, with relatively little optimization. HPC
+applications, however, typically involve computational algorithms which
+have computational complexity orders of magnitude more expensive than the
+algorithms found in traditional software. In order for HPC applications
+to obtain answers in a reasonable amount of wall time, the software must
+usually be run on cutting-edge hardware and optimized to obtain so as to
+obtain near peak performance on that hardware.</p>
+</dd>
+<dt id="term-KWARGS">KWARGS<a class="headerlink" href="#term-KWARGS" title="Link to this term"></a></dt><dd><p>Short for “keyword arguments”. The term “kwargs” is widely used in Python
+communities. We’ve borrowed the term here for referring to how many
+modern CMake functions accept their arguments as key/value pairs.</p>
+</dd>
 </dl>
 </section>
 </section>
@@ -203,8 +236,8 @@ with a program via a traditional window-based environment.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="CMaize Background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="build_phases.html" class="btn btn-neutral float-right" title="Build Phases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cmake_package_manager.html" class="btn btn-neutral float-left" title="CMake’s Package Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../getting_started/index.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

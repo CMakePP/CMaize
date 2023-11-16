@@ -55,9 +55,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../faq.html">Frequently Asked Design Questions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">Design of CMaize’s User API</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">CMaize Class Design</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">Designing CMaize’s CMaizeProject Component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_specification.html">Designing the Package Specification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="package_manager.html">Designing CMaize’s PackageManager Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="target.html">Designing CMaize’s Target Component</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s C++ Target Classes</a></li>
@@ -67,6 +69,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../assumptions.html">CMaize Assumptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
@@ -191,25 +194,24 @@ abstract away the differences. From an object-oriented design standpoint this
 suggests a common abstract base class.</p>
 </dd>
 </dl>
-<section id="out-of-scope">
-<h3>Out of Scope<a class="headerlink" href="#out-of-scope" title="Link to this heading"></a></h3>
-<dl class="simple">
-<dt>installing packages</dt><dd><p>The above workflow for creating C++ targets showed installation for
-completeness; however, actually installing the targets is the responsibility
-of the package manager.</p>
+<dl class="simple" id="ct-install-location">
+<dt>install location</dt><dd><p>CMake is great at managing targets during the build process; however,
+CMake requires the package maintainer to more or less manually configure how
+the target will behave after installation. This includes ensuring the package
+can still find all of its files and dependencies. This process is facilitated
+by having each target know where its install location will be.</p>
 </dd>
 </dl>
-</section>
 </section>
 <section id="c-target-design">
 <h2>C++ Target Design<a class="headerlink" href="#c-target-design" title="Link to this heading"></a></h2>
 <figure class="align-center" id="id1">
 <span id="fig-cxx-target-design"></span><img alt="../../../_images/cxx_targets.png" src="../../../_images/cxx_targets.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The classes implementing CMaize’s target component for C++ targets.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">The classes implementing CMaize’s target component for C++ targets.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p><a class="reference internal" href="#fig-cxx-target-design"><span class="std std-numref">Fig. 6</span></a> is a class diagram for the classes responsible
+<p><a class="reference internal" href="#fig-cxx-target-design"><span class="std std-numref">Fig. 9</span></a> is a class diagram for the classes responsible
 for modeling C++ targets. Following from consideration <a class="reference internal" href="#ct-abstract-base"><span class="std std-ref">abstract base</span></a>
 we have introduced the <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> class to factor out the common
 infrastructure. The <code class="docutils literal notranslate"><span class="pre">CXXTarget</span></code> class implements the <code class="docutils literal notranslate"><span class="pre">make_target</span></code> function

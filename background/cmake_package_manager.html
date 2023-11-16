@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Statement of Need" href="statement_of_need.html" />
+    <link rel="next" title="Terminology and Abbreviations" href="terminology.html" />
     <link rel="prev" title="Build Phases" href="build_phases.html" /> 
 </head>
 
@@ -50,10 +50,16 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">CMaize Background</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">CMake’s Package Manager</a></li>
 <li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_projects.html">Other Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="redundancy.html">Redundancy in CMake-Based Build Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CMake’s Package Manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#package-manager-responsibilities">Package Manager Responsibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-as-a-package-manager">CMake as a Package Manager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
@@ -91,6 +97,13 @@
              
   <section id="cmake-s-package-manager">
 <span id="cmakes-package-manager"></span><h1>CMake’s Package Manager<a class="headerlink" href="#cmake-s-package-manager" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CMake is constantly adding new features. In recent releases, many of the
+new features are targeted at topics considered on this page. The information
+on this page was accurate circa CMake 3.11 (which was released in 2018 at
+about the time we started floating ideas about what would become CMaize).</p>
+</div>
 <p><a class="reference internal" href="terminology.html#term-build-system"><span class="xref std std-term">Build systems</span></a> and
 <a class="reference internal" href="terminology.html#term-package-manager"><span class="xref std std-term">package managers</span></a> often work together to build a
 <a class="reference internal" href="terminology.html#term-project"><span class="xref std std-term">project</span></a>. For better or for worse, many build systems relying on
@@ -98,16 +111,134 @@ traditional CMake attempt to be both the build system and the package manager.
 Making matters worse, most build systems assume that CMake is driving the
 build, not a package manager. What this means is that if a build system
 designer wants to enable package manager support, while still having their
-package be buildable by CMake, the package manager must be integrated into
+package be build-able by CMake, the package manager must be integrated into
 CMake.</p>
-<p>CMaize was designed from the onset to support package managers under a CMake-based <a class="reference internal" href="terminology.html#term-API"><span class="xref std std-term">API</span></a>. Key to this effort is establishing a package manager
+<p>CMaize was designed from the onset to support package managers under a
+CMake-based <a class="reference internal" href="terminology.html#term-API"><span class="xref std std-term">API</span></a>. Key to this effort is establishing a package manager
 component (see <a class="reference internal" href="../developer/design/classes/package_manager.html#designing-cmaizes-packagemanager-component"><span class="std std-ref">Designing CMaize’s PackageManager Component</span></a>).
 By default the package manager component uses what we call CMake’s built-in
-package manager functions, <cite>find_package</cite> and <cite>FetchContent</cite>. Admittedly, these
-functions are not usually discussed in this
+package manager. Admittedly, CMake is not usually discussed in this
 manner and the purpose of this page is to explain how CMaize maps CMake’s
 existing functions to a package manager.</p>
-<p>TODO: Finish me!!!</p>
+<section id="package-manager-responsibilities">
+<span id="cpm-package-manager-responsibilities"></span><h2>Package Manager Responsibilities<a class="headerlink" href="#package-manager-responsibilities" title="Link to this heading"></a></h2>
+<p>Before discussing how CMake is mapped to a package manager, we briefly review
+the responsibilities of a package manager.</p>
+<p>The primary responsibility of a package manager is, as the name states, to
+maintain a set of <a class="reference internal" href="terminology.html#term-package"><span class="xref std std-term">packages</span></a>. When a user wants to use a
+package they need only request it from the the package manager and the package
+manager does the rest. The package manager’s job is very easy if the user’s
+request is very simple (e.g., “any version of Python”), and the package is
+already available. The usefulness of a package manager can be measured by how
+well it is able to handle complicated requests (e.g., Python version 3.12.0,
+compiled with GCC version 9.5, <code class="docutils literal notranslate"><span class="pre">-O2</span></code>, …) and obtain packages which are not
+already installed. Ideally this process will be as efficient as possible, e.g.,
+the package manager should avoid re-compiling already existing package
+dependencies, if they satisfy the package specification.</p>
+<p>In satisfying their primary responsibility, package managers must be able to:</p>
+<dl class="simple" id="pmr-package-specs">
+<dt>Understand <a class="reference internal" href="terminology.html#term-package-specification"><span class="xref std std-term">package specifications</span></a>.</dt><dd><p>Notably this includes knowing what other packages the package depends on.</p>
+</dd>
+</dl>
+<dl class="simple" id="pmr-inspect-packages">
+<dt>Inspect managed packages.</dt><dd><p>This can include not only the package’s specification, but also the
+integrity of the package (does it work?) and its authenticity (is it really
+what it says it is?).</p>
+</dd>
+</dl>
+<dl class="simple" id="pmr-compare-packages">
+<dt>Compare and discern among managed packages.</dt><dd><p>In particular the package manager must be able to not only realize when two
+packages are entirely different (e.g., one is say a C++ compiler and the
+other is a Python interpreter), but also be able to discern among different
+specifications of the same package.</p>
+<ul class="simple">
+<li><p>Comparisons are usually needed to know if a package could be used to
+satisfy a particular package specification.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="pmr-obtain-new-packages">
+<dt>Obtain new packages.</dt><dd><p>New packages can come from manual addition (a non-ideal solution),
+downloading, or even other package managers.</p>
+</dd>
+</dl>
+<dl class="simple" id="pmr-facilitate-use-of-managed-packages">
+<dt>Facilitate use of managed packages.</dt><dd><p>If a package manager possesses a package, but the user can not use the
+package, the package is of no use. The package manager must provide
+mechanisms so that the package can actually be used.</p>
+<ul class="simple">
+<li><p>This is particularly relevant for packages which were added to the package
+manager as dependencies of other packages. Often these packages are not
+located in places which are readily accessible to the user.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Many package managers also have a number of other features including removing
+and updating packages. These features are not part of the above list because,
+from the perspective of a build system, these features are not strictly
+necessary.</p>
+</section>
+<section id="cmake-as-a-package-manager">
+<h2>CMake as a Package Manager<a class="headerlink" href="#cmake-as-a-package-manager" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section describes CMake pre version 3.24. Version 3.24 introduces
+dependency providers which invalidates some of this discussion.</p>
+</div>
+<p>The extent of CMake’s package management functions largely boils down to
+<code class="docutils literal notranslate"><span class="pre">find_package</span></code> and the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module (for modern CMake; older CMake
+build systems often relied on the <code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code> module instead of
+<code class="docutils literal notranslate"><span class="pre">FetchContent</span></code>). CMake’s native ability to understand package specifications
+is largely limited to the package’s name, the version number, and a list of
+components. For everything else, CMake defers to the package developer.</p>
+<p>Inspecting packages happens under <code class="docutils literal notranslate"><span class="pre">find_package</span></code> via one of two mechanisms.
+The best practices mechanism is for packages to provide a config file (allowed
+names are <code class="docutils literal notranslate"><span class="pre">PackageNameConfig.cmake</span></code> or <code class="docutils literal notranslate"><span class="pre">package_name-config.cmake</span></code>) and a
+version file (<code class="docutils literal notranslate"><span class="pre">PackageNameConfigVersion.cmake</span></code> or
+<code class="docutils literal notranslate"><span class="pre">package_name-config-version.cmake</span></code>). Alternatively, a find module may be
+provided (<code class="docutils literal notranslate"><span class="pre">FindXXX.cmake</span></code> where <code class="docutils literal notranslate"><span class="pre">XXX</span></code> is the name passed to
+<code class="docutils literal notranslate"><span class="pre">find_package</span></code>). Regardless of which mechanism is used, it is the <code class="docutils literal notranslate"><span class="pre">.cmake</span></code>
+files’ responsibility to make sure CMake has the package specification
+information it needs (the version and available components; the package name is
+used to locate the files). CMake considers the packages a match if the version
+information and components provided by the files match what the user asked for.
+To enforce checks on other parts of the package specification, the config file
+author can ensure that <code class="docutils literal notranslate"><span class="pre">XXX_FOUND</span></code> (<code class="docutils literal notranslate"><span class="pre">XXX</span></code> again being the name provided to
+<code class="docutils literal notranslate"><span class="pre">find_package</span></code>) is set to false if the package associated with the files does
+not satisfy the additional specifications. It is also the responsibility of
+these files to provide the caller of <code class="docutils literal notranslate"><span class="pre">find_package</span></code> with a target representing
+the dependency.</p>
+<p>Obtaining new packages is done via the functions in CMake’s <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code>
+module. However, the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module really only targets packages which
+can be used upon downloading, or packages which can be configured and built
+with CMake. Since <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> takes the union of all packages’ build
+systems, it is worth noting that not all packages which use CMake are
+<code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> compatible; in particular, packages which define targets with
+the same name, overwrite global variables, or do not strictly follow the usual
+CMake <a class="reference internal" href="terminology.html#term-build-process"><span class="xref std std-term">build process</span></a> are NOT compatible with <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code>.</p>
+<p>Summarily, with respect to the list in
+<a class="reference internal" href="#cpm-package-manager-responsibilities"><span class="std std-ref">Package Manager Responsibilities</span></a>:</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#pmr-package-specs"><span class="std std-ref">Understand package specifications.</span></a></dt><dd><p>CMake natively understands versions and components. Package maintainers need
+to register their package’s version and components with CMake in order to use
+CMake’s native support. Any additional package specification content must be
+manually checked.</p>
+</dd>
+<dt><a class="reference internal" href="#pmr-inspect-packages"><span class="std std-ref">Inspect managed packages.</span></a></dt><dd><p>Inspecting packages is done under the hood of the <code class="docutils literal notranslate"><span class="pre">find_package</span></code> function.
+More specifically <code class="docutils literal notranslate"><span class="pre">find_package</span></code> loops over a set of paths and looks for
+config files. If a config file matching the project’s name is found it then
+reads in the package specification.</p>
+</dd>
+<dt><a class="reference internal" href="#pmr-compare-packages"><span class="std std-ref">Compare and discern among managed packages.</span></a></dt><dd><p>Once CMake has read in a config file it will compare the package
+specifications (version and components) to those the user requests.</p>
+</dd>
+<dt><a class="reference internal" href="#pmr-obtain-new-packages"><span class="std std-ref">Obtain new packages.</span></a></dt><dd><p>CMake relies on the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module for obtaining new packages.</p>
+</dd>
+<dt><a class="reference internal" href="#pmr-facilitate-use-of-managed-packages"><span class="std std-ref">Facilitate use of managed packages.</span></a></dt><dd><p>It is the responsibility of the package maintainer to ensure the config file
+exports a target the user can use.</p>
+</dd>
+</dl>
+</section>
 </section>
 
 
@@ -115,7 +246,7 @@ existing functions to a package manager.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="build_phases.html" class="btn btn-neutral float-left" title="Build Phases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="statement_of_need.html" class="btn btn-neutral float-right" title="Statement of Need" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="terminology.html" class="btn btn-neutral float-right" title="Terminology and Abbreviations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

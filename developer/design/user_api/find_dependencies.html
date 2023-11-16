@@ -55,6 +55,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../faq.html">Frequently Asked Design Questions</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">Design of CMaize’s User API</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="overview.html">Overview of CMaize’s User API Design</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s Find or Build Dependency Function</a></li>
@@ -64,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../classes/index.html">CMaize Class Design</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../assumptions.html">CMaize Assumptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
@@ -104,7 +106,133 @@
              
   <section id="designing-cmaize-s-find-or-build-dependency-function">
 <span id="designing-cmaize-find-or-build-dependency"></span><h1>Designing CMaize’s Find or Build Dependency Function<a class="headerlink" href="#designing-cmaize-s-find-or-build-dependency-function" title="Link to this heading"></a></h1>
-<p>TODO: Write me!!!</p>
+<p>This page describes the process of designing the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code>
+function.</p>
+<section id="what-is-cmaize-s-find-or-build-dependency-function">
+<h2>What is CMaize’s Find or Build Dependency Function?<a class="headerlink" href="#what-is-cmaize-s-find-or-build-dependency-function" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function is the user-facing function CMaize
+provides to help developers manage their project’s dependencies. Under the hood
+the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function is responsible for mapping the user’s
+dependency needs to a target (a build target if the <a class="reference internal" href="../../../background/terminology.html#term-build-system"><span class="xref std std-term">build system</span></a> will
+build it and an install target if it already exists). This mapping is done via
+the package manager component (see
+<a class="reference internal" href="../classes/package_manager.html#designing-cmaizes-packagemanager-component"><span class="std std-ref">Designing CMaize’s PackageManager Component</span></a>).</p>
+</section>
+<section id="why-do-we-need-a-find-or-build-dependency-function">
+<h2>Why Do We Need a Find or Build Dependency Function?<a class="headerlink" href="#why-do-we-need-a-find-or-build-dependency-function" title="Link to this heading"></a></h2>
+<p>The need for the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function arose in the discussions
+of the overall user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> (see <a class="reference internal" href="overview.html#designing-cmaizes-user-api"><span class="std std-ref">Overview of CMaize’s User API Design</span></a>). In
+particular, CMaize is designed to rely on existing packaging managers. The
+<code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> API abstracts away the details of how those
+package managers work so that CMaize consumers can simply specify the dependency
+details.</p>
+</section>
+<section id="find-or-build-dependency-function-considerations">
+<h2>Find or Build Dependency Function Considerations<a class="headerlink" href="#find-or-build-dependency-function-considerations" title="Link to this heading"></a></h2>
+<dl class="simple" id="fbd-cmake-based">
+<dt>CMake based</dt><dd><p>As user-facing functionality, the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function
+should have an interface which is consistent with traditional CMake. In
+particular this means the input should be strings and the result should be
+the name of a traditional CMake target.</p>
+</dd>
+</dl>
+<dl class="simple" id="fbd-wrap-package-managers">
+<dt>wrap package managers</dt><dd><p>As stated above, one of the primary reasons for this function is to abstract
+away the details of how CMaize interacts with the underlying package
+managers.</p>
+<ul class="simple">
+<li><p>As a corollary, this also means that <code class="docutils literal notranslate"><span class="pre">find_or_build__dependency</span></code> must be
+able to accept whatever input is needed for the various package manager
+backends.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple" id="fbd-cmake-target">
+<dt>CMake target</dt><dd><p>The user of the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function will provide a name
+for the dependency. That name will be tied to that particular invocation of
+<code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> and will represent that specific package
+specification. This is explicitly done by creating a traditional CMake target
+under the provided name.</p>
+<ul class="simple">
+<li><p>As a corollary, if the user wants to have multiple specifications of a
+package, then there must be be multiple calls to
+<code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code>, each call must provide a unique name.</p></li>
+<li><p>The user should continue to refer to this package specification via the
+provided name, e.g., when using it as a dependency for another
+<code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> call or when specifying the project’s
+assets (e.g., <code class="docutils literal notranslate"><span class="pre">cmaize_add_library</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="find-or-build-dependency-function-design">
+<h2>Find or Build Dependency Function Design<a class="headerlink" href="#find-or-build-dependency-function-design" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<span id="fig-find-or-build-dependency"></span><img alt="../../../_images/find_or_build_dependency.png" src="../../../_images/find_or_build_dependency.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Overview of the control flow in the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The control flow of <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> is diagramed in
+<a class="reference internal" href="#fig-find-or-build-dependency"><span class="std std-numref">Fig. 3</span></a>. In addressing the <a class="reference internal" href="#fbd-cmake-based"><span class="std std-ref">CMake based</span></a>
+consideration the inputs to the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function are the
+name of the dependency and any inputs needed to specify the dependency (e.g.,
+version or URL) and any necessary build options. Internally,
+<code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> then:</p>
+<ol class="arabic simple">
+<li><p>Converts the dependency’s information into a <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object.</p></li>
+<li><p>Obtains the active <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object.</p></li>
+<li><p>Gets the active <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> from the <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object.</p></li>
+<li><p>Determines if the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> object has a dependency matching the
+<code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object.</p></li>
+<li><p>If yes, then the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> retrieves the already installed
+dependency which is returned as a <code class="docutils literal notranslate"><span class="pre">InstalledTarget</span></code> object.</p></li>
+<li><p>If no, then the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> creates a <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> object which
+will be built during the build phase.</p></li>
+<li><p>Finally the target is registered to the active <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object.</p></li>
+</ol>
+<p>In turn, <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> thus works like a driver managing the
+interactions of the <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object with the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code>
+objects. The reliance on a <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> object addresses the
+<a class="reference internal" href="#fbd-wrap-package-managers"><span class="std std-ref">wrap package managers</span></a> consideration.</p>
+</section>
+<section id="api-design">
+<h2>API Design<a class="headerlink" href="#api-design" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> of the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function must be capable of
+accepting whatever input a <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object may need. This is
+because the <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> will ultimately work with the
+<code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code>. To that end, the API will accept a number of
+<a class="reference internal" href="../../../background/terminology.html#term-KWARGS"><span class="xref std std-term">kwargs</span></a> which will be forwarded to the <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> and the
+basic API will be:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmaize_find_or_build_dependency</span><span class="p">(</span><span class="s">name_of_dependency</span><span class="w"> </span><span class="s">&lt;kwargs&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here <code class="docutils literal notranslate"><span class="pre">name_of_dependency</span></code> will be the base name assigned to the CMake target,
+as required by the <a class="reference internal" href="#fbd-cmake-target"><span class="std std-ref">CMake target</span></a> consideration. N.B., “CMake target”
+in this context refers to a traditional CMake target, NOT a CMaize object.
+Users should continue to refer to the dependency as <code class="docutils literal notranslate"><span class="pre">name_of_dependency</span></code> in
+all future CMaize calls, e.g.:</p>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="nb">cmaize_find_or_build_dependency</span><span class="p">(</span><span class="s">foo</span><span class="w"> </span><span class="s">&lt;kwargs&gt;</span><span class="p">)</span>
+<span class="nb">cmaize_find_or_build_dependency</span><span class="p">(</span><span class="s">bar</span><span class="w"> </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s">foo</span><span class="w"> </span><span class="s">&lt;other_kwargs&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#fbd-cmake-based"><span class="std std-ref">CMake based</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function relies on traditional CMake inputs
+and ultimately produces a native CMake target which is used by dependees.</p>
+</dd>
+<dt><a class="reference internal" href="#fbd-wrap-package-managers"><span class="std std-ref">wrap package managers</span></a></dt><dd><p>The body of the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function relies on
+<code class="docutils literal notranslate"><span class="pre">PackageManager</span></code> instances to actually find and/or build the various
+dependencies.</p>
+</dd>
+<dt><a class="reference internal" href="#fbd-cmake-target"><span class="std std-ref">CMake target</span></a></dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> and <code class="docutils literal notranslate"><span class="pre">InstalledTarget</span></code> classes are responsible for
+ensuring that a traditional CMake target is created under the name the
+user provides to the <code class="docutils literal notranslate"><span class="pre">find_or_build_dependency</span></code> function.</p>
+</dd>
+</dl>
+</section>
 </section>
 
 

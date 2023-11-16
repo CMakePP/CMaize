@@ -19,7 +19,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Designing CMaize’s PackageManager Component" href="package_manager.html" />
+    <link rel="next" title="Designing the Package Specification" href="package_specification.html" />
     <link rel="prev" title="CMaize Class Design" href="index.html" /> 
 </head>
 
@@ -55,9 +55,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../faq.html">Frequently Asked Design Questions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">Design of CMaize’s User API</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">CMaize Class Design</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s CMaizeProject Component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_specification.html">Designing the Package Specification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="package_manager.html">Designing CMaize’s PackageManager Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="target.html">Designing CMaize’s Target Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_target.html">Designing CMaize’s C++ Target Classes</a></li>
@@ -67,6 +69,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../assumptions.html">CMaize Assumptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
@@ -210,10 +213,10 @@ recursion.</p></li>
 <figure class="align-center" id="id1">
 <span id="fig-cmaize-project"></span><img alt="../../../_images/cmaize_project.png" src="../../../_images/cmaize_project.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The design of the CMaizeProject component of CMaize.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The design of the CMaizeProject component of CMaize.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p><a class="reference internal" href="#fig-cmaize-project"><span class="std std-numref">Fig. 4</span></a> shows the design of the CMaizeProject component.
+<p><a class="reference internal" href="#fig-cmaize-project"><span class="std std-numref">Fig. 5</span></a> shows the design of the CMaizeProject component.
 In keeping with object-oriented practices we introduce a class <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code>
 to represent a project which uses CMaize as its build system. Together the
 <a class="reference internal" href="#cp-building"><span class="std std-ref">building</span></a> and the <a class="reference internal" href="#cp-packaging"><span class="std std-ref">packaging</span></a> considerations establish the
@@ -225,7 +228,8 @@ project, the downstream project will need the ability to uniquely distinguish
 among package iterations (instances of a package that differ in configuration
 and/or version). This requires tagging the package with some subset of a
 <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object’s state and to this end we introduce
-the <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> class.</p>
+the <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> class (full design discussion
+<a class="reference internal" href="package_specification.html#designing-package-specification"><span class="std std-ref">Designing the Package Specification</span></a>).</p>
 <p>Keeping with <a class="reference internal" href="../../../background/terminology.html#term-DRY"><span class="xref std std-term">DRY</span></a> we want each piece of state in the CMaizeProject
 component to appear in only one place and thus one of the key design decisions
 regarding the <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> and <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> classes is the
@@ -237,8 +241,9 @@ objects as being maps from a <code class="docutils literal notranslate"><span cl
 details of the packages it manages, thus it needs to know which package
 we want to build and what settings/options to build the package with.</p>
 <p>Finally, because of the <a class="reference internal" href="#cp-workspace"><span class="std std-ref">workspace</span></a> consideration, we opt to store most
-<code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> state not in the <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> class as targets.
-More specifically, modern CMake is target-based. We thus need a mechanism to
+<code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> state not in the <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> class, but as
+targets. More specifically, modern CMake is target-based. We thus need a
+mechanism to
 retrieve the build system targets from within the implementation of CMaize’s
 user <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a>. By storing them in the <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> we can access the
 targets by retrieving the <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object for the project, and then
@@ -274,7 +279,7 @@ a CMaize-based build system to also rely on CMaize.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="CMaize Class Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="package_manager.html" class="btn btn-neutral float-right" title="Designing CMaize’s PackageManager Component" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="package_specification.html" class="btn btn-neutral float-right" title="Designing the Package Specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

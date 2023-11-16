@@ -55,9 +55,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Developing CMaize</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">CMaize Design Documentation</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../overview.html">Overview of CMaize’s Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../faq.html">Frequently Asked Design Questions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../user_api/index.html">Design of CMaize’s User API</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">CMaize Class Design</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">Designing CMaize’s CMaizeProject Component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="package_specification.html">Designing the Package Specification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="package_manager.html">Designing CMaize’s PackageManager Component</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Designing CMaize’s Target Component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_target.html">Designing CMaize’s C++ Target Classes</a></li>
@@ -67,6 +69,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../assumptions.html">CMaize Assumptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../conventions.html">CMaize Conventions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../cmaize_initialization.html">CMaize Initialization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../design_notes/index.html">Design Notes</a></li>
@@ -129,7 +132,8 @@ users creating a target for a C++ executable, via the <code class="docutils lite
 need only interact with target properties which are relevant for executables,
 whereas the native CMake <a class="reference internal" href="../../../background/terminology.html#term-API"><span class="xref std std-term">API</span></a> additionally exposes many other
 considerations including: libraries, object libraries, and alias targets.
-Another motivation for CMaize’s target component is to wrap the process of getting/
+Another motivation for CMaize’s target component is to wrap the process of
+getting/
 setting target properties in a more user-friendly interface (CMake’s native
 API can be a bit of a pain because it depends on exactly what the target
 represents).</p>
@@ -172,7 +176,7 @@ the package’s dependencies because the package already does this for them.</p>
 </dl>
 <dl class="simple" id="tc-cmake-based-targets">
 <dt>cmake based targets</dt><dd><p>Modern CMake is target-based. Since CMaize relies on CMake, CMaize will need
-to track the underlying CMake targets.</p>
+to track the underlying CMake target(s).</p>
 </dd>
 </dl>
 <dl class="simple" id="tc-lazy-cmake-target-creation">
@@ -195,17 +199,17 @@ targets are required to know all of their state immediately.</p></li>
 <figure class="align-center" id="id1">
 <span id="fig-cmaize-targets"></span><img alt="../../../_images/targets.png" src="../../../_images/targets.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The overall architecture of CMaize’s target component. Also shown are the
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">The overall architecture of CMaize’s target component. Also shown are the
 API details of the language agnostic pieces.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
-<p><a class="reference internal" href="#fig-cmaize-targets"><span class="std std-numref">Fig. 5</span></a> provides an overview of the architecture of
+<p><a class="reference internal" href="#fig-cmaize-targets"><span class="std std-numref">Fig. 8</span></a> provides an overview of the architecture of
 CMaize’s target component. Stemming from the <a class="reference internal" href="#tc-language-specific"><span class="std std-ref">language specific</span></a> and
 the <a class="reference internal" href="#tc-language-agnostic"><span class="std std-ref">language agnostic</span></a> considerations the class hierarchy is seen as
 having a language-agnostic piece and a language-specific piece. The base
 <code class="docutils literal notranslate"><span class="pre">CMaizeTarget</span></code> class and its two child classes,
 <code class="docutils literal notranslate"><span class="pre">BuildTarget</span></code> and <code class="docutils literal notranslate"><span class="pre">InstalledTarget</span></code>, define the language agnostic piece of
-the hierarchy. The opaque elements of <a class="reference internal" href="#fig-cmaize-targets"><span class="std std-numref">Fig. 5</span></a>, i.e., those
+the hierarchy. The opaque elements of <a class="reference internal" href="#fig-cmaize-targets"><span class="std std-numref">Fig. 8</span></a>, i.e., those
 labeled <code class="docutils literal notranslate"><span class="pre">CXX</span> <span class="pre">Targets</span></code>, <code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">Targets</span></code>, and <code class="docutils literal notranslate"><span class="pre">CMake</span> <span class="pre">Targets</span></code>, form the
 language-specific part of the target component. The design of the classes needed
 to support targets for each coding language can be found elsewhere (see

@@ -47,7 +47,8 @@ users creating a target for a C++ executable, via the ``CXXExecutable`` class
 need only interact with target properties which are relevant for executables,
 whereas the native CMake :term:`API` additionally exposes many other
 considerations including: libraries, object libraries, and alias targets.
-Another motivation for CMaize's target component is to wrap the process of getting/
+Another motivation for CMaize's target component is to wrap the process of
+getting/
 setting target properties in a more user-friendly interface (CMake's native
 API can be a bit of a pain because it depends on exactly what the target
 represents).
@@ -98,7 +99,7 @@ dependency tracking
 
 cmake based targets
    Modern CMake is target-based. Since CMaize relies on CMake, CMaize will need
-   to track the underlying CMake targets.
+   to track the underlying CMake target(s).
 
 .. _tc_lazy_cmake_target_creation:
 

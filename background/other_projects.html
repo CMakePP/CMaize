@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Other Projects &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Redundancy in CMake-Based Build Systems" href="redundancy.html" />
+    <link rel="prev" title="Statement of Need" href="statement_of_need.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CMaize Background</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="statement_of_need.html">Statement of Need</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Other Projects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#autocmake">Autocmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blt">BLT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cinch">Cinch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmake">CMake++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-get">cmake-get</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-init">cmake-init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cpm">CPM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cpm-cmake">CPM.cmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hunter">Hunter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ixm">IXM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jaws">JAWS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project-options">project_options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="redundancy.html">Redundancy in CMake-Based Build Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_phases.html">Build Phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmake_package_manager.html">CMake’s Package Manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="terminology.html">Terminology and Abbreviations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developing CMaize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">CMaize Background</a></li>
+      <li class="breadcrumb-item active">Other Projects</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/background/other_projects.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="other-projects">
+<h1>Other Projects<a class="headerlink" href="#other-projects" title="Link to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The discussions of other projects provided on this page are largely based off
+of first impressions gleaned from project websites and documentation. It is
+possible that this page does not accurately reflect the state of the listed
+projects. We are happy to update this page if discrepancies are brought to
+our attention.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Subject to the above warning, note that each description was accurate as of
+the time of writing. The CMaize team does not actively monitor other
+projects and thus circumstances may have changed. If you are aware of any
+of these descriptions no longer being accurate, feel free to open an issue
+on CMaize’s GitHub page (or better yet, a pull request) detailing the
+necessary updates.</p>
+</div>
+<p>This page discusses other projects which, in some shape or form, attempt
+to address the same needs as CMaize (see <a class="reference internal" href="statement_of_need.html#statement-of-need"><span class="std std-ref">Statement of Need</span></a>). As described
+in more detail on the <a class="reference internal" href="../developer/design/overview.html#overview-of-cmaizes-design"><span class="std std-ref">Overview of CMaize’s Design</span></a> page, we feel the ideal
+solution should:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="../developer/design/overview.html#cmake-based-build-system"><span class="std std-ref">cmake-based build system</span></a></p></li>
+<li><p><a class="reference internal" href="../developer/design/overview.html#cmake-based-workflows"><span class="std std-ref">cmake-based workflows</span></a></p></li>
+<li><p><a class="reference internal" href="../developer/design/overview.html#minimize-redundancy"><span class="std std-ref">minimize redundancy</span></a></p></li>
+<li><p><a class="reference internal" href="../developer/design/overview.html#target-support"><span class="std std-ref">target support</span></a></p></li>
+<li><p><a class="reference internal" href="../developer/design/overview.html#package-manager-support"><span class="std std-ref">package manager support</span></a></p></li>
+<li><p><a class="reference internal" href="../developer/design/overview.html#object-oriented"><span class="std std-ref">object-oriented</span></a></p></li>
+<li><p><a class="reference internal" href="../developer/design/overview.html#recursive"><span class="std std-ref">recursive</span></a></p></li>
+<li><p>Be actively supported.</p></li>
+</ol>
+<p>The following table summarizes how well each existing project addresses these
+design constraints (column numbers correspond to the above list):</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td rowspan="2"><p>Project Name</p></td>
+<td colspan="8"><p>Features Supported</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+<td><p>6</p></td>
+<td><p>7</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Autocmake</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❔</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>BLT</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❔</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cinch</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❔</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>CMake++</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>cmake-get</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❔</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>cmake-init</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❔</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPM</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❔</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>CPM.cmake</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hunter</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p>IXM</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❔</p></td>
+<td><p>❌</p></td>
+<td><p>❔</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-odd"><td><p>JAWS</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❌</p></td>
+<td><p>❔</p></td>
+<td><p>❌</p></td>
+</tr>
+<tr class="row-even"><td><p>project_options</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>✅</p></td>
+<td><p>❌</p></td>
+<td><p>❔</p></td>
+<td><p>✅</p></td>
+</tr>
+</tbody>
+</table>
+<p>Each of the following sections provides a brief discussion of the other
+projects. For each project we provide the:</p>
+<dl class="simple">
+<dt>Website</dt><dd><p>This is a link to the project’s website or documentation (if we can find it).</p>
+</dd>
+<dt>Source</dt><dd><p>For open-source projects this is a link to the where the source code of the
+project can be obtained.</p>
+</dd>
+<dt>Development status</dt><dd><p>We consider a project “active” if there has been a commit in the last year.
+Otherwise the project is listed as “inactive”.</p>
+</dd>
+<dt>User community</dt><dd><p>This is an attempt to summarize whether a project is actually being used.
+We define three levels: none, small, and large. A user community of “none”
+means that the project is primarily used by the developers. “small” indicates
+that the project seems to have some external interest. Whereas “large”
+indicates that the project appears to be actively utilized by a number of
+external users. For GitHub projects we use 100 watchers and/or stars as the
+cut-off between small and large.</p>
+</dd>
+</dl>
+<p>Finally, we note that projects are listed in alphabetical order.</p>
+<section id="autocmake">
+<h2>Autocmake<a class="headerlink" href="#autocmake" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: <a class="reference external" href="http://autocmake.org/">http://autocmake.org/</a></p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/dev-cafe/autocmake">https://github.com/dev-cafe/autocmake</a>.</p></li>
+<li><p>Development status: active.</p></li>
+<li><p>User community: small.</p></li>
+</ul>
+<p>The motivation for Autocmake <span id="id1"><sup><a class="reference internal" href="../bibliography/bibliography.html#id20" title="Radovan Bast, Roberto Di Remigio, and Jonas Juselius. Autocmake. February 2020. URL: https://doi.org/10.5281/zenodo.3634941, doi:10.5281/zenodo.3634941.">27</a></sup></span> was to avoid copy/pasting CMake
+build systems
+across projects and instead generate them from a configuration file. Autocmake
+is written in a mix of Python and CMake. The Python parts focus on the
+generation, whereas the CMake modules largely focus on finding specific
+dependencies (e.g., there are CMake modules for Boost, Python, GoogleTest),
+though there are also some which provide useful features (e.g, colored CMake
+messages, and a safe guard for avoiding in-source builds).</p>
+<p>Ultimately, the use of the generator means that projects which use Autocmake
+suffer from the problems described in “<a class="reference internal" href="../developer/design/faq.html#why-not-a-generator"><span class="std std-ref">Why not a generator?</span></a>”. The
+documentation also suggests (see <a class="reference external" href="https://tinyurl.com/mr49kffb">here</a> for
+example) that parts of the build system are Python-based, and that users can not
+use established CMake workflows. We were not able to readily identify if
+projects which use Autocmake can have dependencies which also use Autocmake,
+though we suspect that recursion IS allowed.</p>
+</section>
+<section id="blt">
+<h2>BLT<a class="headerlink" href="#blt" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: <a class="reference external" href="https://llnl-blt.readthedocs.io/en/develop/">https://llnl-blt.readthedocs.io/en/develop/</a></p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/llnl/blt">https://github.com/llnl/blt</a></p></li>
+<li><p>Development status: active.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>BLT <span id="id2"><sup><a class="reference internal" href="../bibliography/bibliography.html#id21" title="BLT. https://github.com/llnl/blt. Accessed: 11-1-2023.">19</a></sup></span> appears to stand for “Build, Link, and Test”, though the README
+suggests
+there can be “-ing” suffixes as well. BLT is designed to make it easy to
+declare libraries/executables and link them to dependencies commonly encountered
+in <a class="reference internal" href="terminology.html#term-HPC"><span class="xref std std-term">HPC</span></a>. Since it’s native CMake, users can further customize their
+build system by writing their own CMake infrastructure.</p>
+<p>Ultimately, BLT is probably very useful if you want to build an <a class="reference internal" href="terminology.html#term-HPC"><span class="xref std std-term">HPC</span></a>
+application, with minimal dependencies (aside from those found in the standard
+<a class="reference internal" href="terminology.html#term-HPC"><span class="xref std std-term">HPC</span></a> toolkit). However, BLT provides very minimal support for finding
+other dependencies, and as far as we can tell, no support for building other
+dependencies. That said, the size of the user community suggests that, despite
+these limitations, there is quite a bit of demand for BLT.</p>
+</section>
+<section id="cinch">
+<h2>Cinch<a class="headerlink" href="#cinch" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: N/A</p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/laristra/cinch">https://github.com/laristra/cinch</a></p></li>
+<li><p>Development status: inactive.</p></li>
+<li><p>User community: small.</p></li>
+</ul>
+<p>Like other projects on this page, Cinch <span id="id3"><sup><a class="reference internal" href="../bibliography/bibliography.html#id22" title="Cinch. https://github.com/laristra/cinch. Accessed: 11-1-2023.">2</a></sup></span> is designed to cut back
+on the amount of coding needed to write a CMake-based build system. The
+documentation is a bit sparse, but it appears that Cinch provides CMake bindings
+that wrap a Python tool
+<a class="reference external" href="https://github.com/laristra/cinch-utils">cinch-utils</a>. The build system
+developer then writes a CMake-based build system in terms of the CMake bindings.</p>
+<p>In terms of features, Cinch seems to be primarily interested in
+facilitating the building of libraries and executables as well as unit tests
+and documentation for the libraries and executables. Cinch seems to assume that
+the source tree also contains the dependencies’ source, and relies on recursive
+builds to create the final package. Additional package management appears to be
+limited to calling <code class="docutils literal notranslate"><span class="pre">find_package</span></code>. Finally, Cinch also contains a seemingly
+out of place C++ logging system. The latter in particular makes this project
+feel like it was targeting a particular group’s workflow, rather than being
+meant as general tool.</p>
+</section>
+<section id="cmake">
+<h2>CMake++<a class="headerlink" href="#cmake" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: N/A.</p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/toeb/cmakepp">https://github.com/toeb/cmakepp</a></p></li>
+<li><p>Development status: inactive.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>CMake++ <span id="id4"><sup><a class="reference internal" href="../bibliography/bibliography.html#id23" title="CMake++. https://github.com/toeb/cmakepp. Accessed: 11-1-2023.">21</a></sup></span> is a tour-de-force of what is possible with the
+traditional CMake
+language. At its core, CMake++ is meant to be more of a library for CMake
+than a build system. That said it does contain a number of features which can
+be used to simplify writing build systems including native dependency
+management support. While CMake++ would have been an excellent starting point
+for CMaize, the CMake++ project has been abandoned and lacks documentation
+(except for high-level functionality); in turn complicating the process of
+resurrecting CMake++.</p>
+</section>
+<section id="cmake-get">
+<h2>cmake-get<a class="headerlink" href="#cmake-get" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: N/A</p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/pfultz2/cmake-get">https://github.com/pfultz2/cmake-get</a></p></li>
+<li><p>Development status: inactive.</p></li>
+<li><p>User community: small.</p></li>
+</ul>
+<p>cmake-get <span id="id5"><sup><a class="reference internal" href="../bibliography/bibliography.html#id24" title="Cmake-get. https://github.com/pfultz2/cmake-get. Accessed: 11-2-2023.">10</a></sup></span> is a CMake module designed to be a
+configuration-time replacement for  CMake’s <code class="docutils literal notranslate"><span class="pre">ExternalProject</span></code> module.
+Thus cmake-get simplifies the process of obtaining and building dependencies,
+but not the process of defining a CMake build system.</p>
+</section>
+<section id="cmake-init">
+<h2>cmake-init<a class="headerlink" href="#cmake-init" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: <a class="reference external" href="https://github.com/friendlyanon/cmake-init/wiki/Examples">https://github.com/friendlyanon/cmake-init/wiki/Examples</a></p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/friendlyanon/cmake-init">https://github.com/friendlyanon/cmake-init</a></p></li>
+<li><p>Development status: active.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>cmake-init <span id="id6"><sup><a class="reference internal" href="../bibliography/bibliography.html#id25" title="Cmake-init. https://github.com/friendlyanon/cmake-init. Accessed: 11-2-2023.">11</a></sup></span> is a tool for generating CMake-based build
+systems. cmake-init is specifically designed to help setup CMake build systems
+which can be consumed by the <code class="docutils literal notranslate"><span class="pre">FetchContent</span></code> module. Like many other tools on
+the list, cmake-init is designed with a certain stack in mind, though that
+stack is pretty standard (e.g., clang-tidy, Doxygen, clang-format). Like other
+generators, cmake-init suffers from the problems described in
+“<a class="reference internal" href="../developer/design/faq.html#why-not-a-generator"><span class="std std-ref">Why not a generator?</span></a>”.</p>
+</section>
+<section id="cpm">
+<h2>CPM<a class="headerlink" href="#cpm" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: There’s a link on GitHub, but it looks like it’s been compromised.</p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/iauns/cpm">https://github.com/iauns/cpm</a></p></li>
+<li><p>Development status: inactive.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>CPM <span id="id7"><sup><a class="reference internal" href="../bibliography/bibliography.html#id26" title="CPM. https://github.com/iauns/cpm. Accessed: 11-2-2023.">23</a></sup></span> (presumably stands for CMake Package Manager) is a CMake module
+designed to be a C++ package manager written in CMake with a focus on static
+linking. The static linking focus means that users of CPM are expected to
+compile their projects into CPM modules (which requires certain C++
+boilerplate). That said, CPM also works with dependencies which are not CPM
+modules.</p>
+</section>
+<section id="cpm-cmake">
+<h2>CPM.cmake<a class="headerlink" href="#cpm-cmake" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: N/A</p></li>
+<li><p>Sources: <a class="reference external" href="https://github.com/cpm-cmake/CPM.cmake">https://github.com/cpm-cmake/CPM.cmake</a></p></li>
+<li><p>Development status: active.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>CPM.cmake <span id="id8"><sup><a class="reference internal" href="../bibliography/bibliography.html#id27" title="CPM.cmake. https://github.com/cpm-cmake/CPM.cmake. Accessed: 11-2-2023.">22</a></sup></span> (presumably stands for CMake Package Manager) is a
+CMake module which provides a wrapper around CMake’s existing package manager
+(see <a class="reference internal" href="cmake_package_manager.html#cmakes-package-manager"><span class="std std-ref">CMake’s Package Manager</span></a>). The “.cmake” part of the name appears to
+come from not wanting to be confused with the other CPM on this list. Compared
+to the native CMake package manager, CPM.cmake dramatically simplifies the
+underlying CMake calls while also providing version checking, offline builds,
+and some performance optimizations.</p>
+</section>
+<section id="hunter">
+<h2>Hunter<a class="headerlink" href="#hunter" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website:</p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/cpp-pm/hunter">https://github.com/cpp-pm/hunter</a></p></li>
+<li><p>Development status: active.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>Hunter is a package manager written in CMake, meant to integrate directly into
+a CMake build system. On its surface Hunter is great; however, after
+experimenting with Hunter we ran into a few problems. The largest problem was
+that Hunter is very tied to its internal set of packages. This makes it very
+difficult to use pre-built dependencies or dependencies Hunter does not know
+how to build. Another problem is that Hunter only partially alleviates the
+verbose and repetitive nature of CMake. More specifically, the process of
+writing a build recipe for a new package is roughly the same as writing a
+CMake-based build system for that package. Repetition is avoided by having the
+build systems all live in the same repo (a repo maintained by the Hunter
+package manager).</p>
+</section>
+<section id="ixm">
+<h2>IXM<a class="headerlink" href="#ixm" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: <a class="reference external" href="https://ixm.one/">https://ixm.one/</a>.</p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/ixm-one/legacy">https://github.com/ixm-one/legacy</a></p></li>
+<li><p>Development status: inactive.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>Izzy’s eXtension Modules (IXM) <span id="id9"><sup><a class="reference internal" href="../bibliography/bibliography.html#id28" title="Izzy's eXtension Modules. https://github.com/ixm-one/legacy. Accessed: 11-2-2023.">25</a></sup></span> was a CMake module meant to help
+facilitate writing of modern CMake build systems by reducing the verboseness,
+selecting reasonable defaults, and focusing on targets/generator expressions.
+IXM has however been archived, though the README promises a resurrected version
+will be available no later than 11/1/2023. As of this writing (11/2/2023) the
+new version does not appear to exist yet (the developer’s
+<a class="reference external" href="https://tinyurl.com/47p9pah2">blog</a> suggests it’s been pushed back to
+December).</p>
+<p>While there are hints that more extensive documentation was available at
+some point, at present the documentation for IXM is bare bones and suggests that
+IXM was meant to work off of a concept called “blueprints”. Looking at the
+blueprint in the repo, it appears that blueprints were meant to be templates
+which defined how functionality worked and exactly what it did (e.g., the
+result of declaring a library or specifying dependencies).</p>
+</section>
+<section id="jaws">
+<h2>JAWS<a class="headerlink" href="#jaws" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: N/A</p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/DevSolar/jaws">https://github.com/DevSolar/jaws</a></p></li>
+<li><p>Development status: inactive.</p></li>
+<li><p>User community: none.</p></li>
+</ul>
+<p>JAWS <span id="id10"><sup><a class="reference internal" href="../bibliography/bibliography.html#id29" title="JAWS. https://github.com/DevSolar/jaws. Accessed: 11-1-2023.">26</a></sup></span> stands for “Just A Working Setup”. As the name suggests, JAWS
+expects you to copy/paste it into your project and go from there. Under the
+hood JAWS does some things for you, like keeping the project’s name and version
+consistent throughout files, finding common dependencies (e.g., Boost, LaTeX,
+and Doxygen), and setting up tests.</p>
+<p>Since JAWS relies on essentially copying/pasting source it suffers from the
+same problems (see <a class="reference internal" href="../developer/design/faq.html#why-not-copy-paste"><span class="std std-ref">Why Shouldn’t We Just Copy/Paste Build Systems Among Projects?</span></a>). Like some of the other projects
+on this list, JAWS’s coupling to a stack of specific dependencies makes JAWS
+feel less like a general solution, and more like it was targeted at a specific
+group.</p>
+</section>
+<section id="project-options">
+<h2>project_options<a class="headerlink" href="#project-options" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Website: <a class="reference external" href="https://aminya.github.io/project_options/html/index.html">https://aminya.github.io/project_options/html/index.html</a></p></li>
+<li><p>Source: <a class="reference external" href="https://github.com/aminya/project_options">https://github.com/aminya/project_options</a></p></li>
+<li><p>Development status: active.</p></li>
+<li><p>User community: large.</p></li>
+</ul>
+<p>project_options <span id="id11"><sup><a class="reference internal" href="../bibliography/bibliography.html#id30" title="Project_options. https://github.com/aminya/project_options. Accessed: 11-2-2023.">18</a></sup></span> is a CMake module meant to reduce the
+boilerplate associated
+with writing CMake-based build systems. project_options focuses on
+making it easy to enable common dependencies (e.g., Doxygen, clang-tidy, Conan),
+enable/disable static analysis, and propagating those options throughout the
+build system and to the packages produced by the project. Perhaps the
+most interesting feature of project_options is its ability to automatically
+create Conan or vcpkg packages from the project.</p>
+<p>While project_options aims to reduce the complexity/verboseness of the build
+system, users of project_options are still left to create targets through the
+usual CMake commands. project_options defers to vcpkg (and potentially Conan)
+for installing dependencies. Ultimately, project_options still assumes a
+particular stack and that stack does not appear to be readily extendable
+without modifying the source code of the project_options module.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="statement_of_need.html" class="btn btn-neutral float-left" title="Statement of Need" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="redundancy.html" class="btn btn-neutral float-right" title="Redundancy in CMake-Based Build Systems" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
