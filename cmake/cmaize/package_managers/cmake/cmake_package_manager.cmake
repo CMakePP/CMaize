@@ -327,7 +327,7 @@ cpp_class(CMakePackageManager PackageManager)
         # Set VERSION and SOVERSION properties on the targets
         foreach(_ip_TARGETS_i ${_ip_TARGETS})
             CMaizeProject(get_target
-                "${_ip_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
+                "${_ip_top_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
             )
 
             # Set package version
@@ -342,7 +342,7 @@ cpp_class(CMakePackageManager PackageManager)
         # Generate individual <target>Config.cmake components for
         # find_package(package COMPONENT target)
         foreach(_ip_TARGETS_i ${_ip_TARGETS})
-            CMaizeProject(get_target "${_ip_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}")
+            CMaizeProject(get_target "${_ip_top_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}")
 
             set(
                 _ip_tgt_config
@@ -366,6 +366,36 @@ cpp_class(CMakePackageManager PackageManager)
                 #     "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
             )
 
+            # Set each package target's installation path(s). Currently this
+            # sets both the bin and lib directories but realistically only
+            # one or the other would actually contain the target binary
+            set(_ip_destination_prefix_tmp "${_ip_destination_prefix}")
+            if(NOT "${_ip_proj_name}" STREQUAL "${_ip_top_proj_name}")
+                # We store a temporary destination prefix since it is only
+                # going to be used to determine install paths and we don't
+                # want to affect the _ip_destination_prefix used elsewhere
+                set(
+                    _ip_destination_prefix_tmp
+                    "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_top_proj_name}/external"
+                )
+            endif()
+
+            # Get the absolute path of the temporary destination prefix
+            file(REAL_PATH
+                "${_ip_destination_prefix_tmp}"
+                _ip_destination_prefix_abs_path
+                BASE_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
+            )
+
+            # Generate the install paths
+            set(
+                _ip_install_paths
+                "${_ip_destination_prefix_abs_path}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
+                "${_ip_destination_prefix_abs_path}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+            )
+            CMaizeTarget(SET "${_ip_tgt_obj_i}" install_path "${_ip_install_paths}")
+            CMaizeTarget(SET_PROPERTY "${_ip_tgt_obj_i}" INSTALL_PATH "${_ip_install_paths}")
+
             # Writes config file to build directory
             CMakePackageManager(_generate_target_config
                 "${self}"
@@ -386,6 +416,61 @@ cpp_class(CMakePackageManager PackageManager)
                         "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}"
                     USE_SOURCE_PERMISSIONS
                 )
+            endforeach()
+        endforeach()
+
+        # Set INSTALL_RPATH to install paths of dependencies to ensure they
+        # can be found
+        foreach(_ip_TARGETS_i ${_ip_TARGETS})
+            CMaizeProject(get_target
+                "${_ip_top_proj}" _ip_tgt_obj_i "${_ip_TARGETS_i}"
+            )
+
+            # Loop over each dependency. This is currently done by looking
+            # up the dependencies by name from the CMaizeProject, but later
+            # we should make each CMaize target hold references to its
+            # dependencies
+            BuildTarget(GET "${_ip_tgt_obj_i}" _dep_list depends)
+            foreach(dependency ${_dep_list})
+                # Fetch the dependency's target object
+                CMaizeProject(get_target
+                    "${_ip_top_proj}" _dep_tgt_obj "${dependency}"
+                )
+
+                # Skip the dependency if it is not managed by CMaize, since
+                # those won't have install path information
+                if("${_dep_tgt_obj}" STREQUAL "")
+                    continue()
+                endif()
+
+                # Get the install path for the dependency
+                CMaizeTarget(GET "${_dep_tgt_obj}" _dep_install_path install_path)
+
+                # Turn the dependency paths into absolute paths
+                file(REAL_PATH
+                    "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
+                    _ip_lib_path
+                    BASE_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
+                )
+                # Replace install prefix with $ORIGIN
+                # We currently don't do this since we couldn't get it to work
+                # string(REPLACE "${_ip_lib_path}" "$ORIGIN" _dep_install_path "${_dep_install_path}")
+
+                # While not a great way to do it, this will check if the dependency
+                # has any INSTALL_RPATH data. If it does, we add that data to the
+                # current target as well. In theory, each target should manage its
+                # own INSTALL_RPATH set, but for now that does not seem to be working.
+                CMaizeTarget(has_property "${_dep_tgt_obj}" _dep_has_install_rpath INSTALL_RPATH)
+                if(_dep_has_install_rpath)
+                    CMaizeTarget(get_property "${_dep_tgt_obj}" _dep_install_rpath INSTALL_RPATH)
+                endif()
+
+                # Actually append the aggregated paths to the current target's
+                # INSTALL_RPATH
+                CMaizeTarget(get_property "${_ip_tgt_obj_i}" _install_rpath INSTALL_RPATH)
+                list(APPEND _install_rpath ${_dep_install_path})
+                list(APPEND _install_rpath ${_dep_install_rpath})
+                CMaizeTarget(set_property "${_ip_tgt_obj_i}" INSTALL_RPATH "${_install_rpath}")
             endforeach()
         endforeach()
 
@@ -448,7 +533,7 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         # Get the current CMaize project
-        cpp_get_global(__gpc_proj CMAIZE_PROJECT_${PROJECT_NAME})
+        cpp_get_global(__gpc_proj CMAIZE_TOP_PROJECT)
         foreach(__gpc_targets_i ${__gpc_targets})
             CMaizeProject(get_target
                 "${__gpc_proj}" __gpc_tgt_obj "${__gpc_targets_i}"
@@ -510,24 +595,14 @@ cpp_class(CMakePackageManager PackageManager)
 
                 CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
                 cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
-                
-                cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
-                if("${__gpc_dep_type}" STREQUAL "buildtarget")
-                    Dependency(GET
-                        "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
-                    )
-
-                    install(
-                        TARGETS "${__gpc_dep_build_tgt_name}"
-                        RUNTIME DESTINATION "tmp"
-                        LIBRARY DESTINATION "tmp"
-                    )
-                endif()
 
                 Dependency(GET
                     "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
                 )
 
+                # This determines how the find_dependency call in the config
+                # file should be formatted, based on whether the dependency is
+                # a component of a package or not
                 if("${__gpc_tgt_deps_i}" STREQUAL "${__gpc_dep_build_tgt_name}")
                     string(APPEND
                         __gpc_file_contents

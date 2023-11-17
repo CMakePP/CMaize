@@ -22,6 +22,13 @@ include(cmaize/targets/cmaize_target)
 cpp_class(BuildTarget CMaizeTarget)
 
     #[[[
+    # :type: path
+    #
+    # Directory where the target binary will appear after being built.
+    #]]
+    cpp_attr(CMaizeTarget build_path)
+
+    #[[[
     # :type: List[path]
     #
     # Paths needed to compile or import.

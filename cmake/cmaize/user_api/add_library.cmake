@@ -103,7 +103,7 @@ function(cmaize_add_library _cal_tgt_name)
         )
     endif()
 
-    cpp_get_global(_cal_project CMAIZE_PROJECT_${PROJECT_NAME})
+    cpp_get_global(_cal_project CMAIZE_TOP_PROJECT)
     
     CMaizeProject(add_target
         "${_cal_project}" "${_cal_tgt_name}" "${_cal_tgt_obj}"
