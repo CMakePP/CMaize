@@ -595,24 +595,14 @@ cpp_class(CMakePackageManager PackageManager)
 
                 CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
                 cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
-                
-                cpp_type_of(__gpc_dep_type "${__gpc_tgt_deps_i_obj}")
-                if("${__gpc_dep_type}" STREQUAL "buildtarget")
-                    Dependency(GET
-                        "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
-                    )
-
-                    install(
-                        TARGETS "${__gpc_dep_build_tgt_name}"
-                        RUNTIME DESTINATION "tmp"
-                        LIBRARY DESTINATION "tmp"
-                    )
-                endif()
 
                 Dependency(GET
                     "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
                 )
 
+                # This determines how the find_dependency call in the config
+                # file should be formatted, based on whether the dependency is
+                # a component of a package or not
                 if("${__gpc_tgt_deps_i}" STREQUAL "${__gpc_dep_build_tgt_name}")
                     string(APPEND
                         __gpc_file_contents
