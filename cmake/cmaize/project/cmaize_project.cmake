@@ -266,7 +266,7 @@ cpp_class(CMaizeProject)
     cpp_member(_add_target CMaizeProject CMaizeTarget args)
     function("${_add_target}" self __at_target)
 
-        set(__at_options INSTALLED)
+        set(__at_options INSTALLED OVERWRITE)
         set(__at_one_value_args NAME)
         cmake_parse_arguments(__at "${__at_options}" "${__at_one_value_args}" "" ${ARGN})
 
@@ -286,15 +286,39 @@ cpp_class(CMaizeProject)
         # a build or installed target
         CMaizeProject(check_target "${self}" __at_found "${__at_NAME}" ALL)
 
-        # Exit early if a target with the same name already exists
-        # TODO: Should we throw an error here, or maybe just overwrite the
-        #       existing target?
-        if(__at_found)
-            cpp_return("")
+        message(STATUS "__at_found: ${__at_found}")
+        message(STATUS "__at_OVERWRITE: ${__at_OVERWRITE}")
+
+        # Determine what to do if a target in the project al
+        if(__at_found)            
+            # Exit early if a target with the same name already exists
+            if(NOT __at_OVERWRITE)
+                cpp_return("")
+            endif()
+
+            CMaizeProject(check_target "${self}" __at_build "${__at_NAME}")
+            CMaizeProject(check_target "${self}" __at_install "${__at_NAME}" INSTALLED)
+
+            if(__at_build)
+                CMaizeProject(GET "${self}" __at_tgt_map "build_targets")
+                message(STATUS "build __at_tgt_map: ${__at_tgt_map}")
+
+                # We cannot easily remove a key from a map, so the best option
+                # is to just clear the value
+                cpp_map(SET "${__at_tgt_map}" "${__at_NAME}" "")
+            endif()
+
+            if (__at_install)
+                CMaizeProject(GET "${self}" __at_tgt_map "installed_targets")
+                message(STATUS "install __at_tgt_map: ${__at_tgt_map}")
+
+                cpp_map(SET "${__at_tgt_map}" "${__at_NAME}" "")
+            endif()
         endif()
 
-        # Add the target to the list if it doesn't already exist
+        # Add the target to the map
         CMaizeProject(GET "${self}" __at_tgt_map "${__at_tgt_attr}")
+        message(STATUS "${__at_tgt_attr} __at_tgt_map: ${__at_tgt_map}")
 
         cpp_map(SET "${__at_tgt_map}" "${__at_NAME}" "${__at_target}")
 
@@ -421,12 +445,41 @@ cpp_class(CMaizeProject)
             # Get the collection of targets
             CMaizeProject(GET "${self}" __ct_tgt_map "${__ct_tgt_attr_i}")
 
+            # We check if the key exists here, but that is not sufficient
+            # to know if the value is valid if the key exists. It is possible
+            # from CMaizeProject(add_target for the key to exist but the value
+            # to be blank since we cannot easily remove keys from a map
             cpp_map(KEYS "${__ct_tgt_map}" __ct_keys)
-            cpp_contains(__ct_found_i "${__ct_NAME}" "${__ct_keys}")
+            cpp_contains(__ct_key_found_i "${__ct_NAME}" "${__ct_keys}")
+
+            # Initially, set whether the key was found and whether the target
+            # was found to the same value, but this may change in the check
+            # below
+            set(__ct_found_i "${__ct_key_found_i}")
 
             # Check if a target with the same name already exists
-            # Doesn't work for some reason
+            # NOTE: Doesn't work for some reason
             # cpp_map(HAS_KEY "${__ct_tgt_map}" __ct_found_i "${__ct_NAME}")
+
+            # Additional check if the target key exists in the map to ensure
+            # that the target actually exists
+            if(__ct_key_found_i)
+                cpp_map(GET "${__ct_tgt_map}" __ct_key_value_i "${__ct_NAME}")
+
+                cpp_type_of(__ct_key_value_i_type "${__ct_key_value_i}")
+                message(DEBUG "check_target: __ct_key_value_i_type = ${__ct_key_value_i_type}")
+
+                # Check if the value is implicitly convertible to a CMaizeTarget
+                cpp_implicitly_convertible(__ct_is_target_type "${__ct_key_value_i_type}" CMaizeTarget)
+
+                # If it is convertible to a CMaizeTarget, then the target exists
+                set(__ct_found_i "${__ct_is_target_type}")
+
+                # Unless it is an empty string
+                if("${__ct_key_value_i}" STREQUAL "")
+                    set(__ct_found_i FALSE)
+                endif()
+            endif()
 
             # Return early if target is found
             if(__ct_found_i)

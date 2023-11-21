@@ -240,6 +240,59 @@ function("${test_project}")
 
         endfunction()
 
+        ct_add_section(NAME "duplicate_target_overwrite")
+        function("${duplicate_target_overwrite}")
+
+            set(proj_name "test_project_test_add_target_duplicate_target_overwrite")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
+            BuildTarget(CTOR build_tgt_obj "${tgt_name}")
+            InstalledTarget(CTOR installed_tgt_obj "${tgt_name}")
+
+            CMaizeProject(GET "${proj_obj}" tmp_name name)        
+
+            # Duplicate targets should not be successfully added
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj}")
+            # Unless the OVERWRITE option is given
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${installed_tgt_obj}" INSTALLED OVERWRITE)
+
+            CMaizeProject(GET "${proj_obj}" build_tgt_map build_targets)
+            CMaizeProject(GET "${proj_obj}" installed_tgt_map installed_targets)
+            cpp_map(KEYS "${build_tgt_map}" build_tgt_keys_list)
+            cpp_map(KEYS "${installed_tgt_map}" installed_tgt_keys_list)
+
+            # Make sure there is an element in the build_targets list
+            list(LENGTH build_tgt_keys_list build_tgt_keys_list_len)
+            ct_assert_equal(build_tgt_keys_list_len 1)
+
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${build_tgt_map}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key (nothing)
+            cpp_map(GET "${build_tgt_map}" tmp_tgt_obj "${tgt_name}")
+            ct_assert_equal("" "${tmp_tgt_obj}")
+
+            # Make sure there is an element in the installed_targets list
+            list(LENGTH installed_tgt_keys_list installed_tgt_keys_list_len)
+            ct_assert_equal(installed_tgt_keys_list_len 1)
+
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${installed_tgt_map}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key
+            cpp_map(GET "${installed_tgt_map}" tmp_tgt_obj "${tgt_name}")
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            ct_assert_equal(tgt_name "${tmp_tgt_obj_name}")
+
+        endfunction()
+
         ct_add_section(NAME "multiple_targets")
         function("${multiple_targets}")
 
