@@ -286,9 +286,6 @@ cpp_class(CMaizeProject)
         # a build or installed target
         CMaizeProject(check_target "${self}" __at_found "${__at_NAME}" ALL)
 
-        message(STATUS "__at_found: ${__at_found}")
-        message(STATUS "__at_OVERWRITE: ${__at_OVERWRITE}")
-
         # Determine what to do if a target in the project al
         if(__at_found)            
             # Exit early if a target with the same name already exists
@@ -301,7 +298,6 @@ cpp_class(CMaizeProject)
 
             if(__at_build)
                 CMaizeProject(GET "${self}" __at_tgt_map "build_targets")
-                message(STATUS "build __at_tgt_map: ${__at_tgt_map}")
 
                 # We cannot easily remove a key from a map, so the best option
                 # is to just clear the value
@@ -310,7 +306,6 @@ cpp_class(CMaizeProject)
 
             if (__at_install)
                 CMaizeProject(GET "${self}" __at_tgt_map "installed_targets")
-                message(STATUS "install __at_tgt_map: ${__at_tgt_map}")
 
                 cpp_map(SET "${__at_tgt_map}" "${__at_NAME}" "")
             endif()
@@ -318,7 +313,6 @@ cpp_class(CMaizeProject)
 
         # Add the target to the map
         CMaizeProject(GET "${self}" __at_tgt_map "${__at_tgt_attr}")
-        message(STATUS "${__at_tgt_attr} __at_tgt_map: ${__at_tgt_map}")
 
         cpp_map(SET "${__at_tgt_map}" "${__at_NAME}" "${__at_target}")
 
@@ -467,7 +461,6 @@ cpp_class(CMaizeProject)
                 cpp_map(GET "${__ct_tgt_map}" __ct_key_value_i "${__ct_NAME}")
 
                 cpp_type_of(__ct_key_value_i_type "${__ct_key_value_i}")
-                message(DEBUG "check_target: __ct_key_value_i_type = ${__ct_key_value_i_type}")
 
                 # Check if the value is implicitly convertible to a CMaizeTarget
                 cpp_implicitly_convertible(__ct_is_target_type "${__ct_key_value_i_type}" CMaizeTarget)
