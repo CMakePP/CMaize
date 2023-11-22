@@ -250,6 +250,44 @@ function("${test_project}")
 
             CMaizeProject(CTOR proj_obj "${proj_name}")
 
+            BuildTarget(CTOR build_tgt_obj_1 "${tgt_name}_1")
+            BuildTarget(CTOR build_tgt_obj_2 "${tgt_name}_2")
+            set(corr_tgt_name "${tgt_name}_2")
+
+            CMaizeProject(GET "${proj_obj}" tmp_name name)        
+
+            # Duplicate targets should not be successfully added
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj_1}")
+            CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj_2}" OVERWRITE)
+
+            CMaizeProject(GET "${proj_obj}" build_tgt_map build_targets)
+            cpp_map(KEYS "${build_tgt_map}" build_tgt_keys_list)
+
+            # Make sure there is an element in the build_targets list
+            list(LENGTH build_tgt_keys_list build_tgt_keys_list_len)
+            ct_assert_equal(build_tgt_keys_list_len 1)
+
+            # Make sure that the correct key is in the collection
+            cpp_map(HAS_KEY "${build_tgt_map}" tmp_found "${tgt_name}")
+            ct_assert_equal(tmp_found TRUE)
+
+            # Make sure that the correct object is stored at the key
+            cpp_map(GET "${build_tgt_map}" tmp_tgt_obj "${tgt_name}")
+            CMaizeTarget(target "${tmp_tgt_obj}" tmp_tgt_obj_name)
+            ct_assert_equal(corr_tgt_name "${tmp_tgt_obj_name}")
+
+        endfunction()
+
+        ct_add_section(NAME "duplicate_target_overwrite_different_map")
+        function("${duplicate_target_overwrite_different_map}")
+
+            set(proj_name "test_project_test_add_target_duplicate_target_overwrite_different_map")
+            set(tgt_name "${proj_name}_tgt")
+
+            project("${proj_name}")
+
+            CMaizeProject(CTOR proj_obj "${proj_name}")
+
             BuildTarget(CTOR build_tgt_obj "${tgt_name}")
             InstalledTarget(CTOR installed_tgt_obj "${tgt_name}")
 
