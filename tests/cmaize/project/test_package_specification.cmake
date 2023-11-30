@@ -78,6 +78,49 @@ function("${test_package_specification}")
 
     endfunction()
 
+
+    #[[[
+    # Tests the set_option method by comparing to the correct map
+    #]]
+    ct_add_section(NAME "test_set_config_option")
+    function("${test_set_config_option}")
+
+        PackageSpecification(CTOR ps_obj)
+        PackageSpecification(set_config_option "${ps_obj}" "Hello" "World!!!")
+
+        cpp_map(CTOR corr "Hello" "World!!!")
+        PackageSpecification(GET "${ps_obj}" config_options configure_options)
+        cpp_map(EQUAL "${corr}" result "${config_options}")
+        ct_assert_equal(result TRUE)
+
+        # Now we test what happens if set_option is called again
+        ct_add_section(NAME "can_overwrite_option")
+        function("${can_overwrite_option}")
+
+            PackageSpecification(set_config_option "${ps_obj}" "Hello" 42)
+            cpp_map(EQUAL "${corr}" result "${config_options}")
+            ct_assert_equal(result FALSE)
+
+            cpp_map(GET "${config_options}" option_value "Hello")
+            ct_assert_equal(option_value 42)
+
+        endfunction()
+
+    endfunction()
+
+    #[[[
+    # Tests the getter for configuration options
+    #]]
+    ct_add_section(NAME "test_get_config_option")
+    function("${test_get_config_option}")
+
+        PackageSpecification(CTOR ps_obj)
+        PackageSpecification(set_config_option "${ps_obj}" "Hello" "World!!!")
+        PackageSpecification(get_config_option "${ps_obj}" option_value "Hello")
+        ct_assert_equal(option_value "World!!!")
+
+    endfunction()
+
     #[[[
     # Test hashing the object.
     #]]

@@ -28,7 +28,7 @@ include(cmaize/utilities/utilities)
 # packages from the ``PackageManager``.
 #]]
 cpp_class(PackageSpecification)
-    
+
     #[[[
     # :type: str
     #
@@ -75,20 +75,20 @@ cpp_class(PackageSpecification)
     # :type: str
     #
     # Specifies the build type.
-    # 
+    #
     # For the possible values provided by CMake and how to add custom build
-    # types, see `CMAKE_BUILD_TYPE 
+    # types, see `CMAKE_BUILD_TYPE
     # <https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html>`__.
-    # 
+    #
     # .. note::
     #
     #    Currently, only single-configuration generators are supported since
     #    the ``build_type`` is based on ``CMAKE_BUILD_TYPE``. This could be
     #    expanded to multi-configuration generators later, although the
     #    build type will need to be determined at build time instead of
-    #    configure time. See `CMAKE_CONFIGURATION_TYPES 
+    #    configure time. See `CMAKE_CONFIGURATION_TYPES
     #    <https://cmake.org/cmake/help/latest/variable/CMAKE_CONFIGURATION_TYPES.html#variable:CMAKE_CONFIGURATION_TYPES>`__
-    #    and `CMake Build Configurations 
+    #    and `CMake Build Configurations
     #    <https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#build-configurations>`__
     #    for more information on the details of making this switch.
     #]]
@@ -104,7 +104,10 @@ cpp_class(PackageSpecification)
     #[[[
     # :type: cpp_map
     #
-    # Package configure options.
+    # The options in this map control which variant of a package is requested.
+    # They are package-specific options and are usually along the lines of
+    # "ENABLE_XXX" and the like. More traditional CMake options like
+    # "BUILD_SHARED_LIBS" should be part of the toolchain.
     #
     # This is initialized to an empty map for users to fill.
     #]]
@@ -170,10 +173,10 @@ cpp_class(PackageSpecification)
     # string is blank.
     #
     # .. note::
-    #    
+    #
     #    This override is required because of a bug in CMakePPLang.
     #    Currently, CMakePPLang cannot differentiate between
-    #    ``PackageSpecification(set_version "${ps_obj}")`` and 
+    #    ``PackageSpecification(set_version "${ps_obj}")`` and
     #    ``PackageSpecification(set_version "${ps_obj}" "")``. Sometimes the
     #    ``PROJECT_VERSION`` variable used in ``__initialize`` to determine
     #    a default package version is blank, so this ensures we do not get
@@ -195,7 +198,52 @@ cpp_class(PackageSpecification)
     endfunction()
 
     #[[[
-    # Set the package version variable and splits the version into 
+    # Registers a configuration option with *this.
+    #
+    # This method is a convenience function for getting the internal map of
+    # configuration options and updating it with the user supplied option and
+    # value.
+    #
+    # :param self: ``PackageSpecification`` object.
+    # :type self: PackageSpecification
+    # :param name: The name of the configuration option
+    # :type name: desc
+    # :param value: The value for the option.
+    # :type value: str
+    #]]
+    cpp_member(set_config_option PackageSpecification desc str)
+    function("${set_config_option}" self _sco_name _sco_value)
+
+        PackageSpecification(GET "${self}" _sco_options configure_options)
+        cpp_map(SET "${_sco_options}" "${_sco_name}" "${_sco_value}")
+
+    endfunction()
+
+
+    #[[[
+    # Retrieves a configuration option from *this.
+    #
+    # This method is a convenience function for getting the value of a
+    # configuration option from the internal map of configuration options.
+    #
+    # :param self: ``PackageSpecification`` object.
+    # :type self: PackageSpecification
+    # :param value: The value of the requested option.
+    # :type value: str
+    # :param name: The name of the configuration option
+    # :type name: desc
+    #]]
+    cpp_member(get_config_option PackageSpecification str desc)
+    function("${get_config_option}" self _gco_value _gco_name)
+
+        PackageSpecification(GET "${self}" _gco_options configure_options)
+        cpp_map(GET "${_gco_options}" "${_gco_value}" "${_gco_name}")
+        cpp_return("${_gco_value}")
+
+    endfunction()
+
+    #[[[
+    # Set the package version variable and splits the version into
     # major, minor, patch, and tweak components.
     #
     # :param self: ``PackageSpecification`` object.
@@ -227,7 +275,7 @@ cpp_class(PackageSpecification)
 
         # Get the name from the most recent ``project()`` call
         PackageSpecification(SET "${self}" name "${PROJECT_NAME}")
-        
+
         # Get the version from the most recent ``project()`` call
         PackageSpecification(set_version "${self}" "${PROJECT_VERSION}")
 

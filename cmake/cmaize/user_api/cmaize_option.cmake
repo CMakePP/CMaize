@@ -14,4 +14,9 @@
 
 include_guard()
 
-function()
+function(cmaize_option _co_name _co_default_value)
+
+    cpp_get_global(_co_project CMAIZE_TOP_PROJECT)
+
+
+endfunction()
