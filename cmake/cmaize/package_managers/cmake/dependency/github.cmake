@@ -51,6 +51,10 @@ cpp_class(GitHubDependency Dependency)
         GitHubDependency(GET "${_bd_this}" _bd_name name)
         GitHubDependency(GET "${_bd_this}" _bd_cmake_args cmake_args)
 
+        if( _bd_private AND CMAIZE_GITHUB_USE_SSH )
+          string( REPLACE "github.com/" "${CMAIZE_GITHUB_SSH_PREFIX}:" _bd_url "${_bd_url}")
+        endif( )
+
         # TODO: In the future, this might need to be generalized more to
         #       accommodate those who use multiple accounts with SSH keys
         #       associated with them. In these situations, the string
@@ -61,7 +65,7 @@ cpp_class(GitHubDependency Dependency)
         #       REGEX MATCH below should do this, but the `cmaize_sanitize_url`
         #       function also must be redesigned for these URLs to be allowed.
         # string(REGEX MATCH "^git@[A-Za-z0-9_-]:" _bd_is_ssh "${_bd_url}")
-        string(FIND "${_bd_url}" "git@github.com:" _bd_is_ssh)
+        string(FIND "${_bd_url}" "${CMAIZE_GITHUB_SSH_PREFIX}:" _bd_is_ssh)
 
         # Determine what type of URL to generate to access the repository
         if(_bd_is_ssh GREATER -1)

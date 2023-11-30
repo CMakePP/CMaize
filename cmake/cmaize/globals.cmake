@@ -25,6 +25,17 @@ cpp_set_global(
 )
 
 #[[[
+# URL prefix for GitHub SSH access. Defaults to ``git@github.com``. 
+# This option allows for SSH aliases, e.g. ``git@github-alt-account``
+# where ``githut-alt-account` is a user-defined alias for GitHub
+# SSH access defined in a user's $HOME/.ssh/config.
+#]]
+cpp_set_global(
+    CMAIZE_GITHUB_SSH_PREFIX
+    "git@github.com"
+)
+
+#[[[
 # GitHub token used to access private repositories. It is defaulted to the
 # value of the old ``CPP_GITHUB_TOKEN`` for backwards compatability and
 # will be a blank string ("") if ``CPP_GITHUB_TOKEN`` does not exist.
@@ -32,6 +43,16 @@ cpp_set_global(
 cpp_set_global(
     CMAIZE_GITHUB_TOKEN
     "${CPP_GITHUB_TOKEN}"
+)
+
+#[[[
+# Use SSH access for private GitHub repositories toa void OAuth token
+# requirements. See ``CMAIZE_GITHUB_SSH_PREFIX`` for details pertaining
+# to chaging default GitHub SSH access prefixes.
+#]]
+cpp_set_global(
+    CMAIZE_GITHUB_USE_SSH
+    OFF
 )
 
 #[[[
