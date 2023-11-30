@@ -25,13 +25,11 @@ cpp_set_global(
 )
 
 #[[[
-# GitHub token used to access private repositories. It is defaulted to the
-# value of the old ``CPP_GITHUB_TOKEN`` for backwards compatability and
-# will be a blank string ("") if ``CPP_GITHUB_TOKEN`` does not exist.
+# GitHub token used to access private repositories. It is empty by default.
 #]]
 cpp_set_global(
     CMAIZE_GITHUB_TOKEN
-    "${CPP_GITHUB_TOKEN}"
+    ""
 )
 
 #[[[
