@@ -20,48 +20,6 @@ include(cmaize/utilities/replace_project_targets)
 #[[[
 # User function to build a executable target.
 #
-# .. warning::
-#    
-#    ``cpp_add_executable()`` is depricated. ``cmaize_add_executable()``
-#    should be used to create executables.
-#
-# :param _cae_tgt_name: Name of the target to be created.
-# :type _cae_tgt_name: desc
-# :param INCLUDE_DIR: Directory containing files to include.
-# :type INCLUDE_DIR: path, optional
-# :param INCLUDE_DIRS: Directories containing files to include. If this
-#                      parameter is given a value, the value of ``INCLUDE_DIR``
-#                      will be ignored.
-# :type INCLUDE_DIRS: List[path], optional
-#]]
-function(cpp_add_executable _cae_tgt_name)
-
-    set(_cae_one_value_args INCLUDE_DIR)
-    set(_cae_multi_value_args INCLUDE_DIRS)
-    cmake_parse_arguments(
-        _cae "" "${_cae_one_value_args}" "${_cae_multi_value_args}" ${ARGN}
-    )
-
-    # Historically, only INCLUDE_DIR was used, so INCLUDE_DIRS needs to
-    # be generated based on the value of INCLUDE_DIR. If INCLUDE_DIRS is
-    # provided, INCLUDE_DIR is ignored.
-    list(LENGTH _cae_INCLUDE_DIRS _cae_INCLUDE_DIRS_n)
-    if(NOT "${_cae_INCLUDE_DIRS_n}" GREATER 0)
-        set(_cae_INCLUDE_DIRS "${_cae_INCLUDE_DIR}")
-    endif()
-
-    # Forward all arguments to the new API call
-    cmaize_add_executable(
-        "${_cae_tgt_name}"
-        INCLUDE_DIRS "${_cae_INCLUDE_DIRS}"
-        ${_cae_UNPARSED_ARGUMENTS}
-    )
-
-endfunction()
-
-#[[[
-# User function to build a executable target.
-#
 # .. note::
 #
 #    For additional optional parameters related to the specific language
@@ -114,7 +72,7 @@ endfunction()
 # User function to build a CXX executable target.
 #
 # .. note::
-#    
+#
 #    See ``CXXTarget(make_target`` documentation for additional optional
 #    arguments.
 #
