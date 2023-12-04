@@ -24,7 +24,7 @@ set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 
 # For projects including CMaize via FetchContent
 if(NOT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-	set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
+    set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
 endif()
 
 
