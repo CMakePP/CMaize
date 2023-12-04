@@ -22,26 +22,6 @@ include(cmaize/package_managers/package_managers)
 #[[[
 # Add a dependency to the project.
 #
-# .. warning::
-# 
-#    ``cpp_find_or_build_dependency()`` is depricated.
-#    ``cmaize_find_or_build_dependency()`` should be used to add a dependency
-#    to the project.
-#
-# :param _fobd_name: Name of the dependency.
-# :type _fobd_name: desc
-# :param **kwargs: Additional keyword arguments may be necessary.
-#]]
-function(cpp_find_or_build_dependency _fobd_name)
-
-    # Forward all arguments to the new API call
-    cmaize_find_or_build_dependency("${_fobd_name}" ${ARGN})
-
-endfunction()
-
-#[[[
-# Add a dependency to the project.
-#
 # TODO: Add more versioning options, such as an ``EXACT`` keyword to allow
 #       the user to specify that only the given version should be found.
 #       As it stands, it finds any version or the exact version if ``VERSION`` is given.
@@ -82,7 +62,7 @@ function(cmaize_find_or_build_dependency _fobd_name)
         string(APPEND msg "CMAIZE_SUPPORTED_PACKAGE_MANAGERS for a list of")
         string(APPEND msg "supported package manager strings.")
         cpp_raise(
-            InvalidPackageManager 
+            InvalidPackageManager
             "${msg}"
         )
     endif()

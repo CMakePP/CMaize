@@ -24,7 +24,11 @@ include(cmaize/utilities/fetch_and_available)
 include(cmaize/utilities/generated_by_cmaize)
 
 include(CMakePackageConfigHelpers)
-include(GNUInstallDirs)
+
+# Issue #109, w/o this we get a warning if no languages are enabled
+if(ENABLED_LANGUAGES)
+    include(GNUInstallDirs)
+endif()
 
 #[[[
 # CMake package manager going through ``find_package`` and ``FetchContent``.
@@ -228,7 +232,7 @@ cpp_class(CMakePackageManager PackageManager)
             "${self}"
             _gp_depend
             "${_gp_proj_specs}"
-            ${ARGN}    
+            ${ARGN}
         )
 
         Dependency(BUILD_DEPENDENCY "${_gp_depend}")
@@ -356,13 +360,13 @@ cpp_class(CMakePackageManager PackageManager)
             install(
                 TARGETS "${_ip_TARGETS_i}"
                 EXPORT "${_ip_TARGETS_i}-target"
-                RUNTIME DESTINATION 
+                RUNTIME DESTINATION
                     "${_ip_destination_prefix}/${CMAKE_INSTALL_BINDIR}/${_ip_pkg_name}"
-                LIBRARY DESTINATION 
+                LIBRARY DESTINATION
                     "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                ARCHIVE DESTINATION 
+                ARCHIVE DESTINATION
                     "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}"
-                # PUBLIC_HEADER DESTINATION 
+                # PUBLIC_HEADER DESTINATION
                 #     "${_ip_destination_prefix}/${CMAKE_INSTALL_INCLUDEDIR}/${_ip_pkg_name}"
             )
 
@@ -497,7 +501,7 @@ cpp_class(CMakePackageManager PackageManager)
             FILES
                 "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}Config.cmake"
                 "${CMAKE_CURRENT_BINARY_DIR}/${_ip_pkg_name}ConfigVersion.cmake"
-            DESTINATION 
+            DESTINATION
                 "${_ip_destination_prefix}/${CMAKE_INSTALL_LIBDIR}/${_ip_pkg_name}/cmake"
         )
 
@@ -624,7 +628,7 @@ cpp_class(CMakePackageManager PackageManager)
         # are given
         string(APPEND
             __gpc_file_contents
-            "list(LENGTH @PROJECT_NAME@_FIND_COMPONENTS " 
+            "list(LENGTH @PROJECT_NAME@_FIND_COMPONENTS "
             "@PROJECT_NAME@_FIND_COMPONENTS_len)\n"
             "if(@PROJECT_NAME@_FIND_COMPONENTS_len LESS_EQUAL 0)\n"
         )
@@ -700,17 +704,17 @@ cpp_class(CMakePackageManager PackageManager)
 
         _cmaize_generated_by_cmaize(__gtc_file_contents)
         string(APPEND __gtc_file_contents "\n")
-        
+
         string(APPEND
             __gtc_file_contents
             "
 if(TARGET ${__gtc_namespace}${__gtc_target_name})
     return()
-endif()")      
+endif()")
         string(APPEND __gtc_file_contents "\n\n")
 
         string(APPEND
-            __gtc_file_contents 
+            __gtc_file_contents
             "get_filename_component(PACKAGE_PREFIX_DIR "
             "\"\${CMAKE_CURRENT_LIST_DIR}/../../..\" ABSOLUTE)\n"
         )
@@ -741,7 +745,7 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
             if("${__gtc_dep_obj}" STREQUAL "")
                 continue()
             endif()
-            
+
             Dependency(GET
                 "${__gtc_dep_obj}" __gtc_dep_find_tgt_name find_target
             )
@@ -792,7 +796,7 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
         )
 
         string(APPEND
-            __gtc_file_contents 
+            __gtc_file_contents
             "
 # Unset variables used
 set(PACKAGE_PREFIX_DIR)

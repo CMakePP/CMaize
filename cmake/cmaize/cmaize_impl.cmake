@@ -25,6 +25,11 @@ if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "${_msg}")
 endif()
 
+# Issue #100
+if(NOT CMAKE_MAXIMUM_RECURSION_DEPTH)
+    set(CMAKE_MAXIMUM_RECURSION_DEPTH 2000)
+endif()
+
 include(cmaize/globals)
 include(cmaize/project/projects)
 include(cmaize/targets/targets)
