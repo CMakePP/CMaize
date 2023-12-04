@@ -237,6 +237,11 @@ cpp_class(PackageSpecification)
     function("${get_config_option}" self _gco_value _gco_name)
 
         PackageSpecification(GET "${self}" _gco_options configure_options)
+        cpp_map(HAS_KEY "${_gco_options}" _gco_has_key "${_gco_name}")
+        if(NOT ${_gco_has_key})
+            cpp_raise(KeyError "No configuration option: ${_gco_name}")
+        endif()
+
         cpp_map(GET "${_gco_options}" "${_gco_value}" "${_gco_name}")
         cpp_return("${_gco_value}")
 

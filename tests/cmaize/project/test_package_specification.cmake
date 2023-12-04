@@ -119,6 +119,13 @@ function("${test_package_specification}")
         PackageSpecification(get_config_option "${ps_obj}" option_value "Hello")
         ct_assert_equal(option_value "World!!!")
 
+        ct_add_section(NAME "throws_if_bad_key" EXPECTFAIL)
+        function("${throws_if_bad_key}")
+            PackageSpecification(
+                get_config_option "${ps_obj}" option_value "Not a Key!"
+            )
+        endfunction()
+
     endfunction()
 
     #[[[
