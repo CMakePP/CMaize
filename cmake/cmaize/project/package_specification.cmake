@@ -198,7 +198,7 @@ cpp_class(PackageSpecification)
     endfunction()
 
     #[[[
-    # Registers a configuration option with *this.
+    # Registers a configuration option with self.
     #
     # This method is a convenience function for getting the internal map of
     # configuration options and updating it with the user supplied option and
@@ -219,9 +219,8 @@ cpp_class(PackageSpecification)
 
     endfunction()
 
-
     #[[[
-    # Retrieves a configuration option from *this.
+    # Retrieves a configuration option from self.
     #
     # This method is a convenience function for getting the value of a
     # configuration option from the internal map of configuration options.
@@ -232,6 +231,9 @@ cpp_class(PackageSpecification)
     # :type value: str
     # :param name: The name of the configuration option
     # :type name: desc
+    #
+    # :raises KeyError: If ``name`` is not a configuration option which has been
+    #                   added via ``set_config_option``. Strong throw guarantee.
     #]]
     cpp_member(get_config_option PackageSpecification str desc)
     function("${get_config_option}" self _gco_value _gco_name)
@@ -244,6 +246,30 @@ cpp_class(PackageSpecification)
 
         cpp_map(GET "${_gco_options}" "${_gco_value}" "${_gco_name}")
         cpp_return("${_gco_value}")
+
+    endfunction()
+
+    #[[[
+    # Determines if a configuration option was added to self.
+    #
+    # This method is a convenience function for getting the internal map of
+    # configuration options and if the user set a specified key. If the user
+    # set ``name``, ``result`` will be set to true; otherwise, ``result`` will
+    # be false.
+    #
+    # :param self: ``PackageSpecification`` object.
+    # :type self: PackageSpecification
+    # :param result: The identifier to assign the result to.
+    # :type result: bool*
+    # :param name: The name of the configuration option
+    # :type name: desc
+    #]]
+    cpp_member(has_config_option PackageSpecification bool* desc)
+    function("${has_config_option}" self _hco_result _hco_name)
+
+        PackageSpecification(GET "${self}" _hco_options configure_options)
+        cpp_map(HAS_KEY "${_hco_options}" "${_hco_result}" "${_hco_name}")
+        cpp_return("${_hco_result}")
 
     endfunction()
 

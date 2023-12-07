@@ -80,7 +80,7 @@ function("${test_package_specification}")
 
 
     #[[[
-    # Tests the set_option method by comparing to the correct map
+    # Tests the setter for configuration options
     #]]
     ct_add_section(NAME "test_set_config_option")
     function("${test_set_config_option}")
@@ -126,6 +126,24 @@ function("${test_package_specification}")
             )
         endfunction()
 
+    endfunction()
+
+    #[[[
+    # Tests checking if a config option has been defined.
+    #]]
+    ct_add_section(NAME "test_has_config_option")
+    function("${test_has_config_option}")
+
+        PackageSpecification(CTOR ps_obj)
+
+        # Option does not exist
+        PackageSpecification(has_config_option "${ps_obj}" has_hello "Hello")
+        ct_assert_false(has_hello)
+
+        #Option exists
+        PackageSpecification(set_config_option "${ps_obj}" "Hello" "World!!!")
+        PackageSpecification(has_config_option "${ps_obj}" has_hello "Hello")
+        ct_assert_true(has_hello)
     endfunction()
 
     #[[[
