@@ -23,14 +23,15 @@ function("${test_cmaize_option}")
     include(cmaize/user_api/cmaize_option)
     include(cmaize/user_api/cmaize_project)
 
-    project("ATestCMaizeProject")
-    cmaize_project("ATestCMaizeProject")
+    set(proj_name "test_cmaize_option_project")
+    project("${proj_name}")
+    cmaize_project("${proj_name}")
     cpp_get_global(proj_obj CMAIZE_TOP_PROJECT)
 
     ct_add_section(NAME "not_set_at_all")
     function("${not_set_at_all}")
 
-        cmaize_option("Hello" "World")
+        cmaize_option("Hello" "World" "Who to say hi to")
 
         # Should set the variable in this scope
         ct_assert_equal(Hello "World")
@@ -46,7 +47,7 @@ function("${test_cmaize_option}")
 
         set("a_cache_option" 42 CACHE STRING "" FORCE)
 
-        cmaize_option("a_cache_option" 100)
+        cmaize_option("a_cache_option" 100 "An integer defaulting to 100")
 
         # Did not overwrite variable
         ct_assert_equal(a_cache_option 42)
@@ -62,7 +63,7 @@ function("${test_cmaize_option}")
 
         set(a_variable_option "foo")
 
-        cmaize_option(a_variable_option "bar")
+        cmaize_option(a_variable_option "bar" "Who is foo's best friend?")
 
         # Did not overwrite variable
         ct_assert_equal(a_variable_option "foo")
@@ -78,7 +79,7 @@ function("${test_cmaize_option}")
 
         CMaizeProject(set_config_option "${proj_obj}" a_proj_option "bar")
 
-        cmaize_option("a_proj_option" "foo")
+        cmaize_option("a_proj_option" "foo" "Who is bar's best friend?")
 
         # Did not overwrite variable
         ct_assert_equal(a_proj_option "bar")
@@ -96,8 +97,9 @@ function("${test_cmaize_option_list}")
     include(cmaize/user_api/cmaize_option)
     include(cmaize/user_api/cmaize_project)
 
-    project("ATestCMaizeProject")
-    cmaize_project("ATestCMaizeProject")
+    set(proj_name "test_cmaize_option_list_project")
+    project("${proj_name}")
+    cmaize_project("${proj_name}")
     cpp_get_global(proj_obj CMAIZE_TOP_PROJECT)
 
     ct_add_section(NAME "zero_arguments")
@@ -110,22 +112,38 @@ function("${test_cmaize_option_list}")
         cmaize_option_list("foo")
     endfunction()
 
-    ct_add_section(NAME "two_arguments")
+    ct_add_section(NAME "two_arguments" EXPECTFAIL)
     function("${two_arguments}")
         cmaize_option_list("foo" 42)
+    endfunction()
+
+    ct_add_section(NAME "three_arguments")
+    function("${three_arguments}")
+        cmaize_option_list("foo" 42 "What's foo's favorite number?")
         ct_assert_equal(foo 42)
     endfunction()
 
-    ct_add_section(NAME "three_arguments" EXPECTFAIL)
-    function("${three_arguments}")
-        cmaize_option_list("foo" 42 "bar")
-    endfunction()
-
-    ct_add_section(NAME "four_arguments")
+    ct_add_section(NAME "four_arguments" EXPECTFAIL)
     function("${four_arguments}")
         cmaize_option_list(
-            "foo" 42
+            "foo" 42 "What's foo's favorite number?"
+            "bar"
+        )
+    endfunction()
+
+    ct_add_section(NAME "five_arguments" EXPECTFAIL)
+    function("${five_arguments}")
+        cmaize_option_list(
+            "foo" 42 "What's foo's favorite number?"
             "bar" "hello"
+        )
+    endfunction()
+
+    ct_add_section(NAME "six_arguments")
+    function("${six_arguments}")
+        cmaize_option_list(
+            "foo" 42 "What's foo's favorite number?"
+            "bar" "hello" "What's the best thing to say to a world?"
         )
         ct_assert_equal(foo 42)
         ct_assert_equal(bar "hello")
