@@ -14,22 +14,23 @@
 
 include_guard()
 
-# Issue #109, w/o this we get a warning if no languages are enabled
-if(ENABLED_LANGUAGES)
-    include(GNUInstallDirs)
-endif()
-
 macro(_cpm_ctor_impl self)
+    # Issue #109, w/o this we get a warning if no languages are enabled
+    get_property(_cpm_languages GLOBAL PROPERTY ENABLED_LANGUAGES)
+    #if(NOT "${_cpm_languages}" EQUAL "")
+        include(GNUInstallDirs)
+    #endif()
+
     PackageManager(SET "${self}" type "CMake")
 
     # Establish default paths
-    if(CMAKE_INSTALL_LIBDIR)
+    if(DEFINED CMAKE_INSTALL_LIBDIR)
         CMakePackageManager(SET library_prefix "${CMAKE_INSTALL_LIBDIR}")
     else()
         CMakePackageManager(SET library_prefix "lib")
     endif()
 
-    if(CMAKE_INSTALL_BINDIR)
+    if(DEFINED CMAKE_INSTALL_BINDIR)
         CMakePackageManager(SET binary_prefix "${CMAKE_INSTALL_BINDIR}")
     else()
         CMakePackageManager(SET binary_prefix "bin")
