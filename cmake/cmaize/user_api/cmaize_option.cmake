@@ -17,7 +17,6 @@ include_guard()
 #[[[
 # Registers a configuration option with the current project.
 #
-#
 # .. note::
 #
 #    Unlike CMake's ``option`` command values are not restricted to booleans.
@@ -25,7 +24,8 @@ include_guard()
 # Build system mainainers can declare configuration options for their build
 # system via the ``cmaize_option`` function. Consistent with usual build sytem
 # behavior, users can override the default value. Assuming a call to
-# ``cmaize_option`` like ``cmaize_option(option_name option_value)``, users of
+# ``cmaize_option`` like
+# ``cmaize_option(option_name option_value option_description)``, users of
 # the build system can set the value of the ``option_name`` option by:
 #
 # 1. setting a ``option_name`` variable before calling ``cmaize_option``,
@@ -47,8 +47,13 @@ include_guard()
 # :param default_value: The value to set ``name`` to if the user does not
 #    provide a value.
 # :type default_value: str
+# :param docstring: A brief description of what the option does. This
+#    parameter's value is used primarily as metadata.
+# :type docstring: str
+#
 #]]
-function(cmaize_option _co_name _co_default_value)
+function(cmaize_option _co_name _co_default_value _co_docstring)
+
     cpp_get_global(_co_project CMAIZE_TOP_PROJECT)
 
     # A set CMake variable (this includes CMake's cache) takes precedence over
@@ -79,7 +84,7 @@ function(cmaize_option _co_name _co_default_value)
     CMaizeProject(
         get_config_option "${_co_project}" _co_value "${_co_name}"
     )
-    set("${_co_name}" "${_co_value}" CACHE BOOL "" FORCE)
+    set("${_co_name}" "${_co_value}" CACHE STRING "${_co_docstring}" FORCE)
     set("${_co_name}" "${_co_value}" PARENT_SCOPE)
 
 endfunction()
@@ -109,12 +114,12 @@ function(cmaize_option_list)
     endif()
 
 
-    # Verify we got an even number of arguments
-    math(EXPR _col_is_even "${_col_nargs} % 2")
-    if(NOT "${_col_is_even}" EQUAL "0")
+    # Verify we got an appropriate number of arguments
+    math(EXPR _col_are_triples "${_col_nargs} % 3")
+    if(NOT "${_col_are_triples}" EQUAL "0")
         cpp_raise(
             input_error
-            "Syntax: cmaize_option_list(key0 value0 key1 value1 ...)"
+            "Syntax: cmaize_option_list(key0 value0 desc0 key1 value1 desc1...)"
         )
     endif()
 
@@ -125,12 +130,21 @@ function(cmaize_option_list)
     set(_col_argn "${ARGN}")
 
     # Loop over pairs forwarding them to cmaize_option
-    foreach(_col_i RANGE 0 "${_col_nargs}" 2)
+    foreach(_col_i RANGE 0 "${_col_nargs}" 3)
+
+        # Work out indices
         set(_col_key_i "${_col_i}")
         math(EXPR _col_value_i "${_col_i} + 1")
+        math(EXPR _col_desc_i "${_col_i} + 2")
+
+        # Extract values
         list(GET _col_argn ${_col_key_i} _col_key)
         list(GET _col_argn ${_col_value_i} _col_value)
-        cmaize_option("${_col_key}" "${_col_value}")
+        list(GET _col_argn ${_col_desc_i} _col_desc)
+
+        # Forward values
+        cmaize_option("${_col_key}" "${_col_value}" "${_col_desc}")
+
     endforeach()
 
 endfunction()
