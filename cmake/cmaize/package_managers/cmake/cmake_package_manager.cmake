@@ -26,11 +26,6 @@ include(cmaize/utilities/generated_by_cmaize)
 
 include(CMakePackageConfigHelpers)
 
-# Issue #109, w/o this we get a warning if no languages are enabled
-if(ENABLED_LANGUAGES)
-    include(GNUInstallDirs)
-endif()
-
 #[[[
 # CMake package manager going through ``find_package`` and ``FetchContent``.
 #]]
