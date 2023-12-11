@@ -178,6 +178,85 @@ cpp_class(CMaizeProject)
     endfunction()
 
     #[[[
+    # Sets the value of the specified configuration option
+    #
+    # This method is a convience function for retrieving the
+    # PackageSpecification associated with self and then setting the value of
+    # the specified configuration option.
+    #
+    # :param self: The current ``CMaizeProject`` object.
+    # :type self: CMaizeProject
+    # :param name: The key for the configuration option.
+    # :type name: desc
+    # :param value: The value to set the configuration option to.
+    # :type value: str
+    #
+    #]]
+    cpp_member(set_config_option CMaizeProject desc str)
+    function("${set_config_option}" self _sco_name _sco_value)
+
+        CMaizeProject(GET "${self}" _sco_specs specification)
+        PackageSpecification(
+            set_config_option "${_sco_specs}" "${_sco_name}" "${_sco_value}"
+        )
+    endfunction()
+
+    #[[[
+    # Gets the value of a configuration option.
+    #
+    # This method is a convenience function for retrieving the
+    # PackageSpecification associated with self and then getting the value of
+    # the specificed configuration option.
+    #
+    # :param self: The current ``CMaizeProject`` object.
+    # :type self: CMaizeProject
+    # :param value: The variable which will hold the option's value
+    # :type value: str
+    # :param name: The configuration option whose value has been requested.
+    # :type name: desc
+    #
+    # :raises KeyError: If ``name`` is not a configuration option which has been
+    #                   added via ``set_config_option``. Strong throw guarantee.
+    #]]
+    cpp_member(get_config_option CMaizeProject str desc)
+    function("${get_config_option}" self _gco_value _gco_name)
+
+        CMaizeProject(GET "${self}" _gco_specs specification)
+        PackageSpecification(
+            get_config_option "${_gco_specs}" "${_gco_value}" "${_gco_name}"
+        )
+        cpp_return("${_gco_value}")
+    endfunction()
+
+    #[[[
+    # Determines if a configuration option was added to self.
+    #
+    # This method is a convenience function for getting the internal
+    # PackageSpecification and seeinf if the user set a specified key. If the
+    # user set ``name``, ``result`` will be set to true; otherwise, ``result``
+    # will be false.
+    #
+    # :param self: ``CMaizeProject`` object.
+    # :type self: CMaizeProject
+    # :param result: The identifier to assign the result to.
+    # :type result: bool*
+    # :param name: The name of the configuration option
+    # :type name: desc
+    #]]
+    cpp_member(has_config_option CMaizeProject bool* desc)
+    function("${has_config_option}" self _hco_result _hco_name)
+
+        CMaizeProject(GET "${self}" _hco_specs specification)
+        PackageSpecification(
+            has_config_option "${_hco_specs}" "${_hco_result}" "${_hco_name}"
+        )
+        cpp_return("${_hco_result}")
+
+    endfunction()
+
+
+
+    #[[[
     # Add a package manager to the project. Duplicate package manager types
     # will not be added.
     #
