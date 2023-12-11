@@ -89,3 +89,45 @@ function("${test_cmaize_option}")
 
     endfunction()
 endfunction()
+
+ct_add_test(NAME "test_cmaize_option_list")
+function("${test_cmaize_option_list}")
+    include(cmaize/project/projects)
+    include(cmaize/user_api/cmaize_option)
+    include(cmaize/user_api/cmaize_project)
+
+    project("ATestCMaizeProject")
+    cmaize_project("ATestCMaizeProject")
+    cpp_get_global(proj_obj CMAIZE_TOP_PROJECT)
+
+    ct_add_section(NAME "zero_arguments")
+    function("${zero_arguments}")
+        cmaize_option_list()
+    endfunction()
+
+    ct_add_section(NAME "one_argument" EXPECTFAIL)
+    function("${one_argument}")
+        cmaize_option_list("foo")
+    endfunction()
+
+    ct_add_section(NAME "two_arguments")
+    function("${two_arguments}")
+        cmaize_option_list("foo" 42)
+        ct_assert_equal(foo 42)
+    endfunction()
+
+    ct_add_section(NAME "three_arguments" EXPECTFAIL)
+    function("${three_arguments}")
+        cmaize_option_list("foo" 42 "bar")
+    endfunction()
+
+    ct_add_section(NAME "four_arguments")
+    function("${four_arguments}")
+        cmaize_option_list(
+            "foo" 42
+            "bar" "hello"
+        )
+        ct_assert_equal(foo 42)
+        ct_assert_equal(bar "hello")
+    endfunction()
+endfunction()

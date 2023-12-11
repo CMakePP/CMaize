@@ -83,3 +83,54 @@ function(cmaize_option _co_name _co_default_value)
     set("${_co_name}" "${_co_value}" PARENT_SCOPE)
 
 endfunction()
+
+#[[[
+# Convenience function for registering a number of options with CMaize.
+#
+# Many projects have multiple configuration options. Rather than having to call
+# ``cmaize_option`` for each option, ``cmaize_option_list`` allows you to
+# provide a list of key/value pairs. Under the hood this function simply loops
+# over the key/value pairs and forwards them to ``cmaize_option``, thus all
+# documentation relating to ``cmaize_option`` applies here as well.
+#
+# :param *args: A variadiac list of key/value pairs. The ``2i``-th argument will
+#    be interpretted as the key for the ``i``-th pair and the ``2i + 1``-th
+#    argument will be interpretted as the value for the ``i``-th pair.
+# :type *args: str
+#
+# :raises input_error: If the number of arguments is not divisible by 2.
+#]]
+function(cmaize_option_list)
+    set(_col_nargs "${ARGC}")
+
+    # Early out if no arguments were provided (otherwise math below won't work)
+    if("${ARGC}" EQUAL "0")
+        return()
+    endif()
+
+
+    # Verify we got an even number of arguments
+    math(EXPR _col_is_even "${_col_nargs} % 2")
+    if(NOT "${_col_is_even}" EQUAL "0")
+        cpp_raise(
+            input_error
+            "Syntax: cmaize_option_list(key0 value0 key1 value1 ...)"
+        )
+    endif()
+
+    # Loops are inclusive on the end point, so subtract 1
+    math(EXPR _col_nargs "${_col_nargs} - 1")
+
+    # ARGN isn't actually a variable, so make a list from its contents
+    set(_col_argn "${ARGN}")
+
+    # Loop over pairs forwarding them to cmaize_option
+    foreach(_col_i RANGE 0 "${_col_nargs}" 2)
+        set(_col_key_i "${_col_i}")
+        math(EXPR _col_value_i "${_col_i} + 1")
+        list(GET _col_argn ${_col_key_i} _col_key)
+        list(GET _col_argn ${_col_value_i} _col_value)
+        cmaize_option("${_col_key}" "${_col_value}")
+    endforeach()
+
+endfunction()
