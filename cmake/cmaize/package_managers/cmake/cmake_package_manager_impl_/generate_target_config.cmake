@@ -108,7 +108,7 @@ INTERFACE_LINK_LIBRARIES "
         __gtc_file_contents
         "
 set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/${__gtc_lib_prefix}/${__gtc_target_name}/${__gtc_libname_w_version}\")
-
+# TODO: Handle different configurations (Release, Debug, etc.)
 # Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
 set_property(TARGET ${__gtc_namespace}${__gtc_target_name} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
