@@ -14,8 +14,6 @@
 
 include_guard()
 
-message("CMaize Version 1.0.0")
-
 if("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     set(_msg "The build directory (${CMAKE_BINARY_DIR}) is the same as the ")
     string(APPEND _msg "current source directory (${CMAKE_CURRENT_SOURCE_DIR})")
