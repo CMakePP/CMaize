@@ -51,9 +51,9 @@ cpp_class(InstalledTarget CMaizeTarget)
         cpp_directory_exists(exists "${_ctor_root}")
         if(NOT exists)
             set(msg "InstalledTarget root directory not found. ")
-            string(APPEND msg "Root given: ${_ctor_root}")
+            string(APPEND msg "Root given: '${_ctor_root}'")
             cpp_raise(DirectoryNotFound "${msg}")
-        endif() 
+        endif()
 
         InstalledTarget(SET "${self}" root_path "${_ctor_root}")
 

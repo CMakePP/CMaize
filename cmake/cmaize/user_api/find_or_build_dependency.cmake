@@ -42,124 +42,88 @@ include(cmaize/package_managers/package_managers)
 #]]
 function(cmaize_find_or_build_dependency _fobd_name)
 
-    set(_fobd_one_value_args PACKAGE_MANAGER)
+    set(_fobd_one_value_args PACKAGE_MANAGER VERSION)
     cmake_parse_arguments(_fobd "" "${_fobd_one_value_args}" "" ${ARGN})
+
+    cpp_get_global(_fobd_project CMAIZE_TOP_PROJECT)
+
+    # Create the package specification
+    PackageSpecification(ctor _fobd_package_specs)
+    PackageSpecification(SET "${_fobd_package_specs}" name "${_fobd_name}")
+    PackageSpecification(
+        set_version "${_fobd_package_specs}" "${_fobd_VERSION}"
+    )
 
     # Default to CMake package manager if none were given
     if("${_fobd_PACKAGE_MANAGER}" STREQUAL "")
         set(_fobd_PACKAGE_MANAGER "CMake")
     endif()
 
-    # Decide which language we are building for
-    string(TOLOWER "${_fobd_PACKAGE_MANAGER}" _fobd_PACKAGE_MANAGER_lower)
-    if("${_fobd_PACKAGE_MANAGER_lower}" STREQUAL "cmake")
-        cmaize_find_or_build_dependency_cmake(
-            "${_fobd_name}"
-            ${ARGN}
-        )
-    elseif()
-        set(msg "Invalid Package Manager: ${_fobd_PACKAGE_MANAGER}. See ")
-        string(APPEND msg "CMAIZE_SUPPORTED_PACKAGE_MANAGERS for a list of")
-        string(APPEND msg "supported package manager strings.")
-        cpp_raise(
-            InvalidPackageManager
-            "${msg}"
-        )
+    CMaizeProject(get_package_manager
+        "${_fobd_project}" _fobd_pm "${_fobd_PACKAGE_MANAGER}"
+    )
+
+    # TODO: This probably can be eliminated if
+    # CMaizeProject(get_package_manager uses get_package_manager_instance
+    # under the hood
+    if("${_fobd_pm}" STREQUAL "")
+        get_package_manager_instance(_fobd_pm "${_fobd_PACKAGE_MANAGER}")
+        CMaizeProject(add_package_manager "${_fobd_project}" "${_fobd_pm}")
     endif()
 
-endfunction()
-
-#[[[
-# User function to find an installed package or fetch and build the package
-# using CMake as the package management system.
-#
-# This means that tools such as ``find_package`` and ``FetchContent`` built
-# into CMake will be used to manage packages while using this method.
-#
-# :param _fobdc_name: Name of the dependency to find or build.
-# :type _fobdc_name: desc
-# :param **kwargs: Additional keyword arguments may be necessary.
-#]]
-function(cmaize_find_or_build_dependency_cmake _fobdc_name)
-
-    set(_fobdc_one_value_args VERSION)
-    cmake_parse_arguments(_fobdc "" "${_fobdc_one_value_args}" "" ${ARGN})
-
-    cpp_get_global(_fobdc_project CMAIZE_TOP_PROJECT)
-
-    # Create the package specification
-    PackageSpecification(ctor _fobdc_package_specs)
-    PackageSpecification(SET "${_fobdc_package_specs}" name "${_fobdc_name}")
-    PackageSpecification(set_version "${_fobdc_package_specs}" "${_fobdc_VERSION}")
-
-    # Add a CMakePackageManager to the project if it does not exist yet
-    CMaizeProject(get_package_manager "${_fobdc_project}" _fobdc_pm "CMake")
-    # TODO: This probably can be eliminated if CMaizeProject(get_package_manager
-    # uses get_package_manager_instance under the hood
-    if("${_fobdc_pm}" STREQUAL "")
-        get_package_manager_instance(_fobdc_pm "CMake")
-        CMaizeProject(add_package_manager "${_fobdc_project}" "${_fobdc_pm}")
-    endif()
-
-    message(STATUS "Attempting to find installed ${_fobdc_name}")
+    message(STATUS "Attempting to find installed ${_fobd_name}")
 
     # Check if the package is already installed
-    CMakePackageManager(find_installed
-        "${_fobdc_pm}"
-        _fobdc_tgt
-        "${_fobdc_package_specs}"
-        ${ARGN}
+    PackageManager(find_installed
+        "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
     )
-    if(NOT "${_fobdc_tgt}" STREQUAL "")
-        message(STATUS "${_fobdc_name} installation found")
+    if(NOT "${_fobd_tgt}" STREQUAL "")
+        message(STATUS "${_fobd_name} installation found")
         CMaizeProject(add_target
-            "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}" INSTALLED
+            "${_fobd_project}" "${_fobd_name}" "${_fobd_tgt}" INSTALLED
         )
         cpp_return("")
     endif()
 
-    message(STATUS "Attempting to fetch and build ${_fobdc_name}")
+    message(STATUS "Attempting to fetch and build ${_fobd_name}")
 
     # Prepare to build the package
-    CMakePackageManager(get_package
-        "${_fobdc_pm}"
-        _fobdc_tgt
-        "${_fobdc_package_specs}"
-        ${ARGN}
+    PackageManager(get_package
+        "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
     )
-    if(NOT "${_fobdc_tgt}" STREQUAL "")
+    if(NOT "${_fobd_tgt}" STREQUAL "")
         CMaizeProject(add_target
-            "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}"
+            "${_fobd_project}" "${_fobd_name}" "${_fobd_tgt}"
         )
 
         # This creates the suspected install prefix for this dependency
-        cpp_get_global(_fobdc_top_proj CMAIZE_TOP_PROJECT)
-        CMaizeProject(GET "${_fobdc_top_proj}" _fobdc_top_proj_name name)
+        cpp_get_global(_fobd_top_proj CMAIZE_TOP_PROJECT)
+        CMaizeProject(GET "${_fobd_top_proj}" _fobd_top_proj_name name)
         file(REAL_PATH
-            "${CMAKE_INSTALL_LIBDIR}/${_fobdc_top_proj_name}/external"
-            _fobdc_external_prefix
+            "${CMAKE_INSTALL_LIBDIR}/${_fobd_top_proj_name}/external"
+            _fobd_external_prefix
             BASE_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
         )
 
         # Get the build target name for the dependency, since it is not
         # necessarily the same as the name of the CMaize target
-        CMaizeTarget(target "${_fobdc_tgt}" _fobdc_build_tgt)
+        CMaizeTarget(target "${_fobd_tgt}" _fobdc_build_tgt)
 
         # Create some possible paths where the dependency library will be
         # installed
         set(
-            _fobdc_install_paths
-            "${_fobdc_external_prefix}/lib"
-            "${_fobdc_external_prefix}/lib/${_fobdc_name}"
-            "${_fobdc_external_prefix}/lib/${_fobdc_build_tgt}"
+            _fobd_install_paths
+            "${_fobd_external_prefix}/lib"
+            "${_fobd_external_prefix}/lib/${_fobd_name}"
+            "${_fobd_external_prefix}/lib/${_fobd_build_tgt}"
         )
-        list(REMOVE_DUPLICATES _fobdc_install_paths)
-        CMaizeTarget(SET "${_fobdc_tgt}" install_path "${_fobdc_install_paths}")
+        list(REMOVE_DUPLICATES _fobd_install_paths)
+        CMaizeTarget(SET "${_fobd_tgt}" install_path "${_fobd_install_paths}")
     endif()
 
     # The command above will throw build errors from inside FetchContent
     # if the fetch and build fails, so we can assume at this point that
     # it completed successfully
-    message(STATUS "${_fobdc_name} build complete")
+    message(STATUS "${_fobd_name} build complete")
 
 endfunction()
