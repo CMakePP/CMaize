@@ -1,12 +1,14 @@
 include_guard()
 
-macro(_pip_get_package self _gp_result _gp_proj_specs)
+macro(_pip_get_package self _gp_result _gp_package_specs)
 
-    PIP(find_installed "${self}" "${_gp_result}" "${_gp_proj_specs}")
+    PIPPackageManager(find_installed "${self}" "${_gp_result}" "${_gp_package_specs}")
 
-    if(NOT "${_gp_result}")
-        PackageSpecification(GET "${_gp_proj_specs}" _gp_name name)
-        message(FATAL_ERROR "Unable to locate Python module: ${_gp_name}")
+    if("${_gp_result}" STREQUAL "")
+        PackageSpecification(GET "${_gp_package_specs}" _gp_name name)
+        cpp_raise(
+            PACKAGE_NOT_FOUND "Unable to locate Python module: ${_gp_name}"
+        )
     endif()
 
     cpp_return("${_gp_result}")

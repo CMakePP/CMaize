@@ -57,6 +57,12 @@ function(cmaize_find_or_build_dependency _fobd_name)
     # Default to CMake package manager if none were given
     if("${_fobd_PACKAGE_MANAGER}" STREQUAL "")
         set(_fobd_PACKAGE_MANAGER "CMake")
+        # Enabled by default, no enable function
+    elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "CMake")
+        # Enabled by default, no enable function
+        set(foo "bar")
+    elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "pip")
+        enable_pip_package_manager()
     endif()
 
     CMaizeProject(get_package_manager
@@ -87,13 +93,10 @@ function(cmaize_find_or_build_dependency _fobd_name)
 
     message(STATUS "Attempting to fetch and build ${_fobd_name}")
 
-    # Prepare to build the package
-    PackageManager(get_package
-        "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
-    )
-    if(NOT "${_fobd_tgt}" STREQUAL "")
-        CMaizeProject(add_target
-            "${_fobd_project}" "${_fobd_name}" "${_fobd_tgt}"
+    # TODO: CMakePackageManager needs refactored to match the others
+    if("${_fobd_PACKAGE_MANAGER}" STREQUAL "CMake")
+        PackageManager(get_package
+            "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
         )
 
         # This creates the suspected install prefix for this dependency
@@ -119,11 +122,21 @@ function(cmaize_find_or_build_dependency _fobd_name)
         )
         list(REMOVE_DUPLICATES _fobd_install_paths)
         CMaizeTarget(SET "${_fobd_tgt}" install_path "${_fobd_install_paths}")
+
+    else()
+        PackageManager(install_package "${_fobd_pm}" "${_fobd_package_specs}")
+        PackageManager(
+            get_package "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}"
+        )
     endif()
 
     # The command above will throw build errors from inside FetchContent
     # if the fetch and build fails, so we can assume at this point that
     # it completed successfully
+    CMaizeProject(add_target
+        "${_fobd_project}" "${_fobd_name}" "${_fobd_tgt}"
+    )
+
     message(STATUS "${_fobd_name} build complete")
 
 endfunction()

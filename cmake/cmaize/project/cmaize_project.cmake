@@ -393,7 +393,7 @@ cpp_class(CMaizeProject)
     # :returns: Package manager found (TRUE) or not (FALSE).
     # :rtype: bool
     #]]
-    cpp_member(check_package_manager CMaizeProject desc desc)
+    cpp_member(check_package_manager CMaizeProject desc str)
     function("${check_package_manager}" self  _cpm_found _cpm_pm_type)
 
         # Get the collection of package managers
@@ -533,7 +533,7 @@ cpp_class(CMaizeProject)
     #           no package manager with the matching type was found.
     # :rtype: PackageManager
     #]]
-    cpp_member(get_package_manager CMaizeProject desc desc)
+    cpp_member(get_package_manager CMaizeProject desc str)
     function("${get_package_manager}" self  _gpm_result _gpm_pm_type)
 
         CMaizeProject(GET "${self}" _gpm_pm_map package_managers)

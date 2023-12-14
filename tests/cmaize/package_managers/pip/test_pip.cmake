@@ -13,29 +13,27 @@
 # limitations under the License.
 
 include(cmake_test/cmake_test)
-
-function(make_venv _mv_name)
-
-endfunction()
+include(cmaize/utilities/python)
 
 ct_add_test(NAME "test_pip")
 function("${test_pip}")
     include(cmaize/package_managers/pip/pip)
+    find_python(py_exe py_version)
+    create_virtual_env(venv_dir "${py_exe}" "${test_pip}")
 
-    # Find Python, create a new venv named with the function's unique name
-    find_package(Python3 COMPONENTS Interpreter QUIET REQUIRED)
-    execute_process(
-        COMMAND "${Python3_EXECUTABLE}" "-m" "venv" "${test_pip}"
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-    )
+    # Make sure everything is using the venv Python
+    set(Python3_EXECUTABLE "${venv_dir}/bin/python3")
+    enable_pip_package_manager()
+
 
     # This is the Python interpreter associated with the environment we created
     # as long as we use it, packages get installed into the venv (even if we
     # don't activate the environment (which CMake makes difficult to do by
     # piping commands in execute_process))
-    set(py_exe "${CMAKE_CURRENT_SOURCE_DIR}/${test_pip}/bin/python3")
+    set(py_exe "${venv_dir}/bin/python3")
 
-    PIP(CTOR pip_pm "${py_exe}")
+    # This is the package manager we are going to be testing
+    PIPPackageManager(CTOR pip_pm "${py_exe}")
 
     # For testing purposes we'll want a package which exists on PyPI and one
     # that does note. For the former we use CMinx. For the latter we use
@@ -47,28 +45,35 @@ function("${test_pip}")
     PackageSpecification(CTOR not_real)
     PackageSpecification(SET "${not_real}" name "not_the_cminx_package")
 
-    # Verify CMinx isn't already installed
+    # This is the correct installed target which should be generated for cminx
+    InstalledTarget(
+        CTOR corr "cminx" "${venv_dir}/lib/python${py_version}/site-packages"
+    )
+
+    # Verify CMinx isn't already installed before installing it
     ct_add_section(NAME "CMinx_is_not_preinstalled")
     function("${CMinx_is_not_preinstalled}")
 
-        PIP(find_installed "${pip_pm}" has_cminx "${cminx}")
+        PIPPackageManager(find_installed "${pip_pm}" has_cminx "${cminx}")
         ct_assert_equal(has_cminx "")
 
-    endfunction()
+        # (checking that it was installed happens in find_installed)
+        PIPPackageManager(install_package "${pip_pm}" "${cminx}")
 
-    # Install it (checking that it was installed happens in find_installed)
-    PIP(install_package "${pip_pm}" "cminx")
+    endfunction()
 
     ct_add_section(NAME "find_installed")
     function("${find_installed}")
 
         # Look for non-existant (and thus not installed) package
-        PIP(find_installed "${pip_pm}" has_not_real "${not_real}")
+        PIPPackageManager(find_installed "${pip_pm}" has_not_real "${not_real}")
         ct_assert_equal(has_not_real "")
 
-        # Look for cminx, which we pre-installed
-        PIP(find_installed "${pip_pm}" has_cminx "${cminx}")
-        ct_assert_equal(has_cminx "cminx")
+        # Look for cminx. Bcause sections are run sequentially, it's installed
+        PIPPackageManager(find_installed "${pip_pm}" cminx_tgt "${cminx}")
+
+        InstalledTarget(EQUAL "${corr}" has_cminx "${cminx_tgt}")
+        ct_assert_true(has_cminx)
 
     endfunction()
 
@@ -78,15 +83,16 @@ function("${test_pip}")
         ct_add_section(NAME "package_does_not_exist" EXPECTFAIL)
         function("${package_does_not_exist}")
 
-            PIP(get_package "${pip_pm}" the_package "${not_real}")
+            PIPPackageManager(get_package "${pip_pm}" the_package "${not_real}")
 
         endfunction()
 
         ct_add_section(NAME "package_does_exist")
         function("${package_does_exist}")
 
-            PIP(get_package "${pip_pm}" the_package "${cminx}")
-            ct_assert_equal(the_package "cminx")
+            PIPPackageManager(get_package "${pip_pm}" the_package "${cminx}")
+            InstalledTarget(EQUAL "${corr}" has_cminx "${the_package}")
+            ct_assert_true(has_cminx)
 
         endfunction()
 
@@ -98,19 +104,23 @@ function("${test_pip}")
 
         ct_add_section(NAME "same_state")
         function("${same_state}")
-            PIP(CTOR another_pm "${py_exe}")
-            PIP(EQUAL "${another_pm}" are_equal "${pip_pm}")
+
+            PIPPackageManager(CTOR another_pm "${py_exe}")
+            PIPPackageManager(EQUAL "${another_pm}" are_equal "${pip_pm}")
             ct_assert_true(are_equal)
+
         endfunction()
 
 
         ct_add_section(NAME "different_interpreter")
         function("${different_interpreter}")
+
             # n.b., as long as we don't call any
             # methods that needs the interpreter any path should work)
-            PIP(CTOR another_pm "/not/a/real/path")
-            PIP(EQUAL "${another_pm}" are_equal "${pip_pm}")
+            PIPPackageManager(CTOR another_pm "/not/a/real/path")
+            PIPPackageManager(EQUAL "${another_pm}" are_equal "${pip_pm}")
             ct_assert_false(are_equal)
+
         endfunction()
 
     endfunction()

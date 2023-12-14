@@ -38,6 +38,19 @@ the contents of ``impl_.cmake`` look like:
    # include other method implementations here (recommend that modules are
    # included in alphabetic order)
 
+To ensure that your new package manager is included when users load CMaize's
+package manager component you will need to modify
+``package_managers/package_managers.cmake`` so that it includes your new class.
+For example, to ensure the CMake package manager is included,
+``package_managers/package_managers.cmake`` will look like:
+
+.. code-block:: cmake
+
+   include_guard()
+
+   include(cmaize/package_managers/cmake/cmake_package_manager)
+
+
 ****************************
 Declaring the PackageManager
 ****************************
@@ -71,3 +84,39 @@ Registering the PackageManager
 
    This needs revisited. The current global variable approach seems hacky. There
    should probably just be some sort of initialization function.
+
+Most package managers will require additional dependencies beyond CMake. Thus
+they should be off by default. When a user wants to use the package manager they
+must explicitly enable it. This is done by writing an enable function. By means
+of example, the ``enable_pip_package_manager`` function looks like:
+
+.. code-block:: cmake
+
+   function(enable_pip_package_manager)
+
+      # 1. Tell the global environment that a pip package manager will exist
+      cpp_get_global(_eppm_pms CMAIZE_SUPPORTED_PACKAGE_MANAGERS)
+      if("pip" IN_LIST _eppm_pms) # If pip is in the list, it's already enabled
+         return()
+      endif()
+
+      set(_eppm_pms "${_eppm_pms}" "pip")
+      cpp_set_global(CMAIZE_SUPPORTED_PACKAGE_MANAGERS "${_eppm_pms}")
+
+      #2. Construct a PIP object
+      find_package(Python3 COMPONENTS Interpreter QUIET REQUIRED)
+      PIP(CTOR _eppm_package_manager "${Python3_EXECUTABLE}")
+
+      #3. Register the PIP object with the global environment
+      register_package_manager("pip" "${_eppm_package_manager}")
+
+   endfunction()
+
+The current convention is to implement the enable function after the class's
+definition (so for pip the ``enable_pip_package_manager`` function will live
+at the bottom of ``package_managers/pip/pip.cmake``). The last step is to
+update ``cmaize_find_or_build_dependency`` so that it enables the package
+manager if a user requests it. To do this look for the if/else tree comparing
+``${_fobd_PACKAGE_MANAGER}`` against the list of package managers. Once found,
+add a branch for your new package manager that calls the enable function you
+just wrote.

@@ -19,3 +19,4 @@ include(cmaize/package_managers/get_package_manager)
 
 include(cmaize/package_managers/cmake/cmake)
 include(cmaize/package_managers/package_manager)
+include(cmaize/package_managers/pip/pip)

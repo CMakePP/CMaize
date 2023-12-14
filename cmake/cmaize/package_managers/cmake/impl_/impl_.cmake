@@ -14,9 +14,7 @@
 
 include_guard()
 
-set(_cpm_impl_dir "cmaize/package_managers/cmake/cmake_package_manager_impl_")
-
-include(${_cpm_impl_dir}/ctor)
-include(${_cpm_impl_dir}/generate_package_config)
-include(${_cpm_impl_dir}/generate_target_config)
-include(${_cpm_impl_dir}/install_package)
+include(cmaize/package_managers/cmake/impl_/ctor)
+include(cmaize/package_managers/cmake/impl_/generate_package_config)
+include(cmaize/package_managers/cmake/impl_/generate_target_config)
+include(cmaize/package_managers/cmake/impl_/install_package)

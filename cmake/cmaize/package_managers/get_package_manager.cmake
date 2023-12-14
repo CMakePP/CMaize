@@ -40,7 +40,13 @@ function(get_package_manager_instance _gpmi_result _gpmi_type)
     cpp_assert_signature("${ARGV}" desc desc)
 
     cpp_get_global(_gpmi_pm_map __CMAIZE_PACKAGE_MANAGER_MAP__)
-
+    cpp_map(HAS_KEY "{_gpmi_pm_map}" _gpmi_has_type "${_gpmi_type}")
+    if(NOT _gpmi_has_type)
+        cpp_raise(
+            PM_NOT_FOUND
+            "Could not locate a package manager of type ${_gpmi_type}"
+        )
+    endif()
     cpp_map(GET "${_gpmi_pm_map}" _gpmi_instance "${_gpmi_type}")
 
     if("${_gpmi_instance}" STREQUAL "")
