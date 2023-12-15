@@ -31,6 +31,7 @@ if(NOT CMAKE_MAXIMUM_RECURSION_DEPTH)
 endif()
 
 include(cmaize/globals)
+include(cmaize/package_managers/package_managers)
 include(cmaize/project/projects)
 include(cmaize/targets/targets)
 include(cmaize/toolchain/toolchain)

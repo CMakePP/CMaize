@@ -27,7 +27,9 @@ ct_add_test(NAME "test_cmaize_find_or_build_dependency")
 function("${test_cmaize_find_or_build_dependency}")
 
     find_python(py_exe py_version)
-    create_virtual_env(venv_dir "${py_exe}" "${test_pip}")
+    create_virtual_env(
+        venv_dir "${py_exe}" "${test_cmaize_find_or_build_dependency}"
+    )
     set(Python3_EXECUTABLE "${venv_dir}/bin/python3")
 
     set(proj_name "test_cmaize_find_or_build_dependency")
@@ -38,22 +40,40 @@ function("${test_cmaize_find_or_build_dependency}")
     ct_add_section(NAME "test_pip")
     function("${test_pip}")
 
-        cmaize_find_or_build_dependency(
-            "cminx"
-            PACKAGE_MANAGER "pip"
-        )
-
-        # Get the target created by cmaize_find_or_build_dependency
-        CMaizeProject(get_target "${proj_obj}" cminx_tgt "cminx")
-
         # Make what that target should look like
         set(site_pkg_dir "${venv_dir}/lib/python${py_version}/site-packages")
         InstalledTarget(CTOR corr "cminx" "${site_pkg_dir}")
 
-        # Compare the targets
-        InstalledTarget(EQUAL is_same "${corr}" "${cminx_tgt}")
-        ct_assert_true(is_same)
+        ct_add_section(NAME "not_yet_installed")
+        function("${not_yet_installed}")
 
+            cmaize_find_or_build_dependency(
+                "cminx"
+                PACKAGE_MANAGER "pip"
+            )
+
+            # Get the target created by cmaize_find_or_build_dependency
+            CMaizeProject(get_target "${proj_obj}" cminx_tgt "cminx")
+
+            # Compare the targets
+            InstalledTarget(EQUAL "${corr}" is_same "${cminx_tgt}")
+            ct_assert_true(is_same)
+
+        endfunction()
+
+        ct_add_section(NAME "already_installed")
+        function("${already_installed}")
+
+            cmaize_find_or_build_dependency(
+                "cminx"
+                PACKAGE_MANAGER "pip"
+            )
+
+            CMaizeProject(get_target "${proj_obj}" cminx_tgt "cminx")
+            InstalledTarget(EQUAL "${corr}" is_same "${cminx_tgt}")
+            ct_assert_true(is_same)
+
+        endfunction()
     endfunction()
 
 endfunction()

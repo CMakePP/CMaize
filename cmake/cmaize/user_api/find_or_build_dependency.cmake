@@ -56,9 +56,9 @@ function(cmaize_find_or_build_dependency _fobd_name)
 
     # Default to CMake package manager if none were given
     if("${_fobd_PACKAGE_MANAGER}" STREQUAL "")
-        set(_fobd_PACKAGE_MANAGER "CMake")
+        set(_fobd_PACKAGE_MANAGER "cmake")
         # Enabled by default, no enable function
-    elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "CMake")
+    elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "cmake")
         # Enabled by default, no enable function
         set(foo "bar")
     elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "pip")
@@ -93,8 +93,8 @@ function(cmaize_find_or_build_dependency _fobd_name)
 
     message(STATUS "Attempting to fetch and build ${_fobd_name}")
 
-    # TODO: CMakePackageManager needs refactored to match the others
-    if("${_fobd_PACKAGE_MANAGER}" STREQUAL "CMake")
+    # TODO: Should CMakePackageManager be refactored to match the other?
+    if("${_fobd_PACKAGE_MANAGER}" STREQUAL "cmake")
         PackageManager(get_package
             "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
         )

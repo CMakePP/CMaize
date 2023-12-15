@@ -40,11 +40,12 @@ function(get_package_manager_instance _gpmi_result _gpmi_type)
     cpp_assert_signature("${ARGV}" desc desc)
 
     cpp_get_global(_gpmi_pm_map __CMAIZE_PACKAGE_MANAGER_MAP__)
-    cpp_map(HAS_KEY "{_gpmi_pm_map}" _gpmi_has_type "${_gpmi_type}")
+    cpp_map(HAS_KEY "${_gpmi_pm_map}" _gpmi_has_type "${_gpmi_type}")
+
     if(NOT _gpmi_has_type)
         cpp_raise(
             PM_NOT_FOUND
-            "Could not locate a package manager of type ${_gpmi_type}"
+            "Could not locate a package manager of type '${_gpmi_type}'"
         )
     endif()
     cpp_map(GET "${_gpmi_pm_map}" _gpmi_instance "${_gpmi_type}")
@@ -68,9 +69,8 @@ endfunction()
 function(register_package_manager _rpm_name _rpm_instance)
 
     cpp_get_global(_rpm_pm_map __CMAIZE_PACKAGE_MANAGER_MAP__)
-
     cpp_map(SET "${_rpm_pm_map}" "${_rpm_name}" "${_rpm_instance}")
-
+    cpp_map(HAS_KEY "${_rpm_pm_map}" _rpm_has_name "${_rpm_name}")
     cpp_set_global(__CMAIZE_PACKAGE_MANAGER_MAP__ "${_rpm_pm_map}")
 
 endfunction()

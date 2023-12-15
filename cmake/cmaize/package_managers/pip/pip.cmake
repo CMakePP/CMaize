@@ -50,7 +50,7 @@ cpp_class(PIPPackageManager PackageManager)
     cpp_constructor(CTOR PIPPackageManager path)
     function("${CTOR}" self _py_exe)
 
-        PackageManager(SET type "pip")
+        PackageManager(SET "${self}" type "pip")
         PIPPackageManager(SET "${self}" python_executable "${_py_exe}")
 
     endfunction()
@@ -74,7 +74,7 @@ cpp_class(PIPPackageManager PackageManager)
     #    otherwise a target representing the package.
     # :rtype: string or InstalledTarget
     #]]
-    cpp_member(find_installed PIPPackageManager desc PackageSpecification)
+    cpp_member(find_installed PIPPackageManager desc PackageSpecification args)
     function("${find_installed}" self _fi_result _fi_package_specs)
 
         _pip_find_installed(
@@ -157,7 +157,7 @@ function(enable_pip_package_manager)
     cpp_set_global(CMAIZE_SUPPORTED_PACKAGE_MANAGERS "${_eppm_pms}")
 
     find_python(_eppm_py_exe _eppm_py_version)
-    message("pip package manager will use Python: ${_eppm_py_exe}")
+    message(DEBUG "pip package manager will use Python: ${_eppm_py_exe}")
 
     PIPPackageManager(CTOR _eppm_package_manager "${_eppm_py_exe}")
     register_package_manager("pip" "${_eppm_package_manager}")
