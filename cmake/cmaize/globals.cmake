@@ -61,5 +61,5 @@ cpp_set_global(
 #]]
 cpp_set_global(
     CMAIZE_SUPPORTED_PACKAGE_MANAGERS
-    CMake
+    cmake
 )

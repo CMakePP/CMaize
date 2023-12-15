@@ -63,6 +63,11 @@ function(cmaize_find_or_build_dependency _fobd_name)
         set(foo "bar")
     elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "pip")
         enable_pip_package_manager()
+    else()
+        cpp_raise(
+            UNKNOWN_PM
+            "Package manager ${_fobd_PACKAGE_MANAGER} was not registered."
+        )
     endif()
 
     CMaizeProject(get_package_manager
