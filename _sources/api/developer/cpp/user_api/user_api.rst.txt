@@ -1,7 +1,0 @@
-
-#####################
-cpp.user_api/user_api
-#####################
-
-.. module:: cpp.user_api/user_api
-

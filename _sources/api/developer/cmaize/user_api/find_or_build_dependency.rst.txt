@@ -6,22 +6,6 @@ cmaize.user_api/find_or_build_dependency
 .. module:: cmaize.user_api/find_or_build_dependency
 
 
-.. function:: cpp_find_or_build_dependency(_fobd_name)
-
-   Add a dependency to the project.
-   
-   .. warning::
-   
-      ``cpp_find_or_build_dependency()`` is depricated.
-      ``cmaize_find_or_build_dependency()`` should be used to add a dependency
-      to the project.
-   
-   :param _fobd_name: Name of the dependency.
-   :type _fobd_name: desc
-   :param **kwargs: Additional keyword arguments may be necessary.
-   
-
-
 .. function:: cmaize_find_or_build_dependency(_fobd_name **kwargs)
 
    Add a dependency to the project.

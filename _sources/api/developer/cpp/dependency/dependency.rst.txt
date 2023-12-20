@@ -1,7 +1,0 @@
-
-#########################
-cpp.dependency/dependency
-#########################
-
-.. module:: cpp.dependency/dependency
-

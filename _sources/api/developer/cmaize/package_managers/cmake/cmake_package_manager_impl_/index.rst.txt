@@ -1,0 +1,14 @@
+
+#########################################################
+cmaize.package_managers/cmake/cmake_package_manager_impl_
+#########################################################
+
+.. toctree:: 
+   :maxdepth: 2
+
+   ctor
+   generate_package_config
+   generate_target_config
+   impl_
+   install_package
+

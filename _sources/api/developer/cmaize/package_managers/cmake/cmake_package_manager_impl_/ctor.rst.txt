@@ -1,0 +1,15 @@
+
+##############################################################
+cmaize.package_managers/cmake/cmake_package_manager_impl_/ctor
+##############################################################
+
+.. module:: cmaize.package_managers/cmake/cmake_package_manager_impl_/ctor
+
+
+.. function:: _cpm_ctor_impl(self)
+
+
+   .. note:: This is a macro, and so does not introduce a new scope.
+
+   
+

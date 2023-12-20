@@ -1,0 +1,67 @@
+
+#############################
+cmaize.user_api/cmaize_option
+#############################
+
+.. module:: cmaize.user_api/cmaize_option
+
+
+.. function:: cmaize_option(_co_name _co_default_value _co_docstring)
+
+   Registers a configuration option with the current project.
+   
+   .. note::
+   
+      Unlike CMake's ``option`` command values are not restricted to booleans.
+   
+   Build system mainainers can declare configuration options for their build
+   system via the ``cmaize_option`` function. Consistent with usual build sytem
+   behavior, users can override the default value. Assuming a call to
+   ``cmaize_option`` like
+   ``cmaize_option(option_name option_value option_description)``, users of
+   the build system can set the value of the ``option_name`` option by:
+   
+   1. setting a ``option_name`` variable before calling ``cmaize_option``,
+   2. setting a ``option_name`` cache variable before calling ``cmaize_option``,
+      or by
+   3. setting the configuration option ``option_name`` on the project's
+      CMaizeProject object directly (not recommended for end users).
+   
+   If the user has not set the value via any of the above mechanisms
+   ``cmaize_option`` will set the value of ``option_name`` to ``option_value``.
+   
+   After calling this function the CMake variable ``option_name`` is guaranteed
+   to be set. Similar to CMake's ``option`` command, the CMake cache variable
+   ``option_name`` will be set if a normal (or cache) CMake variable
+   ``option_name`` was not already set.
+   
+   :param name: The name of the configuration option being set.
+   :type name: desc
+   :param default_value: The value to set ``name`` to if the user does not
+      provide a value.
+   :type default_value: str
+   :param docstring: A brief description of what the option does. This
+      parameter's value is used primarily as metadata.
+   :type docstring: str
+   
+   
+
+
+.. function:: cmaize_option_list()
+
+   Convenience function for registering a number of options with CMaize.
+   
+   Many projects have multiple configuration options. Rather than having to call
+   ``cmaize_option`` for each option, ``cmaize_option_list`` allows you to
+   provide a list of key/value pairs. Under the hood this function simply loops
+   over the key/value pairs and forwards them to ``cmaize_option``, thus all
+   documentation relating to ``cmaize_option`` applies here as well.
+   
+   :param *args: A variadiac list of key/value pairs. The ``2i``-th argument will
+      be interpretted as the key for the ``i``-th pair and the ``2i + 1``-th
+      argument will be interpretted as the value for the ``i``-th pair.
+   :type *args: str
+   
+   :raises input_error: If the number of arguments is not divisible by 2.
+   
+

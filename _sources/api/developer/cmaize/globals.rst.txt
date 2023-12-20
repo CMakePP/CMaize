@@ -16,14 +16,12 @@ cmaize.globals
    
 
 
-.. function:: cpp_set_global(CMAIZE_GITHUB_TOKEN "${CPP_GITHUB_TOKEN}")
+.. function:: cpp_set_global(CMAIZE_GITHUB_TOKEN "")
 
 
    .. warning:: This is a generic command invocation. It is not a function or macro definition.
 
-   GitHub token used to access private repositories. It is defaulted to the
-   value of the old ``CPP_GITHUB_TOKEN`` for backwards compatability and
-   will be a blank string ("") if ``CPP_GITHUB_TOKEN`` does not exist.
+   GitHub token used to access private repositories. It is empty by default.
    
 
 

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cmaize.user_api &mdash; CMaize 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -52,7 +54,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../background/index.html">CMaize Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
@@ -63,6 +64,7 @@
 <li class="toctree-l4"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a></li>
 <li class="toctree-l4"><a class="reference internal" href="add_package.html">cmaize.user_api/add_package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmaize_option.html">cmaize.user_api/cmaize_option</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a></li>
 <li class="toctree-l4"><a class="reference internal" href="find_or_build_dependency.html">cmaize.user_api/find_or_build_dependency</a></li>
 <li class="toctree-l4"><a class="reference internal" href="user_api.html">cmaize.user_api/user_api</a></li>
@@ -113,13 +115,11 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="add_executable.html">cmaize.user_api/add_executable</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="add_executable.html#cmaize.user_api-add_executable.cpp_add_executable"><code class="docutils literal notranslate"><span class="pre">cpp_add_executable()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="add_executable.html#cmaize.user_api-add_executable.cmaize_add_executable"><code class="docutils literal notranslate"><span class="pre">cmaize_add_executable()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="add_executable.html#cmaize.user_api-add_executable.cmaize_add_cxx_executable"><code class="docutils literal notranslate"><span class="pre">cmaize_add_cxx_executable()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="add_library.html#cmaize.user_api-add_library.cpp_add_library"><code class="docutils literal notranslate"><span class="pre">cpp_add_library()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="add_library.html#cmaize.user_api-add_library.cmaize_add_library"><code class="docutils literal notranslate"><span class="pre">cmaize_add_library()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="add_library.html#cmaize.user_api-add_library.cmaize_add_cxx_library"><code class="docutils literal notranslate"><span class="pre">cmaize_add_cxx_library()</span></code></a></li>
 </ul>
@@ -130,8 +130,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="add_tests.html#cmaize.user_api-add_tests.cpp_add_tests"><code class="docutils literal notranslate"><span class="pre">cpp_add_tests()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="add_tests.html#cmaize.user_api-add_tests.cmaize_add_tests"><code class="docutils literal notranslate"><span class="pre">cmaize_add_tests()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cmaize_option.html">cmaize.user_api/cmaize_option</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cmaize_option.html#cmaize.user_api-cmaize_option.cmaize_option"><code class="docutils literal notranslate"><span class="pre">cmaize_option()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmaize_option.html#cmaize.user_api-cmaize_option.cmaize_option_list"><code class="docutils literal notranslate"><span class="pre">cmaize_option_list()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a><ul>
@@ -139,7 +143,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="find_or_build_dependency.html">cmaize.user_api/find_or_build_dependency</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="find_or_build_dependency.html#cmaize.user_api-find_or_build_dependency.cpp_find_or_build_dependency"><code class="docutils literal notranslate"><span class="pre">cpp_find_or_build_dependency()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="find_or_build_dependency.html#cmaize.user_api-find_or_build_dependency.cmaize_find_or_build_dependency"><code class="docutils literal notranslate"><span class="pre">cmaize_find_or_build_dependency()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="find_or_build_dependency.html#cmaize.user_api-find_or_build_dependency.cmaize_find_or_build_dependency_cmake"><code class="docutils literal notranslate"><span class="pre">cmaize_find_or_build_dependency_cmake()</span></code></a></li>
 </ul>

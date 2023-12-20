@@ -1,7 +1,0 @@
-
-###################
-cpp.targets/targets
-###################
-
-.. module:: cpp.targets/targets
-

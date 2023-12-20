@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cmaize.project/cmaize_project &mdash; CMaize 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -52,7 +54,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../background/index.html">CMaize Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.project</a><ul class="current">
@@ -170,6 +171,71 @@ given project name.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-cmaize_project.CMaizeProject" title="cmaize.project/cmaize_project.CMaizeProject"><em>CMaizeProject</em></a>) – CMaizeProject object.</p></li>
 <li><p><strong>_al_language</strong> (<em>desc</em>) – Language to be added.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.set_config_option">
+<span class="sig-name descname"><span class="pre">set_config_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_sco_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_sco_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.set_config_option" title="Link to this definition"></a></dt>
+<dd><p>Sets the value of the specified configuration option</p>
+<p>This method is a convience function for retrieving the
+PackageSpecification associated with self and then setting the value of
+the specified configuration option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-cmaize_project.CMaizeProject" title="cmaize.project/cmaize_project.CMaizeProject"><em>CMaizeProject</em></a>) – The current <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object.</p></li>
+<li><p><strong>name</strong> (<em>desc</em>) – The key for the configuration option.</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The value to set the configuration option to.</p></li>
+<li><p><strong>_sco_name</strong> (<em>desc</em>) – </p></li>
+<li><p><strong>_sco_value</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.get_config_option">
+<span class="sig-name descname"><span class="pre">get_config_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gco_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gco_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.get_config_option" title="Link to this definition"></a></dt>
+<dd><p>Gets the value of a configuration option.</p>
+<p>This method is a convenience function for retrieving the
+PackageSpecification associated with self and then getting the value of
+the specificed configuration option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-cmaize_project.CMaizeProject" title="cmaize.project/cmaize_project.CMaizeProject"><em>CMaizeProject</em></a>) – The current <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object.</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The variable which will hold the option’s value</p></li>
+<li><p><strong>name</strong> (<em>desc</em>) – The configuration option whose value has been requested.</p></li>
+<li><p><strong>_gco_value</strong> (<em>str</em>) – </p></li>
+<li><p><strong>_gco_name</strong> (<em>desc</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If <code class="docutils literal notranslate"><span class="pre">name</span></code> is not a configuration option which has been
+added via <code class="docutils literal notranslate"><span class="pre">set_config_option</span></code>. Strong throw guarantee.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.has_config_option">
+<span class="sig-name descname"><span class="pre">has_config_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_hco_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_hco_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.has_config_option" title="Link to this definition"></a></dt>
+<dd><p>Determines if a configuration option was added to self.</p>
+<p>This method is a convenience function for getting the internal
+PackageSpecification and seeinf if the user set a specified key. If the
+user set <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">result</span></code> will be set to true; otherwise, <code class="docutils literal notranslate"><span class="pre">result</span></code>
+will be false.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-cmaize_project.CMaizeProject" title="cmaize.project/cmaize_project.CMaizeProject"><em>CMaizeProject</em></a>) – <code class="docutils literal notranslate"><span class="pre">CMaizeProject</span></code> object.</p></li>
+<li><p><strong>result</strong> (<em>bool*</em>) – The identifier to assign the result to.</p></li>
+<li><p><strong>name</strong> (<em>desc</em>) – The name of the configuration option</p></li>
+<li><p><strong>_hco_result</strong> (<em>bool*</em>) – </p></li>
+<li><p><strong>_hco_name</strong> (<em>desc</em>) – </p></li>
 </ul>
 </dd>
 </dl>

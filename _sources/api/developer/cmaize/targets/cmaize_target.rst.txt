@@ -151,6 +151,14 @@ cmaize.targets/cmaize_target
 
    **Attributes**
 
+   .. py:attribute:: install_path
+
+      :type: path
+      
+      Directory where the target binary will be installed.
+      
+
+
    .. py:attribute:: _name
 
       :type: str

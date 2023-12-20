@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cmaize.project/package_specification &mdash; CMaize 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -52,7 +54,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../background/index.html">CMaize Background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/index.html">Current Developer API</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.project</a><ul class="current">
@@ -180,6 +181,70 @@ an error about not including the version argument for
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-package_specification.PackageSpecification.set_config_option">
+<span class="sig-name descname"><span class="pre">set_config_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_sco_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_sco_value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.set_config_option" title="Link to this definition"></a></dt>
+<dd><p>Registers a configuration option with self.</p>
+<p>This method is a convenience function for getting the internal map of
+configuration options and updating it with the user supplied option and
+value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object.</p></li>
+<li><p><strong>name</strong> (<em>desc</em>) – The name of the configuration option</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The value for the option.</p></li>
+<li><p><strong>_sco_name</strong> (<em>desc</em>) – </p></li>
+<li><p><strong>_sco_value</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-package_specification.PackageSpecification.get_config_option">
+<span class="sig-name descname"><span class="pre">get_config_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_gco_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_gco_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.get_config_option" title="Link to this definition"></a></dt>
+<dd><p>Retrieves a configuration option from self.</p>
+<p>This method is a convenience function for getting the value of a
+configuration option from the internal map of configuration options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object.</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The value of the requested option.</p></li>
+<li><p><strong>name</strong> (<em>desc</em>) – The name of the configuration option</p></li>
+<li><p><strong>_gco_value</strong> (<em>str</em>) – </p></li>
+<li><p><strong>_gco_name</strong> (<em>desc</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If <code class="docutils literal notranslate"><span class="pre">name</span></code> is not a configuration option which has been
+added via <code class="docutils literal notranslate"><span class="pre">set_config_option</span></code>. Strong throw guarantee.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.project-package_specification.PackageSpecification.has_config_option">
+<span class="sig-name descname"><span class="pre">has_config_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_hco_result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_hco_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-package_specification.PackageSpecification.has_config_option" title="Link to this definition"></a></dt>
+<dd><p>Determines if a configuration option was added to self.</p>
+<p>This method is a convenience function for getting the internal map of
+configuration options and if the user set a specified key. If the user
+set <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">result</span></code> will be set to true; otherwise, <code class="docutils literal notranslate"><span class="pre">result</span></code> will
+be false.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-package_specification.PackageSpecification" title="cmaize.project/package_specification.PackageSpecification"><em>PackageSpecification</em></a>) – <code class="docutils literal notranslate"><span class="pre">PackageSpecification</span></code> object.</p></li>
+<li><p><strong>result</strong> (<em>bool*</em>) – The identifier to assign the result to.</p></li>
+<li><p><strong>name</strong> (<em>desc</em>) – The name of the configuration option</p></li>
+<li><p><strong>_hco_result</strong> (<em>bool*</em>) – </p></li>
+<li><p><strong>_hco_name</strong> (<em>desc</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -319,7 +384,10 @@ for more information on the details of making this switch.</p>
 <dd class="field-odd"><p>cpp_map</p>
 </dd>
 </dl>
-<p>Package configure options.</p>
+<p>The options in this map control which variant of a package is requested.
+They are package-specific options and are usually along the lines of
+“ENABLE_XXX” and the like. More traditional CMake options like
+“BUILD_SHARED_LIBS” should be part of the toolchain.</p>
 <p>This is initialized to an empty map for users to fill.</p>
 </dd></dl>
 

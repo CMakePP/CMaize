@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cmaize.user_api/cmaize_option &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="cmaize.user_api/cmaize_project" href="cmaize_project.html" />
+    <link rel="prev" title="cmaize.user_api/add_tests" href="add_tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html">
+            
+              <img src="../../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../background/index.html">CMaize Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../targets/index.html">cmaize.targets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../toolchain/index.html">cmaize.toolchain</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.user_api</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="add_executable.html">cmaize.user_api/add_executable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="add_library.html">cmaize.user_api/add_library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="add_package.html">cmaize.user_api/add_package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="add_tests.html">cmaize.user_api/add_tests</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.user_api/cmaize_option</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmaize_project.html">cmaize.user_api/cmaize_project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_or_build_dependency.html">cmaize.user_api/find_or_build_dependency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_api.html">cmaize.user_api/user_api</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../utilities/index.html">cmaize.utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmaize.html">cmaize.cmaize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cmaize_impl.html">cmaize.cmaize_impl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../globals.html">cmaize.globals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer/index.html">Developing CMaize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">API</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">cmaize</a></li>
+          <li class="breadcrumb-item"><a href="index.html">cmaize.user_api</a></li>
+      <li class="breadcrumb-item active">cmaize.user_api/cmaize_option</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/api/developer/cmaize/user_api/cmaize_option.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-cmaize.user_api-cmaize_option">
+<span id="cmaize-user-api-cmaize-option"></span><h1>cmaize.user_api/cmaize_option<a class="headerlink" href="#module-cmaize.user_api-cmaize_option" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="cmaize.user_api-cmaize_option.cmaize_option">
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/cmaize_option.</span></span><span class="sig-name descname"><span class="pre">cmaize_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_co_name</span> <span class="pre">_co_default_value</span> <span class="pre">_co_docstring</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-cmaize_option.cmaize_option" title="Link to this definition"></a></dt>
+<dd><p>Registers a configuration option with the current project.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike CMake’s <code class="docutils literal notranslate"><span class="pre">option</span></code> command values are not restricted to booleans.</p>
+</div>
+<p>Build system mainainers can declare configuration options for their build
+system via the <code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code> function. Consistent with usual build sytem
+behavior, users can override the default value. Assuming a call to
+<code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code> like
+<code class="docutils literal notranslate"><span class="pre">cmaize_option(option_name</span> <span class="pre">option_value</span> <span class="pre">option_description)</span></code>, users of
+the build system can set the value of the <code class="docutils literal notranslate"><span class="pre">option_name</span></code> option by:</p>
+<ol class="arabic simple">
+<li><p>setting a <code class="docutils literal notranslate"><span class="pre">option_name</span></code> variable before calling <code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code>,</p></li>
+<li><p>setting a <code class="docutils literal notranslate"><span class="pre">option_name</span></code> cache variable before calling <code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code>,
+or by</p></li>
+<li><p>setting the configuration option <code class="docutils literal notranslate"><span class="pre">option_name</span></code> on the project’s
+CMaizeProject object directly (not recommended for end users).</p></li>
+</ol>
+<p>If the user has not set the value via any of the above mechanisms
+<code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code> will set the value of <code class="docutils literal notranslate"><span class="pre">option_name</span></code> to <code class="docutils literal notranslate"><span class="pre">option_value</span></code>.</p>
+<p>After calling this function the CMake variable <code class="docutils literal notranslate"><span class="pre">option_name</span></code> is guaranteed
+to be set. Similar to CMake’s <code class="docutils literal notranslate"><span class="pre">option</span></code> command, the CMake cache variable
+<code class="docutils literal notranslate"><span class="pre">option_name</span></code> will be set if a normal (or cache) CMake variable
+<code class="docutils literal notranslate"><span class="pre">option_name</span></code> was not already set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>desc</em>) – The name of the configuration option being set.</p></li>
+<li><p><strong>default_value</strong> (<em>str</em>) – The value to set <code class="docutils literal notranslate"><span class="pre">name</span></code> to if the user does not
+provide a value.</p></li>
+<li><p><strong>docstring</strong> (<em>str</em>) – A brief description of what the option does. This
+parameter’s value is used primarily as metadata.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cmaize.user_api-cmaize_option.cmaize_option_list">
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/cmaize_option.</span></span><span class="sig-name descname"><span class="pre">cmaize_option_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-cmaize_option.cmaize_option_list" title="Link to this definition"></a></dt>
+<dd><p>Convenience function for registering a number of options with CMaize.</p>
+<p>Many projects have multiple configuration options. Rather than having to call
+<code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code> for each option, <code class="docutils literal notranslate"><span class="pre">cmaize_option_list</span></code> allows you to
+provide a list of key/value pairs. Under the hood this function simply loops
+over the key/value pairs and forwards them to <code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code>, thus all
+documentation relating to <code class="docutils literal notranslate"><span class="pre">cmaize_option</span></code> applies here as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*args</strong> – <p>A variadiac list of key/value pairs. The <code class="docutils literal notranslate"><span class="pre">2i</span></code>-th argument will
+be interpretted as the key for the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th pair and the <code class="docutils literal notranslate"><span class="pre">2i</span> <span class="pre">+</span> <span class="pre">1</span></code>-th
+argument will be interpretted as the value for the <code class="docutils literal notranslate"><span class="pre">i</span></code>-th pair.</p>
+</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>input_error</strong> – If the number of arguments is not divisible by 2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="add_tests.html" class="btn btn-neutral float-left" title="cmaize.user_api/add_tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cmaize_project.html" class="btn btn-neutral float-right" title="cmaize.user_api/cmaize_project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

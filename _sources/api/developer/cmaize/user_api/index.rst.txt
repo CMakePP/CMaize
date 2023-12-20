@@ -10,6 +10,7 @@ cmaize.user_api
    add_library
    add_package
    add_tests
+   cmaize_option
    cmaize_project
    find_or_build_dependency
    user_api

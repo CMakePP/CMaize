@@ -6,26 +6,6 @@ cmaize.user_api/add_executable
 .. module:: cmaize.user_api/add_executable
 
 
-.. function:: cpp_add_executable(_cae_tgt_name **kwargs)
-
-   User function to build a executable target.
-   
-   .. warning::
-      
-      ``cpp_add_executable()`` is depricated. ``cmaize_add_executable()``
-      should be used to create executables.
-   
-   :param _cae_tgt_name: Name of the target to be created.
-   :type _cae_tgt_name: desc
-   :param INCLUDE_DIR: Directory containing files to include.
-   :type INCLUDE_DIR: path, optional
-   :param INCLUDE_DIRS: Directories containing files to include. If this
-                        parameter is given a value, the value of ``INCLUDE_DIR``
-                        will be ignored.
-   :type INCLUDE_DIRS: List[path], optional
-   
-
-
 .. function:: cmaize_add_executable(_cae_tgt_name **kwargs)
 
    User function to build a executable target.
@@ -49,7 +29,7 @@ cmaize.user_api/add_executable
    User function to build a CXX executable target.
    
    .. note::
-      
+   
       See ``CXXTarget(make_target`` documentation for additional optional
       arguments.
    

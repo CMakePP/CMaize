@@ -43,6 +43,14 @@ cmaize.targets/build_target
 
    **Attributes**
 
+   .. py:attribute:: build_path
+
+      :type: path
+      
+      Directory where the target binary will appear after being built.
+      
+
+
    .. py:attribute:: include_dirs
 
       :type: List[path]

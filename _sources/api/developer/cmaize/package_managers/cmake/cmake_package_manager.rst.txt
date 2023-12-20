@@ -186,6 +186,24 @@ cmaize.package_managers/cmake/cmake_package_manager
       
 
 
+   .. py:attribute:: library_prefix
+
+      :type: path
+      
+      Prefix for libraries. Will default to ``lib`` if no language is specified
+      otherwise the value will be obtained from GNUInstallDirs.
+      
+
+
+   .. py:attribute:: binary_prefix
+
+      :type: path
+      
+      Prefix for executables. Will default to ``bin`` if no language is
+      specified otherwise the value will be otbtained from GNUInstallDirs.
+      
+
+
 
 .. function:: _register_package_manager_cmake()
 

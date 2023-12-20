@@ -1,7 +1,0 @@
-
-###############
-cpp.fetch/fetch
-###############
-
-.. module:: cpp.fetch/fetch
-
