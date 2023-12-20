@@ -98,7 +98,6 @@ function(cmaize_find_or_build_dependency _fobd_name)
 
     message(STATUS "Attempting to fetch and build ${_fobd_name}")
 
-    # TODO: Should CMakePackageManager be refactored to match the other?
     if("${_fobd_PACKAGE_MANAGER}" STREQUAL "cmake")
         PackageManager(get_package
             "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
@@ -127,7 +126,8 @@ function(cmaize_find_or_build_dependency _fobd_name)
         )
         list(REMOVE_DUPLICATES _fobd_install_paths)
         CMaizeTarget(SET "${_fobd_tgt}" install_path "${_fobd_install_paths}")
-
+    # TODO: PIPPackageManager should be refactored to be consistent with
+    #       CMakePackageManager's workflow.
     else()
         PackageManager(install_package "${_fobd_pm}" "${_fobd_package_specs}")
         PackageManager(
