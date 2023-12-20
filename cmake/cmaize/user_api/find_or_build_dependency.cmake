@@ -22,26 +22,6 @@ include(cmaize/package_managers/package_managers)
 #[[[
 # Add a dependency to the project.
 #
-# .. warning::
-# 
-#    ``cpp_find_or_build_dependency()`` is depricated.
-#    ``cmaize_find_or_build_dependency()`` should be used to add a dependency
-#    to the project.
-#
-# :param _fobd_name: Name of the dependency.
-# :type _fobd_name: desc
-# :param **kwargs: Additional keyword arguments may be necessary.
-#]]
-function(cpp_find_or_build_dependency _fobd_name)
-
-    # Forward all arguments to the new API call
-    cmaize_find_or_build_dependency("${_fobd_name}" ${ARGN})
-
-endfunction()
-
-#[[[
-# Add a dependency to the project.
-#
 # TODO: Add more versioning options, such as an ``EXACT`` keyword to allow
 #       the user to specify that only the given version should be found.
 #       As it stands, it finds any version or the exact version if ``VERSION`` is given.
@@ -72,7 +52,6 @@ function(cmaize_find_or_build_dependency _fobd_name)
 
     # Decide which language we are building for
     string(TOLOWER "${_fobd_PACKAGE_MANAGER}" _fobd_PACKAGE_MANAGER_lower)
-    set(pm_obj "")
     if("${_fobd_PACKAGE_MANAGER_lower}" STREQUAL "cmake")
         cmaize_find_or_build_dependency_cmake(
             "${_fobd_name}"
@@ -83,7 +62,7 @@ function(cmaize_find_or_build_dependency _fobd_name)
         string(APPEND msg "CMAIZE_SUPPORTED_PACKAGE_MANAGERS for a list of")
         string(APPEND msg "supported package manager strings.")
         cpp_raise(
-            InvalidPackageManager 
+            InvalidPackageManager
             "${msg}"
         )
     endif()
@@ -106,7 +85,7 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
     set(_fobdc_one_value_args VERSION)
     cmake_parse_arguments(_fobdc "" "${_fobdc_one_value_args}" "" ${ARGN})
 
-    cpp_get_global(_fobdc_project CMAIZE_PROJECT_${PROJECT_NAME})
+    cpp_get_global(_fobdc_project CMAIZE_TOP_PROJECT)
 
     # Create the package specification
     PackageSpecification(ctor _fobdc_package_specs)
@@ -152,6 +131,30 @@ function(cmaize_find_or_build_dependency_cmake _fobdc_name)
         CMaizeProject(add_target
             "${_fobdc_project}" "${_fobdc_name}" "${_fobdc_tgt}"
         )
+
+        # This creates the suspected install prefix for this dependency
+        cpp_get_global(_fobdc_top_proj CMAIZE_TOP_PROJECT)
+        CMaizeProject(GET "${_fobdc_top_proj}" _fobdc_top_proj_name name)
+        file(REAL_PATH
+            "${CMAKE_INSTALL_LIBDIR}/${_fobdc_top_proj_name}/external"
+            _fobdc_external_prefix
+            BASE_DIRECTORY "${CMAKE_INSTALL_PREFIX}"
+        )
+
+        # Get the build target name for the dependency, since it is not
+        # necessarily the same as the name of the CMaize target
+        CMaizeTarget(target "${_fobdc_tgt}" _fobdc_build_tgt)
+
+        # Create some possible paths where the dependency library will be
+        # installed
+        set(
+            _fobdc_install_paths
+            "${_fobdc_external_prefix}/lib"
+            "${_fobdc_external_prefix}/lib/${_fobdc_name}"
+            "${_fobdc_external_prefix}/lib/${_fobdc_build_tgt}"
+        )
+        list(REMOVE_DUPLICATES _fobdc_install_paths)
+        CMaizeTarget(SET "${_fobdc_tgt}" install_path "${_fobdc_install_paths}")
     endif()
 
     # The command above will throw build errors from inside FetchContent

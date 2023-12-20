@@ -101,7 +101,7 @@ function("${test_project}")
 
             # Test languages
             ct_assert_equal(result_languages "")
-            
+
         endfunction()
 
     endfunction()
@@ -123,14 +123,14 @@ function("${test_project}")
 
             BuildTarget(CTOR tgt_obj "${tgt_name}")
 
-            CMaizeProject(GET "${proj_obj}" tmp_name name)        
+            CMaizeProject(GET "${proj_obj}" tmp_name name)
 
             # Add a target
             CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${tgt_obj}")
 
             # Get the build target collection for testing
             CMaizeProject(GET "${proj_obj}" tgt_dict build_targets)
-            
+
             # Make sure there is an element in the targets list
             cpp_map(KEYS "${tgt_dict}" keys_list)
             list(LENGTH keys_list keys_list_len)
@@ -159,7 +159,7 @@ function("${test_project}")
 
             InstalledTarget(CTOR tgt_obj "${tgt_name}")
 
-            CMaizeProject(GET "${proj_obj}" tmp_name name)        
+            CMaizeProject(GET "${proj_obj}" tmp_name name)
 
             # Add a target
             CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${tgt_obj}" INSTALLED)
@@ -205,7 +205,7 @@ function("${test_project}")
             BuildTarget(CTOR build_tgt_obj "${tgt_name}")
             InstalledTarget(CTOR installed_tgt_obj "${tgt_name}")
 
-            CMaizeProject(GET "${proj_obj}" tmp_name name)        
+            CMaizeProject(GET "${proj_obj}" tmp_name name)
 
             # Duplicate targets should not be successfully added
             CMaizeProject(add_target "${proj_obj}" "${tgt_name}" "${build_tgt_obj}")
@@ -344,7 +344,7 @@ function("${test_project}")
             BuildTarget(CTOR tgt_obj_1 "${tgt_name}_1")
             BuildTarget(CTOR tgt_obj_2 "${tgt_name}_2")
 
-            CMaizeProject(GET "${proj_obj}" tmp_name name)        
+            CMaizeProject(GET "${proj_obj}" tmp_name name)
 
             # Add three distinct targets
             CMaizeProject(add_target "${proj_obj}" "${tgt_name}_1" "${tgt_obj_1}")
@@ -407,7 +407,7 @@ function("${test_project}")
 
             CMaizeTarget(target "${_tgt_obj}" _tgt_obj_name)
             ct_assert_equal(tgt_name "${_tgt_obj_name}")
-        
+
         endfunction()
 
         ct_add_section(NAME "installed_target")
@@ -434,7 +434,7 @@ function("${test_project}")
 
             CMaizeTarget(target "${_tgt_obj}" _tgt_obj_name)
             ct_assert_equal(tgt_name "${_tgt_obj_name}")
-        
+
         endfunction()
 
     endfunction()
@@ -450,7 +450,7 @@ function("${test_project}")
 
             project("${proj_name}")
 
-            CMaizeProject(CTOR proj_obj "${proj_name}")  
+            CMaizeProject(CTOR proj_obj "${proj_name}")
 
             # Add two distinct languages
             CMaizeProject(add_language "${proj_obj}" C)
@@ -475,7 +475,7 @@ function("${test_project}")
 
             project("${proj_name}")
 
-            CMaizeProject(CTOR proj_obj "${proj_name}")  
+            CMaizeProject(CTOR proj_obj "${proj_name}")
 
             # Add two distinct languages
             CMaizeProject(add_language "${proj_obj}" C)
@@ -493,6 +493,86 @@ function("${test_project}")
         endfunction()
 
     endfunction()
+
+    #[[[
+    # Tests the set_option method by comparing to the correct map
+    #]]
+    ct_add_section(NAME "test_set_config_option")
+    function("${test_set_config_option}")
+
+        set(proj_name "test_project_test_set_config_option")
+        project("${proj_name}")
+        CMaizeProject(CTOR proj_obj "${proj_name}")
+        CMaizeProject(set_config_option "${proj_obj}" "Hello" "World!!!")
+
+        # Prepare the correct answer
+        PackageSpecification(CTOR corr)
+        PackageSpecification(set_config_option "${corr}" "Hello" "World!!!")
+
+        CMaizeProject(GET "${proj_obj}" config_options specification)
+        PackageSpecification(EQUAL "${corr}" result "${config_options}")
+        ct_assert_equal(result TRUE)
+
+        # Now we test what happens if set_option is called again
+        ct_add_section(NAME "can_overwrite_option")
+        function("${can_overwrite_option}")
+
+            CMaizeProject(set_config_option "${proj_obj}" "Hello" 42)
+            PackageSpecification(EQUAL "${corr}" result "${config_options}")
+            ct_assert_equal(result FALSE)
+
+            PackageSpecification(
+                get_config_option "${config_options}" option_value "Hello"
+            )
+            ct_assert_equal(option_value 42)
+
+        endfunction()
+
+    endfunction()
+
+    #[[[
+    # Tests the getter for configuration options
+    #]]
+    ct_add_section(NAME "test_get_config_option")
+    function("${test_get_config_option}")
+
+        set(proj_name "test_project_test_get_config_option")
+        project("${proj_name}")
+        CMaizeProject(CTOR proj_obj "${proj_name}")
+        CMaizeProject(set_config_option "${proj_obj}" "Hello" "World!!!")
+        CMaizeProject(get_config_option "${proj_obj}" option_value "Hello")
+        ct_assert_equal(option_value "World!!!")
+
+        ct_add_section(NAME "throws_if_bad_key" EXPECTFAIL)
+        function("${throws_if_bad_key}")
+            CMaizeProject(
+                get_config_option "${proj_obj}" option_value "Not a Key!"
+            )
+        endfunction()
+
+    endfunction()
+
+    #[[[
+    # Tests checking if a config option has been defined.
+    #]]
+    ct_add_section(NAME "test_has_config_option")
+    function("${test_has_config_option}")
+
+        set(proj_name "test_project_test_has_config_option")
+        project("${proj_name}")
+        CMaizeProject(CTOR proj_obj "${proj_name}")
+
+        # Option does not exist
+        CMaizeProject(has_config_option "${proj_obj}" has_hello "Hello")
+        ct_assert_false(has_hello)
+
+        #Option exists
+        CMaizeProject(set_config_option "${proj_obj}" "Hello" "World!!!")
+        CMaizeProject(has_config_option "${proj_obj}" has_hello "Hello")
+        ct_assert_true(has_hello)
+
+    endfunction()
+
 
     ct_add_section(NAME "test_add_package_manager")
     function("${test_add_package_manager}")

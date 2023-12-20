@@ -26,7 +26,7 @@ cpp_class(CXXTarget BuildTarget)
     # :type: int
     #
     # CXX standard to use. For a given C++ standard designation, denoted as
-    # ``cxx_std_xx`` or "C++ xx", only provide the number, "xx" of the 
+    # ``cxx_std_xx`` or "C++ xx", only provide the number, "xx" of the
     # standard.
     #
     # Following the precident set forth by CMake for the ``CXX_STANDARD``
@@ -53,7 +53,7 @@ cpp_class(CXXTarget BuildTarget)
     # Create the target and configure its properties so it is ready to build.
     #
     # .. note::
-    # 
+    #
     #    Implements ``BuildTarget(make_target``.
     #
     # :param self: CXXTarget object
@@ -116,9 +116,9 @@ cpp_class(CXXTarget BuildTarget)
     endfunction()
 
     #[[[
-    # Abstracts out CMake's access level concept (public, interface, or 
+    # Abstracts out CMake's access level concept (public, interface, or
     # private).
-    # 
+    #
     # :param self: CXXTarget object
     # :type self: CXXTarget
     # :param _al_access_level: Returned access level.
@@ -137,7 +137,7 @@ cpp_class(CXXTarget BuildTarget)
 
     #[[[
     # Sets the CXX standard and other compiler features on the CMake target.
-    # 
+    #
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
@@ -147,13 +147,13 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(target "${self}" _scf_tgt_name)
         CXXTarget(GET "${self}" _scf_cxx_std cxx_standard)
 
-        # The CXX std will always have PUBLIC access
-        target_compile_features(
-            "${_scf_tgt_name}"
-            PUBLIC
-                "cxx_std_${_scf_cxx_std}"
-        )
-
+        if(NOT "${_scf_cxx_std}" STREQUAL "")
+            # The CXX std will always have PUBLIC access
+            target_compile_features(
+                "${_scf_tgt_name}"
+                PUBLIC "cxx_std_${_scf_cxx_std}"
+            )
+        endif()
     endfunction()
 
     #[[[
@@ -162,7 +162,7 @@ cpp_class(CXXTarget BuildTarget)
     # public and private headers to be found.
     #
     # .. note::
-    # 
+    #
     #    Implements ``BuildTarget(_set_include_directories``.
     #
     # :param self: CXXTarget object
@@ -211,7 +211,7 @@ cpp_class(CXXTarget BuildTarget)
     #[[[
     # Set the link libraries for the target. Uses the ``depends`` list
     # to determine what targets to link.
-    # 
+    #
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
@@ -235,7 +235,7 @@ cpp_class(CXXTarget BuildTarget)
     #[[[
     # Set the public headers on the target. It is set to all include files
     # on this object.
-    # 
+    #
     # :param self: CXXTarget object
     # :type self: CXXTarget
     #]]
