@@ -16,83 +16,38 @@ include_guard()
 
 include(cmakepp_lang/cmakepp_lang)
 include(cmaize/project/cmaize_project)
-include(cmaize/package_managers/get_package_manager)
-include(cmaize/package_managers/package_managers)
+include(cmaize/user_api/dependencies/impl_/find_dependency)
 
 #[[[
-# Add a dependency to the project.
+# Ensures that the project either finds or will build a necessary dependency.
 #
-# TODO: Add more versioning options, such as an ``EXACT`` keyword to allow
-#       the user to specify that only the given version should be found.
-#       As it stands, it finds any version or the exact version if ``VERSION`` is given.
-#       I propose providing the following options: 1) any available version if no version
-#       keyword is given; 2) the provided version, or greater; or 3) the exact
-#       version if both ``VERSION`` and ``EXACT`` are provided.
+# This is the user-facing API for package management. Users specify the
+# package that their build system depends on, and how to build it. Then when
+# the build system runs CMaize attempts to find an already installed version of
+# the dependency. If it can not, then CMaize will use the provided information
+# to build it.
 #
 # :param _fobdc_name: Name of the dependency.
 # :type _fobdc_name: desc
 # :param **kwargs: Additional keyword arguments may be necessary.
-#
-# :Keyword Arguments:
-#    * **VERSION** (*desc*) --
-#      Version of the package to find. Defaults to no version ("").
-#    * **PACKAGE_MANAGER** (*desc*) --
-#      Package manager to use. Must be a valid package listed in the
-#      ``CMAIZE_SUPPORTED_PACKAGE_MANAGERS`` variable. Defaults to "CMake".
+#      See _fob_parse_arguemnts for up to date list.
 #]]
 function(cmaize_find_or_build_dependency _fobd_name)
 
-    set(_fobd_one_value_args PACKAGE_MANAGER VERSION)
-    cmake_parse_arguments(_fobd "" "${_fobd_one_value_args}" "" ${ARGN})
-
     cpp_get_global(_fobd_project CMAIZE_TOP_PROJECT)
-
-    # Create the package specification
-    PackageSpecification(ctor _fobd_package_specs)
-    PackageSpecification(SET "${_fobd_package_specs}" name "${_fobd_name}")
-    PackageSpecification(
-        set_version "${_fobd_package_specs}" "${_fobd_VERSION}"
+    _cmaize_find_dependency(
+        _fobd_tgt
+        _fobd_pm
+        _fobd_package_specs
+        "${_fobd_project}"
+        "${_fobd_name}"
+        ${ARGN}
     )
 
-    # Default to CMake package manager if none were given
-    if("${_fobd_PACKAGE_MANAGER}" STREQUAL "")
-        set(_fobd_PACKAGE_MANAGER "cmake")
-    elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "cmake")
-        # Enabled by default, no enable function
-    elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "pip")
-        enable_pip_package_manager()
-    else()
-        cpp_raise(
-            UNKNOWN_PM
-            "Package manager ${_fobd_PACKAGE_MANAGER} was not registered."
-        )
-    endif()
-
-    CMaizeProject(get_package_manager
-        "${_fobd_project}" _fobd_pm "${_fobd_PACKAGE_MANAGER}"
-    )
-
-    # TODO: This probably can be eliminated if
-    # CMaizeProject(get_package_manager uses get_package_manager_instance
-    # under the hood
-    if("${_fobd_pm}" STREQUAL "")
-        get_package_manager_instance(_fobd_pm "${_fobd_PACKAGE_MANAGER}")
-        CMaizeProject(add_package_manager "${_fobd_project}" "${_fobd_pm}")
-    endif()
-
-    message(STATUS "Attempting to find installed ${_fobd_name}")
-
-    # Check if the package is already installed
-    PackageManager(find_installed
-        "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
-    )
-    if(NOT "${_fobd_tgt}" STREQUAL "")
-        message(STATUS "${_fobd_name} installation found")
-        CMaizeProject(add_target
-            "${_fobd_project}" "${_fobd_name}" "${_fobd_tgt}" INSTALLED
-        )
+    if(NOT "${_cfd_tgt}" STREQUAL "")
         cpp_return("")
     endif()
+
 
     message(STATUS "Attempting to fetch and build ${_fobd_name}")
 
