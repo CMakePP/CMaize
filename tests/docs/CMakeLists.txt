@@ -40,7 +40,13 @@ function(sub_cmake_build directory_name)
     set(scb_one_value)
     cmake_parse_arguments(scb "${scb_options}" "${scb_one_value}" "" ${ARGN})
     set(scb_test_dir ${CMAKE_CURRENT_SOURCE_DIR}/${directory_name})
-    set(scb_script_name ${CMAKE_CURRENT_SOURCE_DIR}/conf_build_test.cmake)
+
+    get_filename_component(
+        scb_script_name "${CMAKE_CURRENT_SOURCE_DIR}" DIRECTORY
+    )
+    set(scb_script_name ${scb_script_name}/conf_build_test.cmake)
+
+
     string (REPLACE ";" "\\\;" CMAKE_MODULE_PATH_STR "${CMAKE_MODULE_PATH}")
 
     add_test(

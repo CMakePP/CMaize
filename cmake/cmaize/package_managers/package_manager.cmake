@@ -17,6 +17,7 @@ include(cmakepp_lang/cmakepp_lang)
 
 include(cmaize/targets/cmaize_target)
 include(cmaize/package_managers/get_package_manager)
+include(cmaize/project/package_specification)
 
 #[[[
 # Base class for the PackageManager class hierarchy.
@@ -46,7 +47,7 @@ cpp_class(PackageManager)
     # Virtual member function to get the package source and prepare a
     # build target.
     #]]
-    cpp_member(fetch_package PackageManager desc PackageSpecification)
+    cpp_member(get_package PackageManager desc PackageSpecification)
     cpp_virtual_member(fetch_package)
 
     #[[[
@@ -65,7 +66,7 @@ function(_register_package_manager_base_class)
 
     PackageManager(CTOR __package_manager)
     register_package_manager("packagemanager" "${__package_manager}")
-    
+
 endfunction()
 
 _register_package_manager_base_class()

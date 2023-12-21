@@ -12,6 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#[[[ @module
+# Script for configuring, building, testing, and installing a project.
+#
+# CMaize is ultimately a build system. There are tests which can only be done
+# when CMaize is run as a build system, i.e. we need to test CMaize
+# functionality during CMake's configuration, build, test, and install phases.
+# Think of this script as a bash script wrapping the process of running CMake's
+# configuration, build, test, and install commands, only that instead of being
+# written in bash it is written in CMake (for cross-platform-ness). Ultimately
+# this script is meant to be invoked via:
+#
+# .. code-block:: bash
+#
+#    cmake -DTEST_SOURCE=<directory_continaing_the_build_system_to_test> \
+#          -DTEST_NAME=<descriptive_name_of_build_system> \
+#          -DNO_INSTALL=<false_if_we_should_install_the_build_system> \
+#          -DRUN_TEST_INSTALL=<true_if_the_install_should_be_tested_too> \
+#          -P <path_to_this_script> \
+#          <arguments_to_pass_to_this_script>
+#
+#
+# .. note::
+#    In the snippet above, it is important to maintain the partitioning between
+#    the arguments which come before the ``-P`` argument, and those which come
+#    after.
+#]]
+
+
 # Starting with 3.19 we have COMMAND_ERROR_IS_FATAL, which is a much nicer
 # solution than manually checking the variable
 if("${CMAKE_VERSION}" VERSION_LESS 3.19)
@@ -69,7 +97,7 @@ message(DEBUG "conf_build_test called with: ${args_to_forward}")
 string(TIMESTAMP test_prefix)
 set(test_build_dir "${CMAKE_BINARY_DIR}/${TEST_NAME}/${test_prefix}")
 set(install_build_dir "${test_build_dir}-install")
- 
+
 #############
 # Configure #
 #############

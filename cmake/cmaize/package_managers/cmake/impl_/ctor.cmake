@@ -21,7 +21,7 @@ macro(_cpm_ctor_impl self)
         include(GNUInstallDirs)
     endif()
 
-    PackageManager(SET "${self}" type "CMake")
+    PackageManager(SET "${self}" type "cmake")
 
     # Establish default paths
     if(CMAKE_INSTALL_LIBDIR)

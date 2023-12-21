@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#[[[ @module
+# Convience module for including the PIP packagemanager's implementations.
+#
+# Including this module will include the implementations of the PIP class's
+# methods. The module is really only intended for inclusion from pip.cmake.
+#]]
+
 include_guard()
 
-# Included first so __CMAIZE_PACKAGE_MANAGER_MAP__ is initialized first
-include(cmaize/package_managers/get_package_manager)
-
-include(cmaize/package_managers/cmake/cmake)
-include(cmaize/package_managers/package_manager)
-include(cmaize/package_managers/pip/pip)
+include(cmaize/package_managers/pip/impl_/find_installed)
+include(cmaize/package_managers/pip/impl_/get_package)
+include(cmaize/package_managers/pip/impl_/install_package)

@@ -14,9 +14,13 @@
 
 include_guard()
 
-# Included first so __CMAIZE_PACKAGE_MANAGER_MAP__ is initialized first
-include(cmaize/package_managers/get_package_manager)
+macro(_pip_install_package self _ip_package_specs)
 
-include(cmaize/package_managers/cmake/cmake)
-include(cmaize/package_managers/package_manager)
-include(cmaize/package_managers/pip/pip)
+    PipPackageManager(GET "${self}" _ip_py_exe python_executable)
+    PackageSpecification(GET "${_ip_package_specs}" _ip_name name)
+    execute_process(
+        COMMAND "${_ip_py_exe}" "-m" "pip" "install" "${_ip_name}"
+        OUTPUT_QUIET
+    )
+
+endmacro()

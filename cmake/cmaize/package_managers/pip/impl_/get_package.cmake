@@ -14,9 +14,17 @@
 
 include_guard()
 
-# Included first so __CMAIZE_PACKAGE_MANAGER_MAP__ is initialized first
-include(cmaize/package_managers/get_package_manager)
+macro(_pip_get_package self _gp_result _gp_package_specs)
 
-include(cmaize/package_managers/cmake/cmake)
-include(cmaize/package_managers/package_manager)
-include(cmaize/package_managers/pip/pip)
+    PipPackageManager(find_installed "${self}" "${_gp_result}" "${_gp_package_specs}")
+
+    if("${_gp_result}" STREQUAL "")
+        PackageSpecification(GET "${_gp_package_specs}" _gp_name name)
+        cpp_raise(
+            PACKAGE_NOT_FOUND "Unable to locate Python module: ${_gp_name}"
+        )
+    endif()
+
+    cpp_return("${_gp_result}")
+
+endmacro()

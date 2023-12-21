@@ -25,7 +25,7 @@ function("${test_cmake_package_manager}")
     ct_add_section(NAME "type_is_cmake")
     function("${type_is_cmake}")
 
-        set(corr "CMake")
+        set(corr "cmake")
 
         CMakePackageManager(CTOR pm_obj)
 

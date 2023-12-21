@@ -37,7 +37,7 @@ function(cmaize_add_package _cap_tgt_name)
     cmake_parse_arguments(_cap "" "${_cap_one_value_args}" "" ${ARGN})
 
     if("${_cap_PACKAGE_MANAGER}" STREQUAL "")
-        set(_cap_PACKAGE_MANAGER "CMake")
+        set(_cap_PACKAGE_MANAGER "cmake")
     endif()
 
     string(TOLOWER "${_cap_PACKAGE_MANAGER}" _cap_pm_lower)
@@ -45,7 +45,7 @@ function(cmaize_add_package _cap_tgt_name)
         cmaize_add_package_cmake("${_cap_tgt_name}" ${_cap_UNPARSED_ARGUMENTS})
     else()
         cpp_raise(
-            InvalidPackageManager 
+            InvalidPackageManager
             "Invalid package manager: ${_cap_PACKAGE_MANAGER}"
         )
     endif()
@@ -65,14 +65,14 @@ function(cmaize_add_package_cmake _capc_pkg_name)
 
     # Get the correct package manager
     CMaizeProject(get_package_manager
-        "${_capc_proj}" _capc_pm_obj "CMake"
+        "${_capc_proj}" _capc_pm_obj "cmake"
     )
 
     # TODO: This probably can be eliminated if CMaizeProject(get_package_manager
     #       uses get_package_manager_instance under the hood
     # Create new package manager if it doesn't exist
     if("${_capc_pm_obj}" STREQUAL "")
-        get_package_manager_instance(_capc_pm_obj "CMake")
+        get_package_manager_instance(_capc_pm_obj "cmake")
         CMaizeProject(add_package_manager "${_capc_proj}" "${_capc_pm_obj}")
     endif()
 
