@@ -57,10 +57,8 @@ function(cmaize_find_or_build_dependency _fobd_name)
     # Default to CMake package manager if none were given
     if("${_fobd_PACKAGE_MANAGER}" STREQUAL "")
         set(_fobd_PACKAGE_MANAGER "cmake")
-        # Enabled by default, no enable function
     elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "cmake")
         # Enabled by default, no enable function
-        set(foo "bar")
     elseif("${_fobd_PACKAGE_MANAGER}" STREQUAL "pip")
         enable_pip_package_manager()
     else()

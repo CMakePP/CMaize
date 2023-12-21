@@ -70,7 +70,6 @@ function(register_package_manager _rpm_name _rpm_instance)
 
     cpp_get_global(_rpm_pm_map __CMAIZE_PACKAGE_MANAGER_MAP__)
     cpp_map(SET "${_rpm_pm_map}" "${_rpm_name}" "${_rpm_instance}")
-    cpp_map(HAS_KEY "${_rpm_pm_map}" _rpm_has_name "${_rpm_name}")
     cpp_set_global(__CMAIZE_PACKAGE_MANAGER_MAP__ "${_rpm_pm_map}")
 
 endfunction()

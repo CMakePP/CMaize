@@ -19,12 +19,12 @@ include(cmaize/package_managers/pip/impl_/impl_)
 include(cmaize/utilities/python)
 
 #[[[
-# Class exposing Python's PIPPackageManager package manager to CMaize.
+# Class exposing Python's PipPackageManager package manager to CMaize.
 #
 # This class holds a Python interpreter and leverages the pip installation
 # associated with the interpreter to locate and install pip packages.
 #]]
-cpp_class(PIPPackageManager PackageManager)
+cpp_class(PipPackageManager PackageManager)
 
     #[[[
     # :type: path
@@ -32,26 +32,26 @@ cpp_class(PIPPackageManager PackageManager)
     # The Python executable to use for running pip commands. pip invocations
     # will look like ``self.python_executable -m pip <command>``
     #]]
-    cpp_attr(PIPPackageManager python_executable)
+    cpp_attr(PipPackageManager python_executable)
 
     #[[[
     # Constructs a pip package manager based on the provided Python interpreter
     #
-    # The PIPPackageManager class works by system calling a Python interpreter.
-    # When creating a PIPPackageManager object the user is responsible for
+    # The PipPackageManager class works by system calling a Python interpreter.
+    # When creating a PipPackageManager object the user is responsible for
     # ensuring that the Python interpreter used at creation is indeed the Python
     # interpreter that should be used for installing packages.
     #
     # :param self: The variable to assign the new object to.
-    # :type self: PIPPackageManager*
+    # :type self: PipPackageManager*
     # :param _py_exe: The path to the Python interpreter.
     # :type _py_exe: path
     #]]
-    cpp_constructor(CTOR PIPPackageManager path)
+    cpp_constructor(CTOR PipPackageManager path)
     function("${CTOR}" self _py_exe)
 
         PackageManager(SET "${self}" type "pip")
-        PIPPackageManager(SET "${self}" python_executable "${_py_exe}")
+        PipPackageManager(SET "${self}" python_executable "${_py_exe}")
 
     endfunction()
 
@@ -64,7 +64,7 @@ cpp_class(PIPPackageManager PackageManager)
     # function returns an empty string.
     #
     # :param self: The pip package manager to check for the package.
-    # :type self: PIPPackageManager
+    # :type self: PipPackageManager
     # :param result: A variable to hold the result of the invocation.
     # :type result: desc
     # :param package_specs: The details pertaining to what package pip should
@@ -74,7 +74,7 @@ cpp_class(PIPPackageManager PackageManager)
     #    otherwise a target representing the package.
     # :rtype: string or InstalledTarget
     #]]
-    cpp_member(find_installed PIPPackageManager desc PackageSpecification args)
+    cpp_member(find_installed PipPackageManager desc PackageSpecification args)
     function("${find_installed}" self _fi_result _fi_package_specs)
 
         _pip_find_installed(
@@ -90,7 +90,7 @@ cpp_class(PIPPackageManager PackageManager)
     # asserting that the result is not an empty string.
     #
     # :param self: The pip package manager to check for the pacakge.
-    # :type self: PIPPackageManager
+    # :type self: PipPackageManager
     # :param result: A variable to hold the resulting target
     # :type result: InstalledTarget*
     # :param package_specs: The details of the package we are looking for.
@@ -101,7 +101,7 @@ cpp_class(PIPPackageManager PackageManager)
     # :raises PACKAGE_NOT_FOUND: When ``package_specs`` is not already
     #    installed.
     #]]
-    cpp_member(get_package PIPPackageManager str PackageSpecification args)
+    cpp_member(get_package PipPackageManager str PackageSpecification args)
     function("${get_package}" self _gp_result _gp_package_specs)
 
         _pip_get_package(
@@ -122,11 +122,11 @@ cpp_class(PIPPackageManager PackageManager)
     # moment, the installation happens at configuration time.
     #
     # :param self: The package manager the package will be installed into.
-    # :type self: PIPPackageManager
+    # :type self: PipPackageManager
     # :param package_specs: The specs for the package we need to install.
     # :type package_specs: PackageSpecification
     #]]
-    cpp_member(install_package PIPPackageManager PackageSpecification args)
+    cpp_member(install_package PipPackageManager PackageSpecification args)
     function("${install_package}" self _ip_package_specs)
 
         _pip_install_package("${self}" "${_ip_package_specs}" ${ARGN})
@@ -159,7 +159,7 @@ function(enable_pip_package_manager)
     find_python(_eppm_py_exe _eppm_py_version)
     message(DEBUG "pip package manager will use Python: ${_eppm_py_exe}")
 
-    PIPPackageManager(CTOR _eppm_package_manager "${_eppm_py_exe}")
+    PipPackageManager(CTOR _eppm_package_manager "${_eppm_py_exe}")
     register_package_manager("pip" "${_eppm_package_manager}")
 
 endfunction()

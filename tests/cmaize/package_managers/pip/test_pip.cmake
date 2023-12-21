@@ -19,7 +19,9 @@ ct_add_test(NAME "test_pip")
 function("${test_pip}")
     include(cmaize/package_managers/pip/pip)
     find_python(py_exe py_version)
-    create_virtual_env(venv_dir "${py_exe}" "${test_pip}")
+    create_virtual_env(
+        venv_dir "${py_exe}" "${CMAKE_BINARY_DIR}" "${test_pip}"
+    )
 
     # Make sure everything is using the venv Python
     set(Python3_EXECUTABLE "${venv_dir}/bin/python3")
@@ -33,10 +35,10 @@ function("${test_pip}")
     set(py_exe "${venv_dir}/bin/python3")
 
     # This is the package manager we are going to be testing
-    PIPPackageManager(CTOR pip_pm "${py_exe}")
+    PipPackageManager(CTOR pip_pm "${py_exe}")
 
     # For testing purposes we'll want a package which exists on PyPI and one
-    # that does note. For the former we use CMinx. For the latter we use
+    # that does not. For the former we use CMinx. For the latter we use
     # "not_the_cminx_package" and hope that no one ever actually adds a package
     # with that name to PyPI
     PackageSpecification(CTOR cminx)
@@ -50,15 +52,12 @@ function("${test_pip}")
         CTOR corr "cminx" "${venv_dir}/lib/python${py_version}/site-packages"
     )
 
-    # Verify CMinx isn't already installed before installing it
+    # Verify CMinx isn't already installed
     ct_add_section(NAME "CMinx_is_not_preinstalled")
     function("${CMinx_is_not_preinstalled}")
 
-        PIPPackageManager(find_installed "${pip_pm}" has_cminx "${cminx}")
+        PipPackageManager(find_installed "${pip_pm}" has_cminx "${cminx}")
         ct_assert_equal(has_cminx "")
-
-        # (checking that it was installed happens in find_installed)
-        PIPPackageManager(install_package "${pip_pm}" "${cminx}")
 
     endfunction()
 
@@ -66,11 +65,12 @@ function("${test_pip}")
     function("${find_installed}")
 
         # Look for non-existant (and thus not installed) package
-        PIPPackageManager(find_installed "${pip_pm}" has_not_real "${not_real}")
+        PipPackageManager(find_installed "${pip_pm}" has_not_real "${not_real}")
         ct_assert_equal(has_not_real "")
 
-        # Look for cminx. Bcause sections are run sequentially, it's installed
-        PIPPackageManager(find_installed "${pip_pm}" cminx_tgt "${cminx}")
+        # Install and then look for cminx.
+        PipPackageManager(install_package "${pip_pm}" "${cminx}")
+        PipPackageManager(find_installed "${pip_pm}" cminx_tgt "${cminx}")
 
         InstalledTarget(EQUAL "${corr}" has_cminx "${cminx_tgt}")
         ct_assert_true(has_cminx)
@@ -83,14 +83,14 @@ function("${test_pip}")
         ct_add_section(NAME "package_does_not_exist" EXPECTFAIL)
         function("${package_does_not_exist}")
 
-            PIPPackageManager(get_package "${pip_pm}" the_package "${not_real}")
+            PipPackageManager(get_package "${pip_pm}" the_package "${not_real}")
 
         endfunction()
 
         ct_add_section(NAME "package_does_exist")
         function("${package_does_exist}")
 
-            PIPPackageManager(get_package "${pip_pm}" the_package "${cminx}")
+            PipPackageManager(get_package "${pip_pm}" the_package "${cminx}")
             InstalledTarget(EQUAL "${corr}" has_cminx "${the_package}")
             ct_assert_true(has_cminx)
 
@@ -105,8 +105,8 @@ function("${test_pip}")
         ct_add_section(NAME "same_state")
         function("${same_state}")
 
-            PIPPackageManager(CTOR another_pm "${py_exe}")
-            PIPPackageManager(EQUAL "${another_pm}" are_equal "${pip_pm}")
+            PipPackageManager(CTOR another_pm "${py_exe}")
+            PipPackageManager(EQUAL "${another_pm}" are_equal "${pip_pm}")
             ct_assert_true(are_equal)
 
         endfunction()
@@ -117,8 +117,8 @@ function("${test_pip}")
 
             # n.b., as long as we don't call any
             # methods that needs the interpreter any path should work)
-            PIPPackageManager(CTOR another_pm "/not/a/real/path")
-            PIPPackageManager(EQUAL "${another_pm}" are_equal "${pip_pm}")
+            PipPackageManager(CTOR another_pm "/not/a/real/path")
+            PipPackageManager(EQUAL "${another_pm}" are_equal "${pip_pm}")
             ct_assert_false(are_equal)
 
         endfunction()

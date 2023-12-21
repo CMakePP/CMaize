@@ -24,6 +24,7 @@
 # this script is meant to be invoked via:
 #
 # .. code-block:: bash
+#
 #    cmake -DTEST_SOURCE=<directory_continaing_the_build_system_to_test> \
 #          -DTEST_NAME=<descriptive_name_of_build_system> \
 #          -DNO_INSTALL=<false_if_we_should_install_the_build_system> \

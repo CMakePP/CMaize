@@ -81,14 +81,15 @@ look something like:
    include(cmaize/package_managers/package_manager)
    include(cmaize/package_managers/pip/impl_/impl_)
 
-   cpp_class(PIP PackageManager)
+   cpp_class(PipPackageManager PackageManager)
        # Class body goes here
    cpp_end_class()
 
 For brevity, and to avoid this tutorial becoming dated, we omit the body of the
-class. Developers should consult with the documentation for the base class,
-i.e., ``PackageManager``, for details on what functions the derived class must
-implement, and what those functions should do.
+class. Developers should consult with the
+`documentation <https://cmakepp.github.io/CMaize/api/developer/cmaize/package_managers/package_manager.html>`_
+for the base class, i.e., ``PackageManager``, for details on what functions the
+derived class must implement, and what those functions should do.
 
 ******************************
 Registering the PackageManager
@@ -114,12 +115,12 @@ of example, the ``enable_pip_package_manager`` function looks like:
          return()
       endif()
 
-      set(_eppm_pms "${_eppm_pms}" "pip")
+      list(APPEND _eppm_pms "pip")
       cpp_set_global(CMAIZE_SUPPORTED_PACKAGE_MANAGERS "${_eppm_pms}")
 
-      #2. Construct a PIP object
+      #2. Construct a PipPackageManater object
       find_package(Python3 COMPONENTS Interpreter QUIET REQUIRED)
-      PIP(CTOR _eppm_package_manager "${Python3_EXECUTABLE}")
+      PipPackageManager(CTOR _eppm_package_manager "${Python3_EXECUTABLE}")
 
       #3. Register the PIP object with the global environment
       register_package_manager("pip" "${_eppm_package_manager}")
