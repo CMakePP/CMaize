@@ -14,7 +14,7 @@
 
 include(cmake_test/cmake_test)
 include(cmaize/user_api/cmaize_project)
-include(cmaize/user_api/find_or_build_dependency)
+include(cmaize/user_api/dependencies/find_or_build_dependency)
 include(cmaize/utilities/python)
 
 #[[[
