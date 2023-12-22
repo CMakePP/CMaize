@@ -53,9 +53,9 @@ function("${test_check_optional_flag}")
 
     endfunction()
 
-    ct_add_section(NAME "flag_value")
+    ct_add_section(NAME "flag_value" EXPECTFAIL)
     function("${flag_value}")
-    
+
         set(ENABLE_DEPENDENCY ON)
         _check_optional_flag("${ENABLE_DEPENDENCY}")
 

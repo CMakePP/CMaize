@@ -23,7 +23,10 @@ function("${test_find_optional_dependency}")
 
     find_python(py_exe py_version)
     create_virtual_env(
-        venv_dir "${py_exe}" "${CMAKE_BINARY_DIR}" "${test_find_optional_dependency}"
+        venv_dir
+        "${py_exe}"
+        "${CMAKE_BINARY_DIR}"
+        "${test_find_optional_dependency}"
     )
 
     # Make sure everything is using the venv Python
@@ -38,6 +41,8 @@ function("${test_find_optional_dependency}")
         cmaize_find_optional_dependency(not_real_empty ENABLE_NOT_REAL)
 
         ct_assert_target_exists(not_real_empty)
+        get_target_property(target_type not_real_empty TYPE)
+        ct_assert_equal(target_type "INTERFACE_LIBRARY")
 
     endfunction()
 
