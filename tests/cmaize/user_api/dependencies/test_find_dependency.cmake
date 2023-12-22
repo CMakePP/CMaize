@@ -29,7 +29,7 @@ function("${cmaize_find_dependency}")
 
     find_python(py_exe py_version)
     create_virtual_env(
-        venv_dir "${py_exe}" "${CMAKE_BINARY_DIR}" "${_find_dependency}"
+        venv_dir "${py_exe}" "${CMAKE_BINARY_DIR}" "${cmaize_find_dependency}"
     )
 
     # Make sure everything is using the venv Python
