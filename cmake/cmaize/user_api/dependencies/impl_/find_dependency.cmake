@@ -61,12 +61,10 @@ function(_find_dependency _fd_tgt _fd_pm _fd_package_specs _fd_project _fd_name)
 
     if(NOT "${_fd_tgt_tmp}" STREQUAL "")
         message(STATUS "${_fd_name} installation found")
-        message("Adding ${_fd_name} to project")
         CMaizeProject(add_target
             "${_fd_project}" "${_fd_name}" "${_fd_tgt_tmp}" INSTALLED
         )
-        CMaizeProject(check_target "${_fd_project}" was_found "${_fd_name}")
-        message("Sanity check: ${was_found}")
+        CMaizeProject(check_target "${_fd_project}" was_found "${_fd_name}" INSTALLED)
     endif()
 
     set("${_fd_tgt}" "${_fd_tgt_tmp}" PARENT_SCOPE)

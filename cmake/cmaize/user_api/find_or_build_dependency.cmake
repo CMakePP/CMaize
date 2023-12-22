@@ -35,7 +35,7 @@ include(cmaize/user_api/dependencies/impl_/find_dependency)
 function(cmaize_find_or_build_dependency _fobd_name)
 
     cpp_get_global(_fobd_project CMAIZE_TOP_PROJECT)
-    _cmaize_find_dependency(
+    _find_dependency(
         _fobd_tgt
         _fobd_pm
         _fobd_package_specs
@@ -44,14 +44,16 @@ function(cmaize_find_or_build_dependency _fobd_name)
         ${ARGN}
     )
 
-    if(NOT "${_cfd_tgt}" STREQUAL "")
+    # If _fobd_tgt is non-empty we found it!!!
+    if(NOT "${_fobd_tgt}" STREQUAL "")
         cpp_return("")
     endif()
 
-
     message(STATUS "Attempting to fetch and build ${_fobd_name}")
 
-    if("${_fobd_PACKAGE_MANAGER}" STREQUAL "cmake")
+    PackageManager(GET "${_fobd_pm}" _fobd_pm_name type)
+
+    if("${_fobd_pm_name}" STREQUAL "cmake")
         PackageManager(get_package
             "${_fobd_pm}" _fobd_tgt "${_fobd_package_specs}" ${ARGN}
         )
@@ -67,7 +69,7 @@ function(cmaize_find_or_build_dependency _fobd_name)
 
         # Get the build target name for the dependency, since it is not
         # necessarily the same as the name of the CMaize target
-        CMaizeTarget(target "${_fobd_tgt}" _fobdc_build_tgt)
+        CMaizeTarget(target "${_fobd_tgt}" _fobd_build_tgt)
 
         # Create some possible paths where the dependency library will be
         # installed

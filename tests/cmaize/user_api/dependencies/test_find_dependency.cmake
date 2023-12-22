@@ -50,7 +50,7 @@ function("${cmaize_find_dependency}")
         cmaize_find_dependency("cminx" PACKAGE_MANAGER pip)
 
         # Should have added a target to the project
-        CMaizeProject(check_target "${proj_obj}" cminx_found "cminx")
+        CMaizeProject(check_target "${proj_obj}" cminx_found "cminx" INSTALLED)
         ct_assert_true(cminx_found)
 
     endfunction()

@@ -62,7 +62,7 @@ function("${_find_dependency}")
         ct_assert_true(are_equal)
 
         # Target should have been added to the project
-        CMaizeProject(check_target "${proj_obj}" cminx_found "cminx")
+        CMaizeProject(check_target "${proj_obj}" cminx_found "cminx" INSTALLED)
         ct_assert_true(cminx_found)
 
     endfunction()
