@@ -53,6 +53,13 @@ function("${test_check_optional_flag}")
 
     endfunction()
 
+    ct_add_section(NAME "flag_value")
+    function("${flag_value}")
+    
+        set(ENABLE_DEPENDENCY ON)
+        _check_optional_flag("${ENABLE_DEPENDENCY}")
+
+    endfunction()
 
     ct_add_section(NAME "valid_flag")
     function("${valid_flag}")

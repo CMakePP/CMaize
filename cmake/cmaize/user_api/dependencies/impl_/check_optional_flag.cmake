@@ -21,10 +21,10 @@ include(cmakepp_lang/cmakepp_lang)
 #
 # The various ``optional_dependency`` functions are tied to a configuration flag
 # which determines whether the option is enabled or not. Users need to provide
-# those functions with the name of the flag NOT its value. This function wraps
-# the error-checking logic for ensuring that users passsed the value.
+# those functions with the name of the flag, NOT its value. This function wraps
+# the error-checking logic for ensuring that users passed the value.
 #
-# :param flag: Should be the name of a variable.
+# :param flag: Name of the option variable.
 # :type flag: desc
 #
 # :raises RUNTIME_ERROR: If ``flag`` is not the name of a variable. In
@@ -38,13 +38,12 @@ function(_check_optional_flag _cof_flag)
     if("${_cof_flag}" STREQUAL "")
         cpp_raise(
             RUNTIME_ERROR
-            "Expected variable serving as the flag, recived an empty string"
-
+            "Expected variable serving as the flag, received an empty string"
         )
     elseif("${_cof_type}" STREQUAL "bool")
         cpp_raise(
             RUNTIME_ERROR
-            "Expected variable serving as the flag, recieved boolean value."
+            "Expected variable serving as the flag, received boolean value."
         )
     endif()
 
