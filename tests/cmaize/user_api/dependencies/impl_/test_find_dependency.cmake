@@ -17,18 +17,18 @@ include(cmaize/user_api/cmaize_project)
 include(cmaize/user_api/dependencies/impl_/find_dependency)
 include(cmaize/utilities/python)
 
-ct_add_test(NAME "_find_dependency")
-function("${_find_dependency}")
+ct_add_test(NAME "_cmaize_find_dependency")
+function("${_cmaize_find_dependency}")
 
     # Create a project
-    set(proj_name "test_find_dependency")
+    set(proj_name "test_cmaize_find_dependency")
     project("${proj_name}")
     cmaize_project("${proj_name}")
     cpp_get_global(proj_obj CMAIZE_TOP_PROJECT)
 
     find_python(py_exe py_version)
     create_virtual_env(
-        venv_dir "${py_exe}" "${CMAKE_BINARY_DIR}" "${_find_dependency}"
+        venv_dir "${py_exe}" "${CMAKE_BINARY_DIR}" "${_cmaize_find_dependency}"
     )
 
     # Make sure everything is using the venv Python
@@ -48,7 +48,7 @@ function("${_find_dependency}")
         PackageManager(install_package "${pm_corr}" "${cminx_corr}")
 
         # Look for CMinx
-        _find_dependency(
+        _cmaize_find_dependency(
             cminx_tgt pm cminx "${proj_obj}" "cminx" PACKAGE_MANAGER pip
         )
 
@@ -71,7 +71,7 @@ function("${_find_dependency}")
     ct_add_section(NAME "find_not_installed_package")
     function("${find_not_installed_package}")
 
-        _find_dependency(
+        _cmaize_find_dependency(
             not_real_tgt
             pm
             not_real

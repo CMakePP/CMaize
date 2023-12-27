@@ -44,7 +44,7 @@ include(cmaize/package_managers/package_manager)
 #     manager. Strong throw guarantee.
 #
 #]]
-function(_find_dependency _fd_tgt _fd_pm _fd_package_specs _fd_project _fd_name)
+function(_cmaize_find_dependency _fd_tgt _fd_pm _fd_package_specs _fd_project _fd_name)
 
     _fob_parse_arguments(
         _fd_package_specs_tmp _fd_pm_name "${_fd_name}" ${ARGN}
