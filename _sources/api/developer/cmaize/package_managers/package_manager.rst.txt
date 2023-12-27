@@ -24,7 +24,7 @@ cmaize.package_managers/package_manager
       
 
 
-   .. py:method:: fetch_package()
+   .. py:method:: get_package()
 
       Virtual member function to get the package source and prepare a
       build target.

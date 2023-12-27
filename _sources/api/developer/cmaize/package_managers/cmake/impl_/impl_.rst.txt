@@ -1,0 +1,7 @@
+
+#########################################
+cmaize.package_managers/cmake/impl_/impl_
+#########################################
+
+.. module:: cmaize.package_managers/cmake/impl_/impl_
+

@@ -7,6 +7,7 @@ cmaize.package_managers
    :maxdepth: 2
 
    cmake/index.rst
+   pip/index.rst
    get_package_manager
    package_manager
    package_managers

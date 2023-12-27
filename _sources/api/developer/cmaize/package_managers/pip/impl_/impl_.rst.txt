@@ -1,0 +1,13 @@
+
+#######################################
+cmaize.package_managers/pip/impl_/impl_
+#######################################
+
+.. module:: cmaize.package_managers/pip/impl_/impl_
+
+   Convience module for including the PIP packagemanager's implementations.
+   
+   Including this module will include the implementations of the PIP class's
+   methods. The module is really only intended for inclusion from pip.cmake.
+   
+

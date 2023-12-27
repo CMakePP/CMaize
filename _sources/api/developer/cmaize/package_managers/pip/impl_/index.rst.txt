@@ -1,0 +1,13 @@
+
+#################################
+cmaize.package_managers/pip/impl_
+#################################
+
+.. toctree:: 
+   :maxdepth: 2
+
+   find_installed
+   get_package
+   impl_
+   install_package
+

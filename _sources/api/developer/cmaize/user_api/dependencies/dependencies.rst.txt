@@ -1,0 +1,7 @@
+
+#########################################
+cmaize.user_api/dependencies/dependencies
+#########################################
+
+.. module:: cmaize.user_api/dependencies/dependencies
+

@@ -1,0 +1,46 @@
+
+##################################################
+cmaize.user_api/dependencies/impl_/parse_arguments
+##################################################
+
+.. module:: cmaize.user_api/dependencies/impl_/parse_arguments
+
+
+.. function:: _fob_parse_arguments(_fpa_package_specs _fpa_pm_name _fpa_name **kwargs)
+
+   Turns "find or build" kwargs into objects.
+   
+   .. note::
+   
+      The _fob prefix stands for "find or build" and is present to help avoid
+      name collisions in case another user api function decides it wants a
+      "parse_arguemnts" function too.
+   
+   TODO: Add more versioning options, such as an ``EXACT`` keyword to allow
+         the user to specify that only the given version should be found.
+         As it stands, it finds any version or the exact version if ``VERSION``
+         is given.
+         I propose providing the following options: 1) any available version if
+         no version
+         keyword is given; 2) the provided version, or greater; or 3) the exact
+         version if both ``VERSION`` and ``EXACT`` are provided.
+   
+   This function serves as the single source of truth for parsing the kwarg input
+   to functions in the "find_or_build" family.
+   
+   :param package_specs: Variable to hold the resulting package specification
+   :type package_specs: PackageSpecification*
+   :param pm_name: Variable to hold the name of the package manager provided by
+                   the user. Default package manager is CMake.
+   :type pm_name: desc*
+   :param name: The name of the package
+   :type name: desc
+   :param **kwargs: The keyword arguments this function will parse.
+   
+   :Keyword Arguments:
+      * **PACKAGE_MANAGER** --
+        The key associated with the package manager to use.
+      * **VERSION** (*desc*) --
+        Version of the package to find. Defaults to no version ("").
+   
+

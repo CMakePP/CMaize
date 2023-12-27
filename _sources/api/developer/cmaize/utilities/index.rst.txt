@@ -9,6 +9,7 @@ cmaize.utilities
    fetch_and_available
    generated_by_cmaize
    glob_files
+   python
    replace_project_targets
    sanitize_url
    split_version

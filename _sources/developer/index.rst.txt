@@ -28,5 +28,6 @@ This part is for developers of CMaize.
    assumptions
    conventions
    cmaize_initialization
+   new_package_manager
    design_notes/index
    faqs

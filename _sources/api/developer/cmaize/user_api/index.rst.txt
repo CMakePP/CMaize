@@ -6,12 +6,12 @@ cmaize.user_api
 .. toctree:: 
    :maxdepth: 2
 
+   dependencies/index.rst
    add_executable
    add_library
    add_package
    add_tests
    cmaize_option
    cmaize_project
-   find_or_build_dependency
    user_api
 

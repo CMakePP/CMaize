@@ -52,7 +52,7 @@ cmaize.globals
    
 
 
-.. function:: cpp_set_global(CMAIZE_SUPPORTED_PACKAGE_MANAGERS CMake)
+.. function:: cpp_set_global(CMAIZE_SUPPORTED_PACKAGE_MANAGERS cmake)
 
 
    .. warning:: This is a generic command invocation. It is not a function or macro definition.

@@ -6,8 +6,8 @@ cmaize.package_managers/cmake
 .. toctree:: 
    :maxdepth: 2
 
-   cmake_package_manager_impl_/index.rst
    dependency/index.rst
+   impl_/index.rst
    cmake
    cmake_package_manager
 

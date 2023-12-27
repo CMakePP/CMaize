@@ -1,0 +1,24 @@
+
+#####################################################
+cmaize.user_api/dependencies/find_or_build_dependency
+#####################################################
+
+.. module:: cmaize.user_api/dependencies/find_or_build_dependency
+
+
+.. function:: cmaize_find_or_build_dependency(_fobd_name)
+
+   Ensures that the project either finds or will build a necessary dependency.
+   
+   This is the user-facing API for package management. Users specify the
+   package that their build system depends on, and how to build it. Then when
+   the build system runs CMaize attempts to find an already installed version of
+   the dependency. If it can not, then CMaize will use the provided information
+   to build it.
+   
+   :param _fobdc_name: Name of the dependency.
+   :type _fobdc_name: desc
+   :param **kwargs: Additional keyword arguments may be necessary.
+        See _fob_parse_arguemnts for up to date list.
+   
+

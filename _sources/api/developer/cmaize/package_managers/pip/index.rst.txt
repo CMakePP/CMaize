@@ -1,0 +1,11 @@
+
+###########################
+cmaize.package_managers/pip
+###########################
+
+.. toctree:: 
+   :maxdepth: 2
+
+   impl_/index.rst
+   pip
+

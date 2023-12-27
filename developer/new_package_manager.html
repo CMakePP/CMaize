@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Create a New PackageManager &mdash; CMaize 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Design Notes" href="design_notes/index.html" />
+    <link rel="prev" title="CMaize Initialization" href="cmaize_initialization.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../background/index.html">CMaize Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developing CMaize</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design/index.html">CMaize Design Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assumptions.html">CMaize Assumptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conventions.html">CMaize Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmaize_initialization.html">CMaize Initialization</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to Create a New PackageManager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source-setup">Source Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declaring-the-packagemanager">Declaring the PackageManager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registering-the-packagemanager">Registering the PackageManager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="design_notes/index.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faqs.html">Developer FAQs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../declaring_targets/index.html">Declaring Build Targets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies/index.html">Declaring Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography/bibliography.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CMaize</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Developing CMaize</a></li>
+      <li class="breadcrumb-item active">How to Create a New PackageManager</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/developer/new_package_manager.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-create-a-new-packagemanager">
+<h1>How to Create a New PackageManager<a class="headerlink" href="#how-to-create-a-new-packagemanager" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This document is a work in progress.</p>
+</div>
+<section id="source-setup">
+<h2>Source Setup<a class="headerlink" href="#source-setup" title="Link to this heading"></a></h2>
+<p>The first step in creating a new package manager is creating the initial source
+files for the package manager. CMaize stores package managers within the
+<code class="docutils literal notranslate"><span class="pre">package_managers</span></code> directory. Within <code class="docutils literal notranslate"><span class="pre">package_managers</span></code>, each package
+manager gets its own subdirectory. Source code for package managers tends to
+be involved so we recommend separating the API of your package manager from its
+implementation. To do this we create a file <code class="docutils literal notranslate"><span class="pre">&lt;package_manager_name&gt;.cmake</span></code> to
+house the API and a subdirectory <code class="docutils literal notranslate"><span class="pre">impl_</span></code> which will house the implementation.
+For example, source for the CMake package manager resides within the
+<code class="docutils literal notranslate"><span class="pre">package_managers/cmake</span></code> directory. The API lives in
+<code class="docutils literal notranslate"><span class="pre">package_managers/cmake/cmake_package_manager.cmake</span></code> (we wanted to avoid
+the source file being called <code class="docutils literal notranslate"><span class="pre">cmake.cmake</span></code>) and the implementations reside in
+<code class="docutils literal notranslate"><span class="pre">package_managers/cmake/impl_</span></code>. Within the <code class="docutils literal notranslate"><span class="pre">impl_</span></code> directory you will create
+one file per method (named after the method it implements) and a convenience
+CMake module for including all of the implementations (the convenience module
+is usually named <code class="docutils literal notranslate"><span class="pre">impl_.cmake</span></code>). For example, the implementation of the CMake
+package manager’s <code class="docutils literal notranslate"><span class="pre">install_package</span></code> method resides in the file
+<code class="docutils literal notranslate"><span class="pre">package_managers/cmake/impl_/install_package.cmake</span></code> and the convenience
+module is <code class="docutils literal notranslate"><span class="pre">package_managers/cmake/impl_/impl_.cmake</span></code>. For completeness sake,
+the contents of <code class="docutils literal notranslate"><span class="pre">impl_.cmake</span></code> look like:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">include_guard</span><span class="p">()</span>
+
+<span class="nb">include</span><span class="p">(</span><span class="s">cmaize/package_managers/cmake/impl_/install_package</span><span class="p">)</span>
+<span class="c"># include other method implementations here (recommend that modules are</span>
+<span class="c"># included in alphabetic order)</span>
+</pre></div>
+</div>
+<p>To ensure that your new package manager is included when users load CMaize’s
+package manager component you will need to modify
+<code class="docutils literal notranslate"><span class="pre">package_managers/package_managers.cmake</span></code> so that it includes your new class.
+For example, to ensure the CMake package manager is included,
+<code class="docutils literal notranslate"><span class="pre">package_managers/package_managers.cmake</span></code> will look like:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">include_guard</span><span class="p">()</span>
+
+<span class="nb">include</span><span class="p">(</span><span class="s">cmaize/package_managers/cmake/cmake_package_manager</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="declaring-the-packagemanager">
+<h2>Declaring the PackageManager<a class="headerlink" href="#declaring-the-packagemanager" title="Link to this heading"></a></h2>
+<p>Now we write the API for our new package manager. For concreteness we assume
+we are writing a class for Python’s <code class="docutils literal notranslate"><span class="pre">pip</span></code> package manager. In this case the
+API lives in <code class="docutils literal notranslate"><span class="pre">package_managers/pip/pip.cmake</span></code> and the contents of the file
+look something like:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">include_guard</span><span class="p">()</span>
+
+<span class="nb">include</span><span class="p">(</span><span class="s">cmaize/package_managers/package_manager</span><span class="p">)</span>
+<span class="nb">include</span><span class="p">(</span><span class="s">cmaize/package_managers/pip/impl_/impl_</span><span class="p">)</span>
+
+<span class="nb">cpp_class</span><span class="p">(</span><span class="s">PipPackageManager</span><span class="w"> </span><span class="s">PackageManager</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Class body goes here</span>
+<span class="nb">cpp_end_class</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For brevity, and to avoid this tutorial becoming dated, we omit the body of the
+class. Developers should consult with the
+<a class="reference external" href="https://cmakepp.github.io/CMaize/api/developer/cmaize/package_managers/package_manager.html">documentation</a>
+for the base class, i.e., <code class="docutils literal notranslate"><span class="pre">PackageManager</span></code>, for details on what functions the
+derived class must implement, and what those functions should do.</p>
+</section>
+<section id="registering-the-packagemanager">
+<h2>Registering the PackageManager<a class="headerlink" href="#registering-the-packagemanager" title="Link to this heading"></a></h2>
+<p>Most package managers will require additional dependencies beyond CMake. Thus
+they should be off by default. When a user wants to use the package manager they
+must explicitly enable it. This is done by writing an enable function. By means
+of example, the <code class="docutils literal notranslate"><span class="pre">enable_pip_package_manager</span></code> function looks like:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">function</span><span class="p">(</span><span class="s">enable_pip_package_manager</span><span class="p">)</span>
+
+<span class="w">   </span><span class="c"># 1. Tell the global environment that a pip package manager will exist</span>
+<span class="w">   </span><span class="nb">cpp_get_global</span><span class="p">(</span><span class="s">_eppm_pms</span><span class="w"> </span><span class="s">CMAIZE_SUPPORTED_PACKAGE_MANAGERS</span><span class="p">)</span>
+<span class="w">   </span><span class="nb">if</span><span class="p">(</span><span class="s2">&quot;pip&quot;</span><span class="w"> </span><span class="s">IN_LIST</span><span class="w"> </span><span class="s">_eppm_pms</span><span class="p">)</span><span class="w"> </span><span class="c"># If pip is in the list, it&#39;s already enabled</span>
+<span class="w">      </span><span class="nb">return</span><span class="p">()</span>
+<span class="w">   </span><span class="nb">endif</span><span class="p">()</span>
+
+<span class="w">   </span><span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">_eppm_pms</span><span class="w"> </span><span class="s2">&quot;pip&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="nb">cpp_set_global</span><span class="p">(</span><span class="s">CMAIZE_SUPPORTED_PACKAGE_MANAGERS</span><span class="w"> </span><span class="s2">&quot;${_eppm_pms}&quot;</span><span class="p">)</span>
+
+<span class="w">   </span><span class="c">#2. Construct a PipPackageManater object</span>
+<span class="w">   </span><span class="nb">find_package</span><span class="p">(</span><span class="s">Python3</span><span class="w"> </span><span class="s">COMPONENTS</span><span class="w"> </span><span class="s">Interpreter</span><span class="w"> </span><span class="s">QUIET</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="w">   </span><span class="nb">PipPackageManager</span><span class="p">(</span><span class="s">CTOR</span><span class="w"> </span><span class="s">_eppm_package_manager</span><span class="w"> </span><span class="s2">&quot;${Python3_EXECUTABLE}&quot;</span><span class="p">)</span>
+
+<span class="w">   </span><span class="c">#3. Register the PIP object with the global environment</span>
+<span class="w">   </span><span class="nb">register_package_manager</span><span class="p">(</span><span class="s2">&quot;pip&quot;</span><span class="w"> </span><span class="s2">&quot;${_eppm_package_manager}&quot;</span><span class="p">)</span>
+
+<span class="nb">endfunction</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The current convention is to implement the enable function after the class’s
+definition (so for pip the <code class="docutils literal notranslate"><span class="pre">enable_pip_package_manager</span></code> function will live
+at the bottom of <code class="docutils literal notranslate"><span class="pre">package_managers/pip/pip.cmake</span></code>). The last step is to
+update <code class="docutils literal notranslate"><span class="pre">cmaize_find_or_build_dependency</span></code> so that it enables the package
+manager if a user requests it. To do this look for the if/else tree comparing
+<code class="docutils literal notranslate"><span class="pre">${_fobd_PACKAGE_MANAGER}</span></code> against the list of package managers. Once found,
+add a branch for your new package manager that calls the enable function you
+just wrote.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cmaize_initialization.html" class="btn btn-neutral float-left" title="CMaize Initialization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="design_notes/index.html" class="btn btn-neutral float-right" title="Design Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CMakePP Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

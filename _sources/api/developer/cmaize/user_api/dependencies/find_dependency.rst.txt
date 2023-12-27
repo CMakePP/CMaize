@@ -1,0 +1,28 @@
+
+############################################
+cmaize.user_api/dependencies/find_dependency
+############################################
+
+.. module:: cmaize.user_api/dependencies/find_dependency
+
+
+.. function:: cmaize_find_dependency(_cfd_name)
+
+   Wraps finding a dependency that CMaize can not build.
+   
+   There are some dependencies which are not easily built, or whose build process
+   takes a long time (and thus should be pre-installed). Such dependencies are
+   still needed in build systems, but the build system will not be able to build
+   them if they are not already installed. This function wraps the process of
+   looking for a dependency and aborting the build if an already installed
+   variant of the dependency can not be located.
+   
+   :param name: The name of the dependency we are looking for.
+   :type name: desc
+   :param **kwargs: Keyword arguments describing the behavior of the search. See
+      the documentation for _fob_parse_arguments for a complete list.
+   
+   :raises UNKNOWN_PM: When ``pm_name`` does not correspond to a known package
+       manager. Strong throw guarantee.
+   
+

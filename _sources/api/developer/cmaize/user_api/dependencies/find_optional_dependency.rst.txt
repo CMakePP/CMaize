@@ -1,0 +1,40 @@
+
+#####################################################
+cmaize.user_api/dependencies/find_optional_dependency
+#####################################################
+
+.. module:: cmaize.user_api/dependencies/find_optional_dependency
+
+
+.. function:: cmaize_find_optional_dependency(_cfod_name _cfod_flag)
+
+   Wraps the process of finding an optional dependency.
+   
+   Many build systems have optional dependencies. The inclusion of the dependency
+   is usually controlled with a flag (e.g., a variable like ``ENABLE_XXX`` for
+   an optional dependency ``XXX``). Because of CMake's verbose nature the logic
+   for whether or not the dependency is enabled is usually needed in a few
+   places. CMaize is capable of automatically propagating the logic for the
+   user, as long as the user tells CMaize the flag that controls the inclusion of
+   of the dependency.
+   
+   When the dependency is enabled this function essentially wraps
+   ``cmaize_find_dependency`` and the user should consult the documentation for
+   ``cmaize_find_dependency`` to understand the full set of options. When enabled
+   CMaize will add a compile definition to the target with the same name as the
+   flag (common practice for optional dependencies is to use such a definition
+   for enabling/disabling sections of source code).
+   
+   When the dependency is disabled this function simply creates an interface
+   target to serve as a placedholder for the dependency. The interface target
+   has no state and linking to/installing the target does nothing.
+   
+   :param name: The name of the dependency.
+   :type name: desc
+   :param flag: The variable to use as a flag. Used to name the compile
+      definition.
+   :type flag: desc
+   :param kwargs: Keyword arguments to forward to ``cmaize_find_dependency``.
+      See the documentation for ``cmaize_find_dependency`` for the full list.
+   
+

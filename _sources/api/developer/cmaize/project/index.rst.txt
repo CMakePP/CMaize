@@ -6,6 +6,7 @@ cmaize.project
 .. toctree:: 
    :maxdepth: 2
 
+   impl_/index.rst
    cmaize_project
    package_specification
    projects

@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
     <link rel="next" title="cmaize.project/package_specification" href="package_specification.html" />
-    <link rel="prev" title="cmaize.project" href="index.html" /> 
+    <link rel="prev" title="cmaize.project/impl_/impl_" href="impl_/impl_.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,6 +57,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Refactored Developer API (in progress)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../package_managers/index.html">cmaize.package_managers</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.project</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="impl_/index.html">cmaize.project/impl_</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">cmaize.project/cmaize_project</a></li>
 <li class="toctree-l4"><a class="reference internal" href="package_specification.html">cmaize.project/package_specification</a></li>
 <li class="toctree-l4"><a class="reference internal" href="projects.html">cmaize.project/projects</a></li>
@@ -286,40 +287,6 @@ them. This keyword argument is <strong>required</strong>.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject._add_target">
-<span class="sig-name descname"><span class="pre">_add_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__at_target</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._add_target" title="Link to this definition"></a></dt>
-<dd><p>Add a target to the project. Duplicate objects will not be added.</p>
-<p>This internal implementation exists so a required keyword argument is
-not part of the public interface, as well as to handle both <code class="docutils literal notranslate"><span class="pre">desc</span></code> and
-<code class="docutils literal notranslate"><span class="pre">target</span></code> types. Both types are effectively strings representing target
-names in this algorithm and can be treated equivalently, but cannot be
-typecast to each other by CMakePPLang. The CMakePPLang type checking
-is bypassed through the aforementioned required keyword argument for
-the target name, essentially combining the two types.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>__at_target</strong> (<a class="reference internal" href="../targets/cmaize_target.html#cmaize.targets-cmaize_target.CMaizeTarget" title="cmaize.targets/cmaize_target.CMaizeTarget"><em>CMaizeTarget</em></a>) – CMaizeTarget object to be added.</p></li>
-<li><p><strong>NAME</strong> (<em>desc</em><em> or </em><em>target</em>) – Required keyword argument. See description below.</p></li>
-<li><p><strong>**kwargs</strong> – <p>Additional keyword arguments may be necessary.</p>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>INSTALLED</strong> (<em>bool</em>) –
-Flag to indicate that the target being added is already installed
-on the system.</p></li>
-<li><p><strong>NAME</strong> (<em>desc</em> or <em>target</em>) –
-Identifying name for the target. This can match name of either the
-CMake target or CMaizeTarget object, but is required to do match
-them. This keyword argument is <strong>required</strong>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject.check_package_manager">
 <span class="sig-name descname"><span class="pre">check_package_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cpm_found</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_cpm_pm_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject.check_package_manager" title="Link to this definition"></a></dt>
 <dd><p>Checks if a package manager with the same type is already added to
@@ -330,7 +297,7 @@ this project.</p>
 <li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.project-cmaize_project.CMaizeProject" title="cmaize.project/cmaize_project.CMaizeProject"><em>CMaizeProject</em></a>) – CMaizeProject object.</p></li>
 <li><p><strong>_cpm_found</strong> (<em>bool*</em>) – Return variable for if the package manager was found.</p></li>
 <li><p><strong>_cpm_tgt</strong> (<em>Package manager</em>) – Package manager to search for.</p></li>
-<li><p><strong>_cpm_pm_type</strong> (<em>desc</em>) – </p></li>
+<li><p><strong>_cpm_pm_type</strong> (<em>str</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -353,48 +320,6 @@ this project.</p>
 <li><p><strong>_ct_target_name</strong> (<em>desc</em>) – Identifying name for the target. This can match
 name of either the CMake target or CMaizeTarget
 object, but is required to do match them.</p></li>
-<li><p><strong>**kwargs</strong> – <p>Additional keyword arguments may be necessary.</p>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>INSTALLED</strong> (<em>bool</em>) –
-Flag to indicate that the installed targets should be checked.</p></li>
-<li><p><strong>ALL</strong> (<em>bool</em>) –
-Flag to indicate that both the build and installed targets should
-be checked.</p></li>
-<li><p><strong>NAME</strong> (<em>desc</em> or <em>target</em>) –
-Identifying name for a target contained in the current Cmaize
-project. This keyword argument is <strong>required</strong>.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>CMaizeTarget found (TRUE) or not (FALSE).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cmaize.project-cmaize_project.CMaizeProject._check_target">
-<span class="sig-name descname"><span class="pre">_check_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">__ct_found</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.project-cmaize_project.CMaizeProject._check_target" title="Link to this definition"></a></dt>
-<dd><p>Checks if a target with the same name is already added to this project.
-This defaults to build targets.</p>
-<p>This internal implementation exists so a required keyword argument is
-not part of the public interface, as well as to handle both <code class="docutils literal notranslate"><span class="pre">desc</span></code> and
-<code class="docutils literal notranslate"><span class="pre">target</span></code> types. Both types are effectively strings representing target
-names in this algorithm and can be treated equivalently, but cannot be
-typecast to each other by CMakePPLang. The CMakePPLang type checking
-is bypassed through the aforementioned required keyword argument for
-the target name, essentially combining the two types.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>__ct_found</strong> (<em>bool*</em>) – Return variable for whether the target was found.</p></li>
-<li><p><strong>NAME</strong> (<em>desc</em><em> or </em><em>target</em>) – Required keyword argument. See description below.</p></li>
 <li><p><strong>**kwargs</strong> – <p>Additional keyword arguments may be necessary.</p>
 </p></li>
 </ul>
@@ -591,7 +516,7 @@ no target with the matching type was found.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="cmaize.project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="impl_/impl_.html" class="btn btn-neutral float-left" title="cmaize.project/impl_/impl_" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="package_specification.html" class="btn btn-neutral float-right" title="cmaize.project/package_specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

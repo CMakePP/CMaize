@@ -1,0 +1,15 @@
+
+###########################################################
+cmaize.package_managers/cmake/impl_/generate_package_config
+###########################################################
+
+.. module:: cmaize.package_managers/cmake/impl_/generate_package_config
+
+
+.. function:: _cpm_generate_package_config_impl(self __gpc_output_file __gpc_pkg_name)
+
+
+   .. note:: This is a macro, and so does not introduce a new scope.
+
+   
+

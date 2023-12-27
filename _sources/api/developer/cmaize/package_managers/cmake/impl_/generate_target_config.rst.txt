@@ -1,0 +1,15 @@
+
+##########################################################
+cmaize.package_managers/cmake/impl_/generate_target_config
+##########################################################
+
+.. module:: cmaize.package_managers/cmake/impl_/generate_target_config
+
+
+.. function:: _cpm_generate_target_config_impl(self __gtc_tgt_obj __gtc_target_name __gtc_namespace __gtc_config_file __gtc_install_dest)
+
+
+   .. note:: This is a macro, and so does not introduce a new scope.
+
+   
+

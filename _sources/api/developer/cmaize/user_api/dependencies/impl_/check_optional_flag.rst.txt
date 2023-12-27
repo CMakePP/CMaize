@@ -1,0 +1,25 @@
+
+######################################################
+cmaize.user_api/dependencies/impl_/check_optional_flag
+######################################################
+
+.. module:: cmaize.user_api/dependencies/impl_/check_optional_flag
+
+
+.. function:: _check_optional_flag(_cof_flag)
+
+   Code factorization for checking that a user passed the name of a flag.
+   
+   The various ``optional_dependency`` functions are tied to a configuration flag
+   which determines whether the option is enabled or not. Users need to provide
+   those functions with the name of the flag, NOT its value. This function wraps
+   the error-checking logic for ensuring that users passed the value.
+   
+   :param flag: Name of the option variable.
+   :type flag: desc
+   
+   :raises RUNTIME_ERROR: If ``flag`` is not the name of a variable. In
+      particular we check for empty strings and truth-y/false-y values.
+   
+   
+

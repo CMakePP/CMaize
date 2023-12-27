@@ -1,0 +1,36 @@
+
+##################################################
+cmaize.user_api/dependencies/impl_/find_dependency
+##################################################
+
+.. module:: cmaize.user_api/dependencies/impl_/find_dependency
+
+
+.. function:: _cmaize_find_dependency(_fd_tgt _fd_pm _fd_package_specs _fd_project _fd_name)
+
+   Factorization from cmaize_find_dependency and cmaize_find_or_build_dependency.
+   
+   The first part of both cmaize_find_dependency and
+   cmaize_find_or_build_dependency is the same. This function factors that common
+   code out into one function.
+   
+   :param tgt: The variable to hold the target that was found. Will be empty if
+      no target was found.
+   :type tgt: CMaizeTarget*
+   :param pm: The variable to hold the package manager we looked inside of.
+   :type pm: PackageManager*
+   :param package_specs: The variable to hold the package specification we looked
+      for.
+   :type package_specs: PackageSpecification*
+   :param project: The CMaize project this find operation is associated with.
+   :type project: CMaizeProject
+   :param name: The name of the dependency we are looking for.
+   :type name: desc
+   :param **kwargs: The arguments to forward to _fob_parse_arguments. See
+      _fob_parse_arguments documentation for more details.
+   
+   :raises UNKNOWN_PM: When ``pm_name`` does not correspond to a known package
+       manager. Strong throw guarantee.
+   
+   
+

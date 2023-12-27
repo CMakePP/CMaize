@@ -1,0 +1,141 @@
+
+###############################
+cmaize.package_managers/pip/pip
+###############################
+
+.. module:: cmaize.package_managers/pip/pip
+
+
+.. py:class:: PipPackageManager
+
+   Bases: :class:`PackageManager`
+   
+   Class exposing Python's PipPackageManager package manager to CMaize.
+   
+   This class holds a Python interpreter and leverages the pip installation
+   associated with the interpreter to locate and install pip packages.
+   
+   **Additional Constructors**
+
+   .. py:method:: CTOR(_py_exe)
+
+      Constructs a pip package manager based on the provided Python interpreter
+      
+      The PipPackageManager class works by system calling a Python interpreter.
+      When creating a PipPackageManager object the user is responsible for
+      ensuring that the Python interpreter used at creation is indeed the Python
+      interpreter that should be used for installing packages.
+      
+      :param self: The variable to assign the new object to.
+      :type self: PipPackageManager*
+      :param _py_exe: The path to the Python interpreter.
+      :type _py_exe: path
+      
+
+   **Methods**
+
+   .. py:method:: find_installed(_fi_result, _fi_package_specs[, ...])
+
+      Determines if self has already installed a package.
+      
+      This method will call ``pip list`` and case-insensitively ``grep`` the
+      result for the requested package. If the package is found an imported
+      interface target will be created with the provided name. Otherwise, the
+      function returns an empty string.
+      
+      :param self: The pip package manager to check for the package.
+      :type self: PipPackageManager
+      :param result: A variable to hold the result of the invocation.
+      :type result: desc
+      :param package_specs: The details pertaining to what package pip should
+         try to find.
+      :type package_specs: PackageSpecification
+      :return: An empty string if ``package_specs`` is not already installed,
+         otherwise a target representing the package.
+      :rtype: string or InstalledTarget
+      
+
+      :param _fi_result: 
+
+      :type _fi_result: desc
+
+      :param _fi_package_specs: 
+
+      :type _fi_package_specs: PackageSpecification
+
+
+   .. py:method:: get_package(_gp_result, _gp_package_specs[, ...])
+
+      Retrieves an already installed package.
+      
+      This method is a convenience function for calling find_installed and
+      asserting that the result is not an empty string.
+      
+      :param self: The pip package manager to check for the pacakge.
+      :type self: PipPackageManager
+      :param result: A variable to hold the resulting target
+      :type result: InstalledTarget*
+      :param package_specs: The details of the package we are looking for.
+      :type package_specs: PackageSpecification.
+      :return: A target detailing the found package.
+      :rtype: InstalledTarget
+      
+      :raises PACKAGE_NOT_FOUND: When ``package_specs`` is not already
+         installed.
+      
+
+      :param _gp_result: 
+
+      :type _gp_result: str
+
+      :param _gp_package_specs: 
+
+      :type _gp_package_specs: PackageSpecification
+
+
+   .. py:method:: install_package(_ip_package_specs[, ...])
+
+      Installs the specified package.
+      
+      .. todo:
+      
+         This should take a PackageSpecification and install the package during
+         the build phase.
+      
+      This method is used to have the package manager install a package. At the
+      moment, the installation happens at configuration time.
+      
+      :param self: The package manager the package will be installed into.
+      :type self: PipPackageManager
+      :param package_specs: The specs for the package we need to install.
+      :type package_specs: PackageSpecification
+      
+
+      :param _ip_package_specs: 
+
+      :type _ip_package_specs: PackageSpecification
+
+   **Attributes**
+
+   .. py:attribute:: python_executable
+
+      :type: path
+      
+      The Python executable to use for running pip commands. pip invocations
+      will look like ``self.python_executable -m pip <command>``
+      
+
+
+
+.. function:: enable_pip_package_manager()
+
+   Enables and registers a pip package manager with the global environment.
+   
+   The pip package manager is only registered if "pip" has not already been
+   added to the CMAIZE_SUPPORTED_PACKAGE_MANAGERS global variable.
+   
+   .. note::
+   
+      Enabling the pip package manager adds Python as a dependency of CMaize.
+   
+

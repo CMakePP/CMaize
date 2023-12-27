@@ -1,0 +1,13 @@
+
+##################################
+cmaize.user_api/dependencies/impl_
+##################################
+
+.. toctree:: 
+   :maxdepth: 2
+
+   check_optional_flag
+   find_dependency
+   get_package_manager
+   parse_arguments
+

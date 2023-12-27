@@ -1,0 +1,12 @@
+
+###################################################
+cmaize.package_managers/cmake/impl_/install_package
+###################################################
+
+.. module:: cmaize.package_managers/cmake/impl_/install_package
+
+
+.. function:: _cpm_install_package_impl(self _ip_pkg_name **kwargs)
+
+   
+

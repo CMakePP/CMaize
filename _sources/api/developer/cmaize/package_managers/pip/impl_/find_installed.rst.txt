@@ -1,0 +1,15 @@
+
+################################################
+cmaize.package_managers/pip/impl_/find_installed
+################################################
+
+.. module:: cmaize.package_managers/pip/impl_/find_installed
+
+
+.. function:: _pip_find_installed(self _fi_result _fi_package_specs)
+
+
+   .. note:: This is a macro, and so does not introduce a new scope.
+
+   
+
