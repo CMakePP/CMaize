@@ -35,7 +35,7 @@ include(cmaize/user_api/dependencies/impl_/find_dependency)
 function(cmaize_find_or_build_dependency _fobd_name)
 
     cpp_get_global(_fobd_project CMAIZE_TOP_PROJECT)
-    _find_dependency(
+    _cmaize_find_dependency(
         _fobd_tgt
         _fobd_pm
         _fobd_package_specs

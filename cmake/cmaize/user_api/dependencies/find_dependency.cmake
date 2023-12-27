@@ -38,7 +38,7 @@ function(cmaize_find_dependency _cfd_name)
 
     cpp_get_global(_cfd_project CMAIZE_TOP_PROJECT)
 
-    _find_dependency(
+    _cmaize_find_dependency(
         _cfd_tgt
         _cfd_pm
         _cfd_package_specs
