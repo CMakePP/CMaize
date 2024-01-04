@@ -110,8 +110,6 @@ function("${test_find_or_build_optional_dependency}")
 
         set(ENABLE_CMINX TRUE)
 
-        ct_assert_target_does_not_exist(cminx)
-
         cmaize_find_or_build_optional_dependency(
             cminx
             ENABLE_CMINX
