@@ -124,10 +124,21 @@ function(cmaize_add_library _cal_tgt_name)
 
         # Actually append the aggregated paths to the current target's
         # INSTALL_RPATH
-        CMaizeTarget(get_property "${_cal_tgt_obj}" _install_rpath INSTALL_RPATH)
+        set(_install_rpath "")
+
+        CMaizeTarget(
+            has_property "${_cal_tgt_obj}" _has_install_rpath INSTALL_RPATH
+        )
+        if(_has_install_rpath)
+            CMaizeTarget(
+                get_property "${_cal_tgt_obj}" _install_rpath INSTALL_RPATH
+            )
+        endif()
         list(APPEND _install_rpath ${_dep_install_path})
         list(APPEND _install_rpath ${_dep_install_rpath})
-        CMaizeTarget(set_property "${_cal_tgt_obj}" INSTALL_RPATH "${_install_rpath}")
+        CMaizeTarget(
+            set_property "${_cal_tgt_obj}" INSTALL_RPATH "${_install_rpath}"
+        )
     endforeach()
 
 endfunction()

@@ -146,12 +146,12 @@ cpp_class(CXXTarget BuildTarget)
 
         CXXTarget(target "${self}" _scf_tgt_name)
         CXXTarget(GET "${self}" _scf_cxx_std cxx_standard)
+        CXXTarget(_access_level "${self}" _scf_access_level)
 
         if(NOT "${_scf_cxx_std}" STREQUAL "")
-            # The CXX std will always have PUBLIC access
             target_compile_features(
                 "${_scf_tgt_name}"
-                PUBLIC "cxx_std_${_scf_cxx_std}"
+                "${_scf_access_level}" "cxx_std_${_scf_cxx_std}"
             )
         endif()
     endfunction()
@@ -184,10 +184,11 @@ cpp_class(CXXTarget BuildTarget)
         endforeach()
 
         # Set up public includes
+        CXXTarget(_access_level "${self}" _sid_access_level)
         foreach(_sid_inc_dir_i ${_sid_inc_dirs})
             target_include_directories(
                 "${_sid_tgt_name}"
-                PUBLIC
+                "${_sid_access_level}"
                     $<BUILD_INTERFACE:${_sid_inc_dir_i}>
             )
         endforeach()
@@ -195,16 +196,18 @@ cpp_class(CXXTarget BuildTarget)
         # Set up installation includes
         target_include_directories(
             "${_sid_tgt_name}"
-            PUBLIC
-                $<INSTALL_INTERFACE:include>
+            "${_sid_access_level}"
+            $<INSTALL_INTERFACE:include>
         )
 
-        # Set up private header includes
-        target_include_directories(
-            "${_sid_tgt_name}"
-            PRIVATE
+        if(NOT "${_sid_access_level}" STREQUAL "INTERFACE")
+            # Set up private header includes
+            target_include_directories(
+                "${_sid_tgt_name}"
+                PRIVATE
                 "${_sid_src_dir}"
-        )
+            )
+        endif()
 
     endfunction()
 
@@ -225,9 +228,12 @@ cpp_class(CXXTarget BuildTarget)
         # underlying target name
         cmaize_replace_project_targets(_sll_deps ${_sll_deps})
 
+        CXXTarget(_access_level "${self}" _sll_access_level)
         foreach(_sll_dep_i ${_sll_deps})
             message(DEBUG "Registering ${_sll_dep_i} as a dependency of ${_sll_name}.")
-            target_link_libraries("${_sll_name}" PUBLIC "${_sll_dep_i}")
+            target_link_libraries(
+                "${_sll_name}" "${_sll_access_level}" "${_sll_dep_i}"
+            )
         endforeach()
 
     endfunction()
