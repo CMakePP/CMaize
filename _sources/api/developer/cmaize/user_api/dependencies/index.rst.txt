@@ -11,4 +11,5 @@ cmaize.user_api/dependencies
    find_dependency
    find_optional_dependency
    find_or_build_dependency
+   find_or_build_optional_dependency
 

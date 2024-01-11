@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cmaize.user_api/dependencies/find_or_build_dependency &mdash; CMaize 1.0.0 documentation</title>
+  <title>cmaize.user_api/dependencies/find_or_build_optional_dependency &mdash; CMaize 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
 
@@ -21,8 +21,8 @@
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="cmaize.user_api/dependencies/find_or_build_optional_dependency" href="find_or_build_optional_dependency.html" />
-    <link rel="prev" title="cmaize.user_api/dependencies/find_optional_dependency" href="find_optional_dependency.html" /> 
+    <link rel="next" title="cmaize.user_api/add_executable" href="../add_executable.html" />
+    <link rel="prev" title="cmaize.user_api/dependencies/find_or_build_dependency" href="find_or_build_dependency.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -102,9 +102,9 @@
           <li class="breadcrumb-item"><a href="../../index.html">cmaize</a></li>
           <li class="breadcrumb-item"><a href="../index.html">cmaize.user_api</a></li>
           <li class="breadcrumb-item"><a href="index.html">cmaize.user_api/dependencies</a></li>
-      <li class="breadcrumb-item active">cmaize.user_api/dependencies/find_or_build_dependency</li>
+      <li class="breadcrumb-item active">cmaize.user_api/dependencies/find_or_build_optional_dependency</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/api/developer/cmaize/user_api/dependencies/find_or_build_dependency.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/CMakePP/CMaize/edit/master/docs/source/api/developer/cmaize/user_api/dependencies/find_or_build_optional_dependency.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -112,24 +112,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-cmaize.user_api-dependencies-find_or_build_dependency">
-<span id="cmaize-user-api-dependencies-find-or-build-dependency"></span><h1>cmaize.user_api/dependencies/find_or_build_dependency<a class="headerlink" href="#module-cmaize.user_api-dependencies-find_or_build_dependency" title="Link to this heading"></a></h1>
+  <section id="module-cmaize.user_api-dependencies-find_or_build_optional_dependency">
+<span id="cmaize-user-api-dependencies-find-or-build-optional-dependency"></span><h1>cmaize.user_api/dependencies/find_or_build_optional_dependency<a class="headerlink" href="#module-cmaize.user_api-dependencies-find_or_build_optional_dependency" title="Link to this heading"></a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="cmaize.user_api-dependencies-find_or_build_dependency.cmaize_find_or_build_dependency">
-<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/dependencies/find_or_build_dependency.</span></span><span class="sig-name descname"><span class="pre">cmaize_find_or_build_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fobd_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-dependencies-find_or_build_dependency.cmaize_find_or_build_dependency" title="Link to this definition"></a></dt>
-<dd><p>Ensures that the project either finds or will build a necessary dependency.</p>
-<p>This is the user-facing API for package management. Users specify the
-package that their build system depends on, and how to build it. Then when
-the build system runs CMaize attempts to find an already installed version of
-the dependency. If it can not, then CMaize will use the provided information
-to build it.</p>
+<dt class="sig sig-object py" id="cmaize.user_api-dependencies-find_or_build_optional_dependency.cmaize_find_or_build_optional_dependency">
+<span class="sig-prename descclassname"><span class="pre">cmaize.user_api/dependencies/find_or_build_optional_dependency.</span></span><span class="sig-name descname"><span class="pre">cmaize_find_or_build_optional_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cfobod_name</span> <span class="pre">_cfobod_flag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-dependencies-find_or_build_optional_dependency.cmaize_find_or_build_optional_dependency" title="Link to this definition"></a></dt>
+<dd><p>Wraps the process of finding, or building, an optional dependency.</p>
+<p>This method is largely the same as cmaize_find_optional_dependency, but
+instead wraps a call to <code class="docutils literal notranslate"><span class="pre">cmaize_find_or_build_dependency</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>_fobdc_name</strong> (<em>desc</em>) – Name of the dependency.</p></li>
-<li><p><strong>**kwargs</strong> – <p>Additional keyword arguments may be necessary.
-See _fob_parse_arguemnts for up to date list.</p>
-</p></li>
+<li><p><strong>name</strong> (<em>desc</em>) – The name of the dependency.</p></li>
+<li><p><strong>flag</strong> (<em>desc</em>) – The variable to use as a flag. Used to name the compile
+definition.</p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments to forward to
+<code class="docutils literal notranslate"><span class="pre">cmaize_find_or_build_dependency</span></code>. See the documentation for
+<code class="docutils literal notranslate"><span class="pre">cmaize_find_or_build_dependency</span></code> for the full list.</p></li>
 </ul>
 </dd>
 </dl>
@@ -141,8 +140,8 @@ See _fob_parse_arguemnts for up to date list.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="find_optional_dependency.html" class="btn btn-neutral float-left" title="cmaize.user_api/dependencies/find_optional_dependency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="find_or_build_optional_dependency.html" class="btn btn-neutral float-right" title="cmaize.user_api/dependencies/find_or_build_optional_dependency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="find_or_build_dependency.html" class="btn btn-neutral float-left" title="cmaize.user_api/dependencies/find_or_build_dependency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../add_executable.html" class="btn btn-neutral float-right" title="cmaize.user_api/add_executable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
