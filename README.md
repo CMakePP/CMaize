@@ -14,12 +14,43 @@
   ~ limitations under the License.
 -->
 
-CMaize
-======
+![alt text](docs/src/assets/logo.png)
 
-[![Documentation Status](https://readthedocs.org/projects/cmakepackagingproject/badge/?version=latest)](https://cmakepackagingproject.readthedocs.io/en/latest/?badge=latest)
+<!--
+TODO: update DOI when it's known
+[![Citation Badge](https://api.juleskreuer.eu/citation-badge.php?doi=10.1063/5.0147903)](https://juleskreuer.eu/projekte/citation-badge/)
+-->
 
-CMaize is the top-level project of the CMakePP organization. It is this project
-which package maintainers should use to write their projects' build systems.
-Consequently, CMaize's documentation is the documentation to consult for
-generic help when it comes to building a project that uses CMakePP.
+Documentation [link](https://cmakepp.github.io/CMaize)
+
+# Features
+
+- Minimize boilerplate. CMake is verbose, CMaize isn't.
+- Automatically keep up with CMake's ever changing best practices. CMaize 
+  provides a stable API and maintains the mapping from that API to CMake's
+  current best practices.
+- Seamlessly integrate targets that rely on languages not supported by CMake.
+  Currently limited to Python, but can be extended.
+
+# Install
+
+If you are using CMaize as part of your project's build system it is 
+recommended that you set up your build system to automatically fetch CMaize. See
+[here](https://cmakepp.github.io/CMaize/getting_started/using_cmaize_as_build_system/obtaining_cmaize.html)
+for more details.
+
+# Contributing
+
+[Contributor Guidelines](https://github.com/CMakePP/.github/blob/main/CONTRIBUTING.rst)
+[Contributor License Agreement](https://github.com/CMakePP/.github/blob/main/CONTRIBUTING.rst#contributor-license-agreement-cla)
+[Developer Documentation](https://cmakepp.github.io/CMaize/developer/index.html)
+[Code of Conduct](https://github.com/CMakePP/.github/blob/main/CODE_OF_CONDUCT.rst)
+
+# Acknowledgments
+
+This research was supported by the Exascale Computing Project (17-SC-20-SC), a 
+collaborative effort of the U.S. Department of Energy Office of Science and the 
+National Nuclear Security Administration.
+
+Additional funding has come for Iowa State University through the College of
+Liberal Arts & Sciences Dean’s Professor Chair.
