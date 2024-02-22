@@ -23,9 +23,18 @@ TODO: update DOI when it's known
 
 Documentation [link](https://cmakepp.github.io/CMaize)
 
+We believe that the development of build systems should follow the same software
+engineering best practices as traditional source code. One such best practice
+is the DRY ("Don't Repeat Yourself") principle. Most build systems written in
+CMake are extremely verbose and boilerplate heavy. CMaize was developed to 
+facilitate writing CMake build systems which adhere to the DRY principle.
+
 # Features
 
 - Minimize boilerplate. CMake is verbose, CMaize isn't.
+- Pure CMake. CMaize is written using the CMake programming language which means
+  you have access to every feature CMake provides in addition to those provided
+  by CMaize itself.
 - Automatically keep up with CMake's ever changing best practices. CMaize 
   provides a stable API and maintains the mapping from that API to CMake's
   current best practices.
