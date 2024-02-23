@@ -50,10 +50,10 @@ for more details.
 
 # Contributing
 
-[Contributor Guidelines](https://github.com/CMakePP/.github/blob/main/CONTRIBUTING.rst)
-[Contributor License Agreement](https://github.com/CMakePP/.github/blob/main/CONTRIBUTING.rst#contributor-license-agreement-cla)
-[Developer Documentation](https://cmakepp.github.io/CMaize/developer/index.html)
-[Code of Conduct](https://github.com/CMakePP/.github/blob/main/CODE_OF_CONDUCT.rst)
+- [Contributor Guidelines](https://github.com/CMakePP/.github/blob/main/CONTRIBUTING.rst)
+- [Contributor License Agreement](https://github.com/CMakePP/.github/blob/main/CONTRIBUTING.rst#contributor-license-agreement-cla)
+- [Developer Documentation](https://cmakepp.github.io/CMaize/developer/index.html)
+- [Code of Conduct](https://github.com/CMakePP/.github/blob/main/CODE_OF_CONDUCT.rst)
 
 # Acknowledgments
 
