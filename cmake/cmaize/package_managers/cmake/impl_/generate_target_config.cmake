@@ -57,7 +57,7 @@ if(NOT \"${__gtc_cxx_std}\" STREQUAL \"\")
 endif()
 
 set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
-${__gtc_compile_features}
+\${__gtc_compile_features}
 INTERFACE_INCLUDE_DIRECTORIES \"\${PACKAGE_PREFIX_DIR}/include\"
 INTERFACE_LINK_LIBRARIES "
     )
