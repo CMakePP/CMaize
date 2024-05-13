@@ -51,13 +51,13 @@ endif()")
 # Create imported target ${__gtc_namespace}${__gtc_target_name}
 add_library(${__gtc_namespace}${__gtc_target_name} SHARED IMPORTED)
 
-set(__gtc_compile_features \"\")
 if(NOT \"${__gtc_cxx_std}\" STREQUAL \"\")
-    set(__gtc_compile_features \"INTERFACE_COMPILE_FEATURES cxx_std_${__gtc_cxx_std}\")
+    set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
+        INTERFACE_COMPILE_FEATURES \"cxx_std_${__gtc_cxx_std}\"
+    )
 endif()
 
 set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
-\${__gtc_compile_features}
 INTERFACE_INCLUDE_DIRECTORIES \"\${PACKAGE_PREFIX_DIR}/include\"
 INTERFACE_LINK_LIBRARIES "
     )
