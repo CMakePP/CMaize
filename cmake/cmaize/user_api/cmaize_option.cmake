@@ -58,7 +58,7 @@ function(cmaize_option _co_name _co_default_value _co_docstring)
 
     # A set CMake variable (this includes CMake's cache) takes precedence over
     # all else
-    if(DEFINED "${_co_name}")
+    if(DEFINED "${_co_name}" AND DEFINED "${${_co_name}}")
         CMaizeProject(
             set_config_option "${_co_project}" "${_co_name}" "${${_co_name}}"
         )
