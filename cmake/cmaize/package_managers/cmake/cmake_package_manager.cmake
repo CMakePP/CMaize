@@ -129,8 +129,15 @@ cpp_class(CMakePackageManager PackageManager)
         cpp_map(GET "${_rd_dependencies}" _rd_depend "${_rd_pkg_name}")
         if("${_rd_depend}" STREQUAL "")
             message(DEBUG "Registering dependency to package manager: ${_rd_pkg_name}")
-            # TODO: Actually make sure it's from GitHub
-            GitHubDependency(CTOR _rd_depend)
+
+            set(_rd_depend "")
+            if("${ARGN}" MATCHES "github")
+                message("Making a new GitHub depdendency")
+                GitHubDependency(CTOR _rd_depend)
+            else()
+                message("Making a new RemoteURLDependency")
+                RemoteURLDependency(CTOR _rd_depend)
+            endif()
 
             Dependency(init "${_rd_depend}" NAME "${_rd_pkg_name}" ${ARGN})
 
