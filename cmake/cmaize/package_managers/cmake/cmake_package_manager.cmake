@@ -132,10 +132,8 @@ cpp_class(CMakePackageManager PackageManager)
 
             set(_rd_depend "")
             if("${ARGN}" MATCHES "github")
-                message("Making a new GitHub depdendency")
                 GitHubDependency(CTOR _rd_depend)
             else()
-                message("Making a new RemoteURLDependency")
                 RemoteURLDependency(CTOR _rd_depend)
             endif()
 
