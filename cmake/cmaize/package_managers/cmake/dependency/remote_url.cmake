@@ -32,7 +32,7 @@ cpp_class(RemoteURLDependency Dependency)
     #
     # :param old_cmake_args: Variable to assign the old values to.
     # :type old_cmake_args: desc*
-    #]]]
+    #]]
 
     cpp_member(_cache_args RemoteURLDependency desc*)
     function("${_cache_args}" _ca_this _ca_old_cmake_args)
@@ -57,7 +57,7 @@ cpp_class(RemoteURLDependency Dependency)
     # :param old_cmake_args: The values to put back into the cache.
     # :type old_cmake_args: desc*
     #]]
-    cpp_member(_uncache_args RemoteURLDependency desc*)
+    cpp_member(_uncache_args RemoteURLDependency list*)
     function("${_uncache_args}" _ua_this _ua_old_cmake_args)
         foreach(_ua_pair ${${_ua_old_cmake_args}})
             string(REPLACE "=" [[;]] _ua_split_pair "${_ua_pair}")
@@ -82,7 +82,7 @@ cpp_class(RemoteURLDependency Dependency)
 
         RemoteURLDependency(_cache_args "${_bd_this}" _bd_old_cmake_args)
 
-        cmaize_fetch_and_available("${_bd_name}" URL "${_bd_url}")
+        cmaize_fetch_and_available("${_bd_name}" GIT_REPOSITORY "${_bd_url}.git")
 
         RemoteURLDependency(_uncache_args "${_bd_this}" _bd_old_cmake_args)
 
