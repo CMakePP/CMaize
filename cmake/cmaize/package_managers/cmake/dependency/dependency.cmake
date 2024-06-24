@@ -16,3 +16,4 @@ include_guard()
 
 include(cmaize/package_managers/cmake/dependency/dependency_class)
 include(cmaize/package_managers/cmake/dependency/github)
+include(cmaize/package_managers/cmake/dependency/remote_url)
