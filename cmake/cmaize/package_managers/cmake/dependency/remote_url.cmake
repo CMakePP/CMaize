@@ -31,10 +31,10 @@ cpp_class(RemoteURLDependency Dependency)
     # requested by this dependency.
     #
     # :param old_cmake_args: Variable to assign the old values to.
-    # :type old_cmake_args: desc*
+    # :type old_cmake_args: list*
     #]]
 
-    cpp_member(_cache_args RemoteURLDependency desc*)
+    cpp_member(_cache_args RemoteURLDependency list*)
     function("${_cache_args}" _ca_this _ca_old_cmake_args)
         RemoteURLDependency(GET "${_ca_this}" _ca_cmake_args cmake_args)
 

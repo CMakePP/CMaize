@@ -31,7 +31,8 @@ jobs:
 
       - name: Download Catch2
         run: |
-          git clone https://github.com/catchorg/Catch2.git catch2 --branch v3.0.1
+          git clone https://github.com/catchorg/Catch2.git catch2 \
+            --branch v3.4.0
 
       - name: Build Catch2
         run: |
@@ -40,12 +41,12 @@ jobs:
           cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX="${prefix}"
           cmake --build build --parallel 2
           echo "CMAKE_PREFIX_PATH=${prefix}" >> $GITHUB_ENV
-          
+
       - name: Install Catch2
         run: |
           cd catch2
           cmake --build build --target install
-      
+
       - name: Configure Project
         run: >
           cmake
