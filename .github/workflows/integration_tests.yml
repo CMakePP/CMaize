@@ -42,10 +42,10 @@ jobs:
       #    cmake --build build --parallel 2
       #    echo "CMAKE_PREFIX_PATH=${prefix}" >> $GITHUB_ENV
 
-      - name: Install Catch2
-        run: |
-          cd catch2
-          cmake --build build --target install
+      #- name: Install Catch2
+      #  run: |
+      #    cd catch2
+      #    cmake --build build --target install
 
       - name: Configure Project
         run: >
