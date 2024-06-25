@@ -1,14 +1,14 @@
 
-###############################################
-cmaize.package_managers/cmake/dependency/github
-###############################################
+###################################################
+cmaize.package_managers/cmake/dependency/remote_url
+###################################################
 
-.. module:: cmaize.package_managers/cmake/dependency/github
+.. module:: cmaize.package_managers/cmake/dependency/remote_url
 
 
-.. py:class:: GitHubDependency
+.. py:class:: RemoteURLDependency
 
-   Bases: :class:`RemoteURLDependency`
+   Bases: :class:`Dependency`
    
    
    **Methods**
@@ -20,7 +20,6 @@ cmaize.package_managers/cmake/dependency/github
       :param self: Dependency object
       :type self: Dependency
       
-      :raises GitHubTokenMissing: CMAIZE_GITHUB_TOKEN variable not defined.
       
 
 
@@ -45,27 +44,16 @@ cmaize.package_managers/cmake/dependency/github
            URL for the GitHub repository. This can be the URL to the
            repository or the HTTPS link used to clone the repository, but
            not the SSH cloning option.
-         * **VERSION** (*desc*) --
-           Version of the target to find or build.
       
 
    **Attributes**
 
-   .. py:attribute:: private
-      :value: FALSE
-
-      :type: bool
-      
-      Is this a private GitHub Repo (TRUE) or not (FALSE)? Defaults to FALSE.
-      
-
-
-   .. py:attribute:: version
-      :value: "master"
+   .. py:attribute:: location
+      :value: ""
 
       :type: desc
       
-      Git tag, branch, or commit hash to use. Defaults to "master".
+      URL for the resource
       
 
 

@@ -10,4 +10,5 @@ cmaize.package_managers/cmake/dependency
    dependency
    dependency_class
    github
+   remote_url
 
