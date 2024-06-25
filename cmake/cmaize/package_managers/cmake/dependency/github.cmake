@@ -88,7 +88,17 @@ cpp_class(GitHubDependency RemoteURLDependency)
             set(_bd_url "https://${_bd_url}")
         endif()
 
-        RemoteURLDependency(_cache_args "${_bd_this}" _bd_old_cmake_args)
+        # The only reliable way to forward arguments to subprojects seems to be
+        # through the cache, so we need to record the current values, set the
+        # temporary values, call the subproject, reset the old values
+        set(_bd_old_cmake_args)
+        foreach(_bd_pair ${_bd_cmake_args})
+            string(REPLACE "=" [[;]] _bd_split_pair "${_bd_pair}")
+            list(GET _bd_split_pair 0 _bd_var)
+            list(GET _bd_split_pair 1 _bd_val)
+            list(APPEND _bd_old_cmake_args "${_bd_var}=${${_bd_var}}")
+            set("${_bd_var}" "${_bd_val}" CACHE BOOL "" FORCE)
+        endforeach()
 
         # It's possible GitHub URLs link to an "asset" (i.e., a tarball)
         string(FIND "${_bd_url}" ".tgz" _bd_is_tarball)
@@ -103,7 +113,12 @@ cpp_class(GitHubDependency RemoteURLDependency)
             cmaize_fetch_and_available("${_bd_name}" URL "${_bd_url}")
         endif()
 
-        RemoteURLDependency(_uncache_args "${_bd_this}" _bd_old_cmake_args)
+        foreach(_bd_pair ${_bd_old_cmake_args})
+            string(REPLACE "=" [[;]] _bd_split_pair "${_bd_pair}")
+            list(GET _bd_split_pair 0 _bd_var)
+            list(GET _bd_split_pair 1 _bd_val)
+            set("${_bd_var}" "${_bd_val}" CACHE BOOL "" FORCE)
+        endforeach()
 
         _cmaize_dependency_check_target("${_bd_this}" "build")
         # It's now "found" since it's been added to our build system

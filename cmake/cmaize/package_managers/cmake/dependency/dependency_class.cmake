@@ -102,6 +102,7 @@ cpp_class(Dependency)
 
         # Check if it was already found? If so short-circuit and return TRUE
         Dependency(GET "${self}" "${_fd_found}" found)
+        message("Was already found? ${${_fd_found}}")
         if("${${_fd_found}}")
             cpp_return("${_fd_found}")
         endif()
@@ -202,4 +203,3 @@ cpp_class(Dependency)
     endfunction()
 
 cpp_end_class()
-
