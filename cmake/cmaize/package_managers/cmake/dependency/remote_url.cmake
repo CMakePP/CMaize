@@ -27,47 +27,6 @@ cpp_class(RemoteURLDependency Dependency)
     cpp_attr(RemoteURLDependency location "")
 
     #[[[
-    # Updates the values of the CMake cache to be consistent with the values
-    # requested by this dependency.
-    #
-    # :param old_cmake_args: Variable to assign the old values to.
-    # :type old_cmake_args: list*
-    #]]
-
-    cpp_member(_cache_args RemoteURLDependency list*)
-    function("${_cache_args}" _ca_this _ca_old_cmake_args)
-        RemoteURLDependency(GET "${_ca_this}" _ca_cmake_args cmake_args)
-
-        # The only reliable way to forward arguments to subprojects seems to be
-        # through the cache, so we need to record the current values, set the
-        # temporary values, call the subproject, reset the old values
-        foreach(_ca_pair ${_ca_cmake_args})
-            string(REPLACE "=" [[;]] _ca_split_pair "${_ca_pair}")
-            list(GET _ca_split_pair 0 _ca_var)
-            list(GET _ca_split_pair 1 _ca_val)
-            list(APPEND "${_ca_old_cmake_args}" "${_ca_var}=${${_ca_var}}")
-            set("${_ca_var}" "${_ca_val}" CACHE BOOL "" FORCE)
-        endforeach()
-        cpp_return("${_ca_old_cmake_args}")
-    endfunction()
-
-    #[[[
-    # Restores the values in the CMake cach to those in old_cmake_args.
-    #
-    # :param old_cmake_args: The values to put back into the cache.
-    # :type old_cmake_args: desc*
-    #]]
-    cpp_member(_uncache_args RemoteURLDependency list*)
-    function("${_uncache_args}" _ua_this _ua_old_cmake_args)
-        foreach(_ua_pair ${${_ua_old_cmake_args}})
-            string(REPLACE "=" [[;]] _ua_split_pair "${_ua_pair}")
-            list(GET _ua_split_pair 0 _ua_var)
-            list(GET _ua_split_pair 1 _ua_val)
-            set("${_ua_var}" "${_ua_val}" CACHE BOOL "" FORCE)
-        endforeach()
-    endfunction()
-
-    #[[[
     # Attempts to fetch and build the dependency.
     #
     # :param self: Dependency object
@@ -80,11 +39,26 @@ cpp_class(RemoteURLDependency Dependency)
         RemoteURLDependency(GET "${_bd_this}" _bd_url location)
         RemoteURLDependency(GET "${_bd_this}" _bd_name name)
 
-        RemoteURLDependency(_cache_args "${_bd_this}" _bd_old_cmake_args)
+        # The only reliable way to forward arguments to subprojects seems to be
+        # through the cache, so we need to record the current values, set the
+        # temporary values, call the subproject, reset the old values
+        set(_bd_old_cmake_args)
+        foreach(_bd_pair ${_bd_cmake_args})
+            string(REPLACE "=" [[;]] _bd_split_pair "${_bd_pair}")
+            list(GET _bd_split_pair 0 _bd_var)
+            list(GET _bd_split_pair 1 _bd_val)
+            list(APPEND _bd_old_cmake_args "${_bd_var}=${${_bd_var}}")
+            set("${_bd_var}" "${_bd_val}" CACHE BOOL "" FORCE)
+        endforeach()
 
         cmaize_fetch_and_available("${_bd_name}" GIT_REPOSITORY "${_bd_url}.git")
 
-        RemoteURLDependency(_uncache_args "${_bd_this}" _bd_old_cmake_args)
+        foreach(_bd_pair ${_bd_old_cmake_args})
+            string(REPLACE "=" [[;]] _bd_split_pair "${_bd_pair}")
+            list(GET _bd_split_pair 0 _bd_var)
+            list(GET _bd_split_pair 1 _bd_val)
+            set("${_bd_var}" "${_bd_val}" CACHE BOOL "" FORCE)
+        endforeach()
 
         _cmaize_dependency_check_target("${_bd_this}" "build")
 

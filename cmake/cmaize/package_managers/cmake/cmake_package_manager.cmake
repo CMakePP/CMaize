@@ -127,13 +127,23 @@ cpp_class(CMakePackageManager PackageManager)
 
         CMakePackageManager(GET "${self}" _rd_dependencies dependencies)
         cpp_map(GET "${_rd_dependencies}" _rd_depend "${_rd_pkg_name}")
+        cpp_map(KEYS "${_rd_dependencies}" _rd_keys)
+        foreach(_rd_key ${_rd_keys})
+            cpp_map(GET "${_rd_dependencies}" _rd_temp "${_rd_key}")
+            message("${_rd_key} = ${_rd_temp}")
+        endforeach()
+
+
+        message("PackageManager had ${_rd_pkg_name} = ${_rd_depend}")
         if("${_rd_depend}" STREQUAL "")
             message(DEBUG "Registering dependency to package manager: ${_rd_pkg_name}")
 
             set(_rd_depend "")
             if("${ARGN}" MATCHES "github")
+                message("Creating a GitHub dependency")
                 GitHubDependency(CTOR _rd_depend)
             else()
+                message("Creating a non-GitHub dependency")
                 RemoteURLDependency(CTOR _rd_depend)
             endif()
 
@@ -181,6 +191,8 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         PackageSpecification(GET "${_fi_package_specs}" _fi_pkg_name name)
+
+        message("Looking for ${_fi_pkg_name}")
 
         CMakePackageManager(register_dependency
             "${self}"
