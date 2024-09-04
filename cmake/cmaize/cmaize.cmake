@@ -39,7 +39,7 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 list(APPEND CMAKE_INSTALL_RPATH "$ORIGIN")
 
-# May be a hack, but let's the exes find dlls
+# possibly a hack, but allows the test exes to find the dlls
 if (WIN32)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
