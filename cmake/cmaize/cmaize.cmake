@@ -38,3 +38,11 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # endif("${isSystemDir}" STREQUAL "-1")
 
 list(APPEND CMAKE_INSTALL_RPATH "$ORIGIN")
+
+# possibly a hack, but allows the test exes to find the dlls
+# if (WIN32)
+#     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+#     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+#     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# endif (WIN32)

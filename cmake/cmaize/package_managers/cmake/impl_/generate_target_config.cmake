@@ -98,6 +98,13 @@ INTERFACE_LINK_LIBRARIES "
         set(__gtc_soname
             "lib${__gtc_target_name}.${__gtc_so_version}.dylib"
         )
+    elseif("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".dll")
+        set(__gtc_libname_w_version
+            "${__gtc_target_name}.${__gtc_version}.dll"
+        )
+        set(__gtc_soname
+            "${__gtc_target_name}.${__gtc_so_version}.dll"
+        )
     else()
         string(APPEND __gtc_msg "Shared libraries with the")
         string(APPEND __gtc_msg "${CMAKE_SHARED_LIBRARY_SUFFIX} suffix")
