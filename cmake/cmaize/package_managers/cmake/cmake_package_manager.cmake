@@ -132,8 +132,6 @@ cpp_class(CMakePackageManager PackageManager)
             cpp_map(GET "${_rd_dependencies}" _rd_temp "${_rd_key}")
         endforeach()
 
-
-        message("PackageManager had ${_rd_pkg_name} = ${_rd_depend}")
         if("${_rd_depend}" STREQUAL "")
             message(DEBUG "Registering dependency to package manager: ${_rd_pkg_name}")
 
