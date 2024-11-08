@@ -130,7 +130,6 @@ cpp_class(CMakePackageManager PackageManager)
         cpp_map(KEYS "${_rd_dependencies}" _rd_keys)
         foreach(_rd_key ${_rd_keys})
             cpp_map(GET "${_rd_dependencies}" _rd_temp "${_rd_key}")
-            message("${_rd_key} = ${_rd_temp}")
         endforeach()
 
 
