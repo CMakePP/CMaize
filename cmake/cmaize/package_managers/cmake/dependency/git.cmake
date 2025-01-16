@@ -17,14 +17,21 @@ include_guard()
 include(cmaize/package_managers/cmake/dependency/dependency_class)
 include(cmaize/utilities/fetch_and_available)
 
-cpp_class(RemoteURLDependency Dependency)
+cpp_class(GitDependency Dependency)
 
     #[[[
     # :type: desc
     #
     # URL for the resource
     #]]
-    cpp_attr(RemoteURLDependency location "")
+    cpp_attr(GitDependency location "")
+
+    #[[[
+    # :type: desc
+    #
+    # Git tag, branch, or commit hash to use. Defaults to "master".
+    #]]
+    cpp_attr(GitDependency version "master")
 
     #[[[
     # Attempts to fetch and build the dependency.
@@ -33,11 +40,12 @@ cpp_class(RemoteURLDependency Dependency)
     # :type self: Dependency
     #
     #]]
-    cpp_member(build_dependency RemoteURLDependency)
+    cpp_member(build_dependency GitDependency)
     function("${build_dependency}" _bd_this)
 
-        RemoteURLDependency(GET "${_bd_this}" _bd_url location)
-        RemoteURLDependency(GET "${_bd_this}" _bd_name name)
+        GitDependency(GET "${_bd_this}" _bd_url location)
+        GitDependency(GET "${_bd_this}" _bd_version version)
+        GitDependency(GET "${_bd_this}" _bd_name name)
 
         # The only reliable way to forward arguments to subprojects seems to be
         # through the cache, so we need to record the current values, set the
@@ -51,7 +59,11 @@ cpp_class(RemoteURLDependency Dependency)
             set("${_bd_var}" "${_bd_val}" CACHE BOOL "" FORCE)
         endforeach()
 
-        cmaize_fetch_and_available("${_bd_name}" GIT_REPOSITORY "${_bd_url}.git")
+        cmaize_fetch_and_available(
+            "${_bd_name}" 
+            GIT_REPOSITORY "${_bd_url}.git"
+            GIT_TAG "${_bd_version}"
+        )
 
         foreach(_bd_pair ${_bd_old_cmake_args})
             string(REPLACE "=" [[;]] _bd_split_pair "${_bd_pair}")
@@ -88,22 +100,23 @@ cpp_class(RemoteURLDependency Dependency)
     #      repository or the HTTPS link used to clone the repository, but
     #      not the SSH cloning option.
     #]]
-    cpp_member(init RemoteURLDependency args)
+    cpp_member(init GitDependency args)
     function("${init}" self)
 
         set(_i_options )
-        set(_i_one_value_args BUILD_TARGET FIND_TARGET NAME URL)
+        set(_i_one_value_args BUILD_TARGET FIND_TARGET NAME URL VERSION)
         set(_i_list CMAKE_ARGS)
         cmake_parse_arguments(
             _i "${_i_options}" "${_i_one_value_args}" "${_i_list}" ${ARGN}
         )
 
-        RemoteURLDependency(SET "${self}" location "${_i_URL}")
+        GitDependency(SET "${self}" location "${_i_URL}")
 
-        RemoteURLDependency(SET "${self}" name "${_i_NAME}")
-        RemoteURLDependency(SET "${self}" build_target "${_i_BUILD_TARGET}")
-        RemoteURLDependency(SET "${self}" find_target "${_i_FIND_TARGET}")
-        RemoteURLDependency(SET "${self}" cmake_args "${_i_CMAKE_ARGS}")
+        GitDependency(SET "${self}" name "${_i_NAME}")
+        GitDependency(SET "${self}" version "${_i_VERSION}")
+        GitDependency(SET "${self}" build_target "${_i_BUILD_TARGET}")
+        GitDependency(SET "${self}" find_target "${_i_FIND_TARGET}")
+        GitDependency(SET "${self}" cmake_args "${_i_CMAKE_ARGS}")
 
     endfunction()
 
