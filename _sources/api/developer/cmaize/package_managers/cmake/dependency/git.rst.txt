@@ -1,12 +1,12 @@
 
-###################################################
-cmaize.package_managers/cmake/dependency/remote_url
-###################################################
+############################################
+cmaize.package_managers/cmake/dependency/git
+############################################
 
-.. module:: cmaize.package_managers/cmake/dependency/remote_url
+.. module:: cmaize.package_managers/cmake/dependency/git
 
 
-.. py:class:: RemoteURLDependency
+.. py:class:: GitDependency
 
    Bases: :class:`Dependency`
    
@@ -54,6 +54,15 @@ cmaize.package_managers/cmake/dependency/remote_url
       :type: desc
       
       URL for the resource
+      
+
+
+   .. py:attribute:: version
+      :value: "master"
+
+      :type: desc
+      
+      Git tag, branch, or commit hash to use. Defaults to "master".
       
 
 

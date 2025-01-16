@@ -9,6 +9,6 @@ cmaize.package_managers/cmake/dependency
    detail_/index.rst
    dependency
    dependency_class
+   git
    github
-   remote_url
 
