@@ -31,6 +31,9 @@ include(cmaize/user_api/dependencies/find_or_build_dependency)
 # :param kwargs: Keyword arguments to forward to
 #    ``cmaize_find_or_build_dependency``. See the documentation for
 #    ``cmaize_find_or_build_dependency`` for the full list.
+#
+# :raises UNKNOWN_PM: ``PACKAGE_MANAGER`` does not correspond to a known
+#     package manager. Strong throw guarantee.
 #]]
 function(cmaize_find_or_build_optional_dependency _cfobod_name _cfobod_flag)
 

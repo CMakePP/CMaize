@@ -40,9 +40,8 @@ include(cmaize/package_managers/package_manager)
 # :param **kwargs: The arguments to forward to _fob_parse_arguments. See
 #    _fob_parse_arguments documentation for more details.
 #
-# :raises UNKNOWN_PM: When ``pm_name`` does not correspond to a known package
-#     manager. Strong throw guarantee.
-#
+# :raises UNKNOWN_PM: When ``PACKAGE_MANAGER`` does not correspond to a known
+#     package manager. Strong throw guarantee.
 #]]
 function(_cmaize_find_dependency _fd_tgt _fd_pm _fd_package_specs _fd_project _fd_name)
 

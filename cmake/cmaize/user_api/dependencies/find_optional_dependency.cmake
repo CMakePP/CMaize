@@ -46,6 +46,11 @@ include(cmaize/user_api/dependencies/find_dependency)
 # :type flag: desc
 # :param kwargs: Keyword arguments to forward to ``cmaize_find_dependency``.
 #    See the documentation for ``cmaize_find_dependency`` for the full list.
+#
+# :raises PACKAGE_NOT_FOUND: CMaize was unable to locate the package specified.
+#     Strong throw guarantee.
+# :raises UNKNOWN_PM: ``PACKAGE_MANAGER`` does not correspond to a known
+#     package manager. Strong throw guarantee.
 #]]
 function(cmaize_find_optional_dependency _cfod_name _cfod_flag)
 
