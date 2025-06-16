@@ -212,7 +212,10 @@ function(_cpm_install_package_impl self _ip_pkg_name)
 
             # Actually append the aggregated paths to the current target's
             # INSTALL_RPATH
-            CMaizeTarget(get_property "${_ip_tgt_obj_i}" _install_rpath INSTALL_RPATH)
+            CMaizeTarget(has_property "${_ip_tgt_obj_i}" _has_install_rpath INSTALL_RPATH)
+            if(_has_install_rpath)
+                CMaizeTarget(get_property "${_ip_tgt_obj_i}" _install_rpath INSTALL_RPATH)
+            endif()
             list(APPEND _install_rpath ${_dep_install_path})
             list(APPEND _install_rpath ${_dep_install_rpath})
             CMaizeTarget(set_property "${_ip_tgt_obj_i}" INSTALL_RPATH "${_install_rpath}")
