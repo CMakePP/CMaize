@@ -14,11 +14,11 @@
 
 include_guard()
 
-include(cmaize/package_managers/cmake/dependency/remote_url)
+include(cmaize/package_managers/cmake/dependency/git)
 include(cmaize/utilities/fetch_and_available)
 include(cmaize/utilities/sanitize_url)
 
-cpp_class(GitHubDependency RemoteURLDependency)
+cpp_class(GitHubDependency GitDependency)
 
     #[[[
     # :type: bool
@@ -26,13 +26,6 @@ cpp_class(GitHubDependency RemoteURLDependency)
     # Is this a private GitHub Repo (TRUE) or not (FALSE)? Defaults to FALSE.
     #]]
     cpp_attr(GitHubDependency private FALSE)
-
-    #[[[
-    # :type: desc
-    #
-    # Git tag, branch, or commit hash to use. Defaults to "master".
-    #]]
-    cpp_attr(GitHubDependency version "master")
 
     #[[[
     # Attempts to fetch and build the dependency.
@@ -161,7 +154,7 @@ cpp_class(GitHubDependency RemoteURLDependency)
 
         # Clean up the GitHub URL and ensure it is from GitHub
         cmaize_sanitize_url(_i_URL "${_i_URL}" DOMAIN "github.com")
-        RemoteURLDependency(SET "${self}" location "${_i_URL}")
+        GitDependency(SET "${self}" location "${_i_URL}")
 
         GitHubDependency(SET "${self}" name "${_i_NAME}")
         GitHubDependency(SET "${self}" version "${_i_VERSION}")

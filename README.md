@@ -59,7 +59,7 @@ for more details.
 
 This research was supported by the Exascale Computing Project (17-SC-20-SC), a 
 collaborative effort of the U.S. Department of Energy Office of Science and the 
-National Nuclear Security Administration.
+National Nuclear Security Administration. 
 
 Additional funding has come for Iowa State University through the College of
 Liberal Arts & Sciences Dean’s Professor Chair.
