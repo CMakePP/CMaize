@@ -97,8 +97,25 @@ macro(
             # Check if it is a dependency to be built and redirect the
             # installation to the ``external`` directory
             CMaizeProject(get_target
-                "${__gpc_proj}" __gpc_tgt_deps_i_obj "${__gpc_tgt_deps_i}"
+                "${__gpc_proj}" __gpc_tgt_deps_i_obj "${__gpc_tgt_deps_i}" ALL
             )
+
+            # Skip dependencies that are just empty interface libraries. This
+            # is the type for a dummy target for optional dependencies that
+            # were not enabled in ``cmaize_find*_optional_dependency()``
+            CMaizeTarget(target "${__gpc_tgt_deps_i_obj}" __gpc_tgt_deps_i_name)
+            get_target_property(__gpc_tgt_deps_i_type "${__gpc_tgt_deps_i_name}" TYPE)
+            CMaizeTarget(GET "${__gpc_tgt_deps_i_obj}" _gpc_tgt_depts_i_install_path install_path)
+            if(("${__gpc_tgt_deps_i_type}" STREQUAL "INTERFACE_LIBRARY") AND ("${_gpc_tgt_depts_i_install_path}" STREQUAL ""))
+                message(
+                    VERBOSE
+                    "Skipping ${__gpc_tgt_deps_i}. It is an empty interface "
+                    "library target."
+                )
+                continue()
+            endif()
+
+            list(APPEND CMAKE_MESSAGE_INDENT "  ")
 
             CMakePackageManager(GET "${self}" __gpc_dependencies dependencies)
             cpp_map(GET "${__gpc_dependencies}" __gpc_dep_obj "${__gpc_tgt_deps_i}")
