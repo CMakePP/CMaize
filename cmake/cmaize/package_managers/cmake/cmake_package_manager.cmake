@@ -199,9 +199,10 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         Dependency(find_dependency "${_fi_depend}" _fi_found)
+        Dependency(get "${_fi_depend}" _fi_dep_name name)
         if(
             NOT "${_fi_found}" OR
-            "${${_fi_pkg_name}_DIR}" STREQUAL "${_fi_pkg_name}_DIR-NOTFOUND"
+            "${${_fi_dep_name}_DIR}" STREQUAL "${_fi_dep_name}_DIR-NOTFOUND"
         )
             cpp_return("")
         endif()
@@ -209,14 +210,14 @@ cpp_class(CMakePackageManager PackageManager)
         # Make sure that FIND_TARGET is populated with a name
         if("${_fi_FIND_TARGET}" STREQUAL "")
             if("${_fi_BUILD_TARGET}" STREQUAL "")
-                set(_fi_FIND_TARGET "${_fi_pkg_name}")
+                set(_fi_FIND_TARGET "${_fi_dep_name}")
             else()
                 set(_fi_FIND_TARGET "${_fi_BUILD_TARGET}")
             endif()
         endif()
 
         # Create an installed target
-        set(_fi_depend_root_path "${${_fi_pkg_name}_DIR}")
+        set(_fi_depend_root_path "${${_fi_dep_name}_DIR}")
         InstalledTarget(ctor
             _fi_tgt "${_fi_FIND_TARGET}" "${_fi_depend_root_path}"
         )
