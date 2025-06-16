@@ -19,8 +19,9 @@ include(cmaize/user_api/dependencies/impl_/parse_arguments)
 include(cmaize/package_managers/package_manager)
 
 #[[[
-# Factorization from cmaize_find_dependency and cmaize_find_or_build_dependency.
+# Checks if dependency is already installed.
 #
+# Factorization from cmaize_find_dependency and cmaize_find_or_build_dependency.
 # The first part of both cmaize_find_dependency and
 # cmaize_find_or_build_dependency is the same. This function factors that common
 # code out into one function.
@@ -63,7 +64,6 @@ function(_cmaize_find_dependency _fd_tgt _fd_pm _fd_package_specs _fd_project _f
         CMaizeProject(add_target
             "${_fd_project}" "${_fd_name}" "${_fd_tgt_tmp}" INSTALLED
         )
-        CMaizeProject(check_target "${_fd_project}" was_found "${_fd_name}" INSTALLED)
     endif()
 
     set("${_fd_tgt}" "${_fd_tgt_tmp}" PARENT_SCOPE)
