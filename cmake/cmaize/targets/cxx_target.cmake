@@ -149,9 +149,11 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(_access_level "${self}" _scf_access_level)
 
         if(NOT "${_scf_cxx_std}" STREQUAL "")
+            message(VERBOSE "Setting CXX standard to \"cxx_std_${_scf_cxx_std}\"")
             target_compile_features(
                 "${_scf_tgt_name}"
-                "${_scf_access_level}" "cxx_std_${_scf_cxx_std}"
+                "${_scf_access_level}"
+                    "cxx_std_${_scf_cxx_std}"
             )
         endif()
     endfunction()
@@ -185,7 +187,9 @@ cpp_class(CXXTarget BuildTarget)
 
         # Set up public includes
         CXXTarget(_access_level "${self}" _sid_access_level)
+        message(VERBOSE "Setting build interface include directories to")
         foreach(_sid_inc_dir_i ${_sid_inc_dirs})
+            message(VERBOSE "  ${_sid_inc_dir_i}")
             target_include_directories(
                 "${_sid_tgt_name}"
                 "${_sid_access_level}"
@@ -194,18 +198,23 @@ cpp_class(CXXTarget BuildTarget)
         endforeach()
 
         # Set up installation includes
+        message(VERBOSE "Setting install interface include directories to")
+        message(VERBOSE "  include")
         target_include_directories(
             "${_sid_tgt_name}"
             "${_sid_access_level}"
-            $<INSTALL_INTERFACE:include>
+                $<INSTALL_INTERFACE:include>
         )
 
         if(NOT "${_sid_access_level}" STREQUAL "INTERFACE")
+            message(VERBOSE "Setting private header include directories to")
+            message(VERBOSE "  ${_sid_src_dir}")
+
             # Set up private header includes
             target_include_directories(
                 "${_sid_tgt_name}"
                 PRIVATE
-                "${_sid_src_dir}"
+                    "${_sid_src_dir}"
             )
         endif()
 
@@ -228,9 +237,10 @@ cpp_class(CXXTarget BuildTarget)
         # underlying target name
         cmaize_replace_project_targets(_sll_deps ${_sll_deps})
 
+        message(VERBOSE "Registering link library dependencies")
         CXXTarget(_access_level "${self}" _sll_access_level)
         foreach(_sll_dep_i ${_sll_deps})
-            message(DEBUG "Registering ${_sll_dep_i} as a dependency of ${_sll_name}.")
+            message(VERBOSE "  ${_sll_dep_i}")
             target_link_libraries(
                 "${_sll_name}" "${_sll_access_level}" "${_sll_dep_i}"
             )
@@ -251,6 +261,7 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(GET "${self}" _sph_inc_files includes)
 
         # TODO: This may hang if '_sph_inc_files' is empty
+        message(VERBOSE "Setting PUBLIC_HEADER to \"${_sph_inc_files}\"")
         CXXTarget(set_property "${self}" PUBLIC_HEADER "${_sph_inc_files}")
 
     endfunction()
@@ -269,6 +280,7 @@ cpp_class(CXXTarget BuildTarget)
         CXXTarget(GET "${self}" _ss_src_files sources)
 
         # Sources for a CXX target should be private
+        message(VERBOSE "Setting sources to \"${_ss_src_files}\"")
         target_sources(
             "${_ss_tgt_name}"
             PRIVATE
