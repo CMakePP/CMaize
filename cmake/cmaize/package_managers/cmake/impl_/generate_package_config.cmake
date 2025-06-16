@@ -21,7 +21,9 @@ macro(
     __gpc_pkg_name
 )
 
-
+    message(VERBOSE "Generating package config for ${__gpc_pkg_name}")
+    list(APPEND CMAKE_MESSAGE_INDENT "  ")
+    
     set(__gpc_targets ${ARGN})
 
     _cmaize_generated_by_cmaize(__gpc_file_contents)
@@ -38,6 +40,11 @@ macro(
         CMaizeProject(get_target
             "${__gpc_proj}" __gpc_tgt_obj "${__gpc_targets_i}"
         )
+
+        CMaizeTarget(target "${__gpc_tgt_obj}" __gpc_tgt_name)
+        message(VERBOSE "Processing target: \"${__gpc_tgt_name}\"")
+        list(APPEND CMAKE_MESSAGE_INDENT "  ")
+
         BuildTarget(GET "${__gpc_tgt_obj}" __gpc_tgt_deps depends)
 
         list(LENGTH __gpc_tgt_deps __gpc_tgt_deps_len)
@@ -56,7 +63,7 @@ macro(
         endif()
 
         foreach(__gpc_tgt_deps_i ${__gpc_tgt_deps})
-            message(DEBUG "Processing dependency: ${__gpc_tgt_deps_i}")
+            message(VERBOSE "Processing dependency: \"${__gpc_tgt_deps_i}\"")
 
             # Skip dependency processing if this is not a target managed
             # by the CMaize project
@@ -68,7 +75,7 @@ macro(
             )
             if(NOT __gpc_is_cmaize_tgt)
                 message(
-                    DEBUG
+                    VERBOSE
                     "Skipping ${__gpc_tgt_deps_i}. It is not target "
                     "managed by CMaize."
                 )
@@ -80,7 +87,7 @@ macro(
             cpp_contains(_gpc_dep_is_proj_tgt "${__gpc_tgt_deps_i}" "${__gpc_targets}")
             if(_gpc_dep_is_proj_tgt)
                 message(
-                    DEBUG
+                    VERBOSE
                     "Skipping ${__gpc_tgt_deps_i}. It is a target defined "
                     "by this project."
                 )
@@ -114,7 +121,11 @@ macro(
                     "find_dependency(${__gpc_tgt_deps_i} COMPONENTS ${__gpc_dep_build_tgt_name})\n"
                 )
             endif()
+
+            list(POP_BACK CMAKE_MESSAGE_INDENT)
         endforeach()
+
+        list(POP_BACK CMAKE_MESSAGE_INDENT)
     endforeach()
 
     # Add a space between the dependency imports and component imports
@@ -167,6 +178,7 @@ macro(
         "${CMAKE_CURRENT_BINARY_DIR}/${__gpc_pkg_name}Config.cmake.in"
     )
 
+    list(POP_BACK CMAKE_MESSAGE_INDENT)
     cpp_return("${__gpc_output_file}")
 
 endmacro()

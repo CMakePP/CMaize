@@ -189,7 +189,7 @@ cpp_class(CMakePackageManager PackageManager)
 
         PackageSpecification(GET "${_fi_package_specs}" _fi_pkg_name name)
 
-        message("Looking for ${_fi_pkg_name}")
+        message(STATUS "Looking for ${_fi_pkg_name}")
 
         CMakePackageManager(register_dependency
             "${self}"
