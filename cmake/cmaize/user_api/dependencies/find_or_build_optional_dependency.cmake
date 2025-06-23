@@ -120,8 +120,8 @@ function(cmaize_find_or_build_optional_dependency _cfobod_name _cfobod_flag)
         # without creating a Dependency object here.
 
         # TODO: What happens when a package is disabled for a dependency, but
-        #       enabled in the top level package? However unlikely, it is a
-        #       state that should be handled here.
+        # enabled in the top level package? However unlikely, it is a state
+        # that should be handled here.
 
         # Use the ALL flag to check both installed and built targets in the
         # project, since the target may be stored under either.
