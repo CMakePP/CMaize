@@ -351,7 +351,7 @@ cpp_class(CMaizeProject)
     # :param _ct_target_name: Identifying name for the target. This can match
     #                         name of either the CMake target or CMaizeTarget
     #                         object, but is required to do match them.
-    # :type _ct_target_name: desc
+    # :type _ct_target_name: desc or target
     # :param **kwargs: Additional keyword arguments may be necessary.
     #
     # :Keyword Arguments:
@@ -360,9 +360,6 @@ cpp_class(CMaizeProject)
     #    * **ALL** (*bool*) --
     #      Flag to indicate that both the build and installed targets should
     #      be checked.
-    #    * **NAME** (*desc* or *target*) --
-    #      Identifying name for a target contained in the current Cmaize
-    #      project. This keyword argument is **required**.
     #
     # :returns: CMaizeTarget found (TRUE) or not (FALSE).
     # :rtype: bool
