@@ -34,6 +34,10 @@ function("${test_find_optional_dependency}")
 
     ct_add_section(NAME "is_disabled_empty")
     function("${is_disabled_empty}")
+        # Create a project
+        set(proj_name "is_disabled_empty")
+        project("${proj_name}")
+        cmaize_project("${proj_name}")
 
         ct_assert_target_does_not_exist(not_real_empty)
 
@@ -48,6 +52,10 @@ function("${test_find_optional_dependency}")
 
     ct_add_section(NAME "is_disabled_false")
     function("${is_disabled_false}")
+        # Create a project
+        set(proj_name "is_disabled_false")
+        project("${proj_name}")
+        cmaize_project("${proj_name}")
 
         ct_assert_target_does_not_exist(not_real_false)
 
