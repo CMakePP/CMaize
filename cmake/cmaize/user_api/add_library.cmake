@@ -35,13 +35,15 @@ include(cmaize/utilities/replace_project_targets)
 #]]
 function(cmaize_add_library _cal_tgt_name)
 
-    message(VERBOSE "Registering library target: ${_cal_tgt_name}")
+    message(VERBOSE "Creating library target: ${_cal_tgt_name}")
+    list(APPEND CMAKE_MESSAGE_INDENT "  ")
 
     set(_cal_one_value_args LANGUAGE)
     cmake_parse_arguments(_cal "" "${_cal_one_value_args}" "" ${ARGN})
 
     # Default to CXX if no language is given
     if("${_cal_LANGUAGE}" STREQUAL "")
+        message(VERBOSE "No language set, enabling \"CXX\"")
         set(_cal_LANGUAGE "CXX")
     endif()
 
@@ -82,23 +84,31 @@ function(cmaize_add_library _cal_tgt_name)
         INSTALL_PATH "${_cal_install_path}"
     )
 
-    # Loop over each dependency. This is currently done by looking
-    # up the dependencies by name from the CMaizeProject, but later
+    # Loop over each dependency. This is currenjtly done by looking
+    # up the dependencies by name from the CMaizeProect, but later
     # we should make each CMaize target hold references to its
     # dependencies
     cpp_get_global(_cal_top_proj CMAIZE_TOP_PROJECT)
     BuildTarget(GET "${_cal_tgt_obj}" _dep_list depends)
+
+    message(VERBOSE "Building INSTALL_RPATH")
+    list(APPEND CMAKE_MESSAGE_INDENT "  ")
+
     foreach(dependency ${_dep_list})
         # Fetch the dependency's target object
         CMaizeProject(get_target
-            "${_cal_top_proj}" _dep_tgt_obj "${dependency}"
+            "${_cal_top_proj}" _dep_tgt_obj "${dependency}" ALL
         )
 
         # Skip the dependency if it is not managed by CMaize, since
         # those won't have install path information
         if("${_dep_tgt_obj}" STREQUAL "")
+            message(VERBOSE "Skipping \"${dependency}\" not managed by CMaize.")
             continue()
         endif()
+
+        message(VERBOSE "From ${dependency}")
+        list(APPEND CMAKE_MESSAGE_INDENT "  ")
 
         # Get the install path for the dependency
         CMaizeTarget(GET "${_dep_tgt_obj}" _dep_install_path install_path)
@@ -134,13 +144,30 @@ function(cmaize_add_library _cal_tgt_name)
                 get_property "${_cal_tgt_obj}" _install_rpath INSTALL_RPATH
             )
         endif()
-        list(APPEND _install_rpath ${_dep_install_path})
-        list(APPEND _install_rpath ${_dep_install_rpath})
-        CMaizeTarget(
-            set_property "${_cal_tgt_obj}" INSTALL_RPATH "${_install_rpath}"
+
+        if(NOT "${_dep_install_path}" STREQUAL "")
+            message(VERBOSE "Adding \"${_dep_install_path}\"")
+            list(APPEND _install_rpath ${_dep_install_path})
+        else()
+            message(VERBOSE "No install path to append")
+        endif()
+
+        if(NOT "${_dep_install_rpath}" STREQUAL "")
+            message(VERBOSE "Adding \"${_dep_install_rpath}\"")
+            list(APPEND _install_rpath ${_dep_install_rpath})
+        else()
+            message(VERBOSE "No install RPATH to append")
+        endif()
+
+        CMaizeTarget(set_property
+            "${_cal_tgt_obj}" INSTALL_RPATH "${_install_rpath}"
         )
+        
+        list(POP_BACK CMAKE_MESSAGE_INDENT)
     endforeach()
 
+    list(POP_BACK CMAKE_MESSAGE_INDENT)
+    list(POP_BACK CMAKE_MESSAGE_INDENT)
 endfunction()
 
 #[[[
@@ -192,8 +219,10 @@ function(cmaize_add_cxx_library _cacl_tgt_obj _cacl_tgt_name)
     # is a library or interface library
     list(LENGTH _cacl_source_files _cacl_source_files_n)
     if("${_cacl_source_files_n}" GREATER 0)
+        message(VERBOSE "Creating \"${_cacl_tgt_name}\" as a CXXLibrary")
         CXXLibrary(CTOR _cacl_lib_obj "${_cacl_tgt_name}")
     else()
+        message(VERBOSE "Creating \"${_cacl_tgt_name}\" as a CXXInterfaceLibrary")
         CXXInterfaceLibrary(CTOR _cacl_lib_obj "${_cacl_tgt_name}")
     endif()
 

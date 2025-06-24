@@ -31,6 +31,9 @@ include(cmaize/user_api/dependencies/impl_/find_dependency)
 # :type _fobdc_name: desc
 # :param **kwargs: Additional keyword arguments may be necessary.
 #      See _fob_parse_arguemnts for up to date list.
+#
+# :raises UNKNOWN_PM: ``PACKAGE_MANAGER`` does not correspond to a known
+#     package manager. Strong throw guarantee.
 #]]
 function(cmaize_find_or_build_dependency _fobd_name)
 

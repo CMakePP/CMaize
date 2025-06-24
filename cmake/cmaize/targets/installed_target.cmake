@@ -56,6 +56,7 @@ cpp_class(InstalledTarget CMaizeTarget)
         endif()
 
         InstalledTarget(SET "${self}" root_path "${_ctor_root}")
+        CMaizeTarget(SET "${self}" install_path "${_ctor_root}")
 
     endfunction()
 

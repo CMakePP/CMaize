@@ -33,7 +33,6 @@ include(cmaize/project/cmaize_project)
 #
 # :raises UNKNOWN_PM: When ``pm_name`` does not correspond to a known package
 #     manager. Strong throw guarantee.
-#
 #]]
 function(_fob_get_package_manager _gpm_pm _gpm_project _gpm_pm_name)
 
