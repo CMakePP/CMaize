@@ -113,8 +113,9 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cmaize.user_api-dependencies-impl_-find_dependency._cmaize_find_dependency">
 <span class="sig-prename descclassname"><span class="pre">cmaize.user_api/dependencies/impl_/find_dependency.</span></span><span class="sig-name descname"><span class="pre">_cmaize_find_dependency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fd_tgt</span> <span class="pre">_fd_pm</span> <span class="pre">_fd_package_specs</span> <span class="pre">_fd_project</span> <span class="pre">_fd_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.user_api-dependencies-impl_-find_dependency._cmaize_find_dependency" title="Link to this definition"></a></dt>
-<dd><p>Factorization from cmaize_find_dependency and cmaize_find_or_build_dependency.</p>
-<p>The first part of both cmaize_find_dependency and
+<dd><p>Checks if dependency is already installed.</p>
+<p>Factorization from cmaize_find_dependency and cmaize_find_or_build_dependency.
+The first part of both cmaize_find_dependency and
 cmaize_find_or_build_dependency is the same. This function factors that common
 code out into one function.</p>
 <dl class="field-list simple">
@@ -133,8 +134,8 @@ _fob_parse_arguments documentation for more details.</p>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>UNKNOWN_PM</strong> – When <code class="docutils literal notranslate"><span class="pre">pm_name</span></code> does not correspond to a known package
-manager. Strong throw guarantee.</p>
+<dd class="field-even"><p><strong>UNKNOWN_PM</strong> – When <code class="docutils literal notranslate"><span class="pre">PACKAGE_MANAGER</span></code> does not correspond to a known
+package manager. Strong throw guarantee.</p>
 </dd>
 </dl>
 </dd></dl>

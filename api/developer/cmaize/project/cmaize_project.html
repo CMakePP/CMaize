@@ -312,7 +312,7 @@ this project.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>_ct_found</strong> (<em>bool*</em>) – Return variable for if the target was found.</p></li>
-<li><p><strong>_ct_target_name</strong> (<em>desc</em>) – Identifying name for the target. This can match
+<li><p><strong>_ct_target_name</strong> (<em>desc</em><em> or </em><em>target</em>) – Identifying name for the target. This can match
 name of either the CMake target or CMaizeTarget
 object, but is required to do match them.</p></li>
 <li><p><strong>**kwargs</strong> – <p>Additional keyword arguments may be necessary.</p>
@@ -326,9 +326,6 @@ Flag to indicate that the installed targets should be checked.</p></li>
 <li><p><strong>ALL</strong> (<em>bool</em>) –
 Flag to indicate that both the build and installed targets should
 be checked.</p></li>
-<li><p><strong>NAME</strong> (<em>desc</em> or <em>target</em>) –
-Identifying name for a target contained in the current Cmaize
-project. This keyword argument is <strong>required</strong>.</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>

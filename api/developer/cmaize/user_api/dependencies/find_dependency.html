@@ -129,8 +129,12 @@ the documentation for _fob_parse_arguments for a complete list.</p>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>UNKNOWN_PM</strong> – When <code class="docutils literal notranslate"><span class="pre">pm_name</span></code> does not correspond to a known package
-manager. Strong throw guarantee.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>PACKAGE_NOT_FOUND</strong> – CMaize was unable to locate the package specified.
+Strong throw guarantee.</p></li>
+<li><p><strong>UNKNOWN_PM</strong> – <code class="docutils literal notranslate"><span class="pre">PACKAGE_MANAGER</span></code> does not correspond to a known
+package manager. Strong throw guarantee.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

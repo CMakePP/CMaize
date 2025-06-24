@@ -21,4 +21,7 @@ cmaize.user_api/dependencies/find_or_build_dependency
    :param **kwargs: Additional keyword arguments may be necessary.
         See _fob_parse_arguemnts for up to date list.
    
+   :raises UNKNOWN_PM: ``PACKAGE_MANAGER`` does not correspond to a known
+       package manager. Strong throw guarantee.
+   
 

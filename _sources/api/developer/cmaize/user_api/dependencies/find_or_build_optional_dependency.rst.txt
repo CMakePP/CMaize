@@ -8,12 +8,26 @@ cmaize.user_api/dependencies/find_or_build_optional_dependency
 
 .. function:: cmaize_find_or_build_optional_dependency(_cfobod_name _cfobod_flag)
 
-   Wraps the process of finding, or building, an optional dependency.
+   Wraps the process of finding or building an optional dependency.
    
    This method is largely the same as cmaize_find_optional_dependency, but
-   instead wraps a call to ``cmaize_find_or_build_dependency``.
+   instead wraps a call to ``cmaize_find_or_build_dependency``. However, when
+   the provided option is enabled, the optional flag is also added as a compile
+   definition on the dependency target. This propagates the optional flag as a
+   compile definition to any targets that depend on this target.
    
-   :param name: The name of the dependency.
+   When the option is disabled, an empty interface library target is created
+   instead, essentially a no-op when added as a link target. This ensures that
+   a target always exists and the CMaize target identifier can be used
+   regardless of whether the optional dependency is enabled or not.
+   
+   .. note::
+   
+      The compile definition for the optional flag that is added to the target
+      will NOT include the value assigned to the optional flag.
+   
+   :param name: A name for the dependency for CMaize. This is assumed to also
+       be the name of the package to be found unless ``NAME`` is provided.
    :type name: desc
    :param flag: The variable to use as a flag. Used to name the compile
       definition.
@@ -21,5 +35,10 @@ cmaize.user_api/dependencies/find_or_build_optional_dependency
    :param kwargs: Keyword arguments to forward to
       ``cmaize_find_or_build_dependency``. See the documentation for
       ``cmaize_find_or_build_dependency`` for the full list.
+   
+   :raises UNKNOWN_PM: ``PACKAGE_MANAGER`` does not correspond to a known
+       package manager. Strong throw guarantee
+   :raises TargetNotFound: Target does not exist on the CMaize project after
+       ``cmaize_find_or_build_dependency()``. ??? throw guarantee.
    
 

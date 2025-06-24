@@ -24,5 +24,4 @@ cmaize.user_api/dependencies/impl_/get_package_manager
    :raises UNKNOWN_PM: When ``pm_name`` does not correspond to a known package
        manager. Strong throw guarantee.
    
-   
 

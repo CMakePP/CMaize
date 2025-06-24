@@ -22,7 +22,9 @@ cmaize.user_api/dependencies/find_dependency
    :param **kwargs: Keyword arguments describing the behavior of the search. See
       the documentation for _fob_parse_arguments for a complete list.
    
-   :raises UNKNOWN_PM: When ``pm_name`` does not correspond to a known package
-       manager. Strong throw guarantee.
+   :raises PACKAGE_NOT_FOUND: CMaize was unable to locate the package specified.
+       Strong throw guarantee.
+   :raises UNKNOWN_PM: ``PACKAGE_MANAGER`` does not correspond to a known
+       package manager. Strong throw guarantee.
    
 
