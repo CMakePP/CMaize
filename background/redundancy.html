@@ -130,7 +130,9 @@ project structure like:</p>
 </pre></div>
 </div>
 <p>then the minimal <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code> file looks like:</p>
-<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">hello_world</span><span class="w"> </span><span class="s">hello_world.cpp</span><span class="p">)</span>
+<div class="highlight-CMake notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.5</span><span class="p">)</span><span class="w">  </span><span class="c"># Required as of CMake 4.0</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="nb">add_executable</span><span class="p">(</span><span class="s">hello_world</span><span class="w"> </span><span class="s">hello_world.cpp</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note this will not configure warning free, nor will you be able to install the
