@@ -13,6 +13,10 @@ include(cmake_test/cmake_test)
 
 set(BUILD_TESTING "${build_testing_old}" CACHE BOOL "" FORCE)
 
-# ct_add_dir("cpp")
-ct_add_dir("cmaize")
+ct_add_dir(
+    "cmaize"
+    USE_REL_PATH_NAMES
+    CMAKE_OPTIONS
+        -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE
+)
 add_subdirectory(docs)

@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Minimum version required as of CMake 4.0
+# (see https://cmake.org/cmake/help/latest/policy/CMP0000.html).
+# Match this with minimum version from 'CMaize/CMakeLists.txt'.
+cmake_minimum_required(VERSION 3.5)  # Required as of CMake 4.0
+
 add_executable(hello_world hello_world.cpp)
 
 # The below lines of code are used in unit testing this code example

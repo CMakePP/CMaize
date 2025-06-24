@@ -60,7 +60,7 @@ then the minimal ``CMakeLists.txt`` file looks like:
 
 .. literalinclude:: /../../tests/docs/bare_bones_cmake/CMakeLists.txt
    :language: CMake
-   :lines: 15
+   :lines: 18-20
    :linenos:
    :lineno-start: 1
 
