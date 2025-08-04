@@ -51,6 +51,7 @@ cpp_class(CMaizeTarget)
     #]]
     cpp_constructor(CTOR CMaizeTarget str)
     function("${CTOR}" self _ctor_name)
+        message(DEBUG "CTOR of CMaizeTarget called for \"${_ctor_name}\"")
 
         CMaizeTarget(SET "${self}" _name "${_ctor_name}")
 

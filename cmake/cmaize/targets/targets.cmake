@@ -16,6 +16,8 @@ include_guard()
 
 include(cmaize/targets/build_target)
 include(cmaize/targets/cmaize_target)
+include(cmaize/targets/cmaize_library)
+include(cmaize/targets/cmaize_interface_library)
 include(cmaize/targets/cxx_executable)
 include(cmaize/targets/cxx_interface_library)
 include(cmaize/targets/cxx_library)
