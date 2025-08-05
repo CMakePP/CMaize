@@ -33,9 +33,9 @@ cpp_class(CMaizeLibrary CMaizeTarget)
     #]]
     cpp_attr(CMaizeLibrary type "${BUILD_SHARED_LIBS}")
 
+    # TODO: Function doc
     cpp_constructor(CTOR CMaizeLibrary str)
     function("${CTOR}" self _ctor_name)
-        message(DEBUG "CTOR of CMaizeLibrary called for \"${_ctor_name}\"")
 
         CMaizeTarget(CTOR "${self}" "${_ctor_name}")
 

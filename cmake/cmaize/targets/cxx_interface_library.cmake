@@ -18,12 +18,13 @@ include(cmaize/targets/cxx_library)
 
 cpp_class(CXXInterfaceLibrary CXXLibrary CMaizeInterfaceLibrary)
 
+    # TODO: Function doc
     cpp_constructor(CTOR CXXInterfaceLibrary str)
     function("${CTOR}" self _ctor_name)
-        message(DEBUG "CTOR of CMaizeLibrary called for \"${_ctor_name}\"")
 
         CXXLibrary(CTOR "${self}" "${_ctor_name}")
         CMaizeInterfaceLibrary(CTOR "${self}" "${_ctor_name}")
+
     endfunction()
 
     #[[[

@@ -46,7 +46,6 @@ cpp_class(CMaizeInterfaceLibrary CMaizeLibrary)
     #]]
     cpp_constructor(CTOR CMaizeInterfaceLibrary str)
     function("${CTOR}" self _ctor_name)
-        message(DEBUG "CTOR of CMaizeInterfaceLibrary called for \"${_ctor_name}\"")
 
         # Set the library type
         CMaizeLibrary(CTOR "${self}" "${_ctor_name}")
