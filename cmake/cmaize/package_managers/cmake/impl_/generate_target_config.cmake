@@ -68,6 +68,17 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name}
         )
     endif()
 
+    # Get interface compile definitions
+    CMaizeTarget(has_property "${__gtc_tgt_obj}" __gtc_has_interface_compile_definitions INTERFACE_COMPILE_DEFINITIONS)
+    if(__gtc_has_interface_compile_definitions)
+        CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_interface_compile_definitions INTERFACE_COMPILE_DEFINITIONS)
+        string(APPEND
+            __gtc_file_contents
+            "
+        INTERFACE_COMPILE_DEFINITIONS \"${__gtc_interface_compile_definitions}\""
+    )   
+    endif()
+
     # Add include directories
     # TODO: This should not be hard coded!
     string(APPEND
