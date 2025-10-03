@@ -41,14 +41,32 @@ endif()"
         "\"\${CMAKE_CURRENT_LIST_DIR}/../../..\" ABSOLUTE)\n"
     )
 
+    # Determine library or executable
+    cpp_type_of(__gtc_tgt_obj_type "${__gtc_tgt_obj}")
+    cpp_implicitly_convertible(
+        __gtc_tgt_obj_is_lib "${__gtc_tgt_obj_type}" CMaizeLibrary
+    )
+
     # Create IMPORTED library of the correct type
-    CMaizeLibrary(GET "${__gtc_tgt_obj}" __gtc_lib_type type)
-    string(APPEND
-        __gtc_file_contents
-        "
-# Create imported target ${__gtc_namespace}${__gtc_target_name}
+    if(__gtc_tgt_obj_is_lib)
+        CMaizeLibrary(GET "${__gtc_tgt_obj}" __gtc_lib_type type)
+        string(APPEND
+            __gtc_file_contents
+            "
+# Create imported library target ${__gtc_namespace}${__gtc_target_name}
 add_library(${__gtc_namespace}${__gtc_target_name} ${__gtc_lib_type} IMPORTED)
-")
+"
+        )
+    # Assume it is an executable if it isn't a library
+    else()
+        string(APPEND
+            __gtc_file_contents
+            "
+# Create imported executable target ${__gtc_namespace}${__gtc_target_name}
+add_executable(${__gtc_namespace}${__gtc_target_name} IMPORTED)
+"
+        )
+    endif()
 
     # ----- Start collecting interface target properties -----
     string(APPEND
@@ -58,13 +76,22 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name}
     PROPERTIES"
     )
 
-    # Add compile features
-    CXXTarget(GET "${__gtc_tgt_obj}" __gtc_cxx_std cxx_standard)
-    if(NOT "${__gtc_cxx_std}" STREQUAL "")
+    # Add interface compile features
+    CMaizeTarget(has_property
+        "${__gtc_tgt_obj}"
+        __gtc_tgt_obj_has_interface_compile_features
+        INTERFACE_COMPILE_FEATURES
+    )
+    if(__gtc_tgt_obj_has_interface_compile_features)
+        CMaizeTarget(get_property
+            "${__gtc_tgt_obj}"
+            __gtc_tgt_obj_interface_compile_features
+            INTERFACE_COMPILE_FEATURES
+        )
         string(APPEND
             __gtc_file_contents
             "
-        INTERFACE_COMPILE_FEATURES \"cxx_std_${__gtc_cxx_std}\""
+        INTERFACE_COMPILE_FEATURES \"${__gtc_tgt_obj_interface_compile_features}\""
         )
     endif()
 
@@ -76,7 +103,7 @@ set_target_properties(${__gtc_namespace}${__gtc_target_name}
             __gtc_file_contents
             "
         INTERFACE_COMPILE_DEFINITIONS \"${__gtc_interface_compile_definitions}\""
-    )   
+        )
     endif()
 
     # Add include directories
