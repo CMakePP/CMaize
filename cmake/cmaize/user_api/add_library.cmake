@@ -84,8 +84,8 @@ function(cmaize_add_library _cal_tgt_name)
         INSTALL_PATH "${_cal_install_path}"
     )
 
-    # Loop over each dependency. This is currenjtly done by looking
-    # up the dependencies by name from the CMaizeProect, but later
+    # Loop over each dependency. This is currently done by looking
+    # up the dependencies by name from the CMaizeProject, but later
     # we should make each CMaize target hold references to its
     # dependencies
     cpp_get_global(_cal_top_proj CMAIZE_TOP_PROJECT)
