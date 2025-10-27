@@ -77,7 +77,7 @@ cmaize.targets/build_target
 
    .. py:attribute:: depends
 
-      :type List[CMaizeTarget]
+      :type: List[desc]
       
       Targets that are dependencies.
       

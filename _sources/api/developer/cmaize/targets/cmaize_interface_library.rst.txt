@@ -1,0 +1,44 @@
+
+#######################################
+cmaize.targets/cmaize_interface_library
+#######################################
+
+.. module:: cmaize.targets/cmaize_interface_library
+
+
+.. py:class:: CMaizeInterfaceLibrary
+
+   Bases: :class:`CMaizeLibrary`
+   
+   Base class for CMaize interface libraries. Intended to be used as a parent or
+   mixin to provide general, programming language-agnostic features for managing
+   interface library targets.
+   
+   **Additional Constructors**
+
+   .. py:method:: CTOR(_ctor_name)
+
+      Creates a ``CMaizeInterfaceLibrary`` object to manage a target of the given name.
+      
+      .. note::
+      
+         This does not create a corresponding CMake target, so any call that
+         should interact with a target will fail if the target does not
+         already exist.
+      
+      :param self: CMaizeInterfaceLibrary object constructed.
+      :type self: CMaizeInterfaceLibrary
+      :param tgt_name: Name of the target. This should not duplicate any other
+                       target name already in scope.
+      :type tgt_name: desc or target
+      
+      :returns: ``self`` will be set to the newly constructed ``CMaizeInterfaceLibrary``
+                object.
+      :rtype: CMaizeInterfaceLibrary
+      
+
+      :param _ctor_name: 
+
+      :type _ctor_name: str
+
+

@@ -1,0 +1,58 @@
+
+#############################
+cmaize.targets/cmaize_library
+#############################
+
+.. module:: cmaize.targets/cmaize_library
+
+
+.. py:class:: CMaizeLibrary
+
+   Bases: :class:`CMaizeTarget`
+   
+   Base class for all CMaize libraries. Intended to be used as a parent or
+   mixin to provide general, programming language-agnostic features for managing
+   library targets.
+   
+   **Additional Constructors**
+
+   .. py:method:: CTOR(_ctor_name)
+
+      Creates a ``CMaizeLibrary`` object to manage a target of the given name.
+      
+      .. note::
+      
+         This does not create a corresponding CMake target, so any call that
+         should interact with a target will fail if the target does not
+         already exist.
+      
+      :param self: CMaizeLibrary object constructed.
+      :type self: CMaizeLibrary
+      :param tgt_name: Name of the target. This should not duplicate any other
+                       target name already in scope.
+      :type tgt_name: desc or target
+      
+      :returns: ``self`` will be set to the newly constructed ``CMaizeLibrary``
+                object.
+      :rtype: CMaizeLibrary
+      
+
+      :param _ctor_name: 
+
+      :type _ctor_name: str
+
+   **Attributes**
+
+   .. py:attribute:: type
+      :value: "${BUILD_SHARED_LIBS}"
+
+      :type: desc
+      
+      Library type as defined by <type> in CMake's `add_library
+      <https://cmake.org/cmake/help/latest/command/add_library.html>`__
+      command.
+      
+      Defaults to the value of BUILD_SHARED_LIBS
+      
+
+

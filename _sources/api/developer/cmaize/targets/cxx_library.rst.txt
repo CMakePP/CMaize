@@ -8,9 +8,30 @@ cmaize.targets/cxx_library
 
 .. py:class:: CXXLibrary
 
-   Bases: :class:`CXXTarget`
+   Bases: :class:`CXXTarget`, :class:`CMaizeLibrary`
    
    
+   **Additional Constructors**
+
+   .. py:method:: CTOR(_ctor_name)
+
+      Creates a ``CXXLibrary`` object to manage the named target.
+      
+      :param self: CXXLibrary object constructed.
+      :type self: CXXLibrary
+      :param tgt_name: Name of the target. This should not duplicate any other
+                       target name already in scope.
+      :type tgt_name: desc or target
+      
+      :returns: ``self`` will be set to the newly constructed
+                ``CXXLibrary`` object.
+      :rtype: CXXLibrary
+      
+
+      :param _ctor_name: 
+
+      :type _ctor_name: str
+
    **Methods**
 
    .. py:method:: _create_target()

@@ -54,6 +54,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../project/index.html">cmaize.project</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">cmaize.targets</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="build_target.html">cmaize.targets/build_target</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmaize_interface_library.html">cmaize.targets/cmaize_interface_library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmaize_library.html">cmaize.targets/cmaize_library</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cmaize_target.html">cmaize.targets/cmaize_target</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_executable.html">cmaize.targets/cxx_executable</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cxx_interface_library.html">cmaize.targets/cxx_interface_library</a></li>
@@ -111,7 +113,31 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_library.CXXLibrary">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cmaize.targets/cxx_library.</span></span><span class="sig-name descname"><span class="pre">CXXLibrary</span></span><a class="headerlink" href="#cmaize.targets-cxx_library.CXXLibrary" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CXXTarget</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CXXTarget</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">CMaizeLibrary</span></code></p>
+<p><strong>Additional Constructors</strong></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cmaize.targets-cxx_library.CXXLibrary.CTOR">
+<span class="sig-name descname"><span class="pre">CTOR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_ctor_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cmaize.targets-cxx_library.CXXLibrary.CTOR" title="Link to this definition"></a></dt>
+<dd><p>Creates a <code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code> object to manage the named target.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<a class="reference internal" href="#cmaize.targets-cxx_library.CXXLibrary" title="cmaize.targets/cxx_library.CXXLibrary"><em>CXXLibrary</em></a>) – CXXLibrary object constructed.</p></li>
+<li><p><strong>tgt_name</strong> (<em>desc</em><em> or </em><em>target</em>) – Name of the target. This should not duplicate any other
+target name already in scope.</p></li>
+<li><p><strong>_ctor_name</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">self</span></code> will be set to the newly constructed
+<code class="docutils literal notranslate"><span class="pre">CXXLibrary</span></code> object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#cmaize.targets-cxx_library.CXXLibrary" title="cmaize.targets/cxx_library.CXXLibrary">CXXLibrary</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <p><strong>Methods</strong></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cmaize.targets-cxx_library.CXXLibrary._create_target">

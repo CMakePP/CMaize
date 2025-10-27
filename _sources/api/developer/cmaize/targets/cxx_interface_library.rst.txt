@@ -8,9 +8,30 @@ cmaize.targets/cxx_interface_library
 
 .. py:class:: CXXInterfaceLibrary
 
-   Bases: :class:`CXXLibrary`
+   Bases: :class:`CXXLibrary`, :class:`CMaizeInterfaceLibrary`
    
    
+   **Additional Constructors**
+
+   .. py:method:: CTOR(_ctor_name)
+
+      Creates a ``CXXInterfaceLibrary`` object to manage the named target.
+      
+      :param self: CXXInterfaceLibrary object constructed.
+      :type self: CXXInterfaceLibrary
+      :param tgt_name: Name of the target. This should not duplicate any other
+                       target name already in scope.
+      :type tgt_name: desc or target
+      
+      :returns: ``self`` will be set to the newly constructed
+                ``CXXInterfaceLibrary`` object.
+      :rtype: CXXInterfaceLibrary
+      
+
+      :param _ctor_name: 
+
+      :type _ctor_name: str
+
    **Methods**
 
    .. py:method:: _access_level(_al_result)
@@ -28,19 +49,6 @@ cmaize.targets/cxx_interface_library
       
       :returns: Access level of the target.
       :rtype: desc
-      
-
-
-   .. py:method:: _create_target()
-
-      Creates the interface library target with ``add_library()``.
-      
-      .. note::
-      
-         Overrides ``BuildTarget(_create_target``.
-      
-      :param self: CXXInterfaceLibrary object
-      :type self: CXXInterfaceLibrary
       
 
 
