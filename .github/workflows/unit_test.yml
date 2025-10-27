@@ -14,10 +14,11 @@ jobs:
     strategy:
       matrix:
         # [minimum version, last 3.x, latest stable, latest release candidate]
-        cmake: [3.19.7, 3.31.9, install, installrc]
+        cmake: [3.19.7, 3.31.9, latest, latestrc]
 
     env:
       cmake_version: ${{ matrix.cmake }}
+      os: linux-x86_64
 
     steps:
       - name: Checkout repository
