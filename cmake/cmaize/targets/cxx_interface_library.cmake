@@ -13,9 +13,31 @@
 # limitations under the License.
 
 include_guard()
+include(cmaize/targets/cmaize_interface_library)
 include(cmaize/targets/cxx_library)
 
-cpp_class(CXXInterfaceLibrary CXXLibrary)
+cpp_class(CXXInterfaceLibrary CXXLibrary CMaizeInterfaceLibrary)
+
+    #[[[
+    # Creates a ``CXXInterfaceLibrary`` object to manage the named target.
+    #
+    # :param self: CXXInterfaceLibrary object constructed.
+    # :type self: CXXInterfaceLibrary
+    # :param tgt_name: Name of the target. This should not duplicate any other
+    #                  target name already in scope.
+    # :type tgt_name: desc or target
+    #
+    # :returns: ``self`` will be set to the newly constructed
+    #           ``CXXInterfaceLibrary`` object.
+    # :rtype: CXXInterfaceLibrary
+    #]]
+    cpp_constructor(CTOR CXXInterfaceLibrary str)
+    function("${CTOR}" self _ctor_name)
+
+        CXXLibrary(CTOR "${self}" "${_ctor_name}")
+        CMaizeInterfaceLibrary(CTOR "${self}" "${_ctor_name}")
+
+    endfunction()
 
     #[[[
     # Get the access level for the target.
@@ -38,25 +60,6 @@ cpp_class(CXXInterfaceLibrary CXXLibrary)
         set("${_al_result}" INTERFACE)
         cpp_return("${_al_result}")
     
-    endfunction()
-
-    #[[[
-    # Creates the interface library target with ``add_library()``.
-    #
-    # .. note::
-    #
-    #    Overrides ``BuildTarget(_create_target``.
-    #
-    # :param self: CXXInterfaceLibrary object
-    # :type self: CXXInterfaceLibrary
-    #]]
-    cpp_member(_create_target CXXInterfaceLibrary)
-    function("${_create_target}" self)
-
-        CXXInterfaceLibrary(target "${self}" _it_name)
-        
-        add_library("${_it_name}" INTERFACE)
-
     endfunction()
 
     #[[[

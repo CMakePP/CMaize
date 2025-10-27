@@ -53,11 +53,14 @@ function(_cmaize_find_dependency _fd_tgt _fd_pm _fd_package_specs _fd_project _f
     _fob_get_package_manager(_fd_pm_tmp "${_fd_project}" "${_fd_pm_name}")
 
     message(STATUS "Attempting to find installed ${_fd_name}")
+    list(APPEND CMAKE_MESSAGE_INDENT "  ")
 
     # Check if the package is already installed
     PackageManager(find_installed
         "${_fd_pm_tmp}" _fd_tgt_tmp "${_fd_package_specs_tmp}" ${ARGN}
     )
+
+    list(POP_BACK CMAKE_MESSAGE_INDENT)
 
     if(NOT "${_fd_tgt_tmp}" STREQUAL "")
         message(STATUS "${_fd_name} installation found")

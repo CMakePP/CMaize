@@ -132,21 +132,20 @@ cpp_class(CMakePackageManager PackageManager)
             cpp_map(GET "${_rd_dependencies}" _rd_temp "${_rd_key}")
         endforeach()
 
+        message(VERBOSE "Registering dependency to package manager: ${_rd_pkg_name}")
         if("${_rd_depend}" STREQUAL "")
-            message(DEBUG "Registering dependency to package manager: ${_rd_pkg_name}")
-
             set(_rd_depend "")
             if("${ARGN}" MATCHES "github")
-                message("Creating a GitHub dependency")
                 GitHubDependency(CTOR _rd_depend)
             else()
-                message("Creating a Git dependency")
                 GitDependency(CTOR _rd_depend)
             endif()
 
             Dependency(init "${_rd_depend}" NAME "${_rd_pkg_name}" ${ARGN})
 
             cpp_map(SET "${_rd_dependencies}" "${_rd_pkg_name}" "${_rd_depend}")
+        else()
+            message(VERBOSE "Dependency already registered to package manager: ${_rd_pkg_name}")
         endif()
 
         set("${_rd_result}" "${_rd_depend}")
@@ -188,8 +187,6 @@ cpp_class(CMakePackageManager PackageManager)
         )
 
         PackageSpecification(GET "${_fi_package_specs}" _fi_pkg_name name)
-
-        message(STATUS "Looking for ${_fi_pkg_name}")
 
         CMakePackageManager(register_dependency
             "${self}"
@@ -261,9 +258,13 @@ cpp_class(CMakePackageManager PackageManager)
 
         # Alias the build target as the find_target to unify the API
         if(NOT TARGET "${_gp_find_target}")
+            message(DEBUG "Find target does not exist: ${_gp_find_target}")
             if(NOT "${_gp_find_target}" STREQUAL "${_gp_build_target}")
+                message(DEBUG "Aliasing build target \"${_gp_build_target}\" as find target \"${_gp_find_target}\"")
                 add_library("${_gp_find_target}" ALIAS "${_gp_build_target}")
             endif()
+        else()
+            message(DEBUG "Find target exists: ${_gp_find_target}")
         endif()
 
         cpp_return("${_gp_result}")

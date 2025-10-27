@@ -64,7 +64,7 @@ cpp_class(BuildTarget CMaizeTarget)
     # cpp_attr(BuildTarget system_dependencies)
 
     #[[[
-    # :type List[CMaizeTarget]
+    # :type: List[desc]
     #
     # Targets that are dependencies.
     #]]
