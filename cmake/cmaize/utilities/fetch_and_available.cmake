@@ -31,6 +31,8 @@ include(FetchContent)
 #]]
 macro(cmaize_fetch_and_available _faa_name)
 
+    message(VERBOSE "Fetching and making \"${_faa_name}\" available")
+
     FetchContent_Declare("${_faa_name}" ${ARGN})
     FetchContent_MakeAvailable("${_faa_name}")
     

@@ -166,6 +166,17 @@ cpp_class(GitHubDependency GitDependency)
 
         Dependency(SET "${self}" cmake_args "${_i_CMAKE_ARGS}")
 
+        message(VERBOSE "Created Git Dependency")
+        list(APPEND CMAKE_MESSAGE_INDENT "  ")
+        message(VERBOSE "Name:         ${_i_NAME}")
+        message(VERBOSE "URL:          ${_i_URL}")
+        message(VERBOSE "Version:      ${_i_VERSION}")
+        message(VERBOSE "Private:      ${_i_PRIVATE}")
+        message(VERBOSE "Build Target: ${_i_BUILD_TARGET}")
+        message(VERBOSE "Find Target:  ${_i_FIND_TARGET}")
+        message(VERBOSE "CMake Args:   ${_i_CMAKE_ARGS}")
+        list(POP_BACK CMAKE_MESSAGE_INDENT)
+
     endfunction()
 
 cpp_end_class()

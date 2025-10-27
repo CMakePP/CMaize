@@ -123,19 +123,22 @@ macro(
             Dependency(GET
                 "${__gpc_dep_obj}" __gpc_dep_build_tgt_name build_target
             )
+            Dependency(GET
+                "${__gpc_dep_obj}" __gpc_tgt_dep_name name
+            )
 
             # This determines how the find_dependency call in the config
             # file should be formatted, based on whether the dependency is
             # a component of a package or not
-            if("${__gpc_tgt_deps_i}" STREQUAL "${__gpc_dep_build_tgt_name}")
+            if("${__gpc_tgt_dep_name}" STREQUAL "${__gpc_dep_build_tgt_name}")
                 string(APPEND
                     __gpc_file_contents
-                    "find_dependency(${__gpc_tgt_deps_i})\n"
+                    "find_dependency(${__gpc_tgt_dep_name})\n"
                 )
             else()
                 string(APPEND
                     __gpc_file_contents
-                    "find_dependency(${__gpc_tgt_deps_i} COMPONENTS ${__gpc_dep_build_tgt_name})\n"
+                    "find_dependency(${__gpc_tgt_dep_name} COMPONENTS ${__gpc_dep_build_tgt_name})\n"
                 )
             endif()
 

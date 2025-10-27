@@ -30,8 +30,9 @@ macro(_cpm_generate_target_config_impl
         __gtc_file_contents
         "
 if(TARGET ${__gtc_namespace}${__gtc_target_name})
-return()
-endif()")
+    return()
+endif()"
+    )
     string(APPEND __gtc_file_contents "\n\n")
 
     string(APPEND
@@ -40,28 +41,89 @@ endif()")
         "\"\${CMAKE_CURRENT_LIST_DIR}/../../..\" ABSOLUTE)\n"
     )
 
-    BuildTarget(GET "${__gtc_tgt_obj}" __gtc_dep_list depends)
-    CXXTarget(GET "${__gtc_tgt_obj}" __gtc_cxx_std cxx_standard)
-    CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_version VERSION)
-    CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_so_version SOVERSION)
+    # Determine library or executable
+    cpp_type_of(__gtc_tgt_obj_type "${__gtc_tgt_obj}")
+    cpp_implicitly_convertible(
+        __gtc_tgt_obj_is_lib "${__gtc_tgt_obj_type}" CMaizeLibrary
+    )
+
+    # Create IMPORTED library of the correct type
+    if(__gtc_tgt_obj_is_lib)
+        CMaizeLibrary(GET "${__gtc_tgt_obj}" __gtc_lib_type type)
+        string(APPEND
+            __gtc_file_contents
+            "
+# Create imported library target ${__gtc_namespace}${__gtc_target_name}
+add_library(${__gtc_namespace}${__gtc_target_name} ${__gtc_lib_type} IMPORTED)
+"
+        )
+    # Assume it is an executable if it isn't a library
+    else()
+        string(APPEND
+            __gtc_file_contents
+            "
+# Create imported executable target ${__gtc_namespace}${__gtc_target_name}
+add_executable(${__gtc_namespace}${__gtc_target_name} IMPORTED)
+"
+        )
+    endif()
+
+    # ----- Start collecting interface target properties -----
+    string(APPEND
+        __gtc_file_contents
+        "
+set_target_properties(${__gtc_namespace}${__gtc_target_name}
+    PROPERTIES"
+    )
+
+    # Add interface compile features
+    CMaizeTarget(has_property
+        "${__gtc_tgt_obj}"
+        __gtc_tgt_obj_has_interface_compile_features
+        INTERFACE_COMPILE_FEATURES
+    )
+    if(__gtc_tgt_obj_has_interface_compile_features)
+        CMaizeTarget(get_property
+            "${__gtc_tgt_obj}"
+            __gtc_tgt_obj_interface_compile_features
+            INTERFACE_COMPILE_FEATURES
+        )
+        string(APPEND
+            __gtc_file_contents
+            "
+        INTERFACE_COMPILE_FEATURES \"${__gtc_tgt_obj_interface_compile_features}\""
+        )
+    endif()
+
+    # Get interface compile definitions
+    CMaizeTarget(has_property "${__gtc_tgt_obj}" __gtc_has_interface_compile_definitions INTERFACE_COMPILE_DEFINITIONS)
+    if(__gtc_has_interface_compile_definitions)
+        CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_interface_compile_definitions INTERFACE_COMPILE_DEFINITIONS)
+        string(APPEND
+            __gtc_file_contents
+            "
+        INTERFACE_COMPILE_DEFINITIONS \"${__gtc_interface_compile_definitions}\""
+        )
+    endif()
+
+    # Add include directories
+    # TODO: This should not be hard coded!
+    string(APPEND
+        __gtc_file_contents
+        "
+        INTERFACE_INCLUDE_DIRECTORIES \"\${PACKAGE_PREFIX_DIR}/include\""
+    )
 
     string(APPEND
         __gtc_file_contents
         "
-# Create imported target ${__gtc_namespace}${__gtc_target_name}
-add_library(${__gtc_namespace}${__gtc_target_name} SHARED IMPORTED)
-
-if(NOT \"${__gtc_cxx_std}\" STREQUAL \"\")
-    set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
-        INTERFACE_COMPILE_FEATURES \"cxx_std_${__gtc_cxx_std}\"
-    )
-endif()
-
-set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
-INTERFACE_INCLUDE_DIRECTORIES \"\${PACKAGE_PREFIX_DIR}/include\"
-INTERFACE_LINK_LIBRARIES "
+        # TODO: Handle different configurations (Release, Debug, etc.)
+        # Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
+        IMPORTED_CONFIGURATIONS RELEASE"
     )
 
+    # Collect interface link libraries
+    BuildTarget(GET "${__gtc_tgt_obj}" __gtc_dep_list depends)
     set(__gtc_interface_link_libraries)
     foreach(__gtc_dep_i ${__gtc_dep_list})
         CMakePackageManager(GET "${self}" __gtc_dep_map dependencies)
@@ -78,56 +140,76 @@ INTERFACE_LINK_LIBRARIES "
         list(APPEND __gtc_interface_link_libraries ${__gtc_dep_find_tgt_name})
     endforeach()
 
-    string(APPEND
-        __gtc_file_contents
-        "\"${__gtc_interface_link_libraries}\"
-)\n"
-    )
-
-    # Based on the shared library suffix, generate the correct versioned
-    # library name and soname that CMake will install
-    if ("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".so")
-        set(__gtc_libname_w_version
-            "lib${__gtc_target_name}.so.${__gtc_version}"
-        )
-        set(__gtc_soname "lib${__gtc_target_name}.so.${__gtc_so_version}")
-    elseif("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".dylib")
-        set(__gtc_libname_w_version
-            "lib${__gtc_target_name}.${__gtc_version}.dylib"
-        )
-        set(__gtc_soname
-            "lib${__gtc_target_name}.${__gtc_so_version}.dylib"
-        )
-    elseif("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".dll")
-        set(__gtc_libname_w_version
-            "${__gtc_target_name}.${__gtc_version}.dll"
-        )
-        set(__gtc_soname
-            "${__gtc_target_name}.${__gtc_so_version}.dll"
-        )
-    else()
-        string(APPEND __gtc_msg "Shared libraries with the")
-        string(APPEND __gtc_msg "${CMAKE_SHARED_LIBRARY_SUFFIX} suffix")
-        string(APPEND __gtc_msg "are not supported yet.")
-        cpp_raise(
-            UnsupportedLibraryType
-            "${__gtc_msg}"
+    # Add interface link libraries
+    list(LENGTH __gtc_interface_link_libraries __gtc_link_library_count)
+    if("${__gtc_link_library_count}" GREATER 0)
+        string(APPEND
+            __gtc_file_contents
+            "
+        INTERFACE_LINK_LIBRARIES \"${__gtc_interface_link_libraries}\""
         )
     endif()
 
-    CMakePackageManager(GET "${self}" __gtc_lib_prefix library_prefix)
+    # ----- End of collecting interface properties -----
     string(APPEND
         __gtc_file_contents
         "
-set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/${__gtc_lib_prefix}/${__gtc_target_name}/${__gtc_libname_w_version}\")
-# TODO: Handle different configurations (Release, Debug, etc.)
-# Import target \"${__gtc_namespace}${__gtc_target_name}\" for configuration \"???\"
-set_property(TARGET ${__gtc_namespace}${__gtc_target_name} APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(${__gtc_namespace}${__gtc_target_name} PROPERTIES
-IMPORTED_LOCATION_RELEASE \"\${_CMAIZE_IMPORT_LOCATION}\"
-IMPORTED_SONAME_RELEASE \"${__gtc_soname}\"
-)\n"
+)"
     )
+
+    # TODO: Are there other library types allowed here? Should this condition
+    #       instead be 'NOT "${__gtc_lib_type}" STREQUAL "INTERFACE"'?
+    if("${__gtc_lib_type}" STREQUAL "SHARED" OR "${__gtc_lib_type}" STREQUAL "STATIC")
+        # Based on the shared library suffix, generate the correct versioned
+        # library name and soname that CMake will install
+        CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_version VERSION)
+        CMaizeTarget(get_property "${__gtc_tgt_obj}" __gtc_so_version SOVERSION)
+
+        if ("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".so")
+            set(__gtc_libname_w_version
+                "lib${__gtc_target_name}.so.${__gtc_version}"
+            )
+            set(__gtc_soname "lib${__gtc_target_name}.so.${__gtc_so_version}")
+        elseif("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".dylib")
+            set(__gtc_libname_w_version
+                "lib${__gtc_target_name}.${__gtc_version}.dylib"
+            )
+            set(__gtc_soname
+                "lib${__gtc_target_name}.${__gtc_so_version}.dylib"
+            )
+        elseif("${CMAKE_SHARED_LIBRARY_SUFFIX}" STREQUAL ".dll")
+            set(__gtc_libname_w_version
+                "${__gtc_target_name}.${__gtc_version}.dll"
+            )
+            set(__gtc_soname
+                "${__gtc_target_name}.${__gtc_so_version}.dll"
+            )
+        else()
+            string(APPEND __gtc_msg "Shared libraries with the")
+            string(APPEND __gtc_msg "${CMAKE_SHARED_LIBRARY_SUFFIX} suffix")
+            string(APPEND __gtc_msg "are not supported yet.")
+            cpp_raise(
+                UnsupportedLibraryType
+                "${__gtc_msg}"
+            )
+        endif()
+    endif()
+
+    # Populate properties about exported objects if any are created
+    if("${__gtc_lib_type}" STREQUAL "SHARED" OR "${__gtc_lib_type}" STREQUAL "STATIC")
+        CMakePackageManager(GET "${self}" __gtc_lib_prefix library_prefix)
+        string(APPEND
+            __gtc_file_contents
+            "
+set(_CMAIZE_IMPORT_LOCATION \"\${PACKAGE_PREFIX_DIR}/${__gtc_lib_prefix}/${__gtc_target_name}/${__gtc_libname_w_version}\")
+
+set_target_properties(${__gtc_namespace}${__gtc_target_name}
+    PROPERTIES
+        IMPORTED_LOCATION_RELEASE \"\${_CMAIZE_IMPORT_LOCATION}\"
+        IMPORTED_SONAME_RELEASE \"${__gtc_soname}\"
+)\n"
+        )
+    endif()
 
     string(APPEND
         __gtc_file_contents

@@ -13,9 +13,31 @@
 # limitations under the License.
 
 include_guard()
+include(cmaize/targets/cmaize_library)
 include(cmaize/targets/cxx_target)
 
-cpp_class(CXXLibrary CXXTarget)
+cpp_class(CXXLibrary CXXTarget CMaizeLibrary)
+
+    #[[[
+    # Creates a ``CXXLibrary`` object to manage the named target.
+    #
+    # :param self: CXXLibrary object constructed.
+    # :type self: CXXLibrary
+    # :param tgt_name: Name of the target. This should not duplicate any other
+    #                  target name already in scope.
+    # :type tgt_name: desc or target
+    #
+    # :returns: ``self`` will be set to the newly constructed
+    #           ``CXXLibrary`` object.
+    # :rtype: CXXLibrary
+    #]]
+    cpp_constructor(CTOR CXXLibrary str)
+    function("${CTOR}" self _ctor_name)
+
+        CXXTarget(CTOR "${self}" "${_ctor_name}")
+        CMaizeLibrary(CTOR "${self}" "${_ctor_name}")
+
+    endfunction()
 
     #[[[
     # Creates the library target with ``add_library()``.
@@ -34,8 +56,10 @@ cpp_class(CXXLibrary CXXTarget)
     function("${_create_target}" self)
 
         CXXLibrary(target "${self}" _ct_name)
+        CXXLibrary(GET "${self}" _ct_lib_type type)
+        message(DEBUG "Library type of \"${_ct_name}\" is \"${_ct_lib_type}\"")
 
-        add_library("${_ct_name}")
+        add_library("${_ct_name}" "${_ct_lib_type}")
 
     endfunction()
 

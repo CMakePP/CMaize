@@ -59,6 +59,8 @@ cpp_class(GitDependency Dependency)
             set("${_bd_var}" "${_bd_val}" CACHE BOOL "" FORCE)
         endforeach()
 
+        message(VERBOSE "Adding \"${_bd_name}\" to build system")
+
         cmaize_fetch_and_available(
             "${_bd_name}" 
             GIT_REPOSITORY "${_bd_url}.git"
@@ -117,6 +119,16 @@ cpp_class(GitDependency Dependency)
         GitDependency(SET "${self}" build_target "${_i_BUILD_TARGET}")
         GitDependency(SET "${self}" find_target "${_i_FIND_TARGET}")
         GitDependency(SET "${self}" cmake_args "${_i_CMAKE_ARGS}")
+
+        message(VERBOSE "Created Git Dependency")
+        list(APPEND CMAKE_MESSAGE_INDENT "  ")
+        message(VERBOSE "Name:         ${_i_NAME}")
+        message(VERBOSE "URL:          ${_i_URL}")
+        message(VERBOSE "Version:      ${_i_VERSION}")
+        message(VERBOSE "Build Target: ${_i_BUILD_TARGET}")
+        message(VERBOSE "Find Target:  ${_i_FIND_TARGET}")
+        message(VERBOSE "CMake Args:   ${_i_CMAKE_ARGS}")
+        list(POP_BACK CMAKE_MESSAGE_INDENT)
 
     endfunction()
 

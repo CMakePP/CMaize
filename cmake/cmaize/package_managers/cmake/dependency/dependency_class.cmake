@@ -102,8 +102,8 @@ cpp_class(Dependency)
 
         # Check if it was already found? If so short-circuit and return TRUE
         Dependency(GET "${self}" "${_fd_found}" found)
-        message("Was already found? ${${_fd_found}}")
         if("${${_fd_found}}")
+            message(STATUS "Dependency already found")
             cpp_return("${_fd_found}")
         endif()
 
@@ -111,6 +111,7 @@ cpp_class(Dependency)
         Dependency(_SEARCH_PATHS "${self}" _fd_paths)
         Dependency(GET "${self}" _fd_name name)
         Dependency(GET "${self}" _fd_version version)
+        message(VERBOSE "Searching via find_package...")
         find_package(
             "${_fd_name}"
             CONFIG
@@ -168,6 +169,15 @@ cpp_class(Dependency)
         Dependency(SET "${self}" version "${_i_VERSION}")
         Dependency(SET "${self}" build_target "${_i_BUILD_TARGET}")
         Dependency(SET "${self}" find_target "${_i_FIND_TARGET}")
+
+        message(VERBOSE "Created Dependency")
+        list(APPEND CMAKE_MESSAGE_INDENT "  ")
+        message(VERBOSE "Name:         ${_i_NAME}")
+        message(VERBOSE "URL:          ${_i_URL}")
+        message(VERBOSE "Version:      ${_i_VERSION}")
+        message(VERBOSE "Build Target: ${_i_BUILD_TARGET}")
+        message(VERBOSE "Find Target:  ${_i_FIND_TARGET}")
+        list(POP_BACK CMAKE_MESSAGE_INDENT)
 
     endfunction()
 
