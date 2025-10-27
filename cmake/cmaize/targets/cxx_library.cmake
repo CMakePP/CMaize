@@ -18,7 +18,19 @@ include(cmaize/targets/cxx_target)
 
 cpp_class(CXXLibrary CXXTarget CMaizeLibrary)
 
-    # TODO: Function doc
+    #[[[
+    # Creates a ``CXXLibrary`` object to manage the named target.
+    #
+    # :param self: CXXLibrary object constructed.
+    # :type self: CXXLibrary
+    # :param tgt_name: Name of the target. This should not duplicate any other
+    #                  target name already in scope.
+    # :type tgt_name: desc or target
+    #
+    # :returns: ``self`` will be set to the newly constructed
+    #           ``CXXLibrary`` object.
+    # :rtype: CXXLibrary
+    #]]
     cpp_constructor(CTOR CXXLibrary str)
     function("${CTOR}" self _ctor_name)
 

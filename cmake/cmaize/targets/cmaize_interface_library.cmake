@@ -14,11 +14,13 @@
 
 include_guard()
 include(cmakepp_lang/cmakepp_lang)
-include(cmaize/targets/cmaize_target)
+include(cmaize/targets/cmaize_library)
 
 
 #[[[
-# Base class for all CMaize libraries.
+# Base class for CMaize interface libraries. Intended to be used as a parent or
+# mixin to provide general, programming language-agnostic features for managing
+# interface library targets.
 #]]
 cpp_class(CMaizeInterfaceLibrary CMaizeLibrary)
 
@@ -26,13 +28,10 @@ cpp_class(CMaizeInterfaceLibrary CMaizeLibrary)
     # Creates a ``CMaizeInterfaceLibrary`` object to manage a target of the given name.
     # 
     # .. note::
-    #    
-    #    This does not create a corresponding CMake target,
-    #    so any call that should interact with a target will fail if the
-    #    target does not already exist. As a base class with no concrete
-    #    analog, ``CMaizeInterfaceLibrary`` really shouldn't be instantiated aside from
-    #    testing purposes. Instead, create a child with a concrete target
-    #    analog and instantiate that.
+    #
+    #    This does not create a corresponding CMake target, so any call that
+    #    should interact with a target will fail if the target does not
+    #    already exist.
     #
     # :param self: CMaizeInterfaceLibrary object constructed.
     # :type self: CMaizeInterfaceLibrary

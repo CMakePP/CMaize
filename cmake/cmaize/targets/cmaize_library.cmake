@@ -18,7 +18,9 @@ include(cmaize/targets/cmaize_target)
 
 
 #[[[
-# Base class for all CMaize libraries.
+# Base class for all CMaize libraries. Intended to be used as a parent or
+# mixin to provide general, programming language-agnostic features for managing
+# library targets.
 #]]
 cpp_class(CMaizeLibrary CMaizeTarget)
 
@@ -33,7 +35,25 @@ cpp_class(CMaizeLibrary CMaizeTarget)
     #]]
     cpp_attr(CMaizeLibrary type "${BUILD_SHARED_LIBS}")
 
-    # TODO: Function doc
+    #[[[
+    # Creates a ``CMaizeLibrary`` object to manage a target of the given name.
+    #
+    # .. note::
+    #
+    #    This does not create a corresponding CMake target, so any call that
+    #    should interact with a target will fail if the target does not
+    #    already exist.
+    #
+    # :param self: CMaizeLibrary object constructed.
+    # :type self: CMaizeLibrary
+    # :param tgt_name: Name of the target. This should not duplicate any other
+    #                  target name already in scope.
+    # :type tgt_name: desc or target
+    #
+    # :returns: ``self`` will be set to the newly constructed ``CMaizeLibrary``
+    #           object.
+    # :rtype: CMaizeLibrary
+    #]]
     cpp_constructor(CTOR CMaizeLibrary str)
     function("${CTOR}" self _ctor_name)
 

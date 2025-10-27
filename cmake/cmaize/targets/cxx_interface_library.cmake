@@ -18,7 +18,19 @@ include(cmaize/targets/cxx_library)
 
 cpp_class(CXXInterfaceLibrary CXXLibrary CMaizeInterfaceLibrary)
 
-    # TODO: Function doc
+    #[[[
+    # Creates a ``CXXInterfaceLibrary`` object to manage the named target.
+    #
+    # :param self: CXXInterfaceLibrary object constructed.
+    # :type self: CXXInterfaceLibrary
+    # :param tgt_name: Name of the target. This should not duplicate any other
+    #                  target name already in scope.
+    # :type tgt_name: desc or target
+    #
+    # :returns: ``self`` will be set to the newly constructed
+    #           ``CXXInterfaceLibrary`` object.
+    # :rtype: CXXInterfaceLibrary
+    #]]
     cpp_constructor(CTOR CXXInterfaceLibrary str)
     function("${CTOR}" self _ctor_name)
 
