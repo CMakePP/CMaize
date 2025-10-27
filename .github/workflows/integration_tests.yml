@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cmake: [3.19.7, latestrc]
+        # [minimum version, latest stable, latest release candidate]
+        cmake: [3.19.7, install, installrc]
 
     env:
       cmake_version: ${{ matrix.cmake }}
       cores: 2
-      os: linux-x86_64
 
     steps:
       - name: Checkout repository
@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Catch2
         run: |
-          prefix=`pwd`/catch2_install
+          prefix=$PWD/catch2_install
           cd catch2
           cmake -H. -Bbuild -DCMAKE_INSTALL_PREFIX="${prefix}"
           cmake --build build --parallel 2

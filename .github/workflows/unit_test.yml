@@ -13,33 +13,29 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        cmake: [3.19.7, 3.22.4, 3.23.1]
+        # [minimum version, last 3.x, latest stable, latest release candidate]
+        cmake: [3.19.7, 3.31.9, install, installrc]
 
     env:
       cmake_version: ${{ matrix.cmake }}
-      os: linux-x86_64
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: get cmake
-        env:
-          url_prefix: https://github.com/Kitware/CMake/releases/download
+      - name: Get CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: ${{ env.cmake_version }}
+
+      - name: Configure Project
         run: |
-          cmake_prefix=cmake-${cmake_version}-${os}
-          cmake_script=${cmake_prefix}.sh
-          wget "${url_prefix}/v${cmake_version}/${cmake_script}"
-          mkdir -p ./${cmake_prefix}
-          /bin/sh "${cmake_script}" --prefix=./${cmake_prefix} --exclude-subdir
+          cmake -H. -Bbuild -DBUILD_TESTING=ON
 
-      - name: configure
-        run: |
-          cmake-${cmake_version}-${os}/bin/cmake -H. -Bbuild -DBUILD_TESTING=ON
-
-      - name: unit_test
+      - name: Unit Tests
         run: |
           cd build
-          ../cmake-${cmake_version}-${os}/bin/ctest \
+          ctest \
               j 2 \
               --output-on-failure \
               -LE integration_tests
